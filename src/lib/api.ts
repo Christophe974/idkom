@@ -53,6 +53,8 @@ export interface Projet {
   testimonial_text?: string;
   testimonial_author?: string;
   testimonial_role?: string;
+  meta_title?: string;
+  meta_description?: string;
 }
 
 export interface BlogArticle {
