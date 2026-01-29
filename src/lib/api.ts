@@ -67,6 +67,8 @@ export interface BlogArticle {
   image?: string;
   author_name?: string;
   views_count?: number;
+  meta_title?: string;
+  meta_description?: string;
 }
 
 export interface Testimonial {
