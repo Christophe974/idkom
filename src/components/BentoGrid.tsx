@@ -67,14 +67,14 @@ export default function BentoGrid({ data }: BentoGridProps) {
         </div>
       </div>
 
-      {/* Stat 2 - Projets avec effet Glitch */}
+      {/* Stat 2 - Goodies avec effet Glitch */}
       <div className="bento-card rounded-3xl p-6 bg-zinc-900/50 backdrop-blur-sm border border-white/10 glow-purple animate-fade-in-up delay-200">
         <div className="h-full flex flex-col justify-center items-center text-center">
           <GlitchStat
-            pastValue="2024"
-            futureValue={String(stats.projects)}
-            pastLabel="codés pour"
-            futureLabel="projets montés"
+            pastValue="2025"
+            futureValue={String(stats.goodies || 5000)}
+            pastLabel="distribués en"
+            futureLabel="goodies offerts"
             delay={2500}
           />
         </div>
@@ -157,12 +157,11 @@ export default function BentoGrid({ data }: BentoGridProps) {
         </Link>
       </div>
 
-      {/* Stat 3 - Clients */}
+      {/* Stat 3 - Lignes de code */}
       <div className="bento-card rounded-3xl p-6 bg-zinc-900/50 backdrop-blur-sm border border-white/10 glow-cyan animate-fade-in-up delay-400">
         <div className="h-full flex flex-col justify-center items-center text-center">
-          <Counter target={stats.clients} className="text-5xl font-bold gradient-text" />
-          <span className="text-xl gradient-text font-bold">+</span>
-          <span className="text-zinc-500 text-sm mt-1">clients fidèles</span>
+          <Counter target={stats.lines_of_code || 150000} className="text-4xl font-bold gradient-text" />
+          <span className="text-zinc-500 text-sm mt-1">lignes de code</span>
         </div>
       </div>
 

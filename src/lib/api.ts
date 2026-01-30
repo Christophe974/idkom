@@ -13,6 +13,8 @@ export interface Stats {
   years: number;
   projects: number;
   clients: number;
+  goodies: number;
+  lines_of_code: number;
 }
 
 export interface Social {
