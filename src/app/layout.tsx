@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Space_Grotesk } from "next/font/google";
 import "./globals.css";
+import CookieConsent from "@/components/CookieConsent";
 
 const spaceGrotesk = Space_Grotesk({
   variable: "--font-space-grotesk",
@@ -42,6 +43,7 @@ export default function RootLayout({
     <html lang="fr" className="scroll-smooth">
       <body className={`${spaceGrotesk.variable} font-sans antialiased`}>
         {children}
+        <CookieConsent />
       </body>
     </html>
   );
