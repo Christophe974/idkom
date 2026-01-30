@@ -6,6 +6,7 @@ import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
 import AmbientBackground from '@/components/AmbientBackground';
 import GlowingImageFrame from '@/components/GlowingImageFrame';
+import MarkdownContent from '@/components/MarkdownContent';
 
 export const revalidate = 300;
 
@@ -101,10 +102,10 @@ export default async function ArticlePage({ params }: PageProps) {
           />
         </div>
 
-        {/* Content */}
+        {/* Content avec support Markdown */}
         {article.content && (
           <article className="prose prose-invert prose-zinc prose-lg max-w-none">
-            <div className="text-zinc-300 leading-relaxed whitespace-pre-wrap">{article.content}</div>
+            <MarkdownContent content={article.content} />
           </article>
         )}
 
