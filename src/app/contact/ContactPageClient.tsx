@@ -14,13 +14,31 @@ interface ContactPageClientProps {
 
 export default function ContactPageClient({ site, social }: ContactPageClientProps) {
   const [formData, setFormData] = useState({
-    name: '',
+    firstName: '',
+    lastName: '',
     email: '',
     phone: '',
     company: '',
     subject: '',
     message: '',
   });
+
+  // Formater le prénom : première lettre majuscule, reste minuscule
+  const formatFirstName = (value: string) => {
+    return value
+      .toLowerCase()
+      .split(' ')
+      .map(word => word.charAt(0).toUpperCase() + word.slice(1))
+      .join(' ')
+      .split('-')
+      .map(word => word.charAt(0).toUpperCase() + word.slice(1))
+      .join('-');
+  };
+
+  // Formater le nom : tout en majuscules
+  const formatLastName = (value: string) => {
+    return value.toUpperCase();
+  };
   const [status, setStatus] = useState<'idle' | 'loading' | 'success' | 'error'>('idle');
   const [errorMessage, setErrorMessage] = useState('');
 
@@ -31,11 +49,16 @@ export default function ContactPageClient({ site, social }: ContactPageClientPro
 
     try {
       await submitContactForm({
-        ...formData,
+        name: `${formData.firstName} ${formData.lastName}`.trim(),
+        email: formData.email,
+        phone: formData.phone,
+        company: formData.company,
+        subject: formData.subject,
+        message: formData.message,
         source: 'contact_page',
       });
       setStatus('success');
-      setFormData({ name: '', email: '', phone: '', company: '', subject: '', message: '' });
+      setFormData({ firstName: '', lastName: '', email: '', phone: '', company: '', subject: '', message: '' });
     } catch (error) {
       setStatus('error');
       setErrorMessage('Une erreur est survenue. Veuillez réessayer.');
@@ -43,7 +66,16 @@ export default function ContactPageClient({ site, social }: ContactPageClientPro
   };
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
-    setFormData({ ...formData, [e.target.name]: e.target.value });
+    const { name, value } = e.target;
+
+    // Appliquer le formatage automatique pour prénom et nom
+    if (name === 'firstName') {
+      setFormData({ ...formData, [name]: formatFirstName(value) });
+    } else if (name === 'lastName') {
+      setFormData({ ...formData, [name]: formatLastName(value) });
+    } else {
+      setFormData({ ...formData, [name]: value });
+    }
   };
 
   // Format phone for tel: link
@@ -161,35 +193,51 @@ export default function ContactPageClient({ site, social }: ContactPageClientPro
               <form onSubmit={handleSubmit} className="space-y-6">
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                   <div>
-                    <label htmlFor="name" className="block text-sm font-medium text-zinc-400 mb-2">
+                    <label htmlFor="firstName" className="block text-sm font-medium text-zinc-400 mb-2">
+                      Prénom *
+                    </label>
+                    <input
+                      type="text"
+                      id="firstName"
+                      name="firstName"
+                      value={formData.firstName}
+                      onChange={handleChange}
+                      required
+                      className="w-full px-4 py-3 bg-zinc-800 border border-zinc-700 rounded-lg text-white placeholder-zinc-500 focus:outline-none focus:border-[#7928ca] transition-colors"
+                      placeholder="Jean-Pierre"
+                    />
+                  </div>
+                  <div>
+                    <label htmlFor="lastName" className="block text-sm font-medium text-zinc-400 mb-2">
                       Nom *
                     </label>
                     <input
                       type="text"
-                      id="name"
-                      name="name"
-                      value={formData.name}
+                      id="lastName"
+                      name="lastName"
+                      value={formData.lastName}
                       onChange={handleChange}
                       required
-                      className="w-full px-4 py-3 bg-zinc-800 border border-zinc-700 rounded-lg text-white placeholder-zinc-500 focus:outline-none focus:border-[#7928ca] transition-colors"
-                      placeholder="Jean Dupont"
+                      className="w-full px-4 py-3 bg-zinc-800 border border-zinc-700 rounded-lg text-white placeholder-zinc-500 focus:outline-none focus:border-[#7928ca] transition-colors uppercase"
+                      placeholder="DUPONT"
                     />
                   </div>
-                  <div>
-                    <label htmlFor="email" className="block text-sm font-medium text-zinc-400 mb-2">
-                      Email *
-                    </label>
-                    <input
-                      type="email"
-                      id="email"
-                      name="email"
-                      value={formData.email}
-                      onChange={handleChange}
-                      required
-                      className="w-full px-4 py-3 bg-zinc-800 border border-zinc-700 rounded-lg text-white placeholder-zinc-500 focus:outline-none focus:border-[#7928ca] transition-colors"
-                      placeholder="jean@exemple.fr"
-                    />
-                  </div>
+                </div>
+
+                <div>
+                  <label htmlFor="email" className="block text-sm font-medium text-zinc-400 mb-2">
+                    Email *
+                  </label>
+                  <input
+                    type="email"
+                    id="email"
+                    name="email"
+                    value={formData.email}
+                    onChange={handleChange}
+                    required
+                    className="w-full px-4 py-3 bg-zinc-800 border border-zinc-700 rounded-lg text-white placeholder-zinc-500 focus:outline-none focus:border-[#7928ca] transition-colors"
+                    placeholder="jean.dupont@exemple.fr"
+                  />
                 </div>
 
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
