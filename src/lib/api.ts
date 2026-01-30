@@ -18,6 +18,7 @@ export interface Stats {
 export interface Social {
   linkedin: string;
   instagram: string;
+  facebook: string;
 }
 
 export interface Colors {

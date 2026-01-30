@@ -107,14 +107,14 @@ export default function ContactPageClient({ site, social }: ContactPageClientPro
             <div className="mt-10">
               <p className="text-zinc-500 text-sm mb-4">Suivez-nous</p>
               <div className="flex gap-4">
-                {social.linkedin && (
+                {social.facebook && (
                   <a
-                    href={social.linkedin}
+                    href={social.facebook}
                     target="_blank"
                     rel="noopener noreferrer"
                     className="w-10 h-10 rounded-lg bg-zinc-800 flex items-center justify-center text-zinc-400 hover:text-white hover:bg-zinc-700 transition-colors"
                   >
-                    <Icon icon="mdi:linkedin" width={20} />
+                    <Icon icon="mdi:facebook" width={20} />
                   </a>
                 )}
                 {social.instagram && (
@@ -125,6 +125,16 @@ export default function ContactPageClient({ site, social }: ContactPageClientPro
                     className="w-10 h-10 rounded-lg bg-zinc-800 flex items-center justify-center text-zinc-400 hover:text-white hover:bg-zinc-700 transition-colors"
                   >
                     <Icon icon="mdi:instagram" width={20} />
+                  </a>
+                )}
+                {social.linkedin && (
+                  <a
+                    href={social.linkedin}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="w-10 h-10 rounded-lg bg-zinc-800 flex items-center justify-center text-zinc-400 hover:text-white hover:bg-zinc-700 transition-colors"
+                  >
+                    <Icon icon="mdi:linkedin" width={20} />
                   </a>
                 )}
               </div>

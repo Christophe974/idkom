@@ -11,6 +11,7 @@ interface FooterProps {
   social?: {
     linkedin: string;
     instagram: string;
+    facebook: string;
   };
 }
 
@@ -43,6 +44,17 @@ export default function Footer({ site, social }: FooterProps) {
               {site?.tagline || "L'Atelier Phygital"}. {site?.description || 'Stands BeMatrix, solutions digitales et événementiel pour les marques ambitieuses depuis 1994.'}
             </p>
             <div className="flex gap-4 mt-6 text-zinc-500">
+              {social?.facebook && (
+                <a
+                  href={social.facebook}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="hover:text-white transition-colors"
+                  aria-label="Facebook"
+                >
+                  <Icon icon="mdi:facebook" width={20} />
+                </a>
+              )}
               {social?.instagram && (
                 <a
                   href={social.instagram}
@@ -51,7 +63,7 @@ export default function Footer({ site, social }: FooterProps) {
                   className="hover:text-white transition-colors"
                   aria-label="Instagram"
                 >
-                  <Icon icon="solar:gallery-wide-linear" width={20} />
+                  <Icon icon="mdi:instagram" width={20} />
                 </a>
               )}
               {social?.linkedin && (
