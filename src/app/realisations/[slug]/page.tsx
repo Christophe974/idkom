@@ -59,14 +59,24 @@ export default async function ProjetPage({ params }: PageProps) {
           <div className="lg:col-span-2">
             {/* Hero Image */}
             <div className="aspect-video rounded-2xl bg-gradient-to-br from-zinc-800 to-zinc-900 mb-8 relative overflow-hidden">
-              <div className="absolute inset-0 bg-grid opacity-30"></div>
-              <div className="absolute inset-0 flex items-center justify-center">
-                <Icon icon="solar:gallery-wide-linear" className="text-zinc-700" width={64} />
-              </div>
+              {projet.featured_image?.url ? (
+                <img
+                  src={projet.featured_image.url}
+                  alt={projet.featured_image.alt || projet.title}
+                  className="w-full h-full object-cover"
+                />
+              ) : (
+                <>
+                  <div className="absolute inset-0 bg-grid opacity-30"></div>
+                  <div className="absolute inset-0 flex items-center justify-center">
+                    <Icon icon="solar:gallery-wide-linear" className="text-zinc-700" width={64} />
+                  </div>
+                </>
+              )}
               {projet.category && (
                 <div
-                  className="absolute top-6 left-6 px-4 py-2 rounded-full text-sm font-medium"
-                  style={{ backgroundColor: `${projet.category.color}20`, color: projet.category.color }}
+                  className="absolute top-6 left-6 px-4 py-2 rounded-full text-sm font-medium backdrop-blur-sm"
+                  style={{ backgroundColor: `${projet.category.color}40`, color: projet.category.color }}
                 >
                   {projet.category.name}
                 </div>

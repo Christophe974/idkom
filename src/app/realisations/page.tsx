@@ -65,17 +65,27 @@ export default async function RealisationsPage() {
               href={`/realisations/${projet.slug}`}
               className="group bento-card rounded-2xl overflow-hidden bg-zinc-900 border border-zinc-800 hover:border-zinc-700"
             >
-              {/* Image placeholder */}
-              <div className="aspect-video bg-gradient-to-br from-zinc-800 to-zinc-900 relative">
-                <div className="absolute inset-0 bg-grid opacity-30"></div>
-                <div className="absolute inset-0 flex items-center justify-center">
-                  <Icon icon="solar:gallery-wide-linear" className="text-zinc-700" width={48} />
-                </div>
+              {/* Image */}
+              <div className="aspect-video bg-gradient-to-br from-zinc-800 to-zinc-900 relative overflow-hidden">
+                {projet.image?.url ? (
+                  <img
+                    src={projet.image.url}
+                    alt={projet.image.alt || projet.title}
+                    className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                  />
+                ) : (
+                  <>
+                    <div className="absolute inset-0 bg-grid opacity-30"></div>
+                    <div className="absolute inset-0 flex items-center justify-center">
+                      <Icon icon="solar:gallery-wide-linear" className="text-zinc-700" width={48} />
+                    </div>
+                  </>
+                )}
                 {/* Category badge */}
                 {projet.category && (
                   <div
-                    className="absolute top-4 left-4 px-3 py-1 rounded-full text-xs font-medium"
-                    style={{ backgroundColor: `${projet.category.color}20`, color: projet.category.color }}
+                    className="absolute top-4 left-4 px-3 py-1 rounded-full text-xs font-medium backdrop-blur-sm"
+                    style={{ backgroundColor: `${projet.category.color}40`, color: projet.category.color }}
                   >
                     {projet.category.name}
                   </div>

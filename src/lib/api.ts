@@ -48,7 +48,8 @@ export interface Projet {
   project_date?: string;
   stats?: Record<string, number>;
   category?: Category;
-  image?: string;
+  image?: { url: string; alt?: string };
+  featured_image?: { url: string; alt?: string; width?: number; height?: number };
   gallery?: string[];
   testimonial_text?: string;
   testimonial_author?: string;
