@@ -93,10 +93,20 @@ export default async function ArticlePage({ params }: PageProps) {
 
         {/* Featured Image */}
         <div className="aspect-video rounded-2xl bg-gradient-to-br from-zinc-800 to-zinc-900 mb-10 relative overflow-hidden">
-          <div className="absolute inset-0 bg-grid opacity-30"></div>
-          <div className="absolute inset-0 flex items-center justify-center">
-            <Icon icon="solar:gallery-wide-linear" className="text-zinc-700" width={64} />
-          </div>
+          {article.featured_image?.url ? (
+            <img
+              src={article.featured_image.url}
+              alt={article.featured_image.alt || article.title}
+              className="w-full h-full object-cover"
+            />
+          ) : (
+            <>
+              <div className="absolute inset-0 bg-grid opacity-30"></div>
+              <div className="absolute inset-0 flex items-center justify-center">
+                <Icon icon="solar:gallery-wide-linear" className="text-zinc-700" width={64} />
+              </div>
+            </>
+          )}
         </div>
 
         {/* Content */}
