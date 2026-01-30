@@ -3,6 +3,7 @@
 import Link from 'next/link';
 import { Icon } from '@iconify/react';
 import Counter from './Counter';
+import GlitchStat from './GlitchStat';
 import type { HomepageData } from '@/lib/api';
 
 interface BentoGridProps {
@@ -53,21 +54,29 @@ export default function BentoGrid({ data }: BentoGridProps) {
         </div>
       </div>
 
-      {/* Stat 1 - Années */}
+      {/* Stat 1 - Années avec effet Glitch */}
       <div className="bento-card rounded-3xl p-6 bg-zinc-900/50 backdrop-blur-sm border border-white/10 glow-pink animate-fade-in-up delay-100">
         <div className="h-full flex flex-col justify-center items-center text-center">
-          <Counter target={stats.years} className="text-5xl font-bold gradient-text" />
-          <span className="text-xl gradient-text font-bold">+</span>
-          <span className="text-zinc-500 text-sm mt-1">années terrain</span>
+          <GlitchStat
+            pastValue="1994"
+            futureValue={String(stats.years)}
+            pastLabel="nés en"
+            futureLabel="années terrain"
+            delay={1500}
+          />
         </div>
       </div>
 
-      {/* Stat 2 - Projets */}
+      {/* Stat 2 - Projets avec effet Glitch */}
       <div className="bento-card rounded-3xl p-6 bg-zinc-900/50 backdrop-blur-sm border border-white/10 glow-purple animate-fade-in-up delay-200">
         <div className="h-full flex flex-col justify-center items-center text-center">
-          <Counter target={stats.projects} className="text-5xl font-bold gradient-text" />
-          <span className="text-xl gradient-text font-bold">+</span>
-          <span className="text-zinc-500 text-sm mt-1">projets montés</span>
+          <GlitchStat
+            pastValue="2024"
+            futureValue={String(stats.projects)}
+            pastLabel="codés pour"
+            futureLabel="projets montés"
+            delay={2500}
+          />
         </div>
       </div>
 
