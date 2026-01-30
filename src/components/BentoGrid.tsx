@@ -167,9 +167,17 @@ export default function BentoGrid({ data }: BentoGridProps) {
               &ldquo;{testimonials[0].quote}&rdquo;
             </p>
             <div className="flex items-center gap-3 mt-4">
-              <div className="w-10 h-10 rounded-full gradient-bg flex items-center justify-center text-xs font-bold text-white">
-                {testimonials[0].author.name.split(' ').map(n => n[0]).join('')}
-              </div>
+              {testimonials[0].author.avatar ? (
+                <img
+                  src={testimonials[0].author.avatar}
+                  alt={testimonials[0].author.name}
+                  className="w-10 h-10 rounded-full object-cover"
+                />
+              ) : (
+                <div className="w-10 h-10 rounded-full gradient-bg flex items-center justify-center text-xs font-bold text-white">
+                  {testimonials[0].author.name.split(' ').map(n => n[0]).join('')}
+                </div>
+              )}
               <div>
                 <p className="text-sm font-medium text-white">{testimonials[0].author.name}</p>
                 <p className="text-xs text-zinc-500">{testimonials[0].author.role} — {testimonials[0].author.company}</p>
