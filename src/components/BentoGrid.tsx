@@ -107,32 +107,42 @@ export default function BentoGrid({ data }: BentoGridProps) {
 
       {/* Video Showcase - 2x2 */}
       <div className="md:col-span-2 row-span-2 bento-card rounded-3xl overflow-hidden bg-zinc-900/50 border border-white/10 group cursor-pointer animate-fade-in-up delay-300">
-        <Link href={`/realisations/${featured_projets[0]?.slug || ''}`} className="relative h-full w-full block bg-gradient-to-br from-zinc-800/50 to-zinc-900/80">
-          {/* Grid pattern */}
-          <div className="absolute inset-0 bg-grid opacity-50"></div>
+        <Link href={`/realisations/${featured_projets[0]?.slug || ''}`} className="relative h-full w-full block">
+          {/* Background image or fallback */}
+          {featured_projets[0]?.image?.url ? (
+            <img
+              src={featured_projets[0].image.url}
+              alt={featured_projets[0].image.alt || featured_projets[0].title}
+              className="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
+            />
+          ) : (
+            <div className="absolute inset-0 bg-gradient-to-br from-zinc-800/50 to-zinc-900/80">
+              <div className="absolute inset-0 bg-grid opacity-50"></div>
+            </div>
+          )}
 
           {/* Play button */}
-          <div className="absolute inset-0 flex items-center justify-center">
+          <div className="absolute inset-0 flex items-center justify-center z-10">
             <div className="w-20 h-20 rounded-full bg-white/10 backdrop-blur-sm border border-white/20 flex items-center justify-center group-hover:scale-110 group-hover:bg-white/20 transition-all duration-500">
               <Icon icon="solar:play-bold" className="text-white ml-1" width={32} />
             </div>
           </div>
 
           {/* Overlay gradient */}
-          <div className="absolute inset-0 bg-gradient-to-t from-zinc-950 via-transparent to-transparent"></div>
+          <div className="absolute inset-0 bg-gradient-to-t from-zinc-950 via-zinc-950/50 to-transparent"></div>
 
           {/* Project info */}
-          <div className="absolute bottom-5 left-5 right-5 flex justify-between items-end">
+          <div className="absolute bottom-5 left-5 right-5 flex justify-between items-end z-10">
             <div>
-              <span className="text-xs text-zinc-500 uppercase tracking-wider">Projet phare 2025</span>
+              <span className="text-xs text-zinc-400 uppercase tracking-wider">Projet phare 2025</span>
               <h4 className="text-xl font-semibold text-white mt-1">{featured_projets[0]?.title || 'BIO360 — Nantes'}</h4>
-              <p className="text-zinc-400 text-sm">
+              <p className="text-zinc-300 text-sm">
                 {featured_projets[0]?.stats?.stands && `${featured_projets[0].stats.stands} stands • `}
                 {featured_projets[0]?.stats?.visiteurs && `${featured_projets[0].stats.visiteurs.toLocaleString()} visiteurs`}
               </p>
             </div>
             <span className="px-3 py-1 bg-white/10 backdrop-blur border border-white/10 rounded-full text-xs text-zinc-300">
-              Showreel 2024
+              Voir le projet
             </span>
           </div>
         </Link>
