@@ -135,21 +135,32 @@ export default async function ArticlePage({ params }: PageProps) {
             Retour au blog
           </Link>
 
-          <div className="flex items-center gap-4">
+          <div className="flex items-center gap-3">
             <span className="text-zinc-500 text-sm">Partager</span>
+            <a
+              href={`https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(`https://www.idkom.fr/blog/${article.slug}`)}`}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="p-2 bg-zinc-800 text-zinc-400 rounded-lg hover:text-white hover:bg-[#1877f2] transition-colors"
+              title="Partager sur Facebook"
+            >
+              <Icon icon="mdi:facebook" width={18} />
+            </a>
             <a
               href={`https://twitter.com/intent/tweet?text=${encodeURIComponent(article.title)}&url=${encodeURIComponent(`https://www.idkom.fr/blog/${article.slug}`)}`}
               target="_blank"
               rel="noopener noreferrer"
-              className="p-2 bg-zinc-800 text-zinc-400 rounded-lg hover:text-white hover:bg-zinc-700 transition-colors"
+              className="p-2 bg-zinc-800 text-zinc-400 rounded-lg hover:text-white hover:bg-black transition-colors"
+              title="Partager sur X"
             >
-              <Icon icon="mdi:twitter" width={18} />
+              <Icon icon="ri:twitter-x-fill" width={18} />
             </a>
             <a
               href={`https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent(`https://www.idkom.fr/blog/${article.slug}`)}`}
               target="_blank"
               rel="noopener noreferrer"
-              className="p-2 bg-zinc-800 text-zinc-400 rounded-lg hover:text-white hover:bg-zinc-700 transition-colors"
+              className="p-2 bg-zinc-800 text-zinc-400 rounded-lg hover:text-white hover:bg-[#0077b5] transition-colors"
+              title="Partager sur LinkedIn"
             >
               <Icon icon="mdi:linkedin" width={18} />
             </a>
