@@ -13,6 +13,7 @@ export const metadata: Metadata = {
   description: "Atelier créatif spécialisé stands BeMatrix, solutions digitales et événementiel. 30 ans d'expérience, 600+ projets réalisés.",
   keywords: ["stands", "BeMatrix", "événementiel", "digital", "salon professionnel", "iDkom"],
   authors: [{ name: "iDkom" }],
+  metadataBase: new URL("https://www.idkom.fr"),
   openGraph: {
     title: "iDkom | L'Atelier Phygital",
     description: "Stands modulaires, expériences digitales, événements mémorables.",
