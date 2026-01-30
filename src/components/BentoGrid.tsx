@@ -37,14 +37,14 @@ export default function BentoGrid({ data }: BentoGridProps) {
           <div className="flex flex-wrap gap-3 mt-6">
             <Link
               href="/atelier"
-              className="group px-6 py-3 rounded-full gradient-bg font-medium text-sm text-white hover:shadow-lg hover:shadow-[#7928ca]/25 transition-all duration-300"
+              className="group px-6 py-2.5 rounded-full gradient-bg font-medium text-sm text-white hover:shadow-lg hover:shadow-[#7928ca]/25 transition-all duration-300 inline-flex items-center"
             >
               Découvrir l&apos;atelier
-              <Icon icon="solar:arrow-right-linear" className="ml-2 group-hover:translate-x-1 transition-transform inline-block" width={16} />
+              <Icon icon="solar:arrow-right-linear" className="ml-2 group-hover:translate-x-1 transition-transform" width={16} />
             </Link>
             <Link
               href="/realisations"
-              className="px-6 py-3 rounded-full bg-white/5 border border-white/10 font-medium text-sm text-white hover:bg-white/10 transition-all duration-300"
+              className="px-6 py-2.5 rounded-full bg-white/5 border border-white/10 font-medium text-sm text-white hover:bg-white/10 transition-all duration-300 inline-flex items-center"
             >
               <Icon icon="solar:play-circle-linear" className="mr-2" width={18} />
               Voir les projets
