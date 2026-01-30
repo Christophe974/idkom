@@ -48,15 +48,14 @@ export default function CookieConsent() {
         {/* Cookie icon animé */}
         <div className="flex items-start gap-4">
           <div className="relative flex-shrink-0">
-            <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-[#ff2d55]/20 to-[#7928ca]/20 border border-white/10 flex items-center justify-center">
-              <Icon
-                icon="solar:cookie-bold-duotone"
-                className="text-[#ff2d55] animate-bounce"
-                width={28}
-              />
+            <div className="w-14 h-14 rounded-xl bg-gradient-to-br from-[#ff2d55] to-[#7928ca] flex items-center justify-center shadow-lg shadow-[#7928ca]/30">
+              <span className="text-2xl animate-bounce">🍪</span>
             </div>
-            {/* Petites miettes de cookie */}
-            <span className="absolute -bottom-1 -right-1 w-2 h-2 bg-[#ff2d55]/60 rounded-full animate-ping"></span>
+            {/* Point rouge qui clignote */}
+            <span className="absolute -top-1 -right-1 flex h-3 w-3">
+              <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-[#ff2d55] opacity-75"></span>
+              <span className="relative inline-flex rounded-full h-3 w-3 bg-[#ff2d55]"></span>
+            </span>
           </div>
 
           <div className="flex-1 min-w-0">
