@@ -32,25 +32,46 @@ export default function ProjetCard({ projet, index = 0 }: ProjetCardProps) {
   return (
     <Link
       href={`/realisations/${projet.slug}`}
-      className={`bento-card rounded-3xl p-6 bg-gradient-to-br ${colorConfig.bg} to-transparent backdrop-blur-sm border border-white/10 group cursor-pointer`}
+      className="bento-card rounded-3xl overflow-hidden bg-zinc-900/50 backdrop-blur-sm border border-white/10 group cursor-pointer"
       style={{ minHeight: '280px' }}
     >
-      <div className="h-full flex flex-col justify-between">
-        <div className={`w-10 h-10 rounded-lg ${colorConfig.bg.replace('from-', 'bg-').replace('/10', '/20')} flex items-center justify-center`}>
-          <Icon icon={colorConfig.icon} className={colorConfig.text} width={20} />
-        </div>
-        <div>
-          <span className="text-xs text-zinc-500 uppercase tracking-wider">
-            {projet.category?.name || 'Projet'}
-          </span>
-          <h3 className="text-2xl font-semibold text-white mt-1">{projet.title}</h3>
-          <p className="text-zinc-400 text-sm">
-            {projet.location} • {projet.event_name || projet.surface || 'Projet'}
-          </p>
-          <div className="flex items-center text-white/70 text-sm mt-4 group-hover:gap-3 gap-2 transition-all">
-            Voir le projet
-            <Icon icon="solar:arrow-right-linear" width={16} />
+      {/* Image */}
+      <div className="relative h-40 overflow-hidden">
+        {projet.image?.url ? (
+          <img
+            src={projet.image.url}
+            alt={projet.image.alt || projet.title}
+            className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+          />
+        ) : (
+          <div className={`w-full h-full bg-gradient-to-br ${colorConfig.bg} to-zinc-900 flex items-center justify-center`}>
+            <Icon icon={colorConfig.icon} className={`${colorConfig.text} opacity-30`} width={48} />
           </div>
+        )}
+        {/* Category badge */}
+        {projet.category && (
+          <div
+            className="absolute top-3 left-3 px-3 py-1 rounded-full text-xs font-medium backdrop-blur-sm"
+            style={{ backgroundColor: `${color}40`, color }}
+          >
+            {projet.category.name}
+          </div>
+        )}
+        {/* Gradient overlay */}
+        <div className="absolute inset-0 bg-gradient-to-t from-zinc-900 via-transparent to-transparent"></div>
+      </div>
+
+      {/* Content */}
+      <div className="p-5">
+        <h3 className="text-xl font-semibold text-white group-hover:text-[#7928ca] transition-colors">
+          {projet.title}
+        </h3>
+        <p className="text-zinc-500 text-sm mt-1">
+          {projet.location} • {projet.event_name || projet.surface || 'Projet'}
+        </p>
+        <div className="flex items-center text-zinc-400 text-sm mt-3 group-hover:text-white group-hover:gap-3 gap-2 transition-all">
+          Voir le projet
+          <Icon icon="solar:arrow-right-linear" width={16} />
         </div>
       </div>
     </Link>
