@@ -66,7 +66,7 @@ export interface BlogArticle {
   reading_time: number;
   published_at: string;
   category?: { name: string; color: string };
-  image?: string;
+  image?: { url: string; alt?: string };
   author_name?: string;
   views_count?: number;
   meta_title?: string;

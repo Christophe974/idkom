@@ -1,4 +1,5 @@
 import Link from 'next/link';
+import Image from 'next/image';
 import { Icon } from '@iconify/react';
 import { getBlogArticles, getHomepageData } from '@/lib/api';
 import Navbar from '@/components/Navbar';
@@ -42,17 +43,27 @@ export default async function BlogPage() {
               href={`/blog/${article.slug}`}
               className="group bento-card rounded-2xl overflow-hidden bg-zinc-900 border border-zinc-800 hover:border-zinc-700"
             >
-              {/* Image placeholder */}
-              <div className="aspect-video bg-gradient-to-br from-zinc-800 to-zinc-900 relative">
-                <div className="absolute inset-0 bg-grid opacity-30"></div>
-                <div className="absolute inset-0 flex items-center justify-center">
-                  <Icon icon="solar:document-text-linear" className="text-zinc-700" width={48} />
-                </div>
+              {/* Image */}
+              <div className="aspect-video bg-gradient-to-br from-zinc-800 to-zinc-900 relative overflow-hidden">
+                {article.image?.url ? (
+                  <img
+                    src={article.image.url}
+                    alt={article.image.alt || article.title}
+                    className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                  />
+                ) : (
+                  <>
+                    <div className="absolute inset-0 bg-grid opacity-30"></div>
+                    <div className="absolute inset-0 flex items-center justify-center">
+                      <Icon icon="solar:document-text-linear" className="text-zinc-700" width={48} />
+                    </div>
+                  </>
+                )}
                 {/* Category badge */}
                 {article.category && (
                   <div
-                    className="absolute top-4 left-4 px-3 py-1 rounded-full text-xs font-medium"
-                    style={{ backgroundColor: `${article.category.color}20`, color: article.category.color }}
+                    className="absolute top-4 left-4 px-3 py-1 rounded-full text-xs font-medium backdrop-blur-sm"
+                    style={{ backgroundColor: `${article.category.color}40`, color: article.category.color }}
                   >
                     {article.category.name}
                   </div>
