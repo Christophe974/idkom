@@ -5,6 +5,7 @@ import { getBlogArticleBySlug, getHomepageData } from '@/lib/api';
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
 import AmbientBackground from '@/components/AmbientBackground';
+import GlowingImageFrame from '@/components/GlowingImageFrame';
 
 export const revalidate = 300;
 
@@ -91,22 +92,13 @@ export default async function ArticlePage({ params }: PageProps) {
           </p>
         )}
 
-        {/* Featured Image */}
-        <div className="aspect-video rounded-2xl bg-gradient-to-br from-zinc-800 to-zinc-900 mb-10 relative overflow-hidden">
-          {article.featured_image?.url ? (
-            <img
-              src={article.featured_image.url}
-              alt={article.featured_image.alt || article.title}
-              className="w-full h-full object-cover"
-            />
-          ) : (
-            <>
-              <div className="absolute inset-0 bg-grid opacity-30"></div>
-              <div className="absolute inset-0 flex items-center justify-center">
-                <Icon icon="solar:gallery-wide-linear" className="text-zinc-700" width={64} />
-              </div>
-            </>
-          )}
+        {/* Featured Image avec effet lumineux */}
+        <div className="mb-12">
+          <GlowingImageFrame
+            src={article.featured_image?.url}
+            alt={article.featured_image?.alt || article.title}
+            fallbackIcon={<Icon icon="solar:gallery-wide-linear" className="text-zinc-700" width={64} />}
+          />
         </div>
 
         {/* Content */}
