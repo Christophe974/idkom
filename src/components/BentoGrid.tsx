@@ -233,6 +233,18 @@ export default function BentoGrid({ data }: BentoGridProps) {
           <span className="text-xs text-[#ff2d55] mt-1 opacity-0 group-hover:opacity-100 transition-opacity">Voir le catalogue →</span>
         </div>
       </Link>
+
+      {/* Partenaire BeMatrix - Lien vers page concept */}
+      <Link
+        href="/bematrix"
+        className="bento-card rounded-3xl p-6 bg-zinc-900/30 backdrop-blur-sm border border-white/10 animate-fade-in-up delay-600 group hover:border-[#7928ca]/30"
+      >
+        <div className="h-full flex flex-col justify-center items-center text-center">
+          <span className="text-[10px] uppercase tracking-widest text-zinc-600 mb-2">Partenaire officiel</span>
+          <div className="text-2xl font-bold text-zinc-400 group-hover:gradient-text transition-all duration-300">BeMatrix</div>
+          <span className="text-xs text-zinc-600 mt-1 group-hover:text-[#7928ca] transition-colors">Système modulaire premium</span>
+        </div>
+      </Link>
     </div>
   );
 }

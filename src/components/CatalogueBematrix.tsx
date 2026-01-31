@@ -1,8 +1,51 @@
 'use client';
 
-import { useState, useEffect, useCallback } from 'react';
+import { useState, useEffect, useCallback, useRef } from 'react';
 import { Icon } from '@iconify/react';
 import { useSearchParams, useRouter } from 'next/navigation';
+
+// Animated counter component
+function AnimatedCounter({ target, duration = 2000, className = '' }: { target: number; duration?: number; className?: string }) {
+  const [count, setCount] = useState(0);
+  const [hasAnimated, setHasAnimated] = useState(false);
+  const ref = useRef<HTMLSpanElement>(null);
+
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting && !hasAnimated) {
+            setHasAnimated(true);
+            const startTime = performance.now();
+            const updateCounter = (currentTime: number) => {
+              const elapsed = currentTime - startTime;
+              const progress = Math.min(elapsed / duration, 1);
+              const easeOut = 1 - Math.pow(1 - progress, 3);
+              setCount(Math.floor(easeOut * target));
+              if (progress < 1) {
+                requestAnimationFrame(updateCounter);
+              }
+            };
+            requestAnimationFrame(updateCounter);
+          }
+        });
+      },
+      { threshold: 0.5 }
+    );
+
+    if (ref.current) {
+      observer.observe(ref.current);
+    }
+
+    return () => observer.disconnect();
+  }, [hasAnimated, target, duration]);
+
+  return (
+    <span ref={ref} className={`counter ${className}`}>
+      {count.toLocaleString()}
+    </span>
+  );
+}
 
 interface Piece {
   id: number;
@@ -145,40 +188,42 @@ export default function CatalogueBematrix() {
 
   return (
     <div className="max-w-7xl mx-auto px-6">
-      {/* Stats Cards */}
+      {/* Stats Cards with animated counters */}
       {data?.stats && (
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-8">
-          <div className="rounded-2xl bg-zinc-900/50 backdrop-blur-sm border border-white/10 p-6">
+          <div className="rounded-2xl bg-zinc-900/50 backdrop-blur-sm border border-white/10 p-6 glow-pink">
             <div className="flex items-center gap-4">
-              <div className="w-12 h-12 rounded-xl bg-[#ff2d55]/10 border border-[#ff2d55]/20 flex items-center justify-center">
-                <Icon icon="solar:box-linear" className="text-[#ff2d55]" width={24} />
+              <div className="w-14 h-14 rounded-xl bg-[#ff2d55]/10 border border-[#ff2d55]/20 flex items-center justify-center">
+                <Icon icon="solar:box-linear" className="text-[#ff2d55]" width={28} />
               </div>
               <div>
-                <p className="text-3xl font-bold text-white">{data.stats.total_references.toLocaleString()}</p>
+                <AnimatedCounter target={data.stats.total_references} className="text-4xl font-bold gradient-text" />
                 <p className="text-sm text-zinc-500">Références</p>
               </div>
             </div>
           </div>
-          <div className="rounded-2xl bg-zinc-900/50 backdrop-blur-sm border border-white/10 p-6">
+          <div className="rounded-2xl bg-zinc-900/50 backdrop-blur-sm border border-white/10 p-6 glow-purple">
             <div className="flex items-center gap-4">
-              <div className="w-12 h-12 rounded-xl bg-[#7928ca]/10 border border-[#7928ca]/20 flex items-center justify-center">
-                <Icon icon="solar:layers-linear" className="text-[#7928ca]" width={24} />
+              <div className="w-14 h-14 rounded-xl bg-[#7928ca]/10 border border-[#7928ca]/20 flex items-center justify-center">
+                <Icon icon="solar:layers-linear" className="text-[#7928ca]" width={28} />
               </div>
               <div>
-                <p className="text-3xl font-bold text-white">{data.stats.total_pieces.toLocaleString()}</p>
+                <AnimatedCounter target={data.stats.total_pieces} className="text-4xl font-bold gradient-text" />
                 <p className="text-sm text-zinc-500">Pièces en stock</p>
               </div>
             </div>
           </div>
-          <div className="rounded-2xl bg-zinc-900/50 backdrop-blur-sm border border-white/10 p-6">
+          <div className="rounded-2xl bg-zinc-900/50 backdrop-blur-sm border border-white/10 p-6 glow-cyan">
             <div className="flex items-center gap-4">
-              <div className="w-12 h-12 rounded-xl bg-[#00d4ff]/10 border border-[#00d4ff]/20 flex items-center justify-center">
-                <Icon icon="solar:chart-linear" className="text-[#00d4ff]" width={24} />
+              <div className="w-14 h-14 rounded-xl bg-[#00d4ff]/10 border border-[#00d4ff]/20 flex items-center justify-center">
+                <Icon icon="solar:chart-linear" className="text-[#00d4ff]" width={28} />
               </div>
               <div>
-                <p className="text-3xl font-bold text-white">
-                  {Math.round(((data.stats.total_references - data.stats.ruptures) / data.stats.total_references) * 100)}%
-                </p>
+                <AnimatedCounter
+                  target={Math.round(((data.stats.total_references - data.stats.ruptures) / data.stats.total_references) * 100)}
+                  className="text-4xl font-bold gradient-text"
+                />
+                <span className="text-4xl font-bold gradient-text">%</span>
                 <p className="text-sm text-zinc-500">Disponibilité</p>
               </div>
             </div>
@@ -362,47 +407,49 @@ export default function CatalogueBematrix() {
         </div>
       )}
 
-      {/* Grid View */}
+      {/* Grid View - Cartes plus grandes */}
       {!loading && !error && data && data.pieces.length > 0 && viewMode === 'grid' && (
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
           {data.pieces.map((piece) => (
             <div
               key={piece.id}
-              className="group rounded-2xl bg-zinc-900/50 backdrop-blur-sm border border-white/10 overflow-hidden hover:border-white/20 transition-all duration-300 hover:-translate-y-1"
+              className="group rounded-3xl bg-zinc-900/50 backdrop-blur-sm border border-white/10 overflow-hidden hover:border-[#7928ca]/30 transition-all duration-500 hover:-translate-y-2 hover:shadow-xl hover:shadow-[#7928ca]/10"
             >
-              {/* Image */}
-              <div className="aspect-square bg-zinc-800/50 relative overflow-hidden">
+              {/* Image - Plus grande */}
+              <div className="aspect-[4/3] bg-zinc-800/30 relative overflow-hidden">
                 {piece.image ? (
                   <img
                     src={piece.image}
                     alt={piece.designation}
-                    className="w-full h-full object-contain p-4 group-hover:scale-105 transition-transform duration-500"
+                    className="w-full h-full object-contain p-6 group-hover:scale-110 transition-transform duration-700"
                     loading="lazy"
                   />
                 ) : (
-                  <div className="w-full h-full flex items-center justify-center">
-                    <Icon icon="solar:box-linear" className="text-zinc-700" width={64} />
+                  <div className="w-full h-full flex items-center justify-center bg-gradient-to-br from-zinc-800/50 to-zinc-900/50">
+                    <Icon icon="solar:box-linear" className="text-zinc-700" width={80} />
                   </div>
                 )}
                 {/* Status badge overlay */}
-                <div className="absolute top-3 right-3">
+                <div className="absolute top-4 right-4">
                   {getStatusBadge(piece.statut)}
                 </div>
+                {/* Gradient overlay au hover */}
+                <div className="absolute inset-0 bg-gradient-to-t from-zinc-900/80 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
               </div>
 
-              {/* Content */}
-              <div className="p-4">
-                <p className="text-xs text-[#7928ca] font-mono mb-1">{piece.reference}</p>
-                <h3 className="text-white font-medium text-sm leading-tight mb-3 line-clamp-2">
+              {/* Content - Plus spacieux */}
+              <div className="p-6">
+                <p className="text-sm text-[#7928ca] font-mono mb-2 tracking-wide">{piece.reference}</p>
+                <h3 className="text-white font-semibold text-lg leading-snug mb-4 line-clamp-2 group-hover:text-[#ff2d55] transition-colors">
                   {piece.designation}
                 </h3>
-                <div className="flex items-center justify-between">
+                <div className="flex items-end justify-between pt-4 border-t border-white/5">
                   <div>
-                    <p className="text-2xl font-bold text-white">{piece.quantite}</p>
-                    <p className="text-xs text-zinc-500">en stock</p>
+                    <p className="text-4xl font-bold gradient-text">{piece.quantite}</p>
+                    <p className="text-sm text-zinc-500">pièces en stock</p>
                   </div>
                   {piece.categorie && (
-                    <span className="px-2 py-1 rounded-lg bg-zinc-800 text-xs text-zinc-400">
+                    <span className="px-3 py-1.5 rounded-xl bg-zinc-800/80 text-xs text-zinc-400 border border-white/5">
                       {piece.categorie}
                     </span>
                   )}
