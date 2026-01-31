@@ -219,14 +219,20 @@ export default function BentoGrid({ data }: BentoGridProps) {
         </div>
       </Link>
 
-      {/* Partenaire BeMatrix */}
-      <div className="bento-card rounded-3xl p-6 bg-zinc-900/30 backdrop-blur-sm border border-white/10 animate-fade-in-up delay-600 group">
+      {/* Stock BeMatrix - Accès Catalogue */}
+      <Link
+        href="/catalogue"
+        className="bento-card rounded-3xl p-6 bg-zinc-900/30 backdrop-blur-sm border border-white/10 animate-fade-in-up delay-600 group hover:border-[#ff2d55]/30 hover:bg-[#ff2d55]/5 transition-all duration-300"
+      >
         <div className="h-full flex flex-col justify-center items-center text-center">
-          <span className="text-[10px] uppercase tracking-widest text-zinc-600 mb-2">Partenaire officiel</span>
-          <div className="text-2xl font-bold text-zinc-400 group-hover:text-white transition-colors">BeMatrix</div>
-          <span className="text-xs text-zinc-600 mt-1">Système modulaire premium</span>
+          <div className="w-10 h-10 rounded-xl bg-[#ff2d55]/10 border border-[#ff2d55]/20 flex items-center justify-center mb-2 group-hover:bg-[#ff2d55] group-hover:border-[#ff2d55] transition-all duration-300">
+            <Icon icon="solar:box-linear" className="text-[#ff2d55] group-hover:text-white transition-colors" width={20} />
+          </div>
+          <span className="text-[10px] uppercase tracking-widest text-zinc-600 mb-1">Stock temps réel</span>
+          <div className="text-lg font-bold text-zinc-400 group-hover:text-white transition-colors">BeMatrix</div>
+          <span className="text-xs text-[#ff2d55] mt-1 opacity-0 group-hover:opacity-100 transition-opacity">Voir le catalogue →</span>
         </div>
-      </div>
+      </Link>
     </div>
   );
 }

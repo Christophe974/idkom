@@ -18,6 +18,7 @@ export default function Navbar({ menus }: NavbarProps) {
     { label: "L'Atelier", url: '/atelier' },
     { label: 'Savoir-faire', url: '/savoir-faire' },
     { label: 'Réalisations', url: '/realisations' },
+    { label: 'Stock BeMatrix', url: '/catalogue' },
     { label: 'Blog', url: '/blog' },
   ];
 
