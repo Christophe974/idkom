@@ -110,17 +110,16 @@ export default async function BematrixPage() {
                 </div>
               </div>
 
-              {/* Hero Image Placeholder */}
+              {/* Hero Image */}
               <div className="relative animate-fade-in-up delay-200">
                 <div className="aspect-[4/3] rounded-3xl bg-gradient-to-br from-zinc-800/50 to-zinc-900/50 border border-white/10 overflow-hidden relative">
-                  {/* Placeholder - remplacer par l'image */}
-                  <div className="absolute inset-0 flex items-center justify-center">
-                    <div className="text-center">
-                      <Icon icon="solar:gallery-wide-linear" className="text-zinc-700 mx-auto mb-4" width={80} />
-                      <p className="text-zinc-600 text-sm">Image: Stand BeMatrix showcase</p>
-                      <p className="text-zinc-700 text-xs mt-1">/bematrix-hero.jpg</p>
-                    </div>
-                  </div>
+                  <Image
+                    src="/images/bematrix-hero.jpg"
+                    alt="Stand BeMatrix par iDkom"
+                    fill
+                    className="object-cover"
+                    priority
+                  />
                   {/* Gradient overlay */}
                   <div className="absolute inset-0 bg-gradient-to-t from-zinc-900 via-transparent to-transparent"></div>
                 </div>
