@@ -325,22 +325,22 @@ export default async function BematrixPage() {
             </div>
 
             {/* Gallery Grid */}
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-4 auto-rows-[200px] md:auto-rows-[250px]">
               {[
-                { src: '/images/bematrix/stand-bematrix-modulaire-idkom-design.webp', alt: 'Stand BeMatrix modulaire conçu par iDkom - design personnalisé pour salon professionnel', span: 'md:row-span-2', aspect: 'aspect-[1/2]' },
-                { src: '/images/bematrix/stand-exposition-bematrix-led-integre.webp', alt: 'Stand d\'exposition BeMatrix avec écran LED intégré - solution événementielle moderne', span: '', aspect: 'aspect-square' },
-                { src: '/images/bematrix/stand-bematrix-salon-professionnel.webp', alt: 'Stand BeMatrix installé en salon professionnel - structure aluminium premium', span: '', aspect: 'aspect-square' },
-                { src: '/images/bematrix/construction-stand-bematrix-aluminium.webp', alt: 'Construction de stand BeMatrix en cadres aluminium - assemblage modulaire par iDkom', span: 'md:row-span-2', aspect: 'aspect-[1/2]' },
-                { src: '/images/bematrix/stand-bematrix-vue-ensemble-evenement.webp', alt: 'Vue d\'ensemble stand BeMatrix lors d\'un événement - réalisation iDkom clé en main', span: 'md:col-span-2', aspect: 'aspect-video' },
-                { src: '/images/bematrix/detail-assemblage-bematrix-stand.webp', alt: 'Détail d\'assemblage système BeMatrix - connecteurs et finitions professionnelles', span: '', aspect: 'aspect-square' },
-                { src: '/images/bematrix/stand-modulaire-bematrix-eclairage.webp', alt: 'Stand modulaire BeMatrix avec éclairage intégré - mise en lumière événementielle', span: '', aspect: 'aspect-square' },
-                { src: '/images/bematrix/realisation-stand-bematrix-idkom.webp', alt: 'Réalisation stand BeMatrix par iDkom - expertise standiste depuis 30 ans', span: '', aspect: 'aspect-square' },
+                { src: '/images/bematrix/stand-bematrix-modulaire-idkom-design.webp', alt: 'Stand BeMatrix modulaire conçu par iDkom - design personnalisé pour salon professionnel', span: 'row-span-2' },
+                { src: '/images/bematrix/stand-exposition-bematrix-led-integre.webp', alt: 'Stand d\'exposition BeMatrix avec écran LED intégré - solution événementielle moderne', span: '' },
+                { src: '/images/bematrix/stand-bematrix-salon-professionnel.webp', alt: 'Stand BeMatrix installé en salon professionnel - structure aluminium premium', span: '' },
+                { src: '/images/bematrix/construction-stand-bematrix-aluminium.webp', alt: 'Construction de stand BeMatrix en cadres aluminium - assemblage modulaire par iDkom', span: 'row-span-2' },
+                { src: '/images/bematrix/stand-bematrix-vue-ensemble-evenement.webp', alt: 'Vue d\'ensemble stand BeMatrix lors d\'un événement - réalisation iDkom clé en main', span: 'md:col-span-2' },
+                { src: '/images/bematrix/detail-assemblage-bematrix-stand.webp', alt: 'Détail d\'assemblage système BeMatrix - connecteurs et finitions professionnelles', span: '' },
+                { src: '/images/bematrix/stand-modulaire-bematrix-eclairage.webp', alt: 'Stand modulaire BeMatrix avec éclairage intégré - mise en lumière événementielle', span: '' },
+                { src: '/images/bematrix/realisation-stand-bematrix-idkom.webp', alt: 'Réalisation stand BeMatrix par iDkom - expertise standiste depuis 30 ans', span: '' },
               ].map((image, i) => (
                 <div
                   key={i}
-                  className={`rounded-2xl bg-zinc-800/50 border border-white/10 overflow-hidden group cursor-pointer ${image.span} h-full`}
+                  className={`rounded-2xl bg-zinc-800/50 border border-white/10 overflow-hidden group cursor-pointer ${image.span}`}
                 >
-                  <div className={`${image.aspect} md:aspect-auto md:h-full relative`}>
+                  <div className="relative w-full h-full">
                     <Image
                       src={image.src}
                       alt={image.alt}
