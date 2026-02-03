@@ -324,22 +324,30 @@ export default async function BematrixPage() {
               </p>
             </div>
 
-            {/* Gallery Grid - Placeholders */}
+            {/* Gallery Grid */}
             <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-              {[1, 2, 3, 4, 5, 6, 7, 8].map((i) => (
+              {[
+                { src: '/images/bematrix/stand-bematrix-modulaire-idkom-design.webp', alt: 'Stand BeMatrix modulaire conçu par iDkom - design personnalisé pour salon professionnel', span: 'md:row-span-2', aspect: 'aspect-[3/4]' },
+                { src: '/images/bematrix/stand-exposition-bematrix-led-integre.webp', alt: 'Stand d\'exposition BeMatrix avec écran LED intégré - solution événementielle moderne', span: '', aspect: 'aspect-square' },
+                { src: '/images/bematrix/stand-bematrix-salon-professionnel.webp', alt: 'Stand BeMatrix installé en salon professionnel - structure aluminium premium', span: '', aspect: 'aspect-square' },
+                { src: '/images/bematrix/construction-stand-bematrix-aluminium.webp', alt: 'Construction de stand BeMatrix en cadres aluminium - assemblage modulaire par iDkom', span: 'md:row-span-2', aspect: 'aspect-[3/4]' },
+                { src: '/images/bematrix/stand-bematrix-vue-ensemble-evenement.webp', alt: 'Vue d\'ensemble stand BeMatrix lors d\'un événement - réalisation iDkom clé en main', span: 'md:col-span-2', aspect: 'aspect-video' },
+                { src: '/images/bematrix/detail-assemblage-bematrix-stand.webp', alt: 'Détail d\'assemblage système BeMatrix - connecteurs et finitions professionnelles', span: '', aspect: 'aspect-square' },
+                { src: '/images/bematrix/stand-modulaire-bematrix-eclairage.webp', alt: 'Stand modulaire BeMatrix avec éclairage intégré - mise en lumière événementielle', span: '', aspect: 'aspect-square' },
+                { src: '/images/bematrix/realisation-stand-bematrix-idkom.webp', alt: 'Réalisation stand BeMatrix par iDkom - expertise standiste depuis 30 ans', span: '', aspect: 'aspect-square' },
+              ].map((image, i) => (
                 <div
                   key={i}
-                  className={`rounded-2xl bg-zinc-800/50 border border-white/10 overflow-hidden group cursor-pointer ${
-                    i === 1 || i === 4 ? 'md:row-span-2' : ''
-                  } ${i === 5 ? 'md:col-span-2' : ''}`}
+                  className={`rounded-2xl bg-zinc-800/50 border border-white/10 overflow-hidden group cursor-pointer ${image.span}`}
                 >
-                  <div className={`${i === 1 || i === 4 ? 'aspect-[3/4]' : i === 5 ? 'aspect-video' : 'aspect-square'} relative`}>
-                    <div className="absolute inset-0 flex items-center justify-center bg-gradient-to-br from-zinc-800/80 to-zinc-900/80">
-                      <div className="text-center">
-                        <Icon icon="solar:gallery-linear" className="text-zinc-700 mx-auto mb-2" width={32} />
-                        <p className="text-zinc-700 text-xs">/gallery-{i}.jpg</p>
-                      </div>
-                    </div>
+                  <div className={`${image.aspect} relative`}>
+                    <Image
+                      src={image.src}
+                      alt={image.alt}
+                      fill
+                      className="object-cover transition-transform duration-500 group-hover:scale-105"
+                      sizes="(max-width: 768px) 50vw, 25vw"
+                    />
                     <div className="absolute inset-0 bg-gradient-to-t from-zinc-900 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity"></div>
                   </div>
                 </div>
