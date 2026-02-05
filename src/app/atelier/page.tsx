@@ -1,3 +1,4 @@
+import Link from 'next/link';
 import { Icon } from '@iconify/react';
 import { getHomepageData } from '@/lib/api';
 import Navbar from '@/components/Navbar';
@@ -123,22 +124,26 @@ export default async function AtelierPage() {
         </div>
 
         {/* Partner */}
-        <div className="bg-zinc-900 border border-zinc-800 rounded-2xl p-8 md:p-12 mb-20">
+        <Link href="/bematrix" className="block bg-zinc-900 border border-zinc-800 rounded-2xl p-8 md:p-12 mb-20 group hover:border-[#7928ca]/30 transition-colors">
           <div className="flex flex-col md:flex-row items-center justify-between gap-8">
             <div>
               <span className="text-xs uppercase tracking-widest text-zinc-500 mb-2 block">Partenaire</span>
               <h3 className="text-3xl font-bold text-white mb-4">BeMatrix</h3>
               <p className="text-zinc-400 max-w-lg">
-                Nous sommes partenaire officiel du système modulaire BeMatrix,
+                Nous sommes partenaire du système modulaire BeMatrix,
                 leader mondial des solutions de stands réutilisables.
                 Qualité premium, flexibilité maximale, impact environnemental réduit.
               </p>
+              <span className="inline-flex items-center gap-2 text-[#7928ca] text-sm font-medium mt-4 group-hover:gap-3 transition-all">
+                Découvrir BeMatrix
+                <Icon icon="solar:arrow-right-linear" width={16} />
+              </span>
             </div>
-            <div className="w-32 h-32 rounded-2xl bg-zinc-800 flex items-center justify-center">
-              <span className="text-2xl font-bold text-zinc-500">BeMatrix</span>
+            <div className="w-32 h-32 rounded-2xl bg-zinc-800 flex items-center justify-center group-hover:bg-[#7928ca]/10 transition-colors">
+              <span className="text-2xl font-bold text-zinc-500 group-hover:text-[#7928ca] transition-colors">BeMatrix</span>
             </div>
           </div>
-        </div>
+        </Link>
 
         {/* CTA */}
         <CTASection phone={homeData.site.phone} />
