@@ -24,7 +24,7 @@ export default function BentoGrid({ data }: BentoGridProps) {
                 <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75"></span>
                 <span className="relative inline-flex rounded-full h-2 w-2 bg-green-500"></span>
               </span>
-              Atelier créatif depuis 1994
+              Atelier créatif depuis 1996
             </div>
             <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold leading-[1.1] text-white mb-4">
               L&apos;Atelier<br />
@@ -58,7 +58,7 @@ export default function BentoGrid({ data }: BentoGridProps) {
       <div className="bento-card rounded-3xl p-6 bg-zinc-900/50 backdrop-blur-sm border border-white/10 glow-pink animate-fade-in-up delay-100">
         <div className="h-full flex flex-col justify-center items-center text-center">
           <GlitchStat
-            pastValue="1994"
+            pastValue="1996"
             futureValue={String(stats.years)}
             pastLabel="nés en"
             futureLabel="années terrain"
@@ -74,9 +74,10 @@ export default function BentoGrid({ data }: BentoGridProps) {
             pastValue="2025"
             futureValue={String(stats.goodies || 5000)}
             pastLabel="distribués en"
-            futureLabel="goodies offerts"
+            futureLabel="goodies personnalisés"
             delay={2500}
           />
+          <span className="text-[10px] text-zinc-600 mt-1">lors de nos événements clients</span>
         </div>
       </div>
 
@@ -88,7 +89,7 @@ export default function BentoGrid({ data }: BentoGridProps) {
           </div>
           <h3 className="text-xl font-semibold text-white mb-2">Stands BeMatrix</h3>
           <p className="text-zinc-500 text-sm flex-grow leading-relaxed">
-            Conception, fabrication et montage de stands modulaires haut de gamme. Partenaire officiel.
+            Conception, fabrication et montage de stands modulaires haut de gamme. Partenaire.
           </p>
           <div className="flex items-center text-[#ff2d55] text-sm font-medium mt-4 group-hover:gap-3 gap-2 transition-all">
             En savoir plus
@@ -226,8 +227,8 @@ export default function BentoGrid({ data }: BentoGridProps) {
       >
         <div className="h-full flex flex-col justify-center items-center text-center">
           <Counter target={4827} className="text-3xl font-bold gradient-text" />
-          <span className="text-[10px] uppercase tracking-widest text-zinc-500 mt-1">pièces BeMatrix</span>
-          <span className="text-xs text-[#ff2d55] mt-2 opacity-0 group-hover:opacity-100 transition-opacity">Voir le catalogue →</span>
+          <span className="text-[10px] uppercase tracking-widest text-zinc-500 mt-1">pièces BeMatrix en stock</span>
+          <span className="text-xs text-[#ff2d55] mt-2">Voir le catalogue →</span>
         </div>
       </Link>
 
@@ -237,7 +238,7 @@ export default function BentoGrid({ data }: BentoGridProps) {
         className="bento-card rounded-3xl p-6 bg-zinc-900/30 backdrop-blur-sm border border-white/10 animate-fade-in-up delay-600 group hover:border-[#7928ca]/30"
       >
         <div className="h-full flex flex-col justify-center items-center text-center">
-          <span className="text-[10px] uppercase tracking-widest text-zinc-600 mb-2">Partenaire officiel</span>
+          <span className="text-[10px] uppercase tracking-widest text-zinc-600 mb-2">Partenaire</span>
           <div className="text-2xl font-bold text-zinc-400 group-hover:gradient-text transition-all duration-300">BeMatrix</div>
           <span className="text-xs text-zinc-600 mt-1 group-hover:text-[#7928ca] transition-colors">Système modulaire premium</span>
         </div>
