@@ -84,6 +84,30 @@ export default async function AtelierPage() {
           </div>
         </div>
 
+        {/* Galerie Atelier */}
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-20">
+          <div className="aspect-video rounded-2xl overflow-hidden relative">
+            <img
+              src="/images/atelier-exterieur.webp"
+              alt="Bâtiment iDkom - Vue extérieure"
+              className="absolute inset-0 w-full h-full object-cover"
+            />
+            <div className="absolute bottom-4 left-4 px-3 py-1.5 bg-black/50 backdrop-blur-sm rounded-lg">
+              <span className="text-white text-sm font-medium">Notre atelier</span>
+            </div>
+          </div>
+          <div className="aspect-video rounded-2xl overflow-hidden relative">
+            <img
+              src="/images/stock-bematrix.webp"
+              alt="Stock BeMatrix - Intérieur de l'atelier"
+              className="absolute inset-0 w-full h-full object-cover"
+            />
+            <div className="absolute bottom-4 left-4 px-3 py-1.5 bg-black/50 backdrop-blur-sm rounded-lg">
+              <span className="text-white text-sm font-medium">Notre stock BeMatrix</span>
+            </div>
+          </div>
+        </div>
+
         {/* Values */}
         <div className="mb-20">
           <h2 className="text-3xl font-bold text-white mb-10 text-center">Nos valeurs</h2>
