@@ -16,8 +16,25 @@ export const metadata: Metadata = {
 
 export const revalidate = 3600;
 
+const API_URL = process.env.NEXT_PUBLIC_API_URL || 'https://api.idkom.fr';
+
+async function getBematrixStats() {
+  try {
+    const res = await fetch(`${API_URL}/catalogue-bematrix.php?per_page=1`, {
+      next: { revalidate: 3600 }
+    });
+    const json = await res.json();
+    return json.success ? json.data.stats : { total_pieces: 4000, total_references: 200 };
+  } catch {
+    return { total_pieces: 4000, total_references: 200 };
+  }
+}
+
 export default async function BematrixPage() {
-  const data = await getHomepageData();
+  const [data, bematrixStats] = await Promise.all([
+    getHomepageData(),
+    getBematrixStats()
+  ]);
 
   const features = [
     {
@@ -80,7 +97,7 @@ export default async function BematrixPage() {
               <div className="animate-fade-in-up">
                 <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-[#ff2d55]/10 border border-[#ff2d55]/20 text-sm text-[#ff2d55] mb-6">
                   <Icon icon="solar:verified-check-linear" width={18} />
-                  Partenaire officiel BeMatrix
+                  Partenaire BeMatrix
                 </div>
                 <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold text-white leading-tight mb-6">
                   Stand <span className="gradient-text">BeMatrix</span>
@@ -131,7 +148,7 @@ export default async function BematrixPage() {
                     </div>
                     <div>
                       <p className="text-2xl font-bold text-white">
-                        <Counter target={4000} />+
+                        <Counter target={bematrixStats.total_pieces} />
                       </p>
                       <p className="text-xs text-zinc-500">pièces en stock</p>
                     </div>
@@ -148,7 +165,7 @@ export default async function BematrixPage() {
             <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
               <div className="text-center">
                 <p className="text-4xl md:text-5xl font-bold gradient-text mb-2">
-                  <Counter target={4000} />+
+                  <Counter target={bematrixStats.total_pieces} />
                 </p>
                 <p className="text-sm text-zinc-500">Pièces en stock</p>
               </div>
@@ -382,7 +399,7 @@ export default async function BematrixPage() {
                   Consultez notre <span className="gradient-text">inventaire BeMatrix</span>
                 </h2>
                 <p className="text-zinc-400 max-w-2xl mx-auto mb-8">
-                  Plus de 4 000 références disponibles : cadres, connecteurs, finitions et accessoires.
+                  Des milliers de pièces disponibles : cadres, connecteurs, finitions et accessoires.
                   Composez votre demande de devis directement en ligne.
                 </p>
                 <Link
@@ -409,7 +426,7 @@ export default async function BematrixPage() {
               Besoin d'un <span className="gradient-text">stand modulable</span> BeMatrix ?
             </h2>
             <p className="text-zinc-400 mb-8 max-w-2xl mx-auto">
-              Faire appel à IDKOM, c'est l'assurance d'un stock maîtrisé de 4 000 références
+              Faire appel à IDKOM, c'est l'assurance d'un stock maîtrisé
               pour ne jamais manquer de la pièce critique qui fera la différence sur votre montage.
             </p>
             <Link
