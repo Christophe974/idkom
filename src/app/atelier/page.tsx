@@ -10,7 +10,7 @@ export const revalidate = 300;
 
 export const metadata = {
   title: "L'Atelier | iDkom - L'Atelier Phygital",
-  description: "Découvrez l'histoire d'iDkom, atelier créatif spécialisé dans les stands modulaires, solutions digitales et événementiel depuis 1994.",
+  description: "Découvrez l'histoire d'iDkom, atelier créatif spécialisé dans les stands modulaires, solutions digitales et événementiel depuis 1996.",
 };
 
 export default async function AtelierPage() {
@@ -29,7 +29,7 @@ export default async function AtelierPage() {
             L'Atelier <span className="gradient-text">Phygital</span>
           </h1>
           <p className="text-xl text-zinc-400 leading-relaxed">
-            Depuis 1994, nous créons des expériences qui marquent les esprits.
+            Depuis 1996, nous créons des expériences qui marquent les esprits.
             <strong className="text-white"> Stands modulaires, solutions digitales, événements sur-mesure</strong> —
             notre métier, c'est de donner vie à vos idées.
           </p>
@@ -60,7 +60,7 @@ export default async function AtelierPage() {
             <h2 className="text-3xl font-bold text-white mb-6">Notre histoire</h2>
             <div className="space-y-4 text-zinc-400 leading-relaxed">
               <p>
-                Tout a commencé en 1994, avec une passion pour le métier de l'événementiel
+                Tout a commencé en 1996, avec une passion pour le métier de l'événementiel
                 et la conviction que chaque marque mérite une présence remarquable.
               </p>
               <p>
@@ -75,10 +75,11 @@ export default async function AtelierPage() {
             </div>
           </div>
           <div className="aspect-square rounded-2xl bg-gradient-to-br from-zinc-800 to-zinc-900 relative overflow-hidden">
-            <div className="absolute inset-0 bg-grid opacity-30"></div>
-            <div className="absolute inset-0 flex items-center justify-center">
-              <Icon icon="solar:users-group-rounded-linear" className="text-zinc-700" width={96} />
-            </div>
+            <img
+              src="/images/christophe-bracchini.webp"
+              alt="Christophe Bracchini - Fondateur d'iDkom"
+              className="absolute inset-0 w-full h-full object-cover"
+            />
           </div>
         </div>
 
@@ -125,7 +126,7 @@ export default async function AtelierPage() {
         <div className="bg-zinc-900 border border-zinc-800 rounded-2xl p-8 md:p-12 mb-20">
           <div className="flex flex-col md:flex-row items-center justify-between gap-8">
             <div>
-              <span className="text-xs uppercase tracking-widest text-zinc-500 mb-2 block">Partenaire officiel</span>
+              <span className="text-xs uppercase tracking-widest text-zinc-500 mb-2 block">Partenaire</span>
               <h3 className="text-3xl font-bold text-white mb-4">BeMatrix</h3>
               <p className="text-zinc-400 max-w-lg">
                 Nous sommes partenaire officiel du système modulaire BeMatrix,
