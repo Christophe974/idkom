@@ -134,27 +134,39 @@ interface ApiResponse<T> {
   };
 }
 
-// Fetch helper with error handling
+// Fetch helper with error handling and timeout
 async function fetchApi<T>(endpoint: string, options?: RequestInit): Promise<T> {
-  const res = await fetch(`${API_URL}/${endpoint}`, {
-    ...options,
-    headers: {
-      'Content-Type': 'application/json',
-      ...options?.headers,
-    },
-  });
+  const controller = new AbortController();
+  const timeoutId = setTimeout(() => controller.abort(), 10000); // 10s timeout
 
-  if (!res.ok) {
-    throw new Error(`API Error: ${res.status} ${res.statusText}`);
+  try {
+    const res = await fetch(`${API_URL}/${endpoint}`, {
+      ...options,
+      signal: controller.signal,
+      headers: {
+        'Content-Type': 'application/json',
+        ...options?.headers,
+      },
+    });
+
+    clearTimeout(timeoutId);
+
+    if (!res.ok) {
+      throw new Error(`API Error: ${res.status} ${res.statusText}`);
+    }
+
+    const json: ApiResponse<T> = await res.json();
+
+    if (!json.success) {
+      throw new Error('API returned unsuccessful response');
+    }
+
+    return json.data;
+  } catch (error) {
+    clearTimeout(timeoutId);
+    console.error(`API fetch failed for ${endpoint}:`, error);
+    throw error;
   }
-
-  const json: ApiResponse<T> = await res.json();
-
-  if (!json.success) {
-    throw new Error('API returned unsuccessful response');
-  }
-
-  return json.data;
 }
 
 // Homepage

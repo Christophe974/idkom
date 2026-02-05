@@ -14,10 +14,17 @@ export const metadata = {
 };
 
 export default async function BlogPage() {
-  const [articles, homeData] = await Promise.all([
-    getBlogArticles({ per_page: 12 }),
-    getHomepageData(),
-  ]);
+  let articles: Awaited<ReturnType<typeof getBlogArticles>> = [];
+  let homeData: Awaited<ReturnType<typeof getHomepageData>> | null = null;
+
+  try {
+    [articles, homeData] = await Promise.all([
+      getBlogArticles({ per_page: 12 }),
+      getHomepageData(),
+    ]);
+  } catch (error) {
+    console.error('Failed to fetch blog data:', error);
+  }
 
   return (
     <>
@@ -108,7 +115,7 @@ export default async function BlogPage() {
         )}
       </main>
 
-      <Footer site={homeData.site} social={homeData.social} />
+      <Footer site={homeData?.site} social={homeData?.social} />
     </>
   );
 }
