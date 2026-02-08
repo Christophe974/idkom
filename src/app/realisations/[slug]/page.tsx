@@ -5,6 +5,7 @@ import { getProjetBySlug, getHomepageData } from '@/lib/api';
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
 import AmbientBackground from '@/components/AmbientBackground';
+import MarkdownContent from '@/components/MarkdownContent';
 
 export const revalidate = 300;
 
@@ -105,9 +106,9 @@ export default async function ProjetPage({ params }: PageProps) {
 
             {/* Content */}
             {projet.content && (
-              <div className="prose prose-invert prose-zinc max-w-none">
-                <div className="text-zinc-300 leading-relaxed whitespace-pre-wrap">{projet.content}</div>
-              </div>
+              <article className="prose prose-invert prose-zinc max-w-none">
+                <MarkdownContent content={projet.content} />
+              </article>
             )}
 
             {/* Testimonial */}
