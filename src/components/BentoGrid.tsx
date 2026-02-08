@@ -4,6 +4,7 @@ import Link from 'next/link';
 import { Icon } from '@iconify/react';
 import Counter from './Counter';
 import GlitchStat from './GlitchStat';
+import TestimonialCarousel from './TestimonialCarousel';
 import type { HomepageData } from '@/lib/api';
 
 interface BentoGridProps {
@@ -177,32 +178,10 @@ export default function BentoGrid({ data }: BentoGridProps) {
         </Link>
       </div>
 
-      {/* Témoignage - 2x1 */}
-      {testimonials[0] && (
+      {/* Témoignages - Carrousel 2x1 */}
+      {testimonials.length > 0 && (
         <div className="md:col-span-2 bento-card rounded-3xl p-6 bg-zinc-900/30 backdrop-blur-sm border border-white/10 animate-fade-in-up delay-400">
-          <div className="h-full flex flex-col justify-center">
-            <Icon icon="solar:chat-square-like-linear" className="text-zinc-600 mb-3" width={28} />
-            <p className="text-zinc-300 italic text-lg leading-relaxed">
-              &ldquo;{testimonials[0].quote}&rdquo;
-            </p>
-            <div className="flex items-center gap-3 mt-4">
-              {testimonials[0].author.avatar ? (
-                <img
-                  src={testimonials[0].author.avatar}
-                  alt={testimonials[0].author.name}
-                  className="w-10 h-10 rounded-full object-cover"
-                />
-              ) : (
-                <div className="w-10 h-10 rounded-full gradient-bg flex items-center justify-center text-xs font-bold text-white">
-                  {testimonials[0].author.name.split(' ').map(n => n[0]).join('')}
-                </div>
-              )}
-              <div>
-                <p className="text-sm font-medium text-white">{testimonials[0].author.name}</p>
-                <p className="text-xs text-zinc-500">{testimonials[0].author.role} — {testimonials[0].author.company}</p>
-              </div>
-            </div>
-          </div>
+          <TestimonialCarousel testimonials={testimonials} />
         </div>
       )}
 

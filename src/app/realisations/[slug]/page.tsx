@@ -137,8 +137,12 @@ export default async function ProjetPage({ params }: PageProps) {
                     {projet.testimonial.author && (
                       <p className="text-white font-medium">{projet.testimonial.author}</p>
                     )}
-                    {projet.testimonial.role && (
-                      <p className="text-zinc-500 text-sm">{projet.testimonial.role}</p>
+                    {(projet.testimonial.role || projet.testimonial.company) && (
+                      <p className="text-zinc-500 text-sm">
+                        {projet.testimonial.role}
+                        {projet.testimonial.role && projet.testimonial.company && ' — '}
+                        {projet.testimonial.company}
+                      </p>
                     )}
                   </div>
                 </div>
