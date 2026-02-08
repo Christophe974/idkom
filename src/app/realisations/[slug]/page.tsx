@@ -119,18 +119,29 @@ export default async function ProjetPage({ params }: PageProps) {
             )}
 
             {/* Testimonial */}
-            {projet.testimonial_text && (
+            {projet.testimonial && (
               <div className="mt-12 bg-zinc-900 border border-zinc-800 rounded-2xl p-8">
                 <Icon icon="solar:chat-square-like-linear" className="text-[#7928ca] mb-4" width={32} />
-                <blockquote className="text-xl text-zinc-300 italic mb-4">
-                  &ldquo;{projet.testimonial_text}&rdquo;
+                <blockquote className="text-xl text-zinc-300 italic mb-6">
+                  &ldquo;{projet.testimonial.quote}&rdquo;
                 </blockquote>
-                {projet.testimonial_author && (
-                  <p className="text-zinc-500">
-                    — <span className="text-white">{projet.testimonial_author}</span>
-                    {projet.testimonial_role && `, ${projet.testimonial_role}`}
-                  </p>
-                )}
+                <div className="flex items-center gap-4">
+                  {projet.testimonial.image && (
+                    <img
+                      src={projet.testimonial.image}
+                      alt={projet.testimonial.author || 'Client'}
+                      className="w-14 h-14 rounded-full object-cover border-2 border-zinc-700"
+                    />
+                  )}
+                  <div>
+                    {projet.testimonial.author && (
+                      <p className="text-white font-medium">{projet.testimonial.author}</p>
+                    )}
+                    {projet.testimonial.role && (
+                      <p className="text-zinc-500 text-sm">{projet.testimonial.role}</p>
+                    )}
+                  </div>
+                </div>
               </div>
             )}
           </div>
