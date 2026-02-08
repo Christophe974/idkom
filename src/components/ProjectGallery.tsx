@@ -1,6 +1,7 @@
 'use client';
 
 import { useState, useEffect, useCallback } from 'react';
+import { createPortal } from 'react-dom';
 import { Icon } from '@iconify/react';
 
 interface GalleryImage {
@@ -14,7 +15,11 @@ interface ProjectGalleryProps {
 
 export default function ProjectGallery({ images }: ProjectGalleryProps) {
   const [lightboxIndex, setLightboxIndex] = useState<number | null>(null);
+  const [mounted, setMounted] = useState(false);
   const isOpen = lightboxIndex !== null;
+
+  // Necessaire pour createPortal (SSR)
+  useEffect(() => setMounted(true), []);
 
   const closeLightbox = useCallback(() => setLightboxIndex(null), []);
 
@@ -50,6 +55,64 @@ export default function ProjectGallery({ images }: ProjectGalleryProps) {
     return () => window.removeEventListener('keydown', handleKey);
   }, [isOpen, closeLightbox, goNext, goPrev]);
 
+  const lightbox = isOpen ? (
+    <div
+      className="fixed inset-0 bg-black/95 backdrop-blur-md flex items-center justify-center"
+      style={{ zIndex: 99999 }}
+      onClick={closeLightbox}
+    >
+      {/* Bouton fermer */}
+      <button
+        onClick={closeLightbox}
+        className="absolute top-4 right-4 flex items-center gap-2 px-4 py-2 bg-zinc-800/80 hover:bg-zinc-700 text-zinc-300 hover:text-white rounded-full transition-colors backdrop-blur-sm"
+      >
+        <Icon icon="solar:close-circle-linear" width={20} />
+        <span className="text-sm font-medium">Fermer</span>
+        <kbd className="text-xs text-zinc-500 ml-1 px-1.5 py-0.5 bg-zinc-900 rounded">Esc</kbd>
+      </button>
+
+      {/* Navigation */}
+      {images.length > 1 && (
+        <>
+          <button
+            onClick={(e) => { e.stopPropagation(); goPrev(); }}
+            className="absolute left-4 top-1/2 -translate-y-1/2 p-3 bg-zinc-800/60 hover:bg-zinc-700 text-zinc-300 hover:text-white rounded-full transition-colors backdrop-blur-sm"
+          >
+            <Icon icon="solar:arrow-left-linear" width={24} />
+          </button>
+          <button
+            onClick={(e) => { e.stopPropagation(); goNext(); }}
+            className="absolute right-4 top-1/2 -translate-y-1/2 p-3 bg-zinc-800/60 hover:bg-zinc-700 text-zinc-300 hover:text-white rounded-full transition-colors backdrop-blur-sm"
+          >
+            <Icon icon="solar:arrow-right-linear" width={24} />
+          </button>
+        </>
+      )}
+
+      {/* Image */}
+      <img
+        src={images[lightboxIndex].url}
+        alt={images[lightboxIndex].alt || ''}
+        className="max-w-[90vw] max-h-[85vh] object-contain rounded-lg"
+        onClick={(e) => e.stopPropagation()}
+      />
+
+      {/* Compteur */}
+      <div className="absolute bottom-6 left-1/2 -translate-x-1/2 flex items-center gap-4">
+        <span className="text-zinc-400 text-sm">
+          {lightboxIndex + 1} / {images.length}
+        </span>
+        {images.length > 1 && (
+          <span className="text-zinc-600 text-xs flex items-center gap-1">
+            <Icon icon="solar:arrow-left-linear" width={12} />
+            <Icon icon="solar:arrow-right-linear" width={12} />
+            pour naviguer
+          </span>
+        )}
+      </div>
+    </div>
+  ) : null;
+
   return (
     <>
       {/* Grille */}
@@ -76,64 +139,8 @@ export default function ProjectGallery({ images }: ProjectGalleryProps) {
         ))}
       </div>
 
-      {/* Lightbox */}
-      {isOpen && (
-        <div
-          className="fixed inset-0 bg-black/95 backdrop-blur-md flex items-center justify-center"
-          style={{ zIndex: 9999 }}
-          onClick={closeLightbox}
-        >
-          {/* Bouton fermer - bien visible */}
-          <button
-            onClick={closeLightbox}
-            className="absolute top-4 right-4 flex items-center gap-2 px-4 py-2 bg-zinc-800/80 hover:bg-zinc-700 text-zinc-300 hover:text-white rounded-full transition-colors backdrop-blur-sm"
-          >
-            <Icon icon="solar:close-circle-linear" width={20} />
-            <span className="text-sm font-medium">Fermer</span>
-            <kbd className="text-xs text-zinc-500 ml-1 px-1.5 py-0.5 bg-zinc-900 rounded">Esc</kbd>
-          </button>
-
-          {/* Navigation gauche */}
-          {images.length > 1 && (
-            <>
-              <button
-                onClick={(e) => { e.stopPropagation(); goPrev(); }}
-                className="absolute left-4 top-1/2 -translate-y-1/2 p-3 bg-zinc-800/60 hover:bg-zinc-700 text-zinc-300 hover:text-white rounded-full transition-colors backdrop-blur-sm"
-              >
-                <Icon icon="solar:arrow-left-linear" width={24} />
-              </button>
-              <button
-                onClick={(e) => { e.stopPropagation(); goNext(); }}
-                className="absolute right-4 top-1/2 -translate-y-1/2 p-3 bg-zinc-800/60 hover:bg-zinc-700 text-zinc-300 hover:text-white rounded-full transition-colors backdrop-blur-sm"
-              >
-                <Icon icon="solar:arrow-right-linear" width={24} />
-              </button>
-            </>
-          )}
-
-          {/* Image */}
-          <img
-            src={images[lightboxIndex].url}
-            alt={images[lightboxIndex].alt || ''}
-            className="max-w-[90vw] max-h-[85vh] object-contain rounded-lg"
-            onClick={(e) => e.stopPropagation()}
-          />
-
-          {/* Compteur + indication */}
-          <div className="absolute bottom-6 left-1/2 -translate-x-1/2 flex items-center gap-4">
-            <span className="text-zinc-400 text-sm">
-              {lightboxIndex + 1} / {images.length}
-            </span>
-            {images.length > 1 && (
-              <span className="text-zinc-600 text-xs flex items-center gap-1">
-                <Icon icon="solar:arrow-left-linear" width={12} />
-                <Icon icon="solar:arrow-right-linear" width={12} />
-                pour naviguer
-              </span>
-            )}
-          </div>
-        </div>
-      )}
+      {/* Lightbox rendue dans document.body via portail */}
+      {mounted && lightbox && createPortal(lightbox, document.body)}
     </>
   );
 }
