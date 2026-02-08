@@ -2,42 +2,21 @@
 
 import React from 'react';
 import ReactMarkdown from 'react-markdown';
+import rehypeRaw from 'rehype-raw';
 
 interface MarkdownContentProps {
   content: string;
 }
 
 /**
- * Pre-traite le Markdown pour transformer ==texte== en balise custom
+ * Pre-traite le Markdown pour transformer ==texte== en <span> gradient
  * avant que react-markdown ne le parse (car == n'est pas du Markdown standard)
  */
 function preprocessGradient(content: string): string {
-  return content.replace(/==([^=]+)==/g, '<gradient>$1</gradient>');
-}
-
-/**
- * Transforme les enfants texte d'un noeud React pour appliquer le gradient
- * sur les marqueurs <gradient>...</gradient> presents dans le texte brut
- */
-function processChildren(children: React.ReactNode): React.ReactNode {
-  return React.Children.map(children, (child) => {
-    if (typeof child !== 'string') return child;
-
-    const parts = child.split(/(<gradient>.*?<\/gradient>)/g);
-    if (parts.length === 1) return child;
-
-    return parts.map((part, i) => {
-      const match = part.match(/^<gradient>(.*?)<\/gradient>$/);
-      if (match) {
-        return (
-          <span key={i} className="gradient-text font-semibold">
-            {match[1]}
-          </span>
-        );
-      }
-      return part;
-    });
-  });
+  return content.replace(
+    /==([^=]+)==/g,
+    '<span class="gradient-text" style="font-weight:600">$1</span>'
+  );
 }
 
 export default function MarkdownContent({ content }: MarkdownContentProps) {
@@ -45,6 +24,7 @@ export default function MarkdownContent({ content }: MarkdownContentProps) {
 
   return (
     <ReactMarkdown
+      rehypePlugins={[rehypeRaw]}
       components={{
         // Liens stylisés avec effet gradient
         a: ({ href, children }) => (
@@ -59,17 +39,17 @@ export default function MarkdownContent({ content }: MarkdownContentProps) {
         ),
         // Titres
         h1: ({ children }) => (
-          <h1 className="text-3xl font-bold text-white mt-10 mb-4">{processChildren(children)}</h1>
+          <h1 className="text-3xl font-bold text-white mt-10 mb-4">{children}</h1>
         ),
         h2: ({ children }) => (
-          <h2 className="text-2xl font-bold text-white mt-8 mb-4">{processChildren(children)}</h2>
+          <h2 className="text-2xl font-bold text-white mt-8 mb-4">{children}</h2>
         ),
         h3: ({ children }) => (
-          <h3 className="text-xl font-semibold text-white mt-6 mb-3">{processChildren(children)}</h3>
+          <h3 className="text-xl font-semibold text-white mt-6 mb-3">{children}</h3>
         ),
         // Paragraphes
         p: ({ children }) => (
-          <p className="text-zinc-300 leading-relaxed mb-4">{processChildren(children)}</p>
+          <p className="text-zinc-300 leading-relaxed mb-4">{children}</p>
         ),
         // Listes
         ul: ({ children }) => (
@@ -79,14 +59,14 @@ export default function MarkdownContent({ content }: MarkdownContentProps) {
           <ol className="list-decimal list-inside text-zinc-300 space-y-2 mb-4 ml-4">{children}</ol>
         ),
         li: ({ children }) => (
-          <li className="text-zinc-300">{processChildren(children)}</li>
+          <li className="text-zinc-300">{children}</li>
         ),
         // Gras et italique
         strong: ({ children }) => (
-          <strong className="text-white font-semibold">{processChildren(children)}</strong>
+          <strong className="text-white font-semibold">{children}</strong>
         ),
         em: ({ children }) => (
-          <em className="text-zinc-200 italic">{processChildren(children)}</em>
+          <em className="text-zinc-200 italic">{children}</em>
         ),
         // Citations
         blockquote: ({ children }) => (
@@ -103,6 +83,10 @@ export default function MarkdownContent({ content }: MarkdownContentProps) {
         // Séparateur
         hr: () => (
           <hr className="border-zinc-800 my-8" />
+        ),
+        // Span (pour le gradient et autres spans HTML)
+        span: ({ className, style, children }) => (
+          <span className={className} style={style}>{children}</span>
         ),
       }}
     >

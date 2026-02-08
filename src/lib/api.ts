@@ -53,7 +53,7 @@ export interface Projet {
   category?: Category;
   image?: { url: string; alt?: string };
   featured_image?: { url: string; alt?: string; width?: number; height?: number };
-  gallery?: string[];
+  gallery?: { url: string; alt?: string }[];
   testimonial_text?: string;
   testimonial_author?: string;
   testimonial_role?: string;

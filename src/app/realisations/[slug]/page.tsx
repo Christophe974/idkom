@@ -6,6 +6,8 @@ import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
 import AmbientBackground from '@/components/AmbientBackground';
 import MarkdownContent from '@/components/MarkdownContent';
+import Counter from '@/components/Counter';
+import ProjectGallery from '@/components/ProjectGallery';
 
 export const revalidate = 300;
 
@@ -92,13 +94,19 @@ export default async function ProjetPage({ params }: PageProps) {
               <p className="text-xl text-zinc-400 mb-8 leading-relaxed">{projet.excerpt}</p>
             )}
 
-            {/* Stats */}
+            {/* Stats avec compteurs animés */}
             {projet.stats && Object.keys(projet.stats).length > 0 && (
               <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-10">
                 {Object.entries(projet.stats).map(([key, value]) => (
                   <div key={key} className="bg-zinc-900 border border-zinc-800 rounded-xl p-4 text-center">
-                    <p className="text-2xl font-bold gradient-text">{typeof value === 'number' ? value.toLocaleString() : value}</p>
-                    <p className="text-zinc-500 text-sm capitalize">{key.replace('_', ' ')}</p>
+                    <p className="text-2xl font-bold gradient-text">
+                      {typeof value === 'number' ? (
+                        <Counter target={value} className="text-2xl font-bold gradient-text" />
+                      ) : (
+                        value
+                      )}
+                    </p>
+                    <p className="text-zinc-500 text-sm capitalize">{key.replace(/_/g, ' ')}</p>
                   </div>
                 ))}
               </div>
@@ -111,12 +119,20 @@ export default async function ProjetPage({ params }: PageProps) {
               </article>
             )}
 
+            {/* Galerie photos */}
+            {projet.gallery && projet.gallery.length > 0 && (
+              <div className="mt-12">
+                <h2 className="text-2xl font-bold text-white mb-6">Galerie</h2>
+                <ProjectGallery images={projet.gallery} />
+              </div>
+            )}
+
             {/* Testimonial */}
             {projet.testimonial_text && (
               <div className="mt-12 bg-zinc-900 border border-zinc-800 rounded-2xl p-8">
                 <Icon icon="solar:chat-square-like-linear" className="text-[#7928ca] mb-4" width={32} />
                 <blockquote className="text-xl text-zinc-300 italic mb-4">
-                  "{projet.testimonial_text}"
+                  &ldquo;{projet.testimonial_text}&rdquo;
                 </blockquote>
                 {projet.testimonial_author && (
                   <p className="text-zinc-500">
