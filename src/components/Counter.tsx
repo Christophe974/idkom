@@ -6,11 +6,14 @@ interface CounterProps {
   target: number;
   duration?: number;
   className?: string;
+  suffix?: string;
+  onComplete?: () => void;
 }
 
-export default function Counter({ target, duration = 2000, className = '' }: CounterProps) {
+export default function Counter({ target, duration = 2000, className = '', suffix, onComplete }: CounterProps) {
   const [count, setCount] = useState(0);
   const [hasAnimated, setHasAnimated] = useState(false);
+  const [showSuffix, setShowSuffix] = useState(false);
   const ref = useRef<HTMLSpanElement>(null);
 
   useEffect(() => {
@@ -45,6 +48,9 @@ export default function Counter({ target, duration = 2000, className = '' }: Cou
 
       if (progress < 1) {
         requestAnimationFrame(updateCounter);
+      } else {
+        if (suffix) setShowSuffix(true);
+        onComplete?.();
       }
     };
 
@@ -54,6 +60,15 @@ export default function Counter({ target, duration = 2000, className = '' }: Cou
   return (
     <span ref={ref} className={`counter ${className}`}>
       {count}
+      {suffix && (
+        <span
+          className={`inline-block transition-all duration-500 ${
+            showSuffix ? 'opacity-100 scale-100' : 'opacity-0 scale-50'
+          }`}
+        >
+          {suffix}
+        </span>
+      )}
     </span>
   );
 }

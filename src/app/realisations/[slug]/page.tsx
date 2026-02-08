@@ -6,7 +6,7 @@ import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
 import AmbientBackground from '@/components/AmbientBackground';
 import MarkdownContent from '@/components/MarkdownContent';
-import Counter from '@/components/Counter';
+import StatCard from '@/components/StatCard';
 import ProjectGallery from '@/components/ProjectGallery';
 
 export const revalidate = 300;
@@ -97,17 +97,8 @@ export default async function ProjetPage({ params }: PageProps) {
             {/* Stats avec compteurs animés */}
             {projet.stats && Object.keys(projet.stats).length > 0 && (
               <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-10">
-                {Object.entries(projet.stats).map(([key, value]) => (
-                  <div key={key} className="bg-zinc-900 border border-zinc-800 rounded-xl p-4 text-center">
-                    <p className="text-2xl font-bold gradient-text">
-                      {typeof value === 'number' ? (
-                        <Counter target={value} className="text-2xl font-bold gradient-text" />
-                      ) : (
-                        value
-                      )}
-                    </p>
-                    <p className="text-zinc-500 text-sm capitalize">{key.replace(/_/g, ' ')}</p>
-                  </div>
+                {Object.entries(projet.stats).map(([key, value], i) => (
+                  <StatCard key={key} label={key} value={value as number | string} index={i} />
                 ))}
               </div>
             )}
