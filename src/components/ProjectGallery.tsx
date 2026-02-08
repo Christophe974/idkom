@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { Icon } from '@iconify/react';
 
 interface GalleryImage {
@@ -14,21 +14,41 @@ interface ProjectGalleryProps {
 
 export default function ProjectGallery({ images }: ProjectGalleryProps) {
   const [lightboxIndex, setLightboxIndex] = useState<number | null>(null);
+  const isOpen = lightboxIndex !== null;
 
-  const openLightbox = (index: number) => setLightboxIndex(index);
-  const closeLightbox = () => setLightboxIndex(null);
+  const closeLightbox = useCallback(() => setLightboxIndex(null), []);
 
-  const goNext = () => {
-    if (lightboxIndex !== null) {
-      setLightboxIndex((lightboxIndex + 1) % images.length);
+  const goNext = useCallback(() => {
+    setLightboxIndex((prev) => prev !== null ? (prev + 1) % images.length : null);
+  }, [images.length]);
+
+  const goPrev = useCallback(() => {
+    setLightboxIndex((prev) => prev !== null ? (prev - 1 + images.length) % images.length : null);
+  }, [images.length]);
+
+  // Bloquer le scroll quand la lightbox est ouverte
+  useEffect(() => {
+    if (isOpen) {
+      document.body.style.overflow = 'hidden';
+    } else {
+      document.body.style.overflow = '';
     }
-  };
+    return () => { document.body.style.overflow = ''; };
+  }, [isOpen]);
 
-  const goPrev = () => {
-    if (lightboxIndex !== null) {
-      setLightboxIndex((lightboxIndex - 1 + images.length) % images.length);
-    }
-  };
+  // Raccourcis clavier
+  useEffect(() => {
+    if (!isOpen) return;
+
+    const handleKey = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') closeLightbox();
+      if (e.key === 'ArrowRight') goNext();
+      if (e.key === 'ArrowLeft') goPrev();
+    };
+
+    window.addEventListener('keydown', handleKey);
+    return () => window.removeEventListener('keydown', handleKey);
+  }, [isOpen, closeLightbox, goNext, goPrev]);
 
   return (
     <>
@@ -37,7 +57,7 @@ export default function ProjectGallery({ images }: ProjectGalleryProps) {
         {images.map((img, i) => (
           <button
             key={i}
-            onClick={() => openLightbox(i)}
+            onClick={() => setLightboxIndex(i)}
             className="group aspect-video rounded-xl overflow-hidden bg-zinc-900 border border-zinc-800 hover:border-[#7928ca]/50 transition-all duration-300 relative"
           >
             <img
@@ -57,33 +77,36 @@ export default function ProjectGallery({ images }: ProjectGalleryProps) {
       </div>
 
       {/* Lightbox */}
-      {lightboxIndex !== null && (
+      {isOpen && (
         <div
-          className="fixed inset-0 z-50 bg-black/90 backdrop-blur-sm flex items-center justify-center"
+          className="fixed inset-0 bg-black/95 backdrop-blur-md flex items-center justify-center"
+          style={{ zIndex: 9999 }}
           onClick={closeLightbox}
         >
-          {/* Fermer */}
+          {/* Bouton fermer - bien visible */}
           <button
             onClick={closeLightbox}
-            className="absolute top-6 right-6 p-2 text-zinc-400 hover:text-white transition-colors z-10"
+            className="absolute top-4 right-4 flex items-center gap-2 px-4 py-2 bg-zinc-800/80 hover:bg-zinc-700 text-zinc-300 hover:text-white rounded-full transition-colors backdrop-blur-sm"
           >
-            <Icon icon="solar:close-circle-linear" width={32} />
+            <Icon icon="solar:close-circle-linear" width={20} />
+            <span className="text-sm font-medium">Fermer</span>
+            <kbd className="text-xs text-zinc-500 ml-1 px-1.5 py-0.5 bg-zinc-900 rounded">Esc</kbd>
           </button>
 
-          {/* Navigation */}
+          {/* Navigation gauche */}
           {images.length > 1 && (
             <>
               <button
                 onClick={(e) => { e.stopPropagation(); goPrev(); }}
-                className="absolute left-4 p-3 text-zinc-400 hover:text-white transition-colors z-10"
+                className="absolute left-4 top-1/2 -translate-y-1/2 p-3 bg-zinc-800/60 hover:bg-zinc-700 text-zinc-300 hover:text-white rounded-full transition-colors backdrop-blur-sm"
               >
-                <Icon icon="solar:arrow-left-linear" width={28} />
+                <Icon icon="solar:arrow-left-linear" width={24} />
               </button>
               <button
                 onClick={(e) => { e.stopPropagation(); goNext(); }}
-                className="absolute right-4 p-3 text-zinc-400 hover:text-white transition-colors z-10"
+                className="absolute right-4 top-1/2 -translate-y-1/2 p-3 bg-zinc-800/60 hover:bg-zinc-700 text-zinc-300 hover:text-white rounded-full transition-colors backdrop-blur-sm"
               >
-                <Icon icon="solar:arrow-right-linear" width={28} />
+                <Icon icon="solar:arrow-right-linear" width={24} />
               </button>
             </>
           )}
@@ -96,9 +119,18 @@ export default function ProjectGallery({ images }: ProjectGalleryProps) {
             onClick={(e) => e.stopPropagation()}
           />
 
-          {/* Compteur */}
-          <div className="absolute bottom-6 left-1/2 -translate-x-1/2 text-zinc-500 text-sm">
-            {lightboxIndex + 1} / {images.length}
+          {/* Compteur + indication */}
+          <div className="absolute bottom-6 left-1/2 -translate-x-1/2 flex items-center gap-4">
+            <span className="text-zinc-400 text-sm">
+              {lightboxIndex + 1} / {images.length}
+            </span>
+            {images.length > 1 && (
+              <span className="text-zinc-600 text-xs flex items-center gap-1">
+                <Icon icon="solar:arrow-left-linear" width={12} />
+                <Icon icon="solar:arrow-right-linear" width={12} />
+                pour naviguer
+              </span>
+            )}
           </div>
         </div>
       )}
