@@ -107,8 +107,11 @@ export default async function RealisationsPage() {
                         {projet.location}
                       </span>
                     )}
-                    {projet.client_name && (
-                      <span>{projet.client_name}</span>
+                    {projet.project_date && (
+                      <span className="flex items-center gap-1">
+                        <Icon icon="solar:calendar-linear" width={16} />
+                        {new Date(projet.project_date).toLocaleDateString('fr-FR', { month: 'short', year: 'numeric' })}
+                      </span>
                     )}
                   </div>
                   <span className="text-[#7928ca] group-hover:translate-x-1 transition-transform flex items-center gap-1">
