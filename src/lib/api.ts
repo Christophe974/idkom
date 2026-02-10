@@ -253,3 +253,72 @@ export async function submitContactForm(data: ContactFormData): Promise<{ messag
     body: JSON.stringify(data),
   });
 }
+
+// ============================================================
+// Booking / Rendez-vous
+// ============================================================
+export interface BookingSettings {
+  enabled: boolean;
+  hours_start: string;
+  hours_end: string;
+  duration: number;
+  advance_hours: number;
+  max_advance_days: number;
+  blocked_dates: string[];
+}
+
+export interface TimeSlot {
+  time: string;
+  available: boolean;
+}
+
+export interface DateAvailability {
+  date: string;
+  available: boolean;
+  slots_count: number;
+}
+
+export interface BookingFormData {
+  first_name: string;
+  last_name: string;
+  email: string;
+  phone: string;
+  company?: string;
+  date: string;
+  time: string;
+  website?: string;
+}
+
+export interface BookingResult {
+  id: number;
+  message: string;
+  booking: {
+    date: string;
+    time: string;
+    duration: number;
+    meeting_link: string;
+  };
+}
+
+export async function getBookingSettings(): Promise<BookingSettings> {
+  return fetchApi<BookingSettings>('bookings.php?action=settings');
+}
+
+export async function getAvailableDates(month: string): Promise<{ month: string; dates: DateAvailability[] }> {
+  return fetchApi<{ month: string; dates: DateAvailability[] }>(
+    `bookings.php?action=available_dates&month=${month}`
+  );
+}
+
+export async function getAvailableSlots(date: string): Promise<{ date: string; slots: TimeSlot[] }> {
+  return fetchApi<{ date: string; slots: TimeSlot[] }>(
+    `bookings.php?action=availability&date=${date}`
+  );
+}
+
+export async function submitBooking(data: BookingFormData): Promise<BookingResult> {
+  return fetchApi<BookingResult>('bookings.php?action=book', {
+    method: 'POST',
+    body: JSON.stringify(data),
+  });
+}

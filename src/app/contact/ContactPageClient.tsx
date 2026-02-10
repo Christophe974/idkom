@@ -5,6 +5,7 @@ import { Icon } from '@iconify/react';
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
 import AmbientBackground from '@/components/AmbientBackground';
+import Link from 'next/link';
 import { submitContactForm, SiteSettings, Social } from '@/lib/api';
 
 interface ContactPageClientProps {
@@ -131,6 +132,23 @@ export default function ContactPageClient({ site, social }: ContactPageClientPro
                 <div>
                   <h3 className="text-white font-medium mb-1">Adresse</h3>
                   <p className="text-zinc-400">{site.address}</p>
+                </div>
+              </div>
+            </div>
+
+            {/* Booking CTA */}
+            <div className="mt-10 p-6 bg-zinc-900 border border-zinc-800 rounded-xl">
+              <div className="flex items-start gap-4">
+                <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-[#ff2d55]/10 to-[#7928ca]/10 flex items-center justify-center flex-shrink-0">
+                  <Icon icon="solar:videocamera-record-linear" className="text-[#7928ca]" width={24} />
+                </div>
+                <div>
+                  <h3 className="text-white font-medium mb-1">Prendre rendez-vous</h3>
+                  <p className="text-zinc-400 text-sm mb-3">30 min en visio pour discuter de votre projet</p>
+                  <Link href="/rendez-vous" className="text-sm text-[#7928ca] hover:text-white transition-colors flex items-center gap-1">
+                    Choisir un créneau
+                    <Icon icon="solar:arrow-right-linear" width={14} />
+                  </Link>
                 </div>
               </div>
             </div>
