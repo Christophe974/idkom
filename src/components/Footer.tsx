@@ -41,7 +41,7 @@ export default function Footer({ site, social }: FooterProps) {
                 alt={site?.name || 'iDkom'}
                 width={120}
                 height={38}
-                className="h-7 w-auto"
+                className="h-9 w-auto"
               />
             </Link>
             <p className="text-zinc-500 text-sm max-w-xs leading-relaxed">

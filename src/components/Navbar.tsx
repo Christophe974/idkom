@@ -35,7 +35,7 @@ export default function Navbar({ menus }: NavbarProps) {
             alt="iDkom"
             width={141}
             height={45}
-            className="h-8 w-auto group-hover:scale-95 transition-transform duration-300"
+            className="h-10 w-auto group-hover:scale-95 transition-transform duration-300"
             priority
           />
         </Link>
