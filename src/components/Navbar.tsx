@@ -1,6 +1,7 @@
 'use client';
 
 import Link from 'next/link';
+import Image from 'next/image';
 import { Icon } from '@iconify/react';
 import { useState } from 'react';
 
@@ -28,11 +29,15 @@ export default function Navbar({ menus }: NavbarProps) {
     <nav className="fixed top-0 w-full z-50 border-b border-white/5 bg-zinc-950/80 backdrop-blur-xl">
       <div className="max-w-7xl mx-auto px-6 h-16 flex items-center justify-between">
         {/* Logo */}
-        <Link href="/" className="flex items-center gap-3 group">
-          <div className="w-10 h-10 rounded-xl gradient-bg flex items-center justify-center font-bold text-white text-sm group-hover:scale-95 transition-transform duration-300">
-            iD
-          </div>
-          <span className="text-xl font-semibold text-white tracking-tight">iDkom</span>
+        <Link href="/" className="flex items-center group">
+          <Image
+            src="/images/logo-white.svg"
+            alt="iDkom"
+            width={141}
+            height={45}
+            className="h-8 w-auto group-hover:scale-95 transition-transform duration-300"
+            priority
+          />
         </Link>
 
         {/* Desktop Menu */}

@@ -1,4 +1,5 @@
 import Link from 'next/link';
+import Image from 'next/image';
 import { Icon } from '@iconify/react';
 
 interface FooterProps {
@@ -34,11 +35,14 @@ export default function Footer({ site, social }: FooterProps) {
         <div className="grid grid-cols-1 md:grid-cols-4 gap-12">
           {/* Logo & Description */}
           <div className="md:col-span-2">
-            <Link href="/" className="flex items-center gap-3 mb-6">
-              <div className="w-8 h-8 rounded-lg gradient-bg flex items-center justify-center font-bold text-white text-xs">
-                iD
-              </div>
-              <span className="font-semibold text-white">{site?.name || 'iDkom'}</span>
+            <Link href="/" className="flex items-center mb-6">
+              <Image
+                src="/images/logo-white.svg"
+                alt={site?.name || 'iDkom'}
+                width={120}
+                height={38}
+                className="h-7 w-auto"
+              />
             </Link>
             <p className="text-zinc-500 text-sm max-w-xs leading-relaxed">
               {site?.tagline || "L'Atelier Phygital"}. {site?.description || 'Stands BeMatrix, solutions digitales et événementiel pour les marques ambitieuses depuis 1994.'}
