@@ -138,8 +138,11 @@ function TimelineItem({ milestone, index }: { milestone: Milestone; index: numbe
       )}
 
       {/* Dot */}
-      <div className={`timeline-dot absolute left-4 md:left-1/2 top-1 ${milestone.isFinal ? 'w-4 h-4' : 'w-3 h-3'} rounded-full ${dotColor} -translate-x-1/2 ring-4 ring-zinc-950`}
-        style={!milestone.isFinal ? { backgroundColor: milestone.color } : undefined}
+      <div className={`timeline-dot absolute left-4 md:left-1/2 top-1 ${milestone.isFinal ? 'w-4 h-4' : 'w-3 h-3'} rounded-full ${dotColor} ring-4 ring-zinc-950`}
+        style={{
+          ...(milestone.isFinal ? {} : { backgroundColor: milestone.color }),
+          marginLeft: milestone.isFinal ? '-8px' : '-6px',
+        }}
       />
     </div>
   );

@@ -146,7 +146,7 @@
   transform: translateX(40px);
 }
 .timeline-item .timeline-dot {
-  transform: translateX(-50%) scale(0);
+  transform: scale(0);
 }
 
 /* Visible state */
@@ -159,7 +159,7 @@
   transition: transform 0.7s cubic-bezier(0.16, 1, 0.3, 1) var(--item-delay, 0s);
 }
 .timeline-item.timeline-visible .timeline-dot {
-  transform: translateX(-50%) scale(1);
+  transform: scale(1);
   transition: transform 0.5s cubic-bezier(0.34, 1.56, 0.64, 1) calc(var(--item-delay, 0s) + 0.2s);
 }
 .timeline-item.timeline-visible .timeline-year {
