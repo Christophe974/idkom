@@ -77,7 +77,7 @@ export default async function AtelierPage() {
           </div>
           <div className="aspect-square rounded-2xl bg-gradient-to-br from-zinc-800 to-zinc-900 relative overflow-hidden">
             <img
-              src="/images/christophe-bracchini.webp"
+              src="/images/Christophe-Bracchini-Idkom.webp"
               alt="Christophe Bracchini - Fondateur d'iDkom"
               className="absolute inset-0 w-full h-full object-cover"
             />
