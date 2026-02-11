@@ -82,17 +82,17 @@ export default function BentoGrid({ data }: BentoGridProps) {
         </div>
       </div>
 
-      {/* Service 1 - Stands */}
+      {/* Service 1 - Événementiel (grand format) */}
       <div className="row-span-2 bento-card rounded-3xl p-6 bg-zinc-900/30 backdrop-blur-sm border border-white/10 group animate-fade-in-up delay-300">
-        <Link href="/savoir-faire#stands" className="h-full flex flex-col">
-          <div className="w-12 h-12 rounded-xl bg-[#ff2d55]/10 border border-[#ff2d55]/20 flex items-center justify-center mb-4 group-hover:bg-[#ff2d55] group-hover:border-[#ff2d55] transition-all duration-300">
-            <Icon icon="solar:buildings-3-linear" className="text-[#ff2d55] group-hover:text-white transition-colors" width={24} />
+        <Link href="/savoir-faire#events" className="h-full flex flex-col">
+          <div className="w-12 h-12 rounded-xl bg-[#00d4ff]/10 border border-[#00d4ff]/20 flex items-center justify-center mb-4 group-hover:bg-[#00d4ff] group-hover:border-[#00d4ff] transition-all duration-300">
+            <Icon icon="solar:calendar-mark-linear" className="text-[#00d4ff] group-hover:text-white transition-colors" width={24} />
           </div>
-          <h3 className="text-xl font-semibold text-white mb-2">Stands BeMatrix</h3>
+          <h3 className="text-xl font-semibold text-white mb-2">Événementiel</h3>
           <p className="text-zinc-500 text-sm flex-grow leading-relaxed">
-            Conception, fabrication et montage de stands modulaires haut de gamme. Partenaire.
+            Organisation, coordination et logistique de vos événements professionnels. De la scénographie à l&apos;installation, on gère tout de A à Z.
           </p>
-          <div className="flex items-center text-[#ff2d55] text-sm font-medium mt-4 group-hover:gap-3 gap-2 transition-all">
+          <div className="flex items-center text-[#00d4ff] text-sm font-medium mt-4 group-hover:gap-3 gap-2 transition-all">
             En savoir plus
             <Icon icon="solar:arrow-right-linear" width={16} />
           </div>
@@ -167,20 +167,20 @@ export default function BentoGrid({ data }: BentoGridProps) {
         </div>
       </div>
 
-      {/* Service 3 - Events */}
+      {/* Service 3 - Stands BeMatrix (compact) */}
       <div className="bento-card rounded-3xl p-6 bg-zinc-900/30 backdrop-blur-sm border border-white/10 group animate-fade-in-up delay-500">
-        <Link href="/savoir-faire#events" className="h-full flex flex-col justify-center">
-          <div className="w-12 h-12 rounded-xl bg-[#00d4ff]/10 border border-[#00d4ff]/20 flex items-center justify-center mb-3 group-hover:bg-[#00d4ff] group-hover:border-[#00d4ff] transition-all duration-300">
-            <Icon icon="solar:calendar-mark-linear" className="text-[#00d4ff] group-hover:text-white transition-colors" width={22} />
+        <Link href="/savoir-faire#stands" className="h-full flex flex-col justify-center">
+          <div className="w-12 h-12 rounded-xl bg-[#ff2d55]/10 border border-[#ff2d55]/20 flex items-center justify-center mb-3 group-hover:bg-[#ff2d55] group-hover:border-[#ff2d55] transition-all duration-300">
+            <Icon icon="solar:buildings-3-linear" className="text-[#ff2d55] group-hover:text-white transition-colors" width={22} />
           </div>
-          <h3 className="text-lg font-semibold text-white">Événementiel</h3>
-          <p className="text-zinc-500 text-xs mt-1">Logistique clé en main</p>
+          <h3 className="text-lg font-semibold text-white">Stands BeMatrix</h3>
+          <p className="text-zinc-500 text-xs mt-1">Stands modulaires haut de gamme</p>
         </Link>
       </div>
 
-      {/* Témoignages - Carrousel 2x1 */}
+      {/* Témoignages - Carrousel 2x2 */}
       {testimonials.length > 0 && (
-        <div className="md:col-span-2 bento-card rounded-3xl p-6 bg-zinc-900/30 backdrop-blur-sm border border-white/10 animate-fade-in-up delay-400">
+        <div className="md:col-span-2 row-span-2 bento-card rounded-3xl p-8 bg-zinc-900/30 backdrop-blur-sm border border-white/10 animate-fade-in-up delay-400">
           <TestimonialCarousel testimonials={testimonials} />
         </div>
       )}
