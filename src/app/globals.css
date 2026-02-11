@@ -125,6 +125,62 @@
   animation: float 6s ease-in-out infinite;
 }
 
+/* Timeline animations */
+.timeline-line {
+  background: linear-gradient(to bottom, #ff2d55, #7928ca, #00d4ff);
+  transform-origin: top;
+  transform: scaleY(0);
+  transition: transform 1.8s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.timeline-line-grow {
+  transform: scaleY(1);
+}
+
+.timeline-item {
+  opacity: 0;
+}
+.timeline-item[data-side="left"] {
+  transform: translateX(-40px);
+}
+.timeline-item[data-side="right"] {
+  transform: translateX(40px);
+}
+.timeline-item .timeline-dot {
+  transform: translateX(-50%) scale(0);
+}
+
+/* Visible state */
+.timeline-item.timeline-visible {
+  opacity: 1;
+  transform: translateX(0);
+  transition: opacity 0.7s cubic-bezier(0.16, 1, 0.3, 1) var(--item-delay, 0s),
+              transform 0.7s cubic-bezier(0.16, 1, 0.3, 1) var(--item-delay, 0s);
+}
+.timeline-item.timeline-visible .timeline-dot {
+  transform: translateX(-50%) scale(1);
+  transition: transform 0.5s cubic-bezier(0.34, 1.56, 0.64, 1) calc(var(--item-delay, 0s) + 0.2s);
+}
+.timeline-item.timeline-visible .timeline-year {
+  animation: timeline-fade-up 0.5s ease-out calc(var(--item-delay, 0s) + 0.1s) both;
+}
+.timeline-item.timeline-visible .timeline-title {
+  animation: timeline-fade-up 0.5s ease-out calc(var(--item-delay, 0s) + 0.2s) both;
+}
+.timeline-item.timeline-visible .timeline-text {
+  animation: timeline-fade-up 0.5s ease-out calc(var(--item-delay, 0s) + 0.3s) both;
+}
+
+@keyframes timeline-fade-up {
+  from {
+    opacity: 0;
+    transform: translateY(15px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
 /* Selection */
 ::selection {
   background: rgba(121, 40, 202, 0.3);

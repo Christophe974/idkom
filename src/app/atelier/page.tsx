@@ -6,6 +6,7 @@ import Footer from '@/components/Footer';
 import AmbientBackground from '@/components/AmbientBackground';
 import Counter from '@/components/Counter';
 import CTASection from '@/components/CTASection';
+import TimelineSection from '@/components/TimelineSection';
 
 export const revalidate = 300;
 
@@ -84,131 +85,7 @@ export default async function AtelierPage() {
         </div>
 
         {/* Timeline / Fresque historique */}
-        <div className="mb-20">
-          <div className="relative">
-            {/* Ligne verticale */}
-            <div className="absolute left-4 md:left-1/2 top-0 bottom-0 w-px bg-gradient-to-b from-[#ff2d55] via-[#7928ca] to-[#00d4ff]" />
-
-            {/* 1996 */}
-            <div className="relative grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-16 mb-16">
-              <div className="md:text-right md:pr-12 pl-12 md:pl-0">
-                <span className="text-[#ff2d55] font-bold text-lg">1996</span>
-                <h3 className="text-xl font-semibold text-white mt-1 mb-3">Les débuts à Besançon</h3>
-                <p className="text-zinc-400 leading-relaxed">
-                  Création de <strong className="text-zinc-300">Krystal Communication</strong> (entreprise individuelle).
-                  À l&apos;origine, notre métier est le graphisme : conception d&apos;affiches, flyers et supports
-                  de communication pour des établissements locaux.
-                </p>
-              </div>
-              <div className="hidden md:block" />
-              <div className="absolute left-4 md:left-1/2 top-1 w-3 h-3 rounded-full bg-[#ff2d55] -translate-x-1/2 ring-4 ring-zinc-950" />
-            </div>
-
-            {/* 1998 */}
-            <div className="relative grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-16 mb-16">
-              <div className="hidden md:block" />
-              <div className="md:pl-12 pl-12">
-                <span className="text-[#ff2d55] font-bold text-lg">1998</span>
-                <h3 className="text-xl font-semibold text-white mt-1 mb-3">Le digital avant l&apos;heure</h3>
-                <p className="text-zinc-400 leading-relaxed">
-                  Lancement de notre première <strong className="text-zinc-300">plateforme d&apos;envoi de SMS</strong> pour
-                  annoncer des soirées et événements. Mêler créativité et outils — c&apos;est l&apos;ADN d&apos;iDkom qui se dessine.
-                </p>
-              </div>
-              <div className="absolute left-4 md:left-1/2 top-1 w-3 h-3 rounded-full bg-[#ff2d55] -translate-x-1/2 ring-4 ring-zinc-950" />
-            </div>
-
-            {/* Années 2000 */}
-            <div className="relative grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-16 mb-16">
-              <div className="md:text-right md:pr-12 pl-12 md:pl-0">
-                <span className="text-[#7928ca] font-bold text-lg">Années 2000</span>
-                <h3 className="text-xl font-semibold text-white mt-1 mb-3">Une offre qui s&apos;élargit</h3>
-                <p className="text-zinc-400 leading-relaxed">
-                  Communication ciblée, newsletters, sites web, réseaux sociaux, signalétique,
-                  communication événementielle… L&apos;accompagnement s&apos;étend et <strong className="text-zinc-300">l&apos;événementiel prend
-                  une place centrale</strong>.
-                </p>
-              </div>
-              <div className="hidden md:block" />
-              <div className="absolute left-4 md:left-1/2 top-1 w-3 h-3 rounded-full bg-[#7928ca] -translate-x-1/2 ring-4 ring-zinc-950" />
-            </div>
-
-            {/* 2004 */}
-            <div className="relative grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-16 mb-16">
-              <div className="hidden md:block" />
-              <div className="md:pl-12 pl-12">
-                <span className="text-[#7928ca] font-bold text-lg">2004</span>
-                <h3 className="text-xl font-semibold text-white mt-1 mb-3">Naissance d&apos;iDkom (SARL)</h3>
-                <p className="text-zinc-400 leading-relaxed">
-                  Krystal Communication devient <strong className="text-zinc-300">iDkom</strong>. Structuration forte :
-                  plus de projets, une organisation robuste, et une ambition claire — accompagner les marques
-                  avec une production fiable et une exécution maîtrisée.
-                </p>
-              </div>
-              <div className="absolute left-4 md:left-1/2 top-1 w-3 h-3 rounded-full bg-[#7928ca] -translate-x-1/2 ring-4 ring-zinc-950" />
-            </div>
-
-            {/* 2010 */}
-            <div className="relative grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-16 mb-16">
-              <div className="md:text-right md:pr-12 pl-12 md:pl-0">
-                <span className="text-[#7928ca] font-bold text-lg">2010</span>
-                <h3 className="text-xl font-semibold text-white mt-1 mb-3">Accélération</h3>
-                <p className="text-zinc-400 leading-relaxed">
-                  Augmentation de capital à <strong className="text-zinc-300">60 000 €</strong>.
-                  Objectif : renforcer les moyens, développer l&apos;outil de production et répondre
-                  à des dispositifs plus ambitieux.
-                </p>
-              </div>
-              <div className="hidden md:block" />
-              <div className="absolute left-4 md:left-1/2 top-1 w-3 h-3 rounded-full bg-[#7928ca] -translate-x-1/2 ring-4 ring-zinc-950" />
-            </div>
-
-            {/* 2016 */}
-            <div className="relative grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-16 mb-16">
-              <div className="hidden md:block" />
-              <div className="md:pl-12 pl-12">
-                <span className="text-[#00d4ff] font-bold text-lg">2016</span>
-                <h3 className="text-xl font-semibold text-white mt-1 mb-3">Premier très grand stand</h3>
-                <p className="text-zinc-400 leading-relaxed">
-                  Un stand de <strong className="text-zinc-300">120 m² pour CARECO</strong>. Gestion de volumes importants,
-                  coordination, fabrication, logistique — et une nouvelle exigence dans la mise en scène de marque.
-                </p>
-              </div>
-              <div className="absolute left-4 md:left-1/2 top-1 w-3 h-3 rounded-full bg-[#00d4ff] -translate-x-1/2 ring-4 ring-zinc-950" />
-            </div>
-
-            {/* 2017 */}
-            <div className="relative grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-16 mb-16">
-              <div className="md:text-right md:pr-12 pl-12 md:pl-0">
-                <span className="text-[#00d4ff] font-bold text-lg">2017</span>
-                <h3 className="text-xl font-semibold text-white mt-1 mb-3">L&apos;événementiel grande échelle</h3>
-                <p className="text-zinc-400 leading-relaxed">
-                  Premier gros salon <strong className="text-zinc-300">BIO360</strong>, qui confirme notre capacité
-                  à gérer des opérations d&apos;envergure. Et l&apos;achat de notre <strong className="text-zinc-300">second bâtiment</strong> pour
-                  renforcer nos capacités de préparation, stockage et production.
-                </p>
-              </div>
-              <div className="hidden md:block" />
-              <div className="absolute left-4 md:left-1/2 top-1 w-3 h-3 rounded-full bg-[#00d4ff] -translate-x-1/2 ring-4 ring-zinc-950" />
-            </div>
-
-            {/* Aujourd'hui */}
-            <div className="relative grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-16">
-              <div className="hidden md:block" />
-              <div className="md:pl-12 pl-12">
-                <span className="gradient-text font-bold text-lg">Aujourd&apos;hui</span>
-                <h3 className="text-xl font-semibold text-white mt-1 mb-3">L&apos;Atelier Phygital</h3>
-                <p className="text-zinc-400 leading-relaxed">
-                  Nous concevons et produisons des <strong className="text-zinc-300">stands modulaires BeMatrix</strong>,
-                  de la signalétique, et des <strong className="text-zinc-300">expériences digitales interactives</strong>.
-                  Notre objectif reste le même depuis le premier jour : créer des présences qui attirent,
-                  engagent et marquent.
-                </p>
-              </div>
-              <div className="absolute left-4 md:left-1/2 top-1 w-4 h-4 rounded-full bg-gradient-to-r from-[#ff2d55] to-[#00d4ff] -translate-x-1/2 ring-4 ring-zinc-950" />
-            </div>
-          </div>
-        </div>
+        <TimelineSection />
 
         {/* Marques clients */}
         <div className="mb-20 text-center">
