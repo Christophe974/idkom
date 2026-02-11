@@ -230,6 +230,16 @@ export async function getMenus(): Promise<MenuData> {
   return fetchApi<MenuData>('menus.php');
 }
 
+// Navigation (dynamic navbar from CMS)
+export interface NavItem {
+  label: string;
+  url: string;
+}
+
+export async function getNavigation(): Promise<NavItem[]> {
+  return fetchApi<NavItem[]>('pages.php?nav=1');
+}
+
 // Settings
 export async function getSettings(group?: string): Promise<Record<string, unknown>> {
   const query = group ? `?group=${group}` : '';

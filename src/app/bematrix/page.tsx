@@ -2,7 +2,7 @@ import { Metadata } from 'next';
 import Link from 'next/link';
 import Image from 'next/image';
 import { Icon } from '@iconify/react';
-import Navbar from '@/components/Navbar';
+import NavbarServer from '@/components/NavbarServer';
 import Footer from '@/components/Footer';
 import AmbientBackground from '@/components/AmbientBackground';
 import Counter from '@/components/Counter';
@@ -87,7 +87,7 @@ export default async function BematrixPage() {
   return (
     <>
       <AmbientBackground />
-      <Navbar />
+      <NavbarServer />
 
       <main className="relative z-10 min-h-screen">
         {/* Hero Section */}

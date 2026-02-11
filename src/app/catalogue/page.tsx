@@ -1,6 +1,6 @@
 import { Metadata } from 'next';
 import { Suspense } from 'react';
-import Navbar from '@/components/Navbar';
+import NavbarServer from '@/components/NavbarServer';
 import Footer from '@/components/Footer';
 import AmbientBackground from '@/components/AmbientBackground';
 import CatalogueBematrix from '@/components/CatalogueBematrix';
@@ -62,7 +62,7 @@ export default async function CataloguePage() {
   return (
     <>
       <AmbientBackground />
-      <Navbar />
+      <NavbarServer />
 
       <main className="relative z-10 min-h-screen pt-28 pb-16">
         {/* Header */}

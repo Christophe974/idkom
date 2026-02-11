@@ -1,7 +1,7 @@
 import Link from 'next/link';
 import { Icon } from '@iconify/react';
 import { getHomepageData } from '@/lib/api';
-import Navbar from '@/components/Navbar';
+import NavbarServer from '@/components/NavbarServer';
 import Footer from '@/components/Footer';
 import AmbientBackground from '@/components/AmbientBackground';
 import BentoGrid from '@/components/BentoGrid';
@@ -16,7 +16,7 @@ export default async function Home() {
   return (
     <>
       <AmbientBackground />
-      <Navbar />
+      <NavbarServer />
 
       <main className="relative z-10 max-w-7xl mx-auto px-6 pt-28 pb-16">
         {/* Bento Grid Hero */}
