@@ -499,16 +499,16 @@ ${devisForm.message}`;
                       <div className="flex items-center gap-3">
                         <button
                           onClick={() => updateCartQuantity(piece.id, cartQty - 1)}
-                          className="w-10 h-10 rounded-xl bg-zinc-800 border border-white/10 text-white flex items-center justify-center hover:bg-zinc-700 transition-colors"
+                          className="w-10 h-10 rounded-xl bg-zinc-800 border border-white/10 text-white flex items-center justify-center hover:bg-zinc-700 transition-colors text-xl font-bold"
                         >
-                          <Icon icon="solar:minus-linear" width={18} />
+                          −
                         </button>
                         <span className="flex-1 text-center text-xl font-bold text-white">{cartQty}</span>
                         <button
                           onClick={() => updateCartQuantity(piece.id, cartQty + 1)}
-                          className="w-10 h-10 rounded-xl bg-[#7928ca] text-white flex items-center justify-center hover:bg-[#7928ca]/80 transition-colors"
+                          className="w-10 h-10 rounded-xl bg-[#7928ca] text-white flex items-center justify-center hover:bg-[#7928ca]/80 transition-colors text-xl font-bold"
                         >
-                          <Icon icon="solar:add-linear" width={18} />
+                          +
                         </button>
                       </div>
                     )}
@@ -580,16 +580,16 @@ ${devisForm.message}`;
                           <div className="flex items-center gap-2">
                             <button
                               onClick={() => updateCartQuantity(piece.id, cartQty - 1)}
-                              className="w-8 h-8 rounded-lg bg-zinc-800 text-white flex items-center justify-center hover:bg-zinc-700"
+                              className="w-8 h-8 rounded-lg bg-zinc-800 border border-white/10 text-white flex items-center justify-center hover:bg-zinc-700 text-lg font-bold"
                             >
-                              <Icon icon="solar:minus-linear" width={14} />
+                              −
                             </button>
                             <span className="w-8 text-center font-bold text-white">{cartQty}</span>
                             <button
                               onClick={() => updateCartQuantity(piece.id, cartQty + 1)}
-                              className="w-8 h-8 rounded-lg bg-[#7928ca] text-white flex items-center justify-center hover:bg-[#7928ca]/80"
+                              className="w-8 h-8 rounded-lg bg-[#7928ca] text-white flex items-center justify-center hover:bg-[#7928ca]/80 text-lg font-bold"
                             >
-                              <Icon icon="solar:add-linear" width={14} />
+                              +
                             </button>
                           </div>
                         )}
@@ -710,16 +710,16 @@ ${devisForm.message}`;
                       <div className="flex items-center gap-2">
                         <button
                           onClick={() => updateCartQuantity(item.piece.id, item.quantity - 1)}
-                          className="w-7 h-7 rounded-lg bg-zinc-700 text-white flex items-center justify-center hover:bg-zinc-600"
+                          className="w-7 h-7 rounded-lg bg-zinc-700 border border-white/10 text-white flex items-center justify-center hover:bg-zinc-600 text-base font-bold"
                         >
-                          <Icon icon="solar:minus-linear" width={12} />
+                          −
                         </button>
                         <span className="w-8 text-center font-bold text-white">{item.quantity}</span>
                         <button
                           onClick={() => updateCartQuantity(item.piece.id, item.quantity + 1)}
-                          className="w-7 h-7 rounded-lg bg-[#7928ca] text-white flex items-center justify-center hover:bg-[#7928ca]/80"
+                          className="w-7 h-7 rounded-lg bg-[#7928ca] text-white flex items-center justify-center hover:bg-[#7928ca]/80 text-base font-bold"
                         >
-                          <Icon icon="solar:add-linear" width={12} />
+                          +
                         </button>
                       </div>
                       <button
