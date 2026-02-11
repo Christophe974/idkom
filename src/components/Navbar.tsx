@@ -17,8 +17,8 @@ export default function Navbar({ menus }: NavbarProps) {
 
   const defaultMenus = [
     { label: "L'Atelier", url: '/atelier' },
-    { label: 'Savoir-faire', url: '/savoir-faire' },
     { label: 'Réalisations', url: '/realisations' },
+    { label: 'Savoir-faire', url: '/savoir-faire' },
     { label: 'Stock BeMatrix', url: '/catalogue' },
     { label: 'Blog', url: '/blog' },
   ];
