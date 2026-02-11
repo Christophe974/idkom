@@ -74,11 +74,11 @@ export default async function AtelierPage() {
               </p>
             </div>
           </div>
-          <div className="aspect-square rounded-2xl bg-gradient-to-br from-zinc-800 to-zinc-900 relative overflow-hidden">
+          <div className="aspect-square rounded-2xl bg-gradient-to-br from-zinc-800 to-zinc-900 relative overflow-hidden gradient-border glow-pink">
             <img
               src="/images/Christophe-Bracchini-Idkom.webp"
               alt="Christophe Bracchini - Fondateur d'iDkom"
-              className="absolute inset-0 w-full h-full object-cover"
+              className="absolute inset-0 w-full h-full object-cover rounded-2xl"
             />
           </div>
         </div>
@@ -227,23 +227,23 @@ export default async function AtelierPage() {
 
         {/* Galerie Atelier */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-20">
-          <div className="aspect-video rounded-2xl overflow-hidden relative">
+          <div className="aspect-video rounded-2xl overflow-hidden relative gradient-border glow-purple">
             <img
               src="/images/atelier-exterieur.webp"
               alt="Bâtiment iDkom - Vue extérieure"
-              className="absolute inset-0 w-full h-full object-cover"
+              className="absolute inset-0 w-full h-full object-cover rounded-2xl"
             />
-            <div className="absolute bottom-4 left-4 px-3 py-1.5 bg-black/50 backdrop-blur-sm rounded-lg">
+            <div className="absolute bottom-4 left-4 px-3 py-1.5 bg-black/50 backdrop-blur-sm rounded-lg z-10">
               <span className="text-white text-sm font-medium">Notre atelier</span>
             </div>
           </div>
-          <div className="aspect-video rounded-2xl overflow-hidden relative">
+          <div className="aspect-video rounded-2xl overflow-hidden relative gradient-border glow-cyan">
             <img
               src="/images/stock-bematrix.webp"
               alt="Stock BeMatrix - Intérieur de l'atelier"
-              className="absolute inset-0 w-full h-full object-cover"
+              className="absolute inset-0 w-full h-full object-cover rounded-2xl"
             />
-            <div className="absolute bottom-4 left-4 px-3 py-1.5 bg-black/50 backdrop-blur-sm rounded-lg">
+            <div className="absolute bottom-4 left-4 px-3 py-1.5 bg-black/50 backdrop-blur-sm rounded-lg z-10">
               <span className="text-white text-sm font-medium">Notre stock BeMatrix</span>
             </div>
           </div>
