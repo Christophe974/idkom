@@ -265,6 +265,52 @@ export async function submitContactForm(data: ContactFormData): Promise<{ messag
 }
 
 // ============================================================
+// Animations événementielles
+// ============================================================
+export interface AnimationStep {
+  id: number;
+  order: number;
+  title: string;
+  description: string;
+  photos: { url: string; alt: string }[];
+}
+
+export interface Animation {
+  id: number;
+  title: string;
+  slug: string;
+  excerpt: string;
+  description?: string;
+  featured_image?: { url: string; alt: string; width?: number; height?: number } | null;
+  image?: { url: string; alt: string } | null;
+  steps?: AnimationStep[];
+  steps_count?: number;
+  seo?: { title: string; description: string };
+  is_featured: boolean;
+  published_at: string;
+}
+
+export async function getAnimations(options?: {
+  featured?: boolean;
+  limit?: number;
+  page?: number;
+  per_page?: number;
+}): Promise<Animation[]> {
+  const params = new URLSearchParams();
+  if (options?.featured) params.set('featured', '1');
+  if (options?.limit) params.set('limit', options.limit.toString());
+  if (options?.page) params.set('page', options.page.toString());
+  if (options?.per_page) params.set('per_page', options.per_page.toString());
+
+  const query = params.toString() ? `?${params.toString()}` : '';
+  return fetchApi<Animation[]>(`animations.php${query}`);
+}
+
+export async function getAnimationBySlug(slug: string): Promise<Animation> {
+  return fetchApi<Animation>(`animations.php?slug=${slug}`);
+}
+
+// ============================================================
 // Booking / Rendez-vous
 // ============================================================
 export interface BookingSettings {

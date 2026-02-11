@@ -183,6 +183,57 @@
   }
 }
 
+/* Animation Steps - scroll animations */
+.steps-line {
+  background: linear-gradient(to bottom, #ff2d55, #7928ca, #00d4ff);
+  transform-origin: top;
+  transform: scaleY(0);
+  transition: transform 2s cubic-bezier(0.16, 1, 0.3, 1);
+  opacity: 0.15;
+}
+.steps-line-grow {
+  transform: scaleY(1);
+}
+
+.step-item {
+  opacity: 0;
+}
+.step-item[data-direction="normal"] .step-text {
+  transform: translateX(-40px);
+}
+.step-item[data-direction="reversed"] .step-text {
+  transform: translateX(40px);
+}
+.step-item[data-direction="normal"] .step-photos {
+  transform: translateX(40px);
+}
+.step-item[data-direction="reversed"] .step-photos {
+  transform: translateX(-40px);
+}
+
+/* Step visible state */
+.step-item.step-visible {
+  opacity: 1;
+  transition: opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1) var(--step-delay, 0s);
+}
+.step-item.step-visible .step-text {
+  transform: translateX(0);
+  transition: transform 0.8s cubic-bezier(0.16, 1, 0.3, 1) var(--step-delay, 0s);
+}
+.step-item.step-visible .step-photos {
+  transform: translateX(0);
+  transition: transform 0.8s cubic-bezier(0.16, 1, 0.3, 1) calc(var(--step-delay, 0s) + 0.15s);
+}
+
+/* Step connector animation */
+.step-connector {
+  opacity: 0;
+}
+.step-item.step-visible .step-connector {
+  opacity: 1;
+  transition: opacity 0.5s ease-out calc(var(--step-delay, 0s) + 0.4s);
+}
+
 /* Selection */
 ::selection {
   background: rgba(121, 40, 202, 0.3);
