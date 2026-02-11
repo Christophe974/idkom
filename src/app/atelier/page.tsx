@@ -10,8 +10,8 @@ import CTASection from '@/components/CTASection';
 export const revalidate = 300;
 
 export const metadata = {
-  title: "L'Atelier | iDkom - L'Atelier Phygital",
-  description: "Découvrez l'histoire d'iDkom, atelier créatif spécialisé dans les stands modulaires, solutions digitales et événementiel depuis 1996.",
+  title: "Histoire d'iDkom : de Besançon (1996) à l'Atelier Phygital (stands BeMatrix & digital)",
+  description: "Depuis 1996 à Besançon (Franche-Comté), iDkom conçoit stands, signalétique et expériences digitales. CARECO 120 m² (2016), BIO360 (2017) : l'Atelier Phygital.",
 };
 
 export default async function AtelierPage() {
@@ -55,23 +55,22 @@ export default async function AtelierPage() {
           </div>
         </div>
 
-        {/* Story */}
+        {/* Fondateur + intro */}
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 mb-20">
           <div>
             <h2 className="text-3xl font-bold text-white mb-6">Notre histoire</h2>
             <div className="space-y-4 text-zinc-400 leading-relaxed">
               <p>
-                Tout a commencé en 1996, avec une passion pour le métier de l'événementiel
-                et la conviction que chaque marque mérite une présence remarquable.
+                L&apos;aventure démarre en 1996 à Besançon avec la création de Krystal Communication.
+                Dès le départ, une conviction nous guide : <strong className="text-white">chaque marque mérite une présence remarquable.</strong>
               </p>
               <p>
-                Au fil des années, nous avons évolué avec notre industrie. Des premiers stands
-                traditionnels aux systèmes modulaires BeMatrix, des affichages statiques aux
-                expériences digitales interactives.
+                Au fil des années, nous avons évolué avec notre industrie. Des premiers supports graphiques
+                aux systèmes modulaires BeMatrix, des plateformes SMS aux expériences digitales interactives.
               </p>
               <p>
-                Aujourd'hui, nous sommes un <strong className="text-white">atelier phygital</strong> —
-                un pont entre le physique et le digital, entre l'artisanat et la technologie.
+                Aujourd&apos;hui, nous sommes un <strong className="text-white">atelier phygital</strong> —
+                un pont entre le physique et le digital, entre l&apos;artisanat et la technologie.
               </p>
             </div>
           </div>
@@ -81,6 +80,148 @@ export default async function AtelierPage() {
               alt="Christophe Bracchini - Fondateur d'iDkom"
               className="absolute inset-0 w-full h-full object-cover"
             />
+          </div>
+        </div>
+
+        {/* Timeline / Fresque historique */}
+        <div className="mb-20">
+          <div className="relative">
+            {/* Ligne verticale */}
+            <div className="absolute left-4 md:left-1/2 top-0 bottom-0 w-px bg-gradient-to-b from-[#ff2d55] via-[#7928ca] to-[#00d4ff]" />
+
+            {/* 1996 */}
+            <div className="relative grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-16 mb-16">
+              <div className="md:text-right md:pr-12 pl-12 md:pl-0">
+                <span className="text-[#ff2d55] font-bold text-lg">1996</span>
+                <h3 className="text-xl font-semibold text-white mt-1 mb-3">Les débuts à Besançon</h3>
+                <p className="text-zinc-400 leading-relaxed">
+                  Création de <strong className="text-zinc-300">Krystal Communication</strong> (entreprise individuelle).
+                  À l&apos;origine, notre métier est le graphisme : conception d&apos;affiches, flyers et supports
+                  de communication pour des établissements locaux.
+                </p>
+              </div>
+              <div className="hidden md:block" />
+              <div className="absolute left-4 md:left-1/2 top-1 w-3 h-3 rounded-full bg-[#ff2d55] -translate-x-1/2 ring-4 ring-zinc-950" />
+            </div>
+
+            {/* 1998 */}
+            <div className="relative grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-16 mb-16">
+              <div className="hidden md:block" />
+              <div className="md:pl-12 pl-12">
+                <span className="text-[#ff2d55] font-bold text-lg">1998</span>
+                <h3 className="text-xl font-semibold text-white mt-1 mb-3">Le digital avant l&apos;heure</h3>
+                <p className="text-zinc-400 leading-relaxed">
+                  Lancement de notre première <strong className="text-zinc-300">plateforme d&apos;envoi de SMS</strong> pour
+                  annoncer des soirées et événements. Mêler créativité et outils — c&apos;est l&apos;ADN d&apos;iDkom qui se dessine.
+                </p>
+              </div>
+              <div className="absolute left-4 md:left-1/2 top-1 w-3 h-3 rounded-full bg-[#ff2d55] -translate-x-1/2 ring-4 ring-zinc-950" />
+            </div>
+
+            {/* Années 2000 */}
+            <div className="relative grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-16 mb-16">
+              <div className="md:text-right md:pr-12 pl-12 md:pl-0">
+                <span className="text-[#7928ca] font-bold text-lg">Années 2000</span>
+                <h3 className="text-xl font-semibold text-white mt-1 mb-3">Une offre qui s&apos;élargit</h3>
+                <p className="text-zinc-400 leading-relaxed">
+                  Communication ciblée, newsletters, sites web, réseaux sociaux, signalétique,
+                  communication événementielle… L&apos;accompagnement s&apos;étend et <strong className="text-zinc-300">l&apos;événementiel prend
+                  une place centrale</strong>.
+                </p>
+              </div>
+              <div className="hidden md:block" />
+              <div className="absolute left-4 md:left-1/2 top-1 w-3 h-3 rounded-full bg-[#7928ca] -translate-x-1/2 ring-4 ring-zinc-950" />
+            </div>
+
+            {/* 2004 */}
+            <div className="relative grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-16 mb-16">
+              <div className="hidden md:block" />
+              <div className="md:pl-12 pl-12">
+                <span className="text-[#7928ca] font-bold text-lg">2004</span>
+                <h3 className="text-xl font-semibold text-white mt-1 mb-3">Naissance d&apos;iDkom (SARL)</h3>
+                <p className="text-zinc-400 leading-relaxed">
+                  Krystal Communication devient <strong className="text-zinc-300">iDkom</strong>. Structuration forte :
+                  plus de projets, une organisation robuste, et une ambition claire — accompagner les marques
+                  avec une production fiable et une exécution maîtrisée.
+                </p>
+              </div>
+              <div className="absolute left-4 md:left-1/2 top-1 w-3 h-3 rounded-full bg-[#7928ca] -translate-x-1/2 ring-4 ring-zinc-950" />
+            </div>
+
+            {/* 2010 */}
+            <div className="relative grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-16 mb-16">
+              <div className="md:text-right md:pr-12 pl-12 md:pl-0">
+                <span className="text-[#7928ca] font-bold text-lg">2010</span>
+                <h3 className="text-xl font-semibold text-white mt-1 mb-3">Accélération</h3>
+                <p className="text-zinc-400 leading-relaxed">
+                  Augmentation de capital à <strong className="text-zinc-300">60 000 €</strong>.
+                  Objectif : renforcer les moyens, développer l&apos;outil de production et répondre
+                  à des dispositifs plus ambitieux.
+                </p>
+              </div>
+              <div className="hidden md:block" />
+              <div className="absolute left-4 md:left-1/2 top-1 w-3 h-3 rounded-full bg-[#7928ca] -translate-x-1/2 ring-4 ring-zinc-950" />
+            </div>
+
+            {/* 2016 */}
+            <div className="relative grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-16 mb-16">
+              <div className="hidden md:block" />
+              <div className="md:pl-12 pl-12">
+                <span className="text-[#00d4ff] font-bold text-lg">2016</span>
+                <h3 className="text-xl font-semibold text-white mt-1 mb-3">Premier très grand stand</h3>
+                <p className="text-zinc-400 leading-relaxed">
+                  Un stand de <strong className="text-zinc-300">120 m² pour CARECO</strong>. Gestion de volumes importants,
+                  coordination, fabrication, logistique — et une nouvelle exigence dans la mise en scène de marque.
+                </p>
+              </div>
+              <div className="absolute left-4 md:left-1/2 top-1 w-3 h-3 rounded-full bg-[#00d4ff] -translate-x-1/2 ring-4 ring-zinc-950" />
+            </div>
+
+            {/* 2017 */}
+            <div className="relative grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-16 mb-16">
+              <div className="md:text-right md:pr-12 pl-12 md:pl-0">
+                <span className="text-[#00d4ff] font-bold text-lg">2017</span>
+                <h3 className="text-xl font-semibold text-white mt-1 mb-3">L&apos;événementiel grande échelle</h3>
+                <p className="text-zinc-400 leading-relaxed">
+                  Premier gros salon <strong className="text-zinc-300">BIO360</strong>, qui confirme notre capacité
+                  à gérer des opérations d&apos;envergure. Et l&apos;achat de notre <strong className="text-zinc-300">second bâtiment</strong> pour
+                  renforcer nos capacités de préparation, stockage et production.
+                </p>
+              </div>
+              <div className="hidden md:block" />
+              <div className="absolute left-4 md:left-1/2 top-1 w-3 h-3 rounded-full bg-[#00d4ff] -translate-x-1/2 ring-4 ring-zinc-950" />
+            </div>
+
+            {/* Aujourd'hui */}
+            <div className="relative grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-16">
+              <div className="hidden md:block" />
+              <div className="md:pl-12 pl-12">
+                <span className="gradient-text font-bold text-lg">Aujourd&apos;hui</span>
+                <h3 className="text-xl font-semibold text-white mt-1 mb-3">L&apos;Atelier Phygital</h3>
+                <p className="text-zinc-400 leading-relaxed">
+                  Nous concevons et produisons des <strong className="text-zinc-300">stands modulaires BeMatrix</strong>,
+                  de la signalétique, et des <strong className="text-zinc-300">expériences digitales interactives</strong>.
+                  Notre objectif reste le même depuis le premier jour : créer des présences qui attirent,
+                  engagent et marquent.
+                </p>
+              </div>
+              <div className="absolute left-4 md:left-1/2 top-1 w-4 h-4 rounded-full bg-gradient-to-r from-[#ff2d55] to-[#00d4ff] -translate-x-1/2 ring-4 ring-zinc-950" />
+            </div>
+          </div>
+        </div>
+
+        {/* Marques clients */}
+        <div className="mb-20 text-center">
+          <h2 className="text-3xl font-bold text-white mb-4">Des marques qui font partie de l&apos;aventure</h2>
+          <p className="text-zinc-500 mb-10 max-w-2xl mx-auto">
+            Chaque projet nourrit notre moteur : fabriquer des dispositifs solides, efficaces et mémorables.
+          </p>
+          <div className="flex flex-wrap justify-center gap-3">
+            {['EDF', 'La Poste', 'Crédit Mutuel', 'CARECO', 'ENGIE', 'Dalkia', 'Néolia', 'Idéha', 'Casino JOA', 'NRJ Global Régions', 'BAT', 'La Vie Claire', 'Manpower'].map((brand) => (
+              <span key={brand} className="px-4 py-2 rounded-full bg-zinc-900 border border-zinc-800 text-zinc-400 text-sm hover:border-zinc-600 hover:text-zinc-300 transition-colors">
+                {brand}
+              </span>
+            ))}
           </div>
         </div>
 
