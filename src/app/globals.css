@@ -139,10 +139,10 @@
 .timeline-item {
   opacity: 0;
 }
-.timeline-item[data-side="left"] {
+.timeline-item[data-side="left"] .timeline-content {
   transform: translateX(-40px);
 }
-.timeline-item[data-side="right"] {
+.timeline-item[data-side="right"] .timeline-content {
   transform: translateX(40px);
 }
 .timeline-item .timeline-dot {
@@ -152,9 +152,11 @@
 /* Visible state */
 .timeline-item.timeline-visible {
   opacity: 1;
+  transition: opacity 0.7s cubic-bezier(0.16, 1, 0.3, 1) var(--item-delay, 0s);
+}
+.timeline-item.timeline-visible .timeline-content {
   transform: translateX(0);
-  transition: opacity 0.7s cubic-bezier(0.16, 1, 0.3, 1) var(--item-delay, 0s),
-              transform 0.7s cubic-bezier(0.16, 1, 0.3, 1) var(--item-delay, 0s);
+  transition: transform 0.7s cubic-bezier(0.16, 1, 0.3, 1) var(--item-delay, 0s);
 }
 .timeline-item.timeline-visible .timeline-dot {
   transform: translateX(-50%) scale(1);
