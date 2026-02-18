@@ -261,6 +261,33 @@ export default async function AuditPublicPage({ params }: PageProps) {
           </div>
         </AuditScrollAnimator>
 
+        {/* AI Summary */}
+        {audit.ai_summary && (
+          <AuditScrollAnimator delay={0.1}>
+            <div className="mb-14">
+              <div className="relative bg-gradient-to-br from-[#7928ca]/8 via-[#ff2d55]/5 to-[#00d4ff]/8 border border-[#7928ca]/20 rounded-2xl p-8 md:p-10 overflow-hidden">
+                {/* Decorative glow */}
+                <div className="absolute -top-16 -right-16 w-32 h-32 bg-[#7928ca]/10 rounded-full blur-3xl" />
+
+                <div className="relative">
+                  <div className="flex items-center gap-3 mb-5">
+                    <div className="w-10 h-10 rounded-xl bg-[#7928ca]/15 flex items-center justify-center">
+                      <Icon icon="solar:magic-stick-3-linear" width={22} className="text-[#7928ca]" />
+                    </div>
+                    <div>
+                      <h2 className="text-lg font-bold text-white">Notre analyse</h2>
+                      <p className="text-xs text-zinc-500">Résumé personnalisé par iDkom</p>
+                    </div>
+                  </div>
+                  <div className="text-zinc-300 leading-relaxed whitespace-pre-line text-sm md:text-base">
+                    {audit.ai_summary}
+                  </div>
+                </div>
+              </div>
+            </div>
+          </AuditScrollAnimator>
+        )}
+
         {/* Stand photos */}
         {(audit.stand_photo_url || audit.stand_simulation_url) && (
           <AuditScrollAnimator delay={0.1}>

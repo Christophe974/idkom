@@ -423,6 +423,7 @@ export interface AuditPublic {
   stand_photo_url: string | null;
   stand_simulation_url: string | null;
   manager_notes: string | null;
+  ai_summary: string | null;
   commercial: {
     first_name: string;
   };
