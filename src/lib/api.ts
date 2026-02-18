@@ -378,3 +378,53 @@ export async function submitBooking(data: BookingFormData): Promise<BookingResul
     body: JSON.stringify(data),
   });
 }
+
+// ============================================================
+// Audit / Prospection Salon
+// ============================================================
+export interface AuditDetail {
+  label: string;
+  value: string;
+  score: number;
+  severity: 'good' | 'warning' | 'critical';
+  description: string;
+}
+
+export interface AuditPublic {
+  company_name: string;
+  website_url: string;
+  salon: {
+    name: string | null;
+    date: string | null;
+    location: string | null;
+  };
+  score_total: number;
+  scores: {
+    performance: number;
+    seo: number;
+    mobile: number;
+    security: number;
+    accessibility: number;
+    google: number;
+  };
+  results: {
+    performance: AuditDetail[];
+    seo: AuditDetail[];
+    mobile: AuditDetail[];
+    security: AuditDetail[];
+    accessibility: AuditDetail[];
+    google: AuditDetail[];
+  };
+  screenshot_url: string | null;
+  stand_photo_url: string | null;
+  stand_simulation_url: string | null;
+  manager_notes: string | null;
+  commercial: {
+    first_name: string;
+  };
+  created_at: string;
+}
+
+export async function getAuditByToken(token: string): Promise<AuditPublic> {
+  return fetchApi<AuditPublic>(`audits.php?action=public&token=${token}`);
+}
