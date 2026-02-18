@@ -240,6 +240,59 @@
   color: white;
 }
 
+/* ============================================================
+   Audit page - Scroll animations
+   ============================================================ */
+.audit-section {
+  opacity: 0;
+  transform: translateY(30px);
+}
+.audit-section.audit-visible {
+  opacity: 1;
+  transform: translateY(0);
+  transition: opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1) var(--section-delay, 0s),
+              transform 0.8s cubic-bezier(0.16, 1, 0.3, 1) var(--section-delay, 0s);
+}
+
+.audit-card {
+  opacity: 0;
+  transform: translateY(20px) scale(0.95);
+}
+.audit-card.audit-visible {
+  opacity: 1;
+  transform: translateY(0) scale(1);
+  transition: opacity 0.6s cubic-bezier(0.16, 1, 0.3, 1) var(--card-delay, 0s),
+              transform 0.6s cubic-bezier(0.16, 1, 0.3, 1) var(--card-delay, 0s);
+}
+
+.audit-item {
+  opacity: 0;
+  transform: translateX(-20px);
+}
+.audit-item.audit-item-visible {
+  opacity: 1;
+  transform: translateX(0);
+  transition: opacity 0.5s cubic-bezier(0.4, 0, 0.2, 1) var(--item-delay, 0s),
+              transform 0.5s cubic-bezier(0.4, 0, 0.2, 1) var(--item-delay, 0s);
+}
+
+.audit-bar-fill {
+  width: 0;
+}
+.audit-bar-fill.audit-bar-animate {
+  transition: width 1.5s cubic-bezier(0.16, 1, 0.3, 1) var(--bar-delay, 0s);
+}
+
+.audit-progress-bar {
+  position: fixed;
+  top: 64px;
+  left: 0;
+  height: 3px;
+  background: linear-gradient(90deg, #ff2d55, #7928ca, #00d4ff);
+  z-index: 60;
+  transition: width 0.1s linear;
+}
+
 body {
   background: #09090b;
   color: #a1a1aa;

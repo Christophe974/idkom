@@ -388,6 +388,7 @@ export interface AuditDetail {
   score: number;
   severity: 'good' | 'warning' | 'critical';
   description: string;
+  recommendation?: string;
 }
 
 export interface AuditPublic {
@@ -406,6 +407,7 @@ export interface AuditPublic {
     security: number;
     accessibility: number;
     google: number;
+    content: number;
   };
   results: {
     performance: AuditDetail[];
@@ -414,7 +416,9 @@ export interface AuditPublic {
     security: AuditDetail[];
     accessibility: AuditDetail[];
     google: AuditDetail[];
+    content: AuditDetail[];
   };
+  technologies: string[];
   screenshot_url: string | null;
   stand_photo_url: string | null;
   stand_simulation_url: string | null;
