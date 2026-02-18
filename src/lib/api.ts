@@ -436,3 +436,68 @@ export interface AuditPublic {
 export async function getAuditByToken(token: string): Promise<AuditPublic> {
   return fetchApi<AuditPublic>(`audits.php?action=public&token=${token}`);
 }
+
+// ============================================================
+// Propositions commerciales B2B
+// ============================================================
+export interface PropositionSection {
+  id: number;
+  order: number;
+  title: string;
+  description: string;
+  photos: { url: string; alt: string }[];
+}
+
+export interface PropositionOption {
+  id: number;
+  order: number;
+  title: string;
+  description: string | null;
+  image: { url: string; alt: string } | null;
+  price: number | null;
+}
+
+export interface Proposition {
+  title: string;
+  slug: string;
+  reseller: {
+    company: string;
+    contact: string;
+    email: string;
+    phone: string | null;
+    logo: { url: string; alt: string } | null;
+    avatar: { url: string; alt: string } | null;
+  };
+  client: {
+    company: string;
+    contact: string | null;
+    logo: { url: string; alt: string } | null;
+  };
+  presentation: string | null;
+  featured_image: { url: string; alt: string; width?: number; height?: number } | null;
+  sections: PropositionSection[];
+  options: PropositionOption[];
+  media: {
+    music_url: string | null;
+    audio_message_url: string | null;
+    video_url: string | null;
+  };
+  cta: {
+    text: string;
+    enabled: boolean;
+  };
+  views_count: number;
+}
+
+export async function getPropositionBySlug(slug: string, code?: string): Promise<Proposition> {
+  const params = new URLSearchParams({ slug });
+  if (code) params.set('code', code);
+  return fetchApi<Proposition>(`propositions.php?${params.toString()}`);
+}
+
+export async function trackPropositionEvent(slug: string, event: string): Promise<void> {
+  await fetchApi<{ tracked: boolean }>(`propositions.php?slug=${encodeURIComponent(slug)}&action=track`, {
+    method: 'POST',
+    body: JSON.stringify({ event }),
+  });
+}
