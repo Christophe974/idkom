@@ -169,6 +169,47 @@ export default async function AuditPublicPage({ params }: PageProps) {
           </AuditScrollAnimator>
         )}
 
+        {/* Commercial profile */}
+        {audit.commercial?.bio && (
+          <AuditScrollAnimator delay={0.15}>
+            <div className="mb-14 max-w-2xl mx-auto">
+              <div className="bg-zinc-900/60 border border-zinc-800/50 rounded-2xl p-6 md:p-8 backdrop-blur-sm">
+                <div className="flex items-start gap-5">
+                  {/* Photo */}
+                  {audit.commercial.photo_url ? (
+                    <Image
+                      src={audit.commercial.photo_url}
+                      alt={`${audit.commercial.first_name} ${audit.commercial.last_name}`}
+                      width={72}
+                      height={72}
+                      className="w-16 h-16 md:w-[72px] md:h-[72px] rounded-full object-cover border-2 border-[#7928ca]/30 shrink-0"
+                    />
+                  ) : (
+                    <div className="w-16 h-16 md:w-[72px] md:h-[72px] rounded-full bg-gradient-to-br from-[#ff2d55] to-[#7928ca] flex items-center justify-center text-white text-xl font-bold shrink-0">
+                      {audit.commercial.first_name?.charAt(0)?.toUpperCase()}
+                    </div>
+                  )}
+
+                  {/* Info */}
+                  <div className="flex-1 min-w-0">
+                    <div className="flex items-center gap-2 mb-1">
+                      <h3 className="text-white font-semibold text-lg">
+                        {audit.commercial.first_name} {audit.commercial.last_name}
+                      </h3>
+                    </div>
+                    <p className="text-[#7928ca] text-sm font-medium mb-3">
+                      Votre conseiller iDkom
+                    </p>
+                    <p className="text-zinc-400 text-sm leading-relaxed">
+                      {audit.commercial.bio}
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </AuditScrollAnimator>
+        )}
+
         {/* Separator */}
         <div className="w-full h-px bg-gradient-to-r from-transparent via-zinc-700 to-transparent mb-14" />
 

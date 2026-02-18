@@ -426,6 +426,9 @@ export interface AuditPublic {
   ai_summary: string | null;
   commercial: {
     first_name: string;
+    last_name: string;
+    photo_url: string | null;
+    bio: string | null;
   };
   created_at: string;
 }
