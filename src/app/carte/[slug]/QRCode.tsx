@@ -1,9 +1,7 @@
 'use client';
 
-import { useState } from 'react';
-
-// QR Code generator using a simple SVG approach via external API
-// We use a deterministic QR SVG rendered client-side
+import { useEffect, useRef, useState } from 'react';
+import QRCodeLib from 'qrcode';
 
 interface QRCodeProps {
   url: string;
@@ -13,10 +11,36 @@ interface QRCodeProps {
 
 export default function QRCode({ url, size = 140, color = '#ffffff' }: QRCodeProps) {
   const [showModal, setShowModal] = useState(false);
+  const canvasRef = useRef<HTMLCanvasElement>(null);
+  const canvasModalRef = useRef<HTMLCanvasElement>(null);
 
-  // Use Google Charts QR API for simplicity (no dependency needed)
-  const qrSrc = `https://api.qrserver.com/v1/create-qr-code/?size=${size}x${size}&data=${encodeURIComponent(url)}&bgcolor=00000000&color=${color.replace('#', '')}&format=svg`;
-  const qrSrcLarge = `https://api.qrserver.com/v1/create-qr-code/?size=300x300&data=${encodeURIComponent(url)}&bgcolor=00000000&color=${color.replace('#', '')}&format=svg`;
+  // Render QR code on canvas
+  useEffect(() => {
+    if (canvasRef.current) {
+      QRCodeLib.toCanvas(canvasRef.current, url, {
+        width: size,
+        margin: 1,
+        color: {
+          dark: color.startsWith('#') ? color : `#${color}`,
+          light: '#00000000', // transparent background
+        },
+      }).catch(console.error);
+    }
+  }, [url, size, color]);
+
+  // Render large QR in modal
+  useEffect(() => {
+    if (showModal && canvasModalRef.current) {
+      QRCodeLib.toCanvas(canvasModalRef.current, url, {
+        width: 280,
+        margin: 2,
+        color: {
+          dark: color.startsWith('#') ? color : `#${color}`,
+          light: '#00000000',
+        },
+      }).catch(console.error);
+    }
+  }, [showModal, url, color]);
 
   return (
     <>
@@ -25,13 +49,10 @@ export default function QRCode({ url, size = 140, color = '#ffffff' }: QRCodePro
         className="group relative"
         title="Agrandir le QR code"
       >
-        {/* eslint-disable-next-line @next/next/no-img-element */}
-        <img
-          src={qrSrc}
-          alt="QR Code"
-          width={size}
-          height={size}
+        <canvas
+          ref={canvasRef}
           className="rounded-lg transition-transform group-hover:scale-105"
+          style={{ width: size, height: size }}
         />
         <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity bg-black/30 rounded-lg">
           <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" className="text-white">
@@ -51,13 +72,10 @@ export default function QRCode({ url, size = 140, color = '#ffffff' }: QRCodePro
             onClick={(e) => e.stopPropagation()}
           >
             <p className="text-white font-semibold mb-4">Scannez ce QR code</p>
-            {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img
-              src={qrSrcLarge}
-              alt="QR Code"
-              width={300}
-              height={300}
+            <canvas
+              ref={canvasModalRef}
               className="mx-auto rounded-lg"
+              style={{ width: 280, height: 280 }}
             />
             <p className="text-zinc-500 text-xs mt-4 break-all">{url}</p>
             <button
