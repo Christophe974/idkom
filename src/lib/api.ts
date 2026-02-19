@@ -501,3 +501,28 @@ export async function trackPropositionEvent(slug: string, event: string): Promis
     body: JSON.stringify({ event }),
   });
 }
+
+// ============================================================
+// Cartes de visite digitales (vCards)
+// ============================================================
+export interface VCardData {
+  slug: string;
+  first_name: string;
+  last_name: string;
+  job_title: string | null;
+  company: string;
+  email: string | null;
+  phone: string | null;
+  phone_secondary: string | null;
+  address: string | null;
+  website: string | null;
+  linkedin: string | null;
+  instagram: string | null;
+  photo: string | null;
+  accent_color: string;
+  bio: string | null;
+}
+
+export async function getVCard(slug: string): Promise<VCardData> {
+  return fetchApi<VCardData>(`vcards.php?action=get&slug=${encodeURIComponent(slug)}`);
+}
