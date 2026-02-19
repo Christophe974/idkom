@@ -2,7 +2,7 @@ import Link from 'next/link';
 import { Icon } from '@iconify/react';
 import { getHomepageData } from '@/lib/api';
 import NavbarServer from '@/components/NavbarServer';
-import Footer from '@/components/Footer';
+import FooterServer from '@/components/FooterServer';
 import AmbientBackground from '@/components/AmbientBackground';
 import BentoGrid from '@/components/BentoGrid';
 import ProjetCard from '@/components/ProjetCard';
@@ -49,7 +49,7 @@ export default async function Home() {
         <CTASection phone={data.site.phone} />
       </main>
 
-      <Footer site={data.site} social={data.social} />
+      <FooterServer site={data.site} social={data.social} />
     </>
   );
 }

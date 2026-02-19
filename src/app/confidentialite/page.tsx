@@ -3,7 +3,7 @@ import Link from 'next/link';
 import { Icon } from '@iconify/react';
 import { getHomepageData } from '@/lib/api';
 import NavbarServer from '@/components/NavbarServer';
-import Footer from '@/components/Footer';
+import FooterServer from '@/components/FooterServer';
 import AmbientBackground from '@/components/AmbientBackground';
 
 export const metadata: Metadata = {
@@ -323,7 +323,7 @@ export default async function ConfidentialitePage() {
         </div>
       </main>
 
-      <Footer site={homeData.site} social={homeData.social} />
+      <FooterServer site={homeData.site} social={homeData.social} />
     </>
   );
 }

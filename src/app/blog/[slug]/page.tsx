@@ -3,7 +3,7 @@ import Link from 'next/link';
 import { Icon } from '@iconify/react';
 import { getBlogArticleBySlug, getHomepageData } from '@/lib/api';
 import NavbarServer from '@/components/NavbarServer';
-import Footer from '@/components/Footer';
+import FooterServer from '@/components/FooterServer';
 import AmbientBackground from '@/components/AmbientBackground';
 import GlowingImageFrame from '@/components/GlowingImageFrame';
 import MarkdownContent from '@/components/MarkdownContent';
@@ -161,7 +161,7 @@ export default async function ArticlePage({ params }: PageProps) {
         </div>
       </main>
 
-      <Footer site={homeData.site} social={homeData.social} />
+      <FooterServer site={homeData.site} social={homeData.social} />
     </>
   );
 }

@@ -3,7 +3,7 @@ import Link from 'next/link';
 import Image from 'next/image';
 import { Icon } from '@iconify/react';
 import NavbarServer from '@/components/NavbarServer';
-import Footer from '@/components/Footer';
+import FooterServer from '@/components/FooterServer';
 import AmbientBackground from '@/components/AmbientBackground';
 import Counter from '@/components/Counter';
 import { getHomepageData } from '@/lib/api';
@@ -440,7 +440,7 @@ export default async function BematrixPage() {
         </section>
       </main>
 
-      <Footer site={data.site} social={data.social} />
+      <FooterServer site={data.site} social={data.social} />
     </>
   );
 }

@@ -1,7 +1,7 @@
 import { Metadata } from 'next';
 import { Suspense } from 'react';
 import NavbarServer from '@/components/NavbarServer';
-import Footer from '@/components/Footer';
+import FooterServer from '@/components/FooterServer';
 import AmbientBackground from '@/components/AmbientBackground';
 import CatalogueBematrix from '@/components/CatalogueBematrix';
 import { getHomepageData } from '@/lib/api';
@@ -95,7 +95,7 @@ export default async function CataloguePage() {
         </Suspense>
       </main>
 
-      <Footer site={data.site} social={data.social} />
+      <FooterServer site={data.site} social={data.social} />
     </>
   );
 }

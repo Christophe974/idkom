@@ -1,12 +1,13 @@
-import { getNavigation } from '@/lib/api';
+import { getMenus } from '@/lib/api';
 import Navbar from './Navbar';
 
 export default async function NavbarServer() {
   let menus;
   try {
-    menus = await getNavigation();
+    const allMenus = await getMenus();
+    menus = allMenus.header;
   } catch {
-    // Fallback si l'API ne répond pas (colonnes pas encore créées, etc.)
+    // Fallback si l'API ne répond pas → Navbar utilise ses defaultMenus
     menus = undefined;
   }
 

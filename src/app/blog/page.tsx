@@ -3,7 +3,7 @@ import Image from 'next/image';
 import { Icon } from '@iconify/react';
 import { getBlogArticles, getHomepageData } from '@/lib/api';
 import NavbarServer from '@/components/NavbarServer';
-import Footer from '@/components/Footer';
+import FooterServer from '@/components/FooterServer';
 import AmbientBackground from '@/components/AmbientBackground';
 
 export const revalidate = 300;
@@ -115,7 +115,7 @@ export default async function BlogPage() {
         )}
       </main>
 
-      <Footer site={homeData?.site} social={homeData?.social} />
+      <FooterServer site={homeData?.site} social={homeData?.social} />
     </>
   );
 }

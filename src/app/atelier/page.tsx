@@ -2,7 +2,7 @@ import Link from 'next/link';
 import { Icon } from '@iconify/react';
 import { getHomepageData } from '@/lib/api';
 import NavbarServer from '@/components/NavbarServer';
-import Footer from '@/components/Footer';
+import FooterServer from '@/components/FooterServer';
 import AmbientBackground from '@/components/AmbientBackground';
 import Counter from '@/components/Counter';
 import CTASection from '@/components/CTASection';
@@ -191,7 +191,7 @@ export default async function AtelierPage() {
         <CTASection phone={homeData.site.phone} />
       </main>
 
-      <Footer site={homeData.site} social={homeData.social} />
+      <FooterServer site={homeData.site} social={homeData.social} />
     </>
   );
 }

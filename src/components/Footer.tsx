@@ -2,6 +2,11 @@ import Link from 'next/link';
 import Image from 'next/image';
 import { Icon } from '@iconify/react';
 
+interface FooterMenuItem {
+  label: string;
+  url: string;
+}
+
 interface FooterProps {
   site?: {
     name: string;
@@ -14,20 +19,25 @@ interface FooterProps {
     instagram: string;
     facebook: string;
   };
+  footerServices?: FooterMenuItem[];
+  footerLegal?: FooterMenuItem[];
 }
 
-export default function Footer({ site, social }: FooterProps) {
-  const services = [
+export default function Footer({ site, social, footerServices, footerLegal }: FooterProps) {
+  const defaultServices = [
     { label: 'Stands BeMatrix', url: '/savoir-faire#stands' },
     { label: 'Solutions Digitales', url: '/savoir-faire#digital' },
     { label: 'Événementiel', url: '/savoir-faire#events' },
     { label: 'Configurateur', url: '/configurateur' },
   ];
 
-  const legal = [
+  const defaultLegal = [
     { label: 'Mentions légales', url: '/mentions-legales' },
     { label: 'Confidentialité', url: '/confidentialite' },
   ];
+
+  const services = footerServices && footerServices.length > 0 ? footerServices : defaultServices;
+  const legal = footerLegal && footerLegal.length > 0 ? footerLegal : defaultLegal;
 
   return (
     <footer className="relative z-10 border-t border-white/5 mt-24">
