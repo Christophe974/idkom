@@ -240,7 +240,7 @@ export default function VCardPageClient({ card }: Props) {
             </div>
 
             {/* Social links */}
-            {(card.linkedin || card.instagram) && (
+            {(card.linkedin || card.instagram || card.facebook) && (
               <div className="flex justify-center gap-3 mb-6 animate-fade-in-up delay-400">
                 {card.linkedin && (
                   <a
@@ -262,6 +262,17 @@ export default function VCardPageClient({ card }: Props) {
                     title="Instagram"
                   >
                     <Icon icon="mdi:instagram" width={24} className="text-[#E4405F]" />
+                  </a>
+                )}
+                {card.facebook && (
+                  <a
+                    href={card.facebook}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="w-12 h-12 rounded-xl flex items-center justify-center border border-white/5 transition-all duration-300 hover:border-white/15 hover:scale-110 bg-white/[0.03]"
+                    title="Facebook"
+                  >
+                    <Icon icon="mdi:facebook" width={24} className="text-[#1877F2]" />
                   </a>
                 )}
               </div>

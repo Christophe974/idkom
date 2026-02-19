@@ -518,6 +518,7 @@ export interface VCardData {
   website: string | null;
   linkedin: string | null;
   instagram: string | null;
+  facebook: string | null;
   photo: string | null;
   accent_color: string;
   bio: string | null;
