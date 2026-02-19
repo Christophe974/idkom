@@ -1,6 +1,7 @@
 'use client';
 
 import { useState } from 'react';
+import Image from 'next/image';
 import { Icon } from '@iconify/react';
 import type { VCardData } from '@/lib/api';
 import { downloadVcf } from './generateVcf';
@@ -96,6 +97,19 @@ export default function VCardPageClient({ card }: Props) {
               WebkitBackdropFilter: 'blur(40px)',
             }}
           >
+            {/* Logo iDkom */}
+            <div className="flex justify-center mb-5 animate-fade-in-up">
+              <a href="https://idkom.vercel.app" target="_blank" rel="noopener noreferrer">
+                <Image
+                  src="/images/logo-white.svg"
+                  alt="iDkom"
+                  width={100}
+                  height={32}
+                  className="h-7 w-auto opacity-60 hover:opacity-100 transition-opacity duration-300"
+                />
+              </a>
+            </div>
+
             {/* Photo */}
             <div className="flex justify-center mb-6 animate-fade-in-up delay-100">
               <div className="relative">
