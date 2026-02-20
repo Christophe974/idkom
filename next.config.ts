@@ -52,13 +52,19 @@ const nextConfig: NextConfig = {
         source: "/demo/:path*",
         destination: "https://ovh.idkom.fr/demo/:path*",
       },
-      {
-        source: "/gestionstock/:path*",
-        destination: "https://ovh.idkom.fr/gestionstock/:path*",
-      },
+    ];
+  },
+  async redirects() {
+    return [
       {
         source: "/admin/:path*",
         destination: "https://ovh.idkom.fr/admin/:path*",
+        permanent: false,
+      },
+      {
+        source: "/gestionstock/:path*",
+        destination: "https://ovh.idkom.fr/gestionstock/:path*",
+        permanent: false,
       },
     ];
   },
