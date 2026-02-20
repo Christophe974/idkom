@@ -56,6 +56,10 @@ const nextConfig: NextConfig = {
         source: "/gestionstock/:path*",
         destination: "https://ovh.idkom.fr/gestionstock/:path*",
       },
+      {
+        source: "/admin/:path*",
+        destination: "https://ovh.idkom.fr/admin/:path*",
+      },
     ];
   },
 };
