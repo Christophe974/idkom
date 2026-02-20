@@ -100,11 +100,15 @@ export default async function AuditPublicPage({ params }: PageProps) {
       {/* Minimal header */}
       <header className="fixed top-0 left-0 right-0 z-50 bg-zinc-950/80 backdrop-blur-xl border-b border-zinc-800/50">
         <div className="max-w-7xl mx-auto px-6 h-16 flex items-center justify-between">
-          <Link href="/" className="flex items-center gap-3">
-            <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-[#ff2d55] via-[#7928ca] to-[#00d4ff] flex items-center justify-center font-bold text-white text-sm">
-              iD
-            </div>
-            <span className="text-lg font-semibold text-white">iDkom</span>
+          <Link href="/" className="flex items-center">
+            <Image
+              src="/images/logo-white.svg"
+              alt="iDkom"
+              width={120}
+              height={40}
+              className="h-8 w-auto"
+              priority
+            />
           </Link>
           <Link
             href="/rendez-vous"
