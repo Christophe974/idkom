@@ -9,6 +9,7 @@ import AmbientBackground from '@/components/AmbientBackground';
 export const metadata: Metadata = {
   title: 'Politique de confidentialité | iDkom',
   description: 'Politique de confidentialité et protection des données personnelles du site iDkom.',
+  alternates: { canonical: 'https://www.idkom.fr/confidentialite' },
 };
 
 export const revalidate = 86400; // 24h

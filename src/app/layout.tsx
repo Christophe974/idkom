@@ -1,4 +1,4 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import { Space_Grotesk } from "next/font/google";
 import "./globals.css";
 import CookieConsent from "@/components/CookieConsent";
@@ -9,8 +9,14 @@ const spaceGrotesk = Space_Grotesk({
   weight: ["300", "400", "500", "600", "700"],
 });
 
+export const viewport: Viewport = {
+  width: "device-width",
+  initialScale: 1,
+  maximumScale: 5,
+};
+
 export const metadata: Metadata = {
-  title: "iDkom | L'Atelier Phygital — Stands • Digital • Events",
+  title: "iDkom | L'Atelier Phygital — Stands & Digital",
   description: "Atelier créatif spécialisé stands BeMatrix, solutions digitales et événementiel. 30 ans d'expérience, 600+ projets réalisés.",
   keywords: ["stands", "BeMatrix", "événementiel", "digital", "salon professionnel", "iDkom"],
   authors: [{ name: "iDkom" }],
@@ -31,6 +37,9 @@ export const metadata: Metadata = {
   robots: {
     index: true,
     follow: true,
+  },
+  alternates: {
+    canonical: "https://www.idkom.fr",
   },
 };
 

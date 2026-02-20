@@ -10,6 +10,7 @@ export const revalidate = 300;
 export const metadata = {
   title: 'Animations événementielles | iDkom - L\'Atelier Phygital',
   description: 'Découvrez nos animations événementielles : Fabrique à Souvenirs, Photobooth, expériences interactives. Des moments uniques pour vos événements.',
+  alternates: { canonical: 'https://www.idkom.fr/animations' },
 };
 
 export default async function AnimationsPage() {

@@ -23,6 +23,7 @@ export async function generateMetadata({ params }: PageProps) {
     return {
       title: `${projet.title} | iDkom`,
       description: projet.excerpt || projet.meta_description,
+      alternates: { canonical: `https://www.idkom.fr/realisations/${slug}` },
     };
   } catch {
     return {

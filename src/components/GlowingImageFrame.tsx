@@ -1,5 +1,7 @@
 'use client';
 
+import Image from 'next/image';
+
 interface GlowingImageFrameProps {
   src?: string;
   alt?: string;
@@ -26,10 +28,12 @@ export default function GlowingImageFrame({ src, alt, className = '', fallbackIc
       {/* Container principal avec l'image */}
       <div className="relative aspect-video rounded-2xl overflow-hidden z-10">
         {src ? (
-          <img
+          <Image
             src={src}
             alt={alt || ''}
-            className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-[1.02]"
+            fill
+            sizes="(max-width: 768px) 100vw, 60vw"
+            className="object-cover transition-transform duration-700 group-hover:scale-[1.02]"
           />
         ) : (
           <>

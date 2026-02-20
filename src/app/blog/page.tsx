@@ -11,6 +11,7 @@ export const revalidate = 300;
 export const metadata = {
   title: 'Blog | iDkom - L\'Atelier Phygital',
   description: 'Actualités, conseils et coulisses de l\'Atelier Phygital. Découvrez nos articles sur les stands, le digital et l\'événementiel.',
+  alternates: { canonical: 'https://www.idkom.fr/blog' },
 };
 
 export default async function BlogPage() {

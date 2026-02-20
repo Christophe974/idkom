@@ -22,6 +22,7 @@ export async function generateMetadata({ params }: PageProps) {
     return {
       title: anim.seo?.title || `${anim.title} | iDkom`,
       description: anim.seo?.description || anim.excerpt,
+      alternates: { canonical: `https://www.idkom.fr/animations/${slug}` },
     };
   } catch {
     return {

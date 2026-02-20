@@ -10,6 +10,7 @@ export const revalidate = 300;
 export const metadata = {
   title: "Savoir-Faire | iDkom - L'Atelier Phygital",
   description: "Découvrez nos expertises : stands modulaires BeMatrix, solutions digitales interactives, événementiel sur-mesure. iDkom, votre partenaire depuis 1994.",
+  alternates: { canonical: "https://www.idkom.fr/savoir-faire" },
 };
 
 const expertises = [

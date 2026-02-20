@@ -42,7 +42,7 @@ export default function TestimonialCarousel({ testimonials, interval = 5000 }: T
       <div>
         <div className="flex items-center gap-2 mb-4">
           <Icon icon="solar:chat-square-like-linear" className="text-[#ff2d55]/60" width={24} />
-          <span className="text-xs uppercase tracking-widest text-zinc-600">Témoignages</span>
+          <span className="text-xs uppercase tracking-widest text-zinc-500">Témoignages</span>
         </div>
 
         {/* Quote with fade transition */}
@@ -76,7 +76,7 @@ export default function TestimonialCarousel({ testimonials, interval = 5000 }: T
           </div>
           {/* Pagination discrète */}
           {testimonials.length > 1 && (
-            <span className="text-xs text-zinc-600 tabular-nums">
+            <span className="text-xs text-zinc-500 tabular-nums">
               {current + 1}/{testimonials.length}
             </span>
           )}

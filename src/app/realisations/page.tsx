@@ -10,6 +10,7 @@ export const revalidate = 300;
 export const metadata = {
   title: 'Réalisations | iDkom - L\'Atelier Phygital',
   description: 'Découvrez nos projets : stands BeMatrix, solutions digitales et événements. 600+ réalisations pour des marques ambitieuses.',
+  alternates: { canonical: 'https://www.idkom.fr/realisations' },
 };
 
 export default async function RealisationsPage() {

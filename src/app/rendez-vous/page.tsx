@@ -7,6 +7,7 @@ export const revalidate = 300;
 export const metadata: Metadata = {
   title: "Prendre rendez-vous | iDkom - L'Atelier Phygital",
   description: "Réservez un créneau de 30 minutes en visioconférence avec iDkom pour discuter de votre projet de stand, digital ou événementiel.",
+  alternates: { canonical: "https://www.idkom.fr/rendez-vous" },
 };
 
 export default async function BookingPage() {

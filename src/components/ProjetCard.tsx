@@ -1,4 +1,5 @@
 import Link from 'next/link';
+import Image from 'next/image';
 import { Icon } from '@iconify/react';
 import type { Projet } from '@/lib/api';
 
@@ -38,10 +39,12 @@ export default function ProjetCard({ projet, index = 0 }: ProjetCardProps) {
       {/* Image */}
       <div className="relative h-40 overflow-hidden">
         {projet.image?.url ? (
-          <img
+          <Image
             src={projet.image.url}
             alt={projet.image.alt || projet.title}
-            className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+            fill
+            sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 25vw"
+            className="object-cover group-hover:scale-105 transition-transform duration-500"
           />
         ) : (
           <div className={`w-full h-full bg-gradient-to-br ${colorConfig.bg} to-zinc-900 flex items-center justify-center`}>
@@ -66,7 +69,7 @@ export default function ProjetCard({ projet, index = 0 }: ProjetCardProps) {
         <h3 className="text-xl font-semibold text-white group-hover:text-[#7928ca] transition-colors">
           {projet.title}
         </h3>
-        <p className="text-zinc-500 text-sm mt-1">
+        <p className="text-zinc-400 text-sm mt-1">
           {projet.location} • {projet.event_name || projet.surface || 'Projet'}
         </p>
         <div className="flex items-center text-zinc-400 text-sm mt-3 group-hover:text-white group-hover:gap-3 gap-2 transition-all">

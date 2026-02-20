@@ -9,6 +9,7 @@ import { getHomepageData } from '@/lib/api';
 export const metadata: Metadata = {
   title: 'Catalogue Be Matrix | Stock en temps réel | iDkom',
   description: 'Consultez notre stock de pièces Be Matrix en temps réel. Cadres, jonctions, accessoires - tout notre inventaire disponible pour vos projets de stands.',
+  alternates: { canonical: 'https://www.idkom.fr/catalogue' },
 };
 
 export const revalidate = 60; // Revalidate every minute for fresh stock data

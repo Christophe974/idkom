@@ -12,6 +12,7 @@ export const metadata: Metadata = {
   title: 'Stand BeMatrix | Système modulaire premium | iDkom',
   description: 'Expert en structures BeMatrix pour salons et événements. Plus de 4000 pièces en stock, intégration LEDskin, conception sur-mesure. La référence mondiale du cadre aluminium.',
   keywords: ['BeMatrix', 'stand modulaire', 'salon professionnel', 'événementiel', 'LEDskin', 'cadre aluminium'],
+  alternates: { canonical: 'https://www.idkom.fr/bematrix' },
 };
 
 export const revalidate = 3600;

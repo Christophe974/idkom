@@ -124,7 +124,7 @@ export default function Footer({ site, social, footerServices, footerLegal }: Fo
         </div>
 
         {/* Bottom */}
-        <div className="mt-12 pt-8 border-t border-white/5 flex flex-col md:flex-row justify-between items-center text-xs text-zinc-600">
+        <div className="mt-12 pt-8 border-t border-white/5 flex flex-col md:flex-row justify-between items-center text-xs text-zinc-500">
           <p>© {new Date().getFullYear()} {site?.name || 'iDkom'} — {site?.tagline || "L'Atelier Phygital"}. Tous droits réservés.</p>
           <p className="mt-2 md:mt-0">{site?.address || 'Franche-Comté, France'} 🇫🇷</p>
         </div>

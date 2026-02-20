@@ -21,6 +21,7 @@ export async function generateMetadata({ params }: PageProps) {
     return {
       title: `${article.title} | Blog iDkom`,
       description: article.excerpt || article.meta_description,
+      alternates: { canonical: `https://www.idkom.fr/blog/${slug}` },
     };
   } catch {
     return {

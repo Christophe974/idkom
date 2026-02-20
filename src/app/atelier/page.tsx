@@ -13,6 +13,7 @@ export const revalidate = 300;
 export const metadata = {
   title: "Histoire d'iDkom : de Besançon (1996) à l'Atelier Phygital (stands BeMatrix & digital)",
   description: "Depuis 1996 à Besançon (Franche-Comté), iDkom conçoit stands, signalétique et expériences digitales. CARECO 120 m² (2016), BIO360 (2017) : l'Atelier Phygital.",
+  alternates: { canonical: "https://www.idkom.fr/atelier" },
 };
 
 export default async function AtelierPage() {

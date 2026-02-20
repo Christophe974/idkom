@@ -9,6 +9,7 @@ import AmbientBackground from '@/components/AmbientBackground';
 export const metadata: Metadata = {
   title: 'Mentions légales | iDkom',
   description: 'Mentions légales du site iDkom - Informations juridiques, éditeur, hébergeur et politique de confidentialité.',
+  alternates: { canonical: 'https://www.idkom.fr/mentions-legales' },
 };
 
 export const revalidate = 86400; // 24h
