@@ -1,0 +1,12 @@
+{
+  "rewrites": [
+    {
+      "source": "/gestionstock/:path*",
+      "destination": "https://ovh.idkom.fr/gestionstock/:path*"
+    },
+    {
+      "source": "/demo/:path*",
+      "destination": "https://ovh.idkom.fr/demo/:path*"
+    }
+  ]
+}
