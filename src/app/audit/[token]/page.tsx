@@ -258,31 +258,6 @@ export default async function AuditPublicPage({ params }: PageProps) {
           </div>
         </AuditScrollAnimator>
 
-        {/* Screenshot */}
-        {audit.screenshot_url && (
-          <AuditScrollAnimator delay={0.1}>
-            <div className="mb-14">
-              <div className="bg-zinc-900/50 border border-zinc-800/50 rounded-2xl overflow-hidden max-w-2xl mx-auto">
-                <div className="px-4 py-3 border-b border-zinc-800/50 flex items-center gap-2">
-                  <div className="flex gap-1.5">
-                    <div className="w-3 h-3 rounded-full bg-red-500/60" />
-                    <div className="w-3 h-3 rounded-full bg-yellow-500/60" />
-                    <div className="w-3 h-3 rounded-full bg-green-500/60" />
-                  </div>
-                  <p className="text-xs text-zinc-500 font-mono ml-2 truncate">{audit.website_url}</p>
-                </div>
-                <div className="relative">
-                  {/* eslint-disable-next-line @next/next/no-img-element */}
-                  <img
-                    src={audit.screenshot_url}
-                    alt={`Capture de ${audit.company_name || 'votre site'}`}
-                    className="w-full h-auto"
-                  />
-                </div>
-              </div>
-            </div>
-          </AuditScrollAnimator>
-        )}
 
         {/* Detailed categories */}
         <AuditScrollAnimator delay={0.1}>
