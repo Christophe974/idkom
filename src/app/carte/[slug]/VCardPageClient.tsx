@@ -19,7 +19,7 @@ export default function VCardPageClient({ card }: Props) {
   const accent = card.accent_color || '#ff2d55';
   const pageUrl = typeof window !== 'undefined'
     ? window.location.href
-    : `https://idkom.vercel.app/carte/${card.slug}`;
+    : `https://www.idkom.fr/carte/${card.slug}`;
 
   function handleDownload() {
     downloadVcf(card);
@@ -99,7 +99,7 @@ export default function VCardPageClient({ card }: Props) {
           >
             {/* Logo iDkom */}
             <div className="flex justify-center mb-5 animate-fade-in-up">
-              <a href="https://idkom.vercel.app" target="_blank" rel="noopener noreferrer">
+              <a href="https://www.idkom.fr" target="_blank" rel="noopener noreferrer">
                 <Image
                   src="/images/logo-white.svg"
                   alt="iDkom"
@@ -343,7 +343,7 @@ export default function VCardPageClient({ card }: Props) {
           {/* Footer */}
           <div className="mt-8 text-center animate-fade-in-up delay-600">
             <a
-              href="https://idkom.vercel.app"
+              href="https://www.idkom.fr"
               target="_blank"
               rel="noopener noreferrer"
               className="text-zinc-700 text-xs hover:text-zinc-500 transition-colors"

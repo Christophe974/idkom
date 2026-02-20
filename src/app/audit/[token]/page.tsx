@@ -268,11 +268,10 @@ export default async function AuditPublicPage({ params }: PageProps) {
                   <p className="text-xs text-zinc-500 font-mono ml-2 truncate">{audit.website_url}</p>
                 </div>
                 <div className="relative">
-                  <Image
+                  {/* eslint-disable-next-line @next/next/no-img-element */}
+                  <img
                     src={audit.screenshot_url}
                     alt={`Capture de ${audit.company_name || 'votre site'}`}
-                    width={800}
-                    height={600}
                     className="w-full h-auto"
                   />
                 </div>
@@ -449,7 +448,7 @@ export default async function AuditPublicPage({ params }: PageProps) {
           <p className="text-zinc-600 text-sm">
             Audit réalisé par <Link href="/" className="text-[#7928ca] hover:underline">iDkom</Link> — L&apos;Atelier Phygital
           </p>
-          <p className="text-zinc-700 text-xs mt-1">idkom.vercel.app</p>
+          <p className="text-zinc-700 text-xs mt-1">www.idkom.fr</p>
         </div>
       </main>
     </>
