@@ -178,6 +178,36 @@ export default function PropositionPage({ proposition: prop, slug }: { propositi
         )}
 
         {/* ============================================================ */}
+        {/* AUDIO MESSAGE (before sections) */}
+        {/* ============================================================ */}
+        {prop.media.audio_message_url && (
+          <div className="max-w-2xl mx-auto mb-20">
+            <div className="bg-zinc-900/80 border border-zinc-800 rounded-2xl p-6 backdrop-blur-sm">
+              <div className="flex items-center gap-3 mb-4">
+                {prop.reseller.avatar ? (
+                  <img src={prop.reseller.avatar.url} alt="" className="w-10 h-10 rounded-full object-cover border-2 border-zinc-700" />
+                ) : (
+                  <div className="w-10 h-10 rounded-full bg-gradient-to-r from-[#ff2d55] to-[#7928ca] flex items-center justify-center text-white font-bold text-sm">
+                    {prop.reseller.contact.charAt(0).toUpperCase()}
+                  </div>
+                )}
+                <div>
+                  <p className="text-white font-medium text-sm">Message vocal</p>
+                  <p className="text-zinc-500 text-xs">{prop.reseller.contact}</p>
+                </div>
+              </div>
+              <audio
+                controls
+                src={prop.media.audio_message_url}
+                onPlay={handleAudioPlay}
+                className="w-full h-10"
+                preload="none"
+              />
+            </div>
+          </div>
+        )}
+
+        {/* ============================================================ */}
         {/* SECTIONS */}
         {/* ============================================================ */}
         {prop.sections.length > 0 && (
@@ -208,36 +238,6 @@ export default function PropositionPage({ proposition: prop, slug }: { propositi
               </p>
             </div>
             <PropositionOptions options={prop.options} />
-          </div>
-        )}
-
-        {/* ============================================================ */}
-        {/* AUDIO MESSAGE */}
-        {/* ============================================================ */}
-        {prop.media.audio_message_url && (
-          <div className="max-w-2xl mx-auto mb-20">
-            <div className="bg-zinc-900/80 border border-zinc-800 rounded-2xl p-6 backdrop-blur-sm">
-              <div className="flex items-center gap-3 mb-4">
-                {prop.reseller.avatar ? (
-                  <img src={prop.reseller.avatar.url} alt="" className="w-10 h-10 rounded-full object-cover border-2 border-zinc-700" />
-                ) : (
-                  <div className="w-10 h-10 rounded-full bg-gradient-to-r from-[#ff2d55] to-[#7928ca] flex items-center justify-center text-white font-bold text-sm">
-                    {prop.reseller.contact.charAt(0).toUpperCase()}
-                  </div>
-                )}
-                <div>
-                  <p className="text-white font-medium text-sm">Message vocal</p>
-                  <p className="text-zinc-500 text-xs">{prop.reseller.contact}</p>
-                </div>
-              </div>
-              <audio
-                controls
-                src={prop.media.audio_message_url}
-                onPlay={handleAudioPlay}
-                className="w-full h-10"
-                preload="none"
-              />
-            </div>
           </div>
         )}
 

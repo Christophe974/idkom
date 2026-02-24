@@ -489,9 +489,10 @@ export interface Proposition {
   views_count: number;
 }
 
-export async function getPropositionBySlug(slug: string, code?: string): Promise<Proposition> {
+export async function getPropositionBySlug(slug: string, code?: string, preview?: string): Promise<Proposition> {
   const params = new URLSearchParams({ slug });
   if (code) params.set('code', code);
+  if (preview) params.set('preview', preview);
   return fetchApi<Proposition>(`propositions.php?${params.toString()}`);
 }
 

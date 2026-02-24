@@ -9,7 +9,7 @@ export const revalidate = 60;
 
 interface PageProps {
   params: Promise<{ slug: string }>;
-  searchParams: Promise<{ code?: string }>;
+  searchParams: Promise<{ code?: string; preview?: string }>;
 }
 
 export async function generateMetadata({ params }: PageProps) {
@@ -30,10 +30,10 @@ export async function generateMetadata({ params }: PageProps) {
 
 export default async function Page({ params, searchParams }: PageProps) {
   const { slug } = await params;
-  const { code } = await searchParams;
+  const { code, preview } = await searchParams;
 
   try {
-    const prop = await getPropositionBySlug(slug, code);
+    const prop = await getPropositionBySlug(slug, code, preview);
     return (
       <>
         <AmbientBackground />
