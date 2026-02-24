@@ -210,7 +210,7 @@ export default function PropositionPage({ proposition: prop, slug }: { propositi
         {/* ============================================================ */}
         {/* SECTIONS */}
         {/* ============================================================ */}
-        {prop.sections.length > 0 && (
+        {(prop.sections.length > 0 || videoEmbedUrl) && (
           <div className="mb-20">
             <div className="text-center mb-16">
               <h2 className="text-3xl md:text-4xl font-bold text-white mb-4">
@@ -220,7 +220,15 @@ export default function PropositionPage({ proposition: prop, slug }: { propositi
                 Découvrez en détail ce que nous avons imaginé pour vous
               </p>
             </div>
-            <PropositionSections sections={prop.sections} />
+
+            {/* Video after title, before steps */}
+            {videoEmbedUrl && (
+              <div className="max-w-4xl mx-auto mb-16">
+                <VideoSection embedUrl={videoEmbedUrl} onVisible={handleVideoVisible} />
+              </div>
+            )}
+
+            {prop.sections.length > 0 && <PropositionSections sections={prop.sections} />}
           </div>
         )}
 
@@ -238,15 +246,6 @@ export default function PropositionPage({ proposition: prop, slug }: { propositi
               </p>
             </div>
             <PropositionOptions options={prop.options} />
-          </div>
-        )}
-
-        {/* ============================================================ */}
-        {/* VIDEO */}
-        {/* ============================================================ */}
-        {videoEmbedUrl && (
-          <div className="max-w-4xl mx-auto mb-20">
-            <VideoSection embedUrl={videoEmbedUrl} onVisible={handleVideoVisible} />
           </div>
         )}
 
