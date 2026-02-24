@@ -39,6 +39,7 @@ const nextConfig: NextConfig = {
               "font-src 'self' https://fonts.gstatic.com",
               "img-src 'self' data: blob: https://api.idkom.fr https://*.googleusercontent.com https://lh3.googleusercontent.com",
               "connect-src 'self' https://api.idkom.fr https://api.iconify.design https://www.google-analytics.com https://www.googletagmanager.com",
+              "frame-src 'self' https://www.youtube.com https://player.vimeo.com",
               "frame-ancestors 'self'",
             ].join("; "),
           },
