@@ -10,6 +10,7 @@ import AuditRadarChart from '@/components/AuditRadarChart';
 import AuditBarChart from '@/components/AuditBarChart';
 import AuditScrollAnimator from '@/components/AuditScrollAnimator';
 import AuditProgressBar from '@/components/AuditProgressBar';
+import AuditPorteCle from '@/components/AuditPorteCle';
 
 export const revalidate = 60;
 
@@ -376,6 +377,13 @@ export default async function AuditPublicPage({ params }: PageProps) {
                 </div>
               </div>
             </div>
+          </AuditScrollAnimator>
+        )}
+
+        {/* Porte-clé CTA */}
+        {audit.qr_porte_cle_available && (
+          <AuditScrollAnimator delay={0.1}>
+            <AuditPorteCle token={token} />
           </AuditScrollAnimator>
         )}
 

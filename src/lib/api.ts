@@ -431,6 +431,7 @@ export interface AuditPublic {
     photo_url: string | null;
     bio: string | null;
   };
+  qr_porte_cle_available?: boolean;
   created_at: string;
 }
 
