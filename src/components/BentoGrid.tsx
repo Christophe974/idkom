@@ -45,6 +45,7 @@ export default function BentoGrid({ data }: BentoGridProps) {
           </div>
           <div className="flex flex-wrap gap-3 mt-6">
             <Link
+              prefetch={false}
               href="/atelier"
               className="group px-6 py-2.5 rounded-full gradient-bg font-medium text-sm text-white hover:shadow-lg hover:shadow-[#7928ca]/25 transition-all duration-300 inline-flex items-center"
             >
@@ -52,6 +53,7 @@ export default function BentoGrid({ data }: BentoGridProps) {
               <ArrowRightIcon className="ml-2 group-hover:translate-x-1 transition-transform" size={16} />
             </Link>
             <Link
+              prefetch={false}
               href="/realisations"
               className="px-6 py-2.5 rounded-full bg-white/5 border border-white/10 font-medium text-sm text-white hover:bg-white/10 transition-all duration-300 inline-flex items-center"
             >
@@ -91,7 +93,7 @@ export default function BentoGrid({ data }: BentoGridProps) {
 
       {/* Service 1 - Événementiel (grand format) */}
       <div className="row-span-2 bento-card rounded-3xl p-6 bg-zinc-900/30 md:backdrop-blur-sm border border-white/10 group animate-fade-in-up delay-300">
-        <Link href="/savoir-faire#events" className="h-full flex flex-col">
+        <Link prefetch={false} href="/savoir-faire#events" className="h-full flex flex-col">
           <div className="w-12 h-12 rounded-xl bg-[#00d4ff]/10 border border-[#00d4ff]/20 flex items-center justify-center mb-4 group-hover:bg-[#00d4ff] group-hover:border-[#00d4ff] transition-all duration-300">
             <CalendarMarkIcon className="text-[#00d4ff] group-hover:text-white transition-colors" size={24} />
           </div>
@@ -108,7 +110,7 @@ export default function BentoGrid({ data }: BentoGridProps) {
 
       {/* Service 2 - Digital */}
       <div className="row-span-2 bento-card rounded-3xl p-6 bg-zinc-900/30 md:backdrop-blur-sm border border-white/10 group animate-fade-in-up delay-400">
-        <Link href="/savoir-faire#digital" className="h-full flex flex-col">
+        <Link prefetch={false} href="/savoir-faire#digital" className="h-full flex flex-col">
           <div className="w-12 h-12 rounded-xl bg-[#7928ca]/10 border border-[#7928ca]/20 flex items-center justify-center mb-4 group-hover:bg-[#7928ca] group-hover:border-[#7928ca] transition-all duration-300">
             <MonitorSmartphoneIcon className="text-[#7928ca] group-hover:text-white transition-colors" size={24} />
           </div>
@@ -125,7 +127,7 @@ export default function BentoGrid({ data }: BentoGridProps) {
 
       {/* Video Showcase - 2x2 */}
       <div className="md:col-span-2 row-span-2 bento-card rounded-3xl overflow-hidden bg-zinc-900/50 border border-white/10 group cursor-pointer animate-fade-in-up delay-300">
-        <Link href={`/realisations/${featured_projets[0]?.slug || ''}`} className="relative h-full w-full block">
+        <Link prefetch={false} href={`/realisations/${featured_projets[0]?.slug || ''}`} className="relative h-full w-full block">
           {/* Background image or fallback */}
           {featured_projets[0]?.image?.url ? (
             <Image
@@ -179,7 +181,7 @@ export default function BentoGrid({ data }: BentoGridProps) {
 
       {/* Service 3 - Stands BeMatrix (compact) */}
       <div className="bento-card rounded-3xl p-6 bg-zinc-900/30 md:backdrop-blur-sm border border-white/10 group animate-fade-in-up delay-500">
-        <Link href="/savoir-faire#stands" className="h-full flex flex-col justify-center">
+        <Link prefetch={false} href="/savoir-faire#stands" className="h-full flex flex-col justify-center">
           <div className="w-12 h-12 rounded-xl bg-[#ff2d55]/10 border border-[#ff2d55]/20 flex items-center justify-center mb-3 group-hover:bg-[#ff2d55] group-hover:border-[#ff2d55] transition-all duration-300">
             <Buildings3Icon className="text-[#ff2d55] group-hover:text-white transition-colors" size={22} />
           </div>
@@ -197,6 +199,7 @@ export default function BentoGrid({ data }: BentoGridProps) {
 
       {/* CTA Configurateur */}
       <Link
+        prefetch={false}
         href="/configurateur"
         className="bento-card rounded-3xl p-6 gradient-bg group cursor-pointer animate-fade-in-up delay-500 hover:shadow-xl hover:shadow-[#7928ca]/20"
       >
@@ -211,6 +214,7 @@ export default function BentoGrid({ data }: BentoGridProps) {
 
       {/* Stock BeMatrix - Accès Catalogue avec compteur */}
       <Link
+        prefetch={false}
         href="/catalogue"
         className="bento-card rounded-3xl p-6 bg-zinc-900/30 md:backdrop-blur-sm border border-white/10 animate-fade-in-up delay-600 group hover:border-[#ff2d55]/30 hover:bg-[#ff2d55]/5 transition-all duration-300 glow-pink"
       >
@@ -223,6 +227,7 @@ export default function BentoGrid({ data }: BentoGridProps) {
 
       {/* Partenaire BeMatrix - Lien vers page concept */}
       <Link
+        prefetch={false}
         href="/bematrix"
         className="bento-card rounded-3xl p-6 bg-zinc-900/30 md:backdrop-blur-sm border border-white/10 animate-fade-in-up delay-600 group hover:border-[#7928ca]/30"
       >

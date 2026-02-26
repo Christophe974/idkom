@@ -30,6 +30,7 @@ export default async function Home() {
               <p className="text-zinc-500 mt-2">Des projets qui font la différence sur le terrain</p>
             </div>
             <Link
+              prefetch={false}
               href="/realisations"
               className="text-sm text-zinc-400 hover:text-white transition-colors duration-300 flex items-center gap-2 group"
             >

@@ -33,8 +33,9 @@ export default function ProjetCard({ projet, index = 0 }: ProjetCardProps) {
 
   return (
     <Link
+      prefetch={false}
       href={`/realisations/${projet.slug}`}
-      className="bento-card rounded-3xl overflow-hidden bg-zinc-900/50 backdrop-blur-sm border border-white/10 group cursor-pointer"
+      className="bento-card rounded-3xl overflow-hidden bg-zinc-900/50 md:backdrop-blur-sm border border-white/10 group cursor-pointer"
       style={{ minHeight: '280px' }}
     >
       {/* Image */}

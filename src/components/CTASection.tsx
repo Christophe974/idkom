@@ -22,6 +22,7 @@ export default function CTASection({ phone = '04 84 25 XX XX' }: CTASectionProps
           </p>
           <div className="flex flex-wrap justify-center gap-4">
             <Link
+              prefetch={false}
               href="/rendez-vous"
               className="px-8 py-4 rounded-full gradient-bg font-medium text-white hover:shadow-lg hover:shadow-[#7928ca]/25 transition-all duration-300 flex items-center gap-2"
             >
