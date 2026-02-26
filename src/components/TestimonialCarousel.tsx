@@ -1,7 +1,8 @@
 'use client';
 
 import { useState, useEffect, useCallback } from 'react';
-import { Icon } from '@iconify/react';
+import Image from 'next/image';
+import { ChatSquareLikeIcon } from './Icons';
 import type { Testimonial } from '@/lib/api';
 
 interface TestimonialCarouselProps {
@@ -41,7 +42,7 @@ export default function TestimonialCarousel({ testimonials, interval = 5000 }: T
     <div className="h-full flex flex-col justify-between relative">
       <div>
         <div className="flex items-center gap-2 mb-4">
-          <Icon icon="solar:chat-square-like-linear" className="text-[#ff2d55]/60" width={24} />
+          <ChatSquareLikeIcon className="text-[#ff2d55]/60" size={24} />
           <span className="text-xs uppercase tracking-widest text-zinc-500">Témoignages</span>
         </div>
 
@@ -57,9 +58,11 @@ export default function TestimonialCarousel({ testimonials, interval = 5000 }: T
       <div className={`transition-all duration-300 ${isTransitioning ? 'opacity-0' : 'opacity-100'}`}>
         <div className="flex items-center gap-3 mt-6">
           {t.author.avatar ? (
-            <img
+            <Image
               src={t.author.avatar}
               alt={t.author.name}
+              width={44}
+              height={44}
               className="w-11 h-11 rounded-full object-cover border-2 border-zinc-700"
             />
           ) : (

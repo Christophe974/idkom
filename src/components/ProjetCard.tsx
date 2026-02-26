@@ -1,6 +1,6 @@
 import Link from 'next/link';
 import Image from 'next/image';
-import { Icon } from '@iconify/react';
+import { ArrowRightIcon, LeafIcon, SunFogIcon, UsersGroupIcon } from './Icons';
 import type { Projet } from '@/lib/api';
 
 interface ProjetCardProps {
@@ -8,27 +8,28 @@ interface ProjetCardProps {
   index?: number;
 }
 
-const colorMap: Record<string, { bg: string; text: string; icon: string }> = {
+const colorMap: Record<string, { bg: string; text: string; icon: typeof LeafIcon }> = {
   '#ff2d55': {
     bg: 'from-[#ff2d55]/10',
     text: 'text-[#ff2d55]',
-    icon: 'solar:leaf-linear',
+    icon: LeafIcon,
   },
   '#7928ca': {
     bg: 'from-[#7928ca]/10',
     text: 'text-[#7928ca]',
-    icon: 'solar:sun-fog-linear',
+    icon: SunFogIcon,
   },
   '#00d4ff': {
     bg: 'from-[#00d4ff]/10',
     text: 'text-[#00d4ff]',
-    icon: 'solar:users-group-rounded-linear',
+    icon: UsersGroupIcon,
   },
 };
 
 export default function ProjetCard({ projet, index = 0 }: ProjetCardProps) {
   const color = projet.category?.color || '#7928ca';
   const colorConfig = colorMap[color] || colorMap['#7928ca'];
+  const FallbackIcon = colorConfig.icon;
 
   return (
     <Link
@@ -48,7 +49,7 @@ export default function ProjetCard({ projet, index = 0 }: ProjetCardProps) {
           />
         ) : (
           <div className={`w-full h-full bg-gradient-to-br ${colorConfig.bg} to-zinc-900 flex items-center justify-center`}>
-            <Icon icon={colorConfig.icon} className={`${colorConfig.text} opacity-30`} width={48} />
+            <FallbackIcon className={`${colorConfig.text} opacity-30`} size={48} />
           </div>
         )}
         {/* Category badge */}
@@ -74,7 +75,7 @@ export default function ProjetCard({ projet, index = 0 }: ProjetCardProps) {
         </p>
         <div className="flex items-center text-zinc-400 text-sm mt-3 group-hover:text-white group-hover:gap-3 gap-2 transition-all">
           Voir le projet
-          <Icon icon="solar:arrow-right-linear" width={16} />
+          <ArrowRightIcon size={16} />
         </div>
       </div>
     </Link>

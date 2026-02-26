@@ -1,5 +1,5 @@
 import Link from 'next/link';
-import { Icon } from '@iconify/react';
+import { ArrowRightIcon } from '@/components/Icons';
 import { getHomepageData } from '@/lib/api';
 import NavbarServer from '@/components/NavbarServer';
 import FooterServer from '@/components/FooterServer';
@@ -34,7 +34,7 @@ export default async function Home() {
               className="text-sm text-zinc-400 hover:text-white transition-colors duration-300 flex items-center gap-2 group"
             >
               Voir tous les projets
-              <Icon icon="solar:arrow-right-linear" className="group-hover:translate-x-1 transition-transform" width={16} />
+              <ArrowRightIcon className="group-hover:translate-x-1 transition-transform" size={16} />
             </Link>
           </div>
 

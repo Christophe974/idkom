@@ -1,8 +1,14 @@
-'use client';
-
 import Link from 'next/link';
 import Image from 'next/image';
-import { Icon } from '@iconify/react';
+import {
+  ArrowRightIcon,
+  PlayCircleIcon,
+  PlayBoldIcon,
+  CalendarMarkIcon,
+  MonitorSmartphoneIcon,
+  Buildings3Icon,
+  Tuning2Icon,
+} from './Icons';
 import Counter from './Counter';
 import GlitchStat from './GlitchStat';
 import TestimonialCarousel from './TestimonialCarousel';
@@ -43,13 +49,13 @@ export default function BentoGrid({ data }: BentoGridProps) {
               className="group px-6 py-2.5 rounded-full gradient-bg font-medium text-sm text-white hover:shadow-lg hover:shadow-[#7928ca]/25 transition-all duration-300 inline-flex items-center"
             >
               Découvrir l&apos;atelier
-              <Icon icon="solar:arrow-right-linear" className="ml-2 group-hover:translate-x-1 transition-transform" width={16} />
+              <ArrowRightIcon className="ml-2 group-hover:translate-x-1 transition-transform" size={16} />
             </Link>
             <Link
               href="/realisations"
               className="px-6 py-2.5 rounded-full bg-white/5 border border-white/10 font-medium text-sm text-white hover:bg-white/10 transition-all duration-300 inline-flex items-center"
             >
-              <Icon icon="solar:play-circle-linear" className="mr-2" width={18} />
+              <PlayCircleIcon className="mr-2" size={18} />
               Voir les projets
             </Link>
           </div>
@@ -87,7 +93,7 @@ export default function BentoGrid({ data }: BentoGridProps) {
       <div className="row-span-2 bento-card rounded-3xl p-6 bg-zinc-900/30 backdrop-blur-sm border border-white/10 group animate-fade-in-up delay-300">
         <Link href="/savoir-faire#events" className="h-full flex flex-col">
           <div className="w-12 h-12 rounded-xl bg-[#00d4ff]/10 border border-[#00d4ff]/20 flex items-center justify-center mb-4 group-hover:bg-[#00d4ff] group-hover:border-[#00d4ff] transition-all duration-300">
-            <Icon icon="solar:calendar-mark-linear" className="text-[#00d4ff] group-hover:text-white transition-colors" width={24} />
+            <CalendarMarkIcon className="text-[#00d4ff] group-hover:text-white transition-colors" size={24} />
           </div>
           <h3 className="text-xl font-semibold text-white mb-2">Événementiel</h3>
           <p className="text-zinc-400 text-sm flex-grow leading-relaxed">
@@ -95,7 +101,7 @@ export default function BentoGrid({ data }: BentoGridProps) {
           </p>
           <div className="flex items-center text-[#00d4ff] text-sm font-medium mt-4 group-hover:gap-3 gap-2 transition-all">
             En savoir plus
-            <Icon icon="solar:arrow-right-linear" width={16} />
+            <ArrowRightIcon size={16} />
           </div>
         </Link>
       </div>
@@ -104,7 +110,7 @@ export default function BentoGrid({ data }: BentoGridProps) {
       <div className="row-span-2 bento-card rounded-3xl p-6 bg-zinc-900/30 backdrop-blur-sm border border-white/10 group animate-fade-in-up delay-400">
         <Link href="/savoir-faire#digital" className="h-full flex flex-col">
           <div className="w-12 h-12 rounded-xl bg-[#7928ca]/10 border border-[#7928ca]/20 flex items-center justify-center mb-4 group-hover:bg-[#7928ca] group-hover:border-[#7928ca] transition-all duration-300">
-            <Icon icon="solar:monitor-smartphone-linear" className="text-[#7928ca] group-hover:text-white transition-colors" width={24} />
+            <MonitorSmartphoneIcon className="text-[#7928ca] group-hover:text-white transition-colors" size={24} />
           </div>
           <h3 className="text-xl font-semibold text-white mb-2">Solutions Digitales</h3>
           <p className="text-zinc-400 text-sm flex-grow leading-relaxed">
@@ -112,7 +118,7 @@ export default function BentoGrid({ data }: BentoGridProps) {
           </p>
           <div className="flex items-center text-[#7928ca] text-sm font-medium mt-4 group-hover:gap-3 gap-2 transition-all">
             En savoir plus
-            <Icon icon="solar:arrow-right-linear" width={16} />
+            <ArrowRightIcon size={16} />
           </div>
         </Link>
       </div>
@@ -139,7 +145,7 @@ export default function BentoGrid({ data }: BentoGridProps) {
           {/* Play button */}
           <div className="absolute inset-0 flex items-center justify-center z-10">
             <div className="w-20 h-20 rounded-full bg-white/10 backdrop-blur-sm border border-white/20 flex items-center justify-center group-hover:scale-110 group-hover:bg-white/20 transition-all duration-500">
-              <Icon icon="solar:play-bold" className="text-white ml-1" width={32} />
+              <PlayBoldIcon className="text-white ml-1" size={32} />
             </div>
           </div>
 
@@ -175,7 +181,7 @@ export default function BentoGrid({ data }: BentoGridProps) {
       <div className="bento-card rounded-3xl p-6 bg-zinc-900/30 backdrop-blur-sm border border-white/10 group animate-fade-in-up delay-500">
         <Link href="/savoir-faire#stands" className="h-full flex flex-col justify-center">
           <div className="w-12 h-12 rounded-xl bg-[#ff2d55]/10 border border-[#ff2d55]/20 flex items-center justify-center mb-3 group-hover:bg-[#ff2d55] group-hover:border-[#ff2d55] transition-all duration-300">
-            <Icon icon="solar:buildings-3-linear" className="text-[#ff2d55] group-hover:text-white transition-colors" width={22} />
+            <Buildings3Icon className="text-[#ff2d55] group-hover:text-white transition-colors" size={22} />
           </div>
           <h3 className="text-lg font-semibold text-white">Stands BeMatrix</h3>
           <p className="text-zinc-400 text-xs mt-1">Stands modulaires haut de gamme</p>
@@ -196,7 +202,7 @@ export default function BentoGrid({ data }: BentoGridProps) {
       >
         <div className="h-full flex flex-col justify-center items-center text-center">
           <div className="w-12 h-12 rounded-xl bg-white/20 flex items-center justify-center mb-3 group-hover:scale-110 group-hover:rotate-12 transition-all duration-500">
-            <Icon icon="solar:tuning-2-linear" className="text-white" width={24} />
+            <Tuning2Icon className="text-white" size={24} />
           </div>
           <span className="font-semibold text-white">Configurer mon stand</span>
           <span className="text-xs text-white/70 mt-1">Estimation instantanée</span>

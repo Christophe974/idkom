@@ -1,6 +1,6 @@
 import Link from 'next/link';
 import Image from 'next/image';
-import { Icon } from '@iconify/react';
+import { FacebookIcon, InstagramIcon, LinkedInIcon } from './Icons';
 
 interface FooterMenuItem {
   label: string;
@@ -66,7 +66,7 @@ export default function Footer({ site, social, footerServices, footerLegal }: Fo
                   className="hover:text-white transition-colors"
                   aria-label="Facebook"
                 >
-                  <Icon icon="mdi:facebook" width={20} />
+                  <FacebookIcon size={20} />
                 </a>
               )}
               {social?.instagram && (
@@ -77,7 +77,7 @@ export default function Footer({ site, social, footerServices, footerLegal }: Fo
                   className="hover:text-white transition-colors"
                   aria-label="Instagram"
                 >
-                  <Icon icon="mdi:instagram" width={20} />
+                  <InstagramIcon size={20} />
                 </a>
               )}
               {social?.linkedin && (
@@ -88,7 +88,7 @@ export default function Footer({ site, social, footerServices, footerLegal }: Fo
                   className="hover:text-white transition-colors"
                   aria-label="LinkedIn"
                 >
-                  <Icon icon="mdi:linkedin" width={20} />
+                  <LinkedInIcon size={20} />
                 </a>
               )}
             </div>

@@ -1,5 +1,5 @@
 import Link from 'next/link';
-import { Icon } from '@iconify/react';
+import { CalendarAddIcon, PhoneCallingIcon } from './Icons';
 
 interface CTASectionProps {
   phone?: string;
@@ -25,14 +25,14 @@ export default function CTASection({ phone = '04 84 25 XX XX' }: CTASectionProps
               href="/rendez-vous"
               className="px-8 py-4 rounded-full gradient-bg font-medium text-white hover:shadow-lg hover:shadow-[#7928ca]/25 transition-all duration-300 flex items-center gap-2"
             >
-              <Icon icon="solar:calendar-add-linear" width={20} />
+              <CalendarAddIcon size={20} />
               Prendre rendez-vous
             </Link>
             <a
               href={`tel:${phone.replace(/\s/g, '')}`}
               className="px-8 py-4 rounded-full bg-white/5 border border-white/10 font-medium text-white hover:bg-white/10 transition-all duration-300 flex items-center gap-2"
             >
-              <Icon icon="solar:phone-calling-linear" width={20} />
+              <PhoneCallingIcon size={20} />
               {phone}
             </a>
           </div>
