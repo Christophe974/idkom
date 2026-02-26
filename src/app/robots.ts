@@ -12,6 +12,8 @@ export default function robots(): MetadataRoute.Robots {
           "/audit/",
           "/p/",
           "/carte/",
+          "/demo/",
+          "/gestionstock/",
         ],
       },
     ],

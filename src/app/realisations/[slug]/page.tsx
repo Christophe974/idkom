@@ -28,6 +28,7 @@ export async function generateMetadata({ params }: PageProps) {
   } catch {
     return {
       title: 'Projet introuvable | iDkom',
+      robots: { index: false, follow: false },
     };
   }
 }

@@ -25,6 +25,7 @@ export async function generateMetadata({ params }: PageProps) {
   } catch {
     return {
       title: 'Carte de visite | iDkom',
+      robots: { index: false, follow: false },
     };
   }
 }

@@ -26,6 +26,7 @@ export async function generateMetadata({ params }: PageProps) {
   } catch {
     return {
       title: 'Article introuvable | iDkom',
+      robots: { index: false, follow: false },
     };
   }
 }

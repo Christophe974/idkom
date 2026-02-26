@@ -27,6 +27,7 @@ export async function generateMetadata({ params }: PageProps) {
   } catch {
     return {
       title: 'Animation introuvable | iDkom',
+      robots: { index: false, follow: false },
     };
   }
 }

@@ -1,6 +1,7 @@
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
+  trailingSlash: false,
   images: {
     remotePatterns: [
       {
@@ -60,12 +61,12 @@ const nextConfig: NextConfig = {
       {
         source: "/admin/:path*",
         destination: "https://ovh.idkom.fr/admin/:path*",
-        permanent: false,
+        permanent: true,
       },
       {
         source: "/gestionstock/:path*",
         destination: "https://ovh.idkom.fr/gestionstock/:path*",
-        permanent: false,
+        permanent: true,
       },
     ];
   },
