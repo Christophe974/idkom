@@ -58,6 +58,174 @@ const nextConfig: NextConfig = {
   },
   async redirects() {
     return [
+      // --- Anciennes URLs legacy → nouvelles pages ---
+      // Pages ?page=xxx (ancien site)
+      {
+        source: "/",
+        has: [{ type: "query", key: "page", value: "com" }],
+        destination: "/contact",
+        permanent: true,
+      },
+      {
+        source: "/",
+        has: [{ type: "query", key: "page", value: "contact" }],
+        destination: "/contact",
+        permanent: true,
+      },
+      {
+        source: "/",
+        has: [{ type: "query", key: "page", value: "stands" }],
+        destination: "/savoir-faire",
+        permanent: true,
+      },
+      {
+        source: "/",
+        has: [{ type: "query", key: "page", value: "event" }],
+        destination: "/realisations",
+        permanent: true,
+      },
+      {
+        source: "/",
+        has: [{ type: "query", key: "page", value: "blog" }],
+        destination: "/blog",
+        permanent: true,
+      },
+      {
+        source: "/",
+        has: [{ type: "query", key: "page", value: "gallery" }],
+        destination: "/realisations",
+        permanent: true,
+      },
+      // Anciennes pages statiques
+      {
+        source: "/contacts",
+        destination: "/contact",
+        permanent: true,
+      },
+      {
+        source: "/contacts/:path*",
+        destination: "/contact",
+        permanent: true,
+      },
+      {
+        source: "/team",
+        destination: "/atelier",
+        permanent: true,
+      },
+      {
+        source: "/team/:path*",
+        destination: "/atelier",
+        permanent: true,
+      },
+      {
+        source: "/stands",
+        destination: "/savoir-faire",
+        permanent: true,
+      },
+      {
+        source: "/stands/:path*",
+        destination: "/savoir-faire",
+        permanent: true,
+      },
+      {
+        source: "/goodies",
+        destination: "/animations",
+        permanent: true,
+      },
+      {
+        source: "/goodies/:path*",
+        destination: "/animations",
+        permanent: true,
+      },
+      {
+        source: "/travaux",
+        destination: "/realisations",
+        permanent: true,
+      },
+      {
+        source: "/travaux/:path*",
+        destination: "/realisations",
+        permanent: true,
+      },
+      {
+        source: "/marketing",
+        destination: "/savoir-faire",
+        permanent: true,
+      },
+      {
+        source: "/marketing/:path*",
+        destination: "/savoir-faire",
+        permanent: true,
+      },
+      {
+        source: "/reseaux",
+        destination: "/savoir-faire",
+        permanent: true,
+      },
+      {
+        source: "/reseaux/:path*",
+        destination: "/savoir-faire",
+        permanent: true,
+      },
+      {
+        source: "/portfolio/:path*",
+        destination: "/realisations",
+        permanent: true,
+      },
+      {
+        source: "/politique-de-confidentialite",
+        destination: "/confidentialite",
+        permanent: true,
+      },
+      {
+        source: "/politique-de-confidentialite/:path*",
+        destination: "/confidentialite",
+        permanent: true,
+      },
+      // Anciennes pages jeu/animation
+      {
+        source: "/jeu/:path*",
+        destination: "/animations",
+        permanent: true,
+      },
+      // Anciennes pages clients
+      {
+        source: "/careco/:path*",
+        destination: "/realisations",
+        permanent: true,
+      },
+      {
+        source: "/mojito-co/:path*",
+        destination: "/realisations",
+        permanent: true,
+      },
+      {
+        source: "/credit-mutuel/:path*",
+        destination: "/realisations",
+        permanent: true,
+      },
+      // index.html / index.php legacy
+      {
+        source: "/index.html",
+        destination: "/",
+        permanent: true,
+      },
+      {
+        source: "/index.php",
+        destination: "/",
+        permanent: true,
+      },
+      {
+        source: "/homepage-1",
+        destination: "/",
+        permanent: true,
+      },
+      {
+        source: "/homepage-1/:path*",
+        destination: "/",
+        permanent: true,
+      },
+      // --- Redirects infrastructure ---
       {
         source: "/admin/:path*",
         destination: "https://ovh.idkom.fr/admin/:path*",
