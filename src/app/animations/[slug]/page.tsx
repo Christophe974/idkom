@@ -51,9 +51,9 @@ export default async function AnimationDetailPage({ params }: PageProps) {
       <main className="relative z-10 max-w-7xl mx-auto px-6 pt-28 pb-16">
         {/* Breadcrumb */}
         <nav className="flex items-center gap-2 text-sm text-zinc-500 mb-8">
-          <Link href="/" className="hover:text-white transition-colors">Accueil</Link>
+          <Link prefetch={false} href="/" className="hover:text-white transition-colors">Accueil</Link>
           <Icon icon="solar:arrow-right-linear" width={14} />
-          <Link href="/animations" className="hover:text-white transition-colors">Animations</Link>
+          <Link prefetch={false} href="/animations" className="hover:text-white transition-colors">Animations</Link>
           <Icon icon="solar:arrow-right-linear" width={14} />
           <span className="text-zinc-300">{anim.title}</span>
         </nav>
@@ -121,6 +121,7 @@ export default async function AnimationDetailPage({ params }: PageProps) {
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
               <Link
+                prefetch={false}
                 href="/contact"
                 className="inline-flex items-center justify-center gap-2 px-6 py-3 bg-gradient-to-r from-[#ff2d55] via-[#7928ca] to-[#00d4ff] text-white font-medium rounded-lg hover:opacity-90 transition-opacity"
               >
@@ -128,6 +129,7 @@ export default async function AnimationDetailPage({ params }: PageProps) {
                 Nous contacter
               </Link>
               <Link
+                prefetch={false}
                 href="/animations"
                 className="inline-flex items-center justify-center gap-2 px-6 py-3 bg-zinc-800 text-white font-medium rounded-lg hover:bg-zinc-700 transition-colors"
               >

@@ -40,6 +40,7 @@ export default async function RealisationsPage() {
         {/* Categories Filter */}
         <div className="flex flex-wrap gap-3 mb-10">
           <Link
+            prefetch={false}
             href="/realisations"
             className="px-4 py-2 rounded-full bg-gradient-to-r from-[#ff2d55] via-[#7928ca] to-[#00d4ff] text-white text-sm font-medium"
           >
@@ -47,6 +48,7 @@ export default async function RealisationsPage() {
           </Link>
           {categories.map((cat) => (
             <Link
+              prefetch={false}
               key={cat.id}
               href={`/realisations?category=${cat.slug}`}
               className="px-4 py-2 rounded-full bg-zinc-800 text-zinc-400 text-sm font-medium hover:bg-zinc-700 hover:text-white transition-colors"
@@ -62,6 +64,7 @@ export default async function RealisationsPage() {
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {projets.map((projet) => (
             <Link
+              prefetch={false}
               key={projet.id}
               href={`/realisations/${projet.slug}`}
               className="group bento-card rounded-2xl overflow-hidden bg-zinc-900 border border-zinc-800 hover:border-zinc-700"

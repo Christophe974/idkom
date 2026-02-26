@@ -126,6 +126,7 @@ export default function BookingConfirmation({ booking, clientName }: BookingConf
           Ajouter au calendrier
         </button>
         <Link
+          prefetch={false}
           href="/"
           className="flex-1 py-3 px-4 bg-zinc-800 border border-zinc-700 text-white rounded-lg hover:bg-zinc-700 transition-colors flex items-center justify-center gap-2 text-sm"
         >

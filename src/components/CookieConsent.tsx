@@ -81,6 +81,7 @@ export default function CookieConsent() {
               <span>Analytiques</span>
             </div>
             <Link
+              prefetch={false}
               href="/confidentialite"
               className="ml-auto text-[#00d4ff] hover:underline flex items-center gap-1"
             >

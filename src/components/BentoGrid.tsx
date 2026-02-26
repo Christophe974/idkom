@@ -200,7 +200,7 @@ export default function BentoGrid({ data }: BentoGridProps) {
       {/* CTA Configurateur */}
       <Link
         prefetch={false}
-        href="/configurateur"
+        href="/rendez-vous"
         className="bento-card rounded-3xl p-6 gradient-bg group cursor-pointer animate-fade-in-up delay-500 hover:shadow-xl hover:shadow-[#7928ca]/20"
       >
         <div className="h-full flex flex-col justify-center items-center text-center">

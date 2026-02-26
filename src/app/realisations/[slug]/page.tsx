@@ -52,9 +52,9 @@ export default async function ProjetPage({ params }: PageProps) {
       <main className="relative z-10 max-w-7xl mx-auto px-6 pt-28 pb-16">
         {/* Breadcrumb */}
         <nav className="flex items-center gap-2 text-sm text-zinc-500 mb-8">
-          <Link href="/" className="hover:text-white transition-colors">Accueil</Link>
+          <Link prefetch={false} href="/" className="hover:text-white transition-colors">Accueil</Link>
           <Icon icon="solar:arrow-right-linear" width={14} />
-          <Link href="/realisations" className="hover:text-white transition-colors">Réalisations</Link>
+          <Link prefetch={false} href="/realisations" className="hover:text-white transition-colors">Réalisations</Link>
           <Icon icon="solar:arrow-right-linear" width={14} />
           <span className="text-zinc-300">{projet.title}</span>
         </nav>
@@ -192,6 +192,7 @@ export default async function ProjetPage({ params }: PageProps) {
               <h3 className="text-lg font-semibold text-white mb-2">Un projet similaire ?</h3>
               <p className="text-zinc-400 text-sm mb-4">Discutons de votre prochain événement.</p>
               <Link
+                prefetch={false}
                 href="/contact"
                 className="block w-full py-3 px-4 bg-gradient-to-r from-[#ff2d55] via-[#7928ca] to-[#00d4ff] text-white font-medium rounded-lg text-center hover:opacity-90 transition-opacity"
               >
@@ -201,6 +202,7 @@ export default async function ProjetPage({ params }: PageProps) {
 
             {/* Back link */}
             <Link
+              prefetch={false}
               href="/realisations"
               className="flex items-center gap-2 text-zinc-400 hover:text-white transition-colors"
             >

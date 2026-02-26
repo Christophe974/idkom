@@ -47,6 +47,7 @@ export default async function BlogPage() {
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {articles.map((article) => (
             <Link
+              prefetch={false}
               key={article.id}
               href={`/blog/${article.slug}`}
               className="group bento-card rounded-2xl overflow-hidden bg-zinc-900 border border-zinc-800 hover:border-zinc-700"

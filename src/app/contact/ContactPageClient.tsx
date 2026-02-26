@@ -145,7 +145,7 @@ export default function ContactPageClient({ site, social }: ContactPageClientPro
                 <div>
                   <h3 className="text-white font-medium mb-1">Prendre rendez-vous</h3>
                   <p className="text-zinc-400 text-sm mb-3">30 min en visio pour discuter de votre projet</p>
-                  <Link href="/rendez-vous" className="text-sm text-[#7928ca] hover:text-white transition-colors flex items-center gap-1">
+                  <Link prefetch={false} href="/rendez-vous" className="text-sm text-[#7928ca] hover:text-white transition-colors flex items-center gap-1">
                     Choisir un créneau
                     <Icon icon="solar:arrow-right-linear" width={14} />
                   </Link>

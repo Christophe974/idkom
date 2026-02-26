@@ -25,7 +25,7 @@ export default async function ConfidentialitePage() {
       <main className="relative z-10 max-w-4xl mx-auto px-6 pt-28 pb-16">
         {/* Breadcrumb */}
         <nav className="flex items-center gap-2 text-sm text-zinc-500 mb-8">
-          <Link href="/" className="hover:text-white transition-colors">Accueil</Link>
+          <Link prefetch={false} href="/" className="hover:text-white transition-colors">Accueil</Link>
           <Icon icon="solar:arrow-right-linear" width={14} />
           <span className="text-zinc-300">Politique de confidentialité</span>
         </nav>
@@ -315,6 +315,7 @@ export default async function ConfidentialitePage() {
         {/* Retour */}
         <div className="mt-12 pt-8 border-t border-zinc-800">
           <Link
+            prefetch={false}
             href="/"
             className="flex items-center gap-2 text-zinc-400 hover:text-white transition-colors"
           >

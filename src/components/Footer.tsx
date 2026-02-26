@@ -28,7 +28,7 @@ export default function Footer({ site, social, footerServices, footerLegal }: Fo
     { label: 'Stands BeMatrix', url: '/savoir-faire#stands' },
     { label: 'Solutions Digitales', url: '/savoir-faire#digital' },
     { label: 'Événementiel', url: '/savoir-faire#events' },
-    { label: 'Configurateur', url: '/configurateur' },
+    { label: 'Catalogue BeMatrix', url: '/catalogue' },
   ];
 
   const defaultLegal = [
@@ -45,7 +45,7 @@ export default function Footer({ site, social, footerServices, footerLegal }: Fo
         <div className="grid grid-cols-1 md:grid-cols-4 gap-12">
           {/* Logo & Description */}
           <div className="md:col-span-2">
-            <Link href="/" className="flex items-center mb-6">
+            <Link prefetch={false} href="/" className="flex items-center mb-6">
               <Image
                 src="/images/logo-white.svg"
                 alt={site?.name || 'iDkom'}
@@ -100,7 +100,7 @@ export default function Footer({ site, social, footerServices, footerLegal }: Fo
             <ul className="space-y-2 text-sm text-zinc-500">
               {services.map((item) => (
                 <li key={item.url}>
-                  <Link href={item.url} className="hover:text-white transition-colors">
+                  <Link prefetch={false} href={item.url} className="hover:text-white transition-colors">
                     {item.label}
                   </Link>
                 </li>
@@ -114,7 +114,7 @@ export default function Footer({ site, social, footerServices, footerLegal }: Fo
             <ul className="space-y-2 text-sm text-zinc-500">
               {legal.map((item) => (
                 <li key={item.url}>
-                  <Link href={item.url} className="hover:text-white transition-colors">
+                  <Link prefetch={false} href={item.url} className="hover:text-white transition-colors">
                     {item.label}
                   </Link>
                 </li>

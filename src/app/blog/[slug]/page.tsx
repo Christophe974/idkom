@@ -50,9 +50,9 @@ export default async function ArticlePage({ params }: PageProps) {
       <main className="relative z-10 max-w-4xl mx-auto px-6 pt-28 pb-16">
         {/* Breadcrumb */}
         <nav className="flex items-center gap-2 text-sm text-zinc-500 mb-8">
-          <Link href="/" className="hover:text-white transition-colors">Accueil</Link>
+          <Link prefetch={false} href="/" className="hover:text-white transition-colors">Accueil</Link>
           <Icon icon="solar:arrow-right-linear" width={14} />
-          <Link href="/blog" className="hover:text-white transition-colors">Blog</Link>
+          <Link prefetch={false} href="/blog" className="hover:text-white transition-colors">Blog</Link>
           <Icon icon="solar:arrow-right-linear" width={14} />
           <span className="text-zinc-300 truncate max-w-[200px]">{article.title}</span>
         </nav>
@@ -122,6 +122,7 @@ export default async function ArticlePage({ params }: PageProps) {
         {/* Share & Navigation */}
         <div className="mt-12 flex flex-col sm:flex-row items-center justify-between gap-4 pt-8 border-t border-zinc-800">
           <Link
+            prefetch={false}
             href="/blog"
             className="flex items-center gap-2 text-zinc-400 hover:text-white transition-colors"
           >

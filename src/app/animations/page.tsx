@@ -47,6 +47,7 @@ export default async function AnimationsPage() {
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
           {animations.map((anim, index) => (
             <Link
+              prefetch={false}
               key={anim.id}
               href={`/animations/${anim.slug}`}
               className="group relative bento-card rounded-2xl overflow-hidden bg-zinc-900 border border-zinc-800 hover:border-zinc-700"
@@ -125,6 +126,7 @@ export default async function AnimationsPage() {
                 Chaque animation peut être personnalisée aux couleurs de votre marque. Parlons de votre projet !
               </p>
               <Link
+                prefetch={false}
                 href="/contact"
                 className="inline-flex items-center gap-2 px-6 py-3 bg-gradient-to-r from-[#ff2d55] via-[#7928ca] to-[#00d4ff] text-white font-medium rounded-lg hover:opacity-90 transition-opacity"
               >

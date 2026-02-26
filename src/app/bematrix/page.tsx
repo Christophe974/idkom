@@ -112,6 +112,7 @@ export default async function BematrixPage() {
                 </p>
                 <div className="flex flex-wrap gap-4">
                   <Link
+                    prefetch={false}
                     href="/contact"
                     className="group px-8 py-4 rounded-full gradient-bg font-medium text-white hover:shadow-lg hover:shadow-[#7928ca]/25 transition-all duration-300 inline-flex items-center"
                   >
@@ -119,6 +120,7 @@ export default async function BematrixPage() {
                     <Icon icon="solar:arrow-right-linear" className="ml-2 group-hover:translate-x-1 transition-transform" width={20} />
                   </Link>
                   <Link
+                    prefetch={false}
                     href="/catalogue"
                     className="px-8 py-4 rounded-full bg-white/5 border border-white/10 font-medium text-white hover:bg-white/10 transition-all duration-300 inline-flex items-center"
                   >
@@ -374,6 +376,7 @@ export default async function BematrixPage() {
 
             <div className="text-center mt-12">
               <Link
+                prefetch={false}
                 href="/realisations"
                 className="inline-flex items-center gap-2 px-6 py-3 rounded-full bg-white/5 border border-white/10 text-white hover:bg-white/10 transition-all"
               >
@@ -404,6 +407,7 @@ export default async function BematrixPage() {
                   Composez votre demande de devis directement en ligne.
                 </p>
                 <Link
+                  prefetch={false}
                   href="/catalogue"
                   className="group px-8 py-4 rounded-full gradient-bg font-medium text-white hover:shadow-lg hover:shadow-[#7928ca]/25 transition-all duration-300 inline-flex items-center"
                 >
@@ -431,6 +435,7 @@ export default async function BematrixPage() {
               pour ne jamais manquer de la pièce critique qui fera la différence sur votre montage.
             </p>
             <Link
+              prefetch={false}
               href="/contact"
               className="group px-10 py-5 rounded-full gradient-bg font-semibold text-lg text-white hover:shadow-xl hover:shadow-[#7928ca]/30 transition-all duration-300 inline-flex items-center"
             >
