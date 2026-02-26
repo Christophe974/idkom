@@ -24,7 +24,7 @@ export default function BentoGrid({ data }: BentoGridProps) {
   return (
     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4" style={{ gridAutoRows: '140px' }}>
       {/* HERO - 2x3 */}
-      <div className="md:col-span-2 row-span-3 bento-card rounded-3xl p-8 bg-gradient-to-br from-[#ff2d55]/10 via-[#7928ca]/5 to-transparent backdrop-blur-sm border border-white/10 relative gradient-border animate-fade-in-up">
+      <div className="md:col-span-2 row-span-3 bento-card rounded-3xl p-8 bg-gradient-to-br from-[#ff2d55]/10 via-[#7928ca]/5 to-transparent md:backdrop-blur-sm border border-white/10 relative gradient-border animate-fade-in-up">
         <div className="h-full flex flex-col justify-between relative z-10">
           <div>
             <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-white/5 border border-white/10 text-xs text-zinc-400 mb-6">
@@ -63,7 +63,7 @@ export default function BentoGrid({ data }: BentoGridProps) {
       </div>
 
       {/* Stat 1 - Années avec effet Glitch */}
-      <div className="bento-card rounded-3xl p-6 bg-zinc-900/50 backdrop-blur-sm border border-white/10 glow-pink animate-fade-in-up delay-100">
+      <div className="bento-card rounded-3xl p-6 bg-zinc-900/50 md:backdrop-blur-sm border border-white/10 glow-pink animate-fade-in-up delay-100">
         <div className="h-full flex flex-col justify-center items-center text-center">
           <GlitchStat
             pastValue="1996"
@@ -76,7 +76,7 @@ export default function BentoGrid({ data }: BentoGridProps) {
       </div>
 
       {/* Stat 2 - Goodies avec effet Glitch */}
-      <div className="bento-card rounded-3xl p-6 bg-zinc-900/50 backdrop-blur-sm border border-white/10 glow-purple animate-fade-in-up delay-200">
+      <div className="bento-card rounded-3xl p-6 bg-zinc-900/50 md:backdrop-blur-sm border border-white/10 glow-purple animate-fade-in-up delay-200">
         <div className="h-full flex flex-col justify-center items-center text-center">
           <GlitchStat
             pastValue="2025"
@@ -90,7 +90,7 @@ export default function BentoGrid({ data }: BentoGridProps) {
       </div>
 
       {/* Service 1 - Événementiel (grand format) */}
-      <div className="row-span-2 bento-card rounded-3xl p-6 bg-zinc-900/30 backdrop-blur-sm border border-white/10 group animate-fade-in-up delay-300">
+      <div className="row-span-2 bento-card rounded-3xl p-6 bg-zinc-900/30 md:backdrop-blur-sm border border-white/10 group animate-fade-in-up delay-300">
         <Link href="/savoir-faire#events" className="h-full flex flex-col">
           <div className="w-12 h-12 rounded-xl bg-[#00d4ff]/10 border border-[#00d4ff]/20 flex items-center justify-center mb-4 group-hover:bg-[#00d4ff] group-hover:border-[#00d4ff] transition-all duration-300">
             <CalendarMarkIcon className="text-[#00d4ff] group-hover:text-white transition-colors" size={24} />
@@ -107,7 +107,7 @@ export default function BentoGrid({ data }: BentoGridProps) {
       </div>
 
       {/* Service 2 - Digital */}
-      <div className="row-span-2 bento-card rounded-3xl p-6 bg-zinc-900/30 backdrop-blur-sm border border-white/10 group animate-fade-in-up delay-400">
+      <div className="row-span-2 bento-card rounded-3xl p-6 bg-zinc-900/30 md:backdrop-blur-sm border border-white/10 group animate-fade-in-up delay-400">
         <Link href="/savoir-faire#digital" className="h-full flex flex-col">
           <div className="w-12 h-12 rounded-xl bg-[#7928ca]/10 border border-[#7928ca]/20 flex items-center justify-center mb-4 group-hover:bg-[#7928ca] group-hover:border-[#7928ca] transition-all duration-300">
             <MonitorSmartphoneIcon className="text-[#7928ca] group-hover:text-white transition-colors" size={24} />
@@ -144,7 +144,7 @@ export default function BentoGrid({ data }: BentoGridProps) {
 
           {/* Play button */}
           <div className="absolute inset-0 flex items-center justify-center z-10">
-            <div className="w-20 h-20 rounded-full bg-white/10 backdrop-blur-sm border border-white/20 flex items-center justify-center group-hover:scale-110 group-hover:bg-white/20 transition-all duration-500">
+            <div className="w-20 h-20 rounded-full bg-white/10 md:backdrop-blur-sm border border-white/20 flex items-center justify-center group-hover:scale-110 group-hover:bg-white/20 transition-all duration-500">
               <PlayBoldIcon className="text-white ml-1" size={32} />
             </div>
           </div>
@@ -162,7 +162,7 @@ export default function BentoGrid({ data }: BentoGridProps) {
                 {featured_projets[0]?.stats?.visiteurs && `${featured_projets[0].stats.visiteurs.toLocaleString()} visiteurs`}
               </p>
             </div>
-            <span className="px-3 py-1 bg-white/10 backdrop-blur border border-white/10 rounded-full text-xs text-zinc-300">
+            <span className="px-3 py-1 bg-white/10 md:backdrop-blur border border-white/10 rounded-full text-xs text-zinc-300">
               Voir le projet
             </span>
           </div>
@@ -170,7 +170,7 @@ export default function BentoGrid({ data }: BentoGridProps) {
       </div>
 
       {/* Stat 3 - Lignes de code */}
-      <div className="bento-card rounded-3xl p-6 bg-zinc-900/50 backdrop-blur-sm border border-white/10 glow-cyan animate-fade-in-up delay-400">
+      <div className="bento-card rounded-3xl p-6 bg-zinc-900/50 md:backdrop-blur-sm border border-white/10 glow-cyan animate-fade-in-up delay-400">
         <div className="h-full flex flex-col justify-center items-center text-center">
           <Counter target={stats.lines_of_code || 150000} className="text-4xl font-bold gradient-text" />
           <span className="text-zinc-400 text-sm mt-1">lignes de code</span>
@@ -178,7 +178,7 @@ export default function BentoGrid({ data }: BentoGridProps) {
       </div>
 
       {/* Service 3 - Stands BeMatrix (compact) */}
-      <div className="bento-card rounded-3xl p-6 bg-zinc-900/30 backdrop-blur-sm border border-white/10 group animate-fade-in-up delay-500">
+      <div className="bento-card rounded-3xl p-6 bg-zinc-900/30 md:backdrop-blur-sm border border-white/10 group animate-fade-in-up delay-500">
         <Link href="/savoir-faire#stands" className="h-full flex flex-col justify-center">
           <div className="w-12 h-12 rounded-xl bg-[#ff2d55]/10 border border-[#ff2d55]/20 flex items-center justify-center mb-3 group-hover:bg-[#ff2d55] group-hover:border-[#ff2d55] transition-all duration-300">
             <Buildings3Icon className="text-[#ff2d55] group-hover:text-white transition-colors" size={22} />
@@ -190,7 +190,7 @@ export default function BentoGrid({ data }: BentoGridProps) {
 
       {/* Témoignages - Carrousel 2x2 */}
       {testimonials.length > 0 && (
-        <div className="md:col-span-2 row-span-2 bento-card rounded-3xl p-8 bg-zinc-900/30 backdrop-blur-sm border border-white/10 animate-fade-in-up delay-400">
+        <div className="md:col-span-2 row-span-2 bento-card rounded-3xl p-8 bg-zinc-900/30 md:backdrop-blur-sm border border-white/10 animate-fade-in-up delay-400">
           <TestimonialCarousel testimonials={testimonials} />
         </div>
       )}
@@ -212,7 +212,7 @@ export default function BentoGrid({ data }: BentoGridProps) {
       {/* Stock BeMatrix - Accès Catalogue avec compteur */}
       <Link
         href="/catalogue"
-        className="bento-card rounded-3xl p-6 bg-zinc-900/30 backdrop-blur-sm border border-white/10 animate-fade-in-up delay-600 group hover:border-[#ff2d55]/30 hover:bg-[#ff2d55]/5 transition-all duration-300 glow-pink"
+        className="bento-card rounded-3xl p-6 bg-zinc-900/30 md:backdrop-blur-sm border border-white/10 animate-fade-in-up delay-600 group hover:border-[#ff2d55]/30 hover:bg-[#ff2d55]/5 transition-all duration-300 glow-pink"
       >
         <div className="h-full flex flex-col justify-center items-center text-center">
           <Counter target={4827} className="text-3xl font-bold gradient-text" />
@@ -224,7 +224,7 @@ export default function BentoGrid({ data }: BentoGridProps) {
       {/* Partenaire BeMatrix - Lien vers page concept */}
       <Link
         href="/bematrix"
-        className="bento-card rounded-3xl p-6 bg-zinc-900/30 backdrop-blur-sm border border-white/10 animate-fade-in-up delay-600 group hover:border-[#7928ca]/30"
+        className="bento-card rounded-3xl p-6 bg-zinc-900/30 md:backdrop-blur-sm border border-white/10 animate-fade-in-up delay-600 group hover:border-[#7928ca]/30"
       >
         <div className="h-full flex flex-col justify-center items-center text-center">
           <span className="text-[10px] uppercase tracking-widest text-zinc-500 mb-2">Partenaire</span>

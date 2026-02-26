@@ -26,7 +26,7 @@ export default function Navbar({ menus }: NavbarProps) {
   const menuItems = menus || defaultMenus;
 
   return (
-    <nav className="fixed top-0 w-full z-50 border-b border-white/5 bg-zinc-950/80 backdrop-blur-xl">
+    <nav className="fixed top-0 w-full z-50 border-b border-white/5 bg-zinc-950/95 md:bg-zinc-950/80 md:backdrop-blur-xl">
       <div className="max-w-7xl mx-auto px-6 h-16 flex items-center justify-between">
         {/* Logo */}
         <Link href="/" className="flex items-center group">
@@ -76,7 +76,7 @@ export default function Navbar({ menus }: NavbarProps) {
 
       {/* Mobile Menu */}
       {isOpen && (
-        <div className="md:hidden border-t border-white/5 bg-zinc-950/95 backdrop-blur-xl">
+        <div className="md:hidden border-t border-white/5 bg-zinc-950/98 md:bg-zinc-950/95 md:backdrop-blur-xl">
           <div className="px-6 py-4 space-y-4">
             {menuItems.map((item) => (
               <Link

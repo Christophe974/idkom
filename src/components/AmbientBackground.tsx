@@ -1,6 +1,6 @@
 export default function AmbientBackground() {
   return (
-    <div className="fixed inset-0 pointer-events-none overflow-hidden">
+    <div className="fixed inset-0 pointer-events-none overflow-hidden hidden md:block">
       <div
         className="absolute w-[600px] h-[600px] rounded-full animate-pulse-slow blur-[150px]"
         style={{
