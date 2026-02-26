@@ -2,7 +2,7 @@ import { notFound } from 'next/navigation';
 import Link from 'next/link';
 import Image from 'next/image';
 import { Icon } from '@iconify/react';
-import { getAuditByToken } from '@/lib/api';
+import { getAuditByToken, type AuditDetail } from '@/lib/api';
 import AmbientBackground from '@/components/AmbientBackground';
 import AuditScore from '@/components/AuditScore';
 import AuditCategory from '@/components/AuditCategory';
@@ -52,7 +52,7 @@ export default async function AuditPublicPage({ params }: PageProps) {
   ];
 
   // Filter disabled items (safety net — API already filters them)
-  const filterActive = (items: Array<{ disabled?: boolean }>) =>
+  const filterActive = (items: AuditDetail[]) =>
     items.filter(i => !i.disabled);
 
   // Filter categories that have results

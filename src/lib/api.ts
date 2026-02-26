@@ -389,6 +389,7 @@ export interface AuditDetail {
   severity: 'good' | 'warning' | 'critical';
   description: string;
   recommendation?: string;
+  disabled?: boolean;
 }
 
 export interface AuditPublic {
