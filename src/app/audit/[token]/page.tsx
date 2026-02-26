@@ -51,9 +51,13 @@ export default async function AuditPublicPage({ params }: PageProps) {
     { key: 'content' as const, label: 'Contenu', icon: 'solar:document-text-linear', color: '#f97316' },
   ];
 
+  // Filter disabled items (safety net — API already filters them)
+  const filterActive = (items: Array<{ disabled?: boolean }>) =>
+    items.filter(i => !i.disabled);
+
   // Filter categories that have results
   const activeCategories = categories.filter(
-    cat => audit.results[cat.key] && audit.results[cat.key].length > 0
+    cat => filterActive(audit.results[cat.key] ?? []).length > 0
   );
 
   const salonLabel = [audit.salon?.name, audit.salon?.date].filter(Boolean).join(' — ');
@@ -272,7 +276,7 @@ export default async function AuditPublicPage({ params }: PageProps) {
                   label={cat.label}
                   icon={cat.icon}
                   score={audit.scores[cat.key] ?? 0}
-                  items={audit.results[cat.key] ?? []}
+                  items={filterActive(audit.results[cat.key] ?? [])}
                   color={cat.color}
                 />
               ))}
