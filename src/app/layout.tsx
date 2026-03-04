@@ -17,7 +17,7 @@ export const viewport: Viewport = {
 
 export const metadata: Metadata = {
   title: {
-    default: "iDkom | Agence Événementielle & Stands sur-mesure — Besançon",
+    default: "iDkom | Agence Événementielle & Stands sur-mesure — Franche-Comté",
     template: "%s | iDkom",
   },
   description: "Agence événementielle en Franche-Comté : stands BeMatrix, solutions digitales, événements sur-mesure. 30 ans d'expérience, 600+ projets. Devis gratuit.",
