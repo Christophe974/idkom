@@ -8,8 +8,8 @@ import AmbientBackground from '@/components/AmbientBackground';
 export const revalidate = 300;
 
 export const metadata = {
-  title: 'Animations événementielles | iDkom - L\'Atelier Phygital',
-  description: 'Découvrez nos animations événementielles : Fabrique à Souvenirs, Photobooth, expériences interactives. Des moments uniques pour vos événements.',
+  title: 'Animations événementielles — Expériences interactives',
+  description: 'Animations originales pour vos événements : Fabrique à Souvenirs, Photobooth, jeux interactifs. Marquez les esprits avec des expériences uniques et engageantes.',
   alternates: { canonical: 'https://www.idkom.fr/animations' },
 };
 

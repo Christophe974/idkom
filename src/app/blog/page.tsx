@@ -9,8 +9,8 @@ import AmbientBackground from '@/components/AmbientBackground';
 export const revalidate = 300;
 
 export const metadata = {
-  title: 'Blog | iDkom - L\'Atelier Phygital',
-  description: 'Actualités, conseils et coulisses de l\'Atelier Phygital. Découvrez nos articles sur les stands, le digital et l\'événementiel.',
+  title: 'Blog — Actualités stands, digital & événementiel',
+  description: 'Conseils, tendances et coulisses de l\'événementiel. Articles sur les stands BeMatrix, le marketing digital et les salons professionnels.',
   alternates: { canonical: 'https://www.idkom.fr/blog' },
 };
 

@@ -8,8 +8,8 @@ import CTASection from '@/components/CTASection';
 export const revalidate = 300;
 
 export const metadata = {
-  title: "Savoir-Faire | iDkom - L'Atelier Phygital",
-  description: "Découvrez nos expertises : stands modulaires BeMatrix, solutions digitales interactives, événementiel sur-mesure. iDkom, votre partenaire depuis 1994.",
+  title: "Stands BeMatrix, Digital & Événementiel sur-mesure",
+  description: "Conception de stands modulaires BeMatrix, solutions digitales interactives et événementiel sur-mesure. 4000+ pièces en stock, expertise depuis 1994 en Franche-Comté.",
   alternates: { canonical: "https://www.idkom.fr/savoir-faire" },
 };
 

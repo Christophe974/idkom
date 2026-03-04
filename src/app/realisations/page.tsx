@@ -8,8 +8,8 @@ import AmbientBackground from '@/components/AmbientBackground';
 export const revalidate = 300;
 
 export const metadata = {
-  title: 'Réalisations | iDkom - L\'Atelier Phygital',
-  description: 'Découvrez nos projets : stands BeMatrix, solutions digitales et événements. 600+ réalisations pour des marques ambitieuses.',
+  title: '600+ Projets événementiels — Stands, Digital & Salons',
+  description: 'Découvrez nos réalisations : stands BeMatrix pour salons professionnels, solutions digitales et événements d\'entreprise. La Poste, EDF, Crédit Mutuel nous font confiance.',
   alternates: { canonical: 'https://www.idkom.fr/realisations' },
 };
 

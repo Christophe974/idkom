@@ -16,14 +16,17 @@ export const viewport: Viewport = {
 };
 
 export const metadata: Metadata = {
-  title: "iDkom | L'Atelier Phygital — Stands & Digital",
-  description: "Atelier créatif spécialisé stands BeMatrix, solutions digitales et événementiel. 30 ans d'expérience, 600+ projets réalisés.",
-  keywords: ["stands", "BeMatrix", "événementiel", "digital", "salon professionnel", "iDkom"],
+  title: {
+    default: "iDkom | Agence Événementielle & Stands sur-mesure — Besançon",
+    template: "%s | iDkom",
+  },
+  description: "Agence événementielle en Franche-Comté : stands BeMatrix, solutions digitales, événements sur-mesure. 30 ans d'expérience, 600+ projets. Devis gratuit.",
+  keywords: ["agence événementielle", "stands BeMatrix", "événementiel", "salon professionnel", "agence communication", "Besançon", "Franche-Comté", "iDkom"],
   authors: [{ name: "iDkom" }],
   metadataBase: new URL("https://www.idkom.fr"),
   openGraph: {
-    title: "iDkom | L'Atelier Phygital",
-    description: "Stands modulaires, expériences digitales, événements mémorables.",
+    title: "iDkom | Agence Événementielle & Stands sur-mesure",
+    description: "Stands BeMatrix, solutions digitales, événements sur-mesure. 30 ans d'expérience en Franche-Comté.",
     url: "https://www.idkom.fr",
     siteName: "iDkom",
     locale: "fr_FR",
@@ -31,8 +34,8 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: "summary_large_image",
-    title: "iDkom | L'Atelier Phygital",
-    description: "Stands modulaires, expériences digitales, événements mémorables.",
+    title: "iDkom | Agence Événementielle & Stands sur-mesure",
+    description: "Stands BeMatrix, solutions digitales, événements sur-mesure. 30 ans d'expérience en Franche-Comté.",
   },
   robots: {
     index: true,
@@ -43,6 +46,78 @@ export const metadata: Metadata = {
   },
 };
 
+const jsonLd = {
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "Organization",
+      "@id": "https://www.idkom.fr/#organization",
+      name: "iDkom",
+      alternateName: "iDkom - L'Atelier Phygital",
+      url: "https://www.idkom.fr",
+      logo: "https://www.idkom.fr/images/idkom-favicon.svg",
+      description:
+        "Agence événementielle spécialisée en stands BeMatrix, solutions digitales et événementiel sur-mesure.",
+      foundingDate: "1996",
+      sameAs: [
+        "https://www.instagram.com/idkom_atelier_phygital/",
+        "https://www.linkedin.com/company/idkom/",
+        "https://www.facebook.com/idkom.fr",
+      ],
+    },
+    {
+      "@type": "LocalBusiness",
+      "@id": "https://www.idkom.fr/#localbusiness",
+      name: "iDkom – Atelier Phygital (Stands & Événementiel)",
+      image: "https://www.idkom.fr/images/idkom-favicon.svg",
+      url: "https://www.idkom.fr",
+      telephone: "+33637754064",
+      email: "contact@idkom.fr",
+      address: {
+        "@type": "PostalAddress",
+        streetAddress: "ZA La Preusse",
+        addressLocality: "Brevilliers",
+        postalCode: "70400",
+        addressRegion: "Franche-Comté",
+        addressCountry: "FR",
+      },
+      geo: {
+        "@type": "GeoCoordinates",
+        latitude: 47.6217,
+        longitude: 6.8456,
+      },
+      areaServed: [
+        { "@type": "City", name: "Besançon" },
+        { "@type": "City", name: "Belfort" },
+        { "@type": "City", name: "Montbéliard" },
+        { "@type": "City", name: "Mulhouse" },
+        { "@type": "AdministrativeArea", name: "Franche-Comté" },
+        { "@type": "Country", name: "France" },
+      ],
+      priceRange: "€€",
+      openingHoursSpecification: [
+        {
+          "@type": "OpeningHoursSpecification",
+          dayOfWeek: [
+            "Monday",
+            "Tuesday",
+            "Wednesday",
+            "Thursday",
+            "Friday",
+          ],
+          opens: "09:00",
+          closes: "18:00",
+        },
+      ],
+      aggregateRating: {
+        "@type": "AggregateRating",
+        ratingValue: "5.0",
+        reviewCount: "16",
+      },
+    },
+  ],
+};
+
 export default function RootLayout({
   children,
 }: Readonly<{
@@ -51,6 +126,10 @@ export default function RootLayout({
   return (
     <html lang="fr" className="scroll-smooth">
       <body className={`${spaceGrotesk.variable} font-sans antialiased`}>
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+        />
         {children}
         <CookieConsent />
       </body>
