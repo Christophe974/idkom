@@ -38,7 +38,7 @@ const nextConfig: NextConfig = {
               "script-src 'self' 'unsafe-inline' 'unsafe-eval' https://www.googletagmanager.com https://www.google-analytics.com https://api.iconify.design",
               "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com",
               "font-src 'self' https://fonts.gstatic.com",
-              "img-src 'self' data: blob: https://api.idkom.fr https://*.googleusercontent.com https://lh3.googleusercontent.com",
+              "img-src 'self' data: blob: https://api.idkom.fr https://ovh.idkom.fr https://idkom.fr https://*.googleusercontent.com https://lh3.googleusercontent.com",
               "connect-src 'self' https://api.idkom.fr https://api.iconify.design https://www.google-analytics.com https://www.googletagmanager.com",
               "frame-src 'self' https://www.youtube.com https://player.vimeo.com",
               "frame-ancestors 'self'",
