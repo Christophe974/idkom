@@ -58,7 +58,7 @@ export default function BentoGrid({ data }: BentoGridProps) {
               className="px-6 py-2.5 rounded-full bg-white/5 border border-white/10 font-medium text-sm text-white hover:bg-white/10 transition-all duration-300 inline-flex items-center"
             >
               <PlayCircleIcon className="mr-2" size={18} />
-              Voir les projets
+              Nos réalisations
             </Link>
           </div>
         </div>
@@ -144,10 +144,10 @@ export default function BentoGrid({ data }: BentoGridProps) {
             </div>
           )}
 
-          {/* Play button */}
+          {/* View icon */}
           <div className="absolute inset-0 flex items-center justify-center z-10">
             <div className="w-20 h-20 rounded-full bg-white/10 md:backdrop-blur-sm border border-white/20 flex items-center justify-center group-hover:scale-110 group-hover:bg-white/20 transition-all duration-500">
-              <PlayBoldIcon className="text-white ml-1" size={32} />
+              <Icon icon="solar:eye-linear" className="text-white" width={32} />
             </div>
           </div>
 
@@ -157,7 +157,7 @@ export default function BentoGrid({ data }: BentoGridProps) {
           {/* Project info */}
           <div className="absolute bottom-5 left-5 right-5 flex justify-between items-end z-10">
             <div>
-              <span className="text-xs text-zinc-400 uppercase tracking-wider">Projet phare 2025</span>
+              <span className="text-xs text-zinc-400 uppercase tracking-wider">Réalisation phare 2025</span>
               <h4 className="text-xl font-semibold text-white mt-1">{featured_projets[0]?.title || 'BIO360 — Nantes'}</h4>
               <p className="text-zinc-300 text-sm">
                 {featured_projets[0]?.stats?.stands && `${featured_projets[0].stats.stands} stands • `}
@@ -165,18 +165,21 @@ export default function BentoGrid({ data }: BentoGridProps) {
               </p>
             </div>
             <span className="px-3 py-1 bg-white/10 md:backdrop-blur border border-white/10 rounded-full text-xs text-zinc-300">
-              Voir le projet
+              Voir la réalisation
             </span>
           </div>
         </Link>
       </div>
 
-      {/* Stat 3 - Lignes de code */}
-      <div className="bento-card rounded-3xl p-6 bg-zinc-900/50 md:backdrop-blur-sm border border-white/10 glow-cyan animate-fade-in-up delay-400">
-        <div className="h-full flex flex-col justify-center items-center text-center">
-          <Counter target={stats.lines_of_code || 150000} className="text-4xl font-bold gradient-text" />
-          <span className="text-zinc-400 text-sm mt-1">lignes de code</span>
-        </div>
+      {/* Service 4 - Créations & Print */}
+      <div className="bento-card rounded-3xl p-6 bg-zinc-900/30 md:backdrop-blur-sm border border-white/10 group animate-fade-in-up delay-400">
+        <Link prefetch={false} href="/realisations?category=creations-print" className="h-full flex flex-col justify-center">
+          <div className="w-12 h-12 rounded-xl bg-[#ff9500]/10 border border-[#ff9500]/20 flex items-center justify-center mb-3 group-hover:bg-[#ff9500] group-hover:border-[#ff9500] transition-all duration-300">
+            <Icon icon="solar:palette-linear" className="text-[#ff9500] group-hover:text-white transition-colors" width={22} />
+          </div>
+          <h3 className="text-lg font-semibold text-white">Créations & Print</h3>
+          <p className="text-zinc-400 text-xs mt-1">Design graphique & signalétique</p>
+        </Link>
       </div>
 
       {/* Service 3 - Stands BeMatrix (compact) */}
@@ -225,15 +228,12 @@ export default function BentoGrid({ data }: BentoGridProps) {
         </div>
       </Link>
 
-      {/* Service 4 - Créations & Print */}
-      <div className="bento-card rounded-3xl p-6 bg-zinc-900/30 md:backdrop-blur-sm border border-white/10 group animate-fade-in-up delay-600">
-        <Link prefetch={false} href="/realisations?category=creations-print" className="h-full flex flex-col justify-center">
-          <div className="w-12 h-12 rounded-xl bg-[#ff9500]/10 border border-[#ff9500]/20 flex items-center justify-center mb-3 group-hover:bg-[#ff9500] group-hover:border-[#ff9500] transition-all duration-300">
-            <Icon icon="solar:palette-linear" className="text-[#ff9500] group-hover:text-white transition-colors" width={22} />
-          </div>
-          <h3 className="text-lg font-semibold text-white">Créations & Print</h3>
-          <p className="text-zinc-400 text-xs mt-1">Design graphique & signalétique</p>
-        </Link>
+      {/* Stat 3 - Lignes de code */}
+      <div className="bento-card rounded-3xl p-6 bg-zinc-900/50 md:backdrop-blur-sm border border-white/10 glow-cyan animate-fade-in-up delay-600">
+        <div className="h-full flex flex-col justify-center items-center text-center">
+          <Counter target={stats.lines_of_code || 150000} className="text-4xl font-bold gradient-text" />
+          <span className="text-zinc-400 text-sm mt-1">lignes de code</span>
+        </div>
       </div>
     </div>
   );
