@@ -181,7 +181,7 @@ export default function BentoGrid({ data }: BentoGridProps) {
 
       {/* Service 3 - Stands BeMatrix (compact) */}
       <div className="bento-card rounded-3xl p-6 bg-zinc-900/30 md:backdrop-blur-sm border border-white/10 group animate-fade-in-up delay-500">
-        <Link prefetch={false} href="/savoir-faire#stands" className="h-full flex flex-col justify-center">
+        <Link prefetch={false} href="/bematrix" className="h-full flex flex-col justify-center">
           <div className="w-12 h-12 rounded-xl bg-[#ff2d55]/10 border border-[#ff2d55]/20 flex items-center justify-center mb-3 group-hover:bg-[#ff2d55] group-hover:border-[#ff2d55] transition-all duration-300">
             <Buildings3Icon className="text-[#ff2d55] group-hover:text-white transition-colors" size={22} />
           </div>
@@ -225,18 +225,16 @@ export default function BentoGrid({ data }: BentoGridProps) {
         </div>
       </Link>
 
-      {/* Partenaire BeMatrix */}
-      <Link
-        prefetch={false}
-        href="/bematrix"
-        className="bento-card rounded-3xl p-6 gradient-bg animate-fade-in-up delay-600 group hover:shadow-xl hover:shadow-[#7928ca]/20"
-      >
-        <div className="h-full flex flex-col justify-center items-center text-center">
-          <span className="text-[10px] uppercase tracking-widest text-white/70 mb-2">Partenaire</span>
-          <div className="text-2xl font-bold text-white">BeMatrix</div>
-          <span className="text-xs text-white/70 mt-1">Système modulaire premium</span>
-        </div>
-      </Link>
+      {/* Service 4 - Créations & Print */}
+      <div className="bento-card rounded-3xl p-6 bg-zinc-900/30 md:backdrop-blur-sm border border-white/10 group animate-fade-in-up delay-600">
+        <Link prefetch={false} href="/realisations?category=creations-print" className="h-full flex flex-col justify-center">
+          <div className="w-12 h-12 rounded-xl bg-[#ff9500]/10 border border-[#ff9500]/20 flex items-center justify-center mb-3 group-hover:bg-[#ff9500] group-hover:border-[#ff9500] transition-all duration-300">
+            <Icon icon="solar:palette-linear" className="text-[#ff9500] group-hover:text-white transition-colors" width={22} />
+          </div>
+          <h3 className="text-lg font-semibold text-white">Créations & Print</h3>
+          <p className="text-zinc-400 text-xs mt-1">Design graphique & signalétique</p>
+        </Link>
+      </div>
     </div>
   );
 }
