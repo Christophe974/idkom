@@ -116,7 +116,7 @@ export default async function BematrixPage() {
                     href="/contact"
                     className="group px-8 py-4 rounded-full gradient-bg font-medium text-white hover:shadow-lg hover:shadow-[#7928ca]/25 transition-all duration-300 inline-flex items-center"
                   >
-                    Contactez nos experts
+                    Contactez-nous
                     <Icon icon="solar:arrow-right-linear" className="ml-2 group-hover:translate-x-1 transition-transform" width={20} />
                   </Link>
                   <Link
@@ -239,13 +239,13 @@ export default async function BematrixPage() {
               {/* Image Placeholder */}
               <div className="relative order-2 lg:order-1 animate-fade-in-up">
                 <div className="aspect-video rounded-3xl bg-gradient-to-br from-[#7928ca]/20 to-zinc-900/50 border border-[#7928ca]/20 overflow-hidden relative">
-                  <div className="absolute inset-0 flex items-center justify-center">
-                    <div className="text-center">
-                      <Icon icon="solar:monitor-linear" className="text-[#7928ca]/50 mx-auto mb-4" width={80} />
-                      <p className="text-zinc-600 text-sm">Image: LEDskin® en action</p>
-                      <p className="text-zinc-700 text-xs mt-1">/ledskin-demo.jpg</p>
-                    </div>
-                  </div>
+                  <iframe
+                    src="https://www.youtube.com/embed/Kgrgai_Dp_Y"
+                    title="LEDskin® - Intégration BeMatrix par iDkom"
+                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                    allowFullScreen
+                    className="absolute inset-0 w-full h-full"
+                  />
                 </div>
                 {/* Glow effect */}
                 <div className="absolute -inset-4 bg-[#7928ca]/20 rounded-3xl blur-3xl -z-10"></div>
@@ -439,7 +439,7 @@ export default async function BematrixPage() {
               href="/contact"
               className="group px-10 py-5 rounded-full gradient-bg font-semibold text-lg text-white hover:shadow-xl hover:shadow-[#7928ca]/30 transition-all duration-300 inline-flex items-center"
             >
-              Contactez nos experts standistes
+              Contactez-nous
               <Icon icon="solar:arrow-right-linear" className="ml-3 group-hover:translate-x-2 transition-transform" width={24} />
             </Link>
           </div>

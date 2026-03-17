@@ -1,5 +1,6 @@
 import Link from 'next/link';
 import Image from 'next/image';
+import { Icon } from '@iconify/react';
 import {
   ArrowRightIcon,
   PlayCircleIcon,
@@ -7,7 +8,6 @@ import {
   CalendarMarkIcon,
   MonitorSmartphoneIcon,
   Buildings3Icon,
-  Tuning2Icon,
 } from './Icons';
 import Counter from './Counter';
 import GlitchStat from './GlitchStat';
@@ -197,18 +197,18 @@ export default function BentoGrid({ data }: BentoGridProps) {
         </div>
       )}
 
-      {/* CTA Configurateur */}
+      {/* Découvrir BeMatrix */}
       <Link
         prefetch={false}
-        href="/rendez-vous"
+        href="/bematrix"
         className="bento-card rounded-3xl p-6 gradient-bg group cursor-pointer animate-fade-in-up delay-500 hover:shadow-xl hover:shadow-[#7928ca]/20"
       >
         <div className="h-full flex flex-col justify-center items-center text-center">
           <div className="w-12 h-12 rounded-xl bg-white/20 flex items-center justify-center mb-3 group-hover:scale-110 group-hover:rotate-12 transition-all duration-500">
-            <Tuning2Icon className="text-white" size={24} />
+            <Icon icon="solar:buildings-3-linear" className="text-white" width={24} />
           </div>
-          <span className="font-semibold text-white">Configurer mon stand</span>
-          <span className="text-xs text-white/70 mt-1">Estimation instantanée</span>
+          <span className="font-semibold text-white">Découvrez le système BeMatrix</span>
+          <span className="text-xs text-white/70 mt-1">Stands modulaires premium</span>
         </div>
       </Link>
 
@@ -225,16 +225,16 @@ export default function BentoGrid({ data }: BentoGridProps) {
         </div>
       </Link>
 
-      {/* Partenaire BeMatrix - Lien vers page concept */}
+      {/* Partenaire BeMatrix */}
       <Link
         prefetch={false}
         href="/bematrix"
-        className="bento-card rounded-3xl p-6 bg-zinc-900/30 md:backdrop-blur-sm border border-white/10 animate-fade-in-up delay-600 group hover:border-[#7928ca]/30"
+        className="bento-card rounded-3xl p-6 gradient-bg animate-fade-in-up delay-600 group hover:shadow-xl hover:shadow-[#7928ca]/20"
       >
         <div className="h-full flex flex-col justify-center items-center text-center">
-          <span className="text-[10px] uppercase tracking-widest text-zinc-500 mb-2">Partenaire</span>
-          <div className="text-2xl font-bold text-zinc-400 group-hover:gradient-text transition-all duration-300">BeMatrix</div>
-          <span className="text-xs text-zinc-500 mt-1 group-hover:text-[#7928ca] transition-colors">Système modulaire premium</span>
+          <span className="text-[10px] uppercase tracking-widest text-white/70 mb-2">Partenaire</span>
+          <div className="text-2xl font-bold text-white">BeMatrix</div>
+          <span className="text-xs text-white/70 mt-1">Système modulaire premium</span>
         </div>
       </Link>
     </div>
