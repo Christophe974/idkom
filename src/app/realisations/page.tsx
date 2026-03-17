@@ -13,9 +13,12 @@ export const metadata = {
   alternates: { canonical: 'https://www.idkom.fr/realisations' },
 };
 
-export default async function RealisationsPage() {
+export default async function RealisationsPage({ searchParams }: { searchParams: Promise<{ category?: string }> }) {
+  const params = await searchParams;
+  const activeCategory = params.category || null;
+
   const [projets, homeData] = await Promise.all([
-    getProjets({ per_page: 12 }),
+    getProjets({ per_page: 12, ...(activeCategory ? { category: activeCategory } : {}) }),
     getHomepageData(),
   ]);
 
@@ -42,7 +45,11 @@ export default async function RealisationsPage() {
           <Link
             prefetch={false}
             href="/realisations"
-            className="px-4 py-2 rounded-full bg-gradient-to-r from-[#ff2d55] via-[#7928ca] to-[#00d4ff] text-white text-sm font-medium"
+            className={`px-4 py-2 rounded-full text-sm font-medium transition-colors ${
+              !activeCategory
+                ? 'bg-gradient-to-r from-[#ff2d55] via-[#7928ca] to-[#00d4ff] text-white'
+                : 'bg-zinc-800 text-zinc-400 hover:bg-zinc-700 hover:text-white'
+            }`}
           >
             Tous
           </Link>
@@ -51,8 +58,12 @@ export default async function RealisationsPage() {
               prefetch={false}
               key={cat.id}
               href={`/realisations?category=${cat.slug}`}
-              className="px-4 py-2 rounded-full bg-zinc-800 text-zinc-400 text-sm font-medium hover:bg-zinc-700 hover:text-white transition-colors"
-              style={{ borderColor: cat.color }}
+              className={`px-4 py-2 rounded-full text-sm font-medium transition-colors ${
+                activeCategory === cat.slug
+                  ? 'text-white'
+                  : 'bg-zinc-800 text-zinc-400 hover:bg-zinc-700 hover:text-white'
+              }`}
+              style={activeCategory === cat.slug ? { backgroundColor: cat.color } : {}}
             >
               {cat.name}
               {cat.count ? <span className="ml-2 text-zinc-500">({cat.count})</span> : null}

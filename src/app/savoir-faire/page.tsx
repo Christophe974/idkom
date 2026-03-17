@@ -1,3 +1,4 @@
+import Link from 'next/link';
 import { Icon } from '@iconify/react';
 import { getHomepageData } from '@/lib/api';
 import NavbarServer from '@/components/NavbarServer';
@@ -8,19 +9,20 @@ import CTASection from '@/components/CTASection';
 export const revalidate = 300;
 
 export const metadata = {
-  title: "Stands BeMatrix, Digital & Événementiel sur-mesure",
-  description: "Conception de stands modulaires BeMatrix, solutions digitales interactives et événementiel sur-mesure. 4000+ pièces en stock, expertise depuis 1994 en Franche-Comté.",
+  title: "Événementiel, Digital, Stands BeMatrix & Créations Print",
+  description: "Événementiel sur-mesure, solutions digitales interactives, stands modulaires BeMatrix et créations print. 4 expertises complémentaires depuis 1994 en Franche-Comté.",
   alternates: { canonical: "https://www.idkom.fr/savoir-faire" },
 };
 
 const expertises = [
   {
-    icon: 'solar:buildings-3-linear',
-    title: 'Stands Modulaires',
-    subtitle: 'BeMatrix Partner',
-    description: 'Conception et réalisation de stands d\'exposition modulaires, réutilisables et éco-responsables. Du design 3D au montage clé en main.',
-    features: ['Design sur-mesure', 'Système BeMatrix', 'Montage & démontage', 'Stockage & logistique'],
-    color: '#ff2d55',
+    icon: 'solar:calendar-mark-linear',
+    title: 'Événementiel',
+    subtitle: 'De A à Z',
+    description: 'Organisation complète de vos événements corporate : séminaires, lancements produits, soirées d\'entreprise, team building.',
+    features: ['Conception créative', 'Gestion de projet', 'Production technique', 'Coordination jour J'],
+    color: '#00d4ff',
+    categorySlug: 'evenementiel',
   },
   {
     icon: 'solar:monitor-smartphone-linear',
@@ -29,14 +31,25 @@ const expertises = [
     description: 'Intégration de technologies digitales pour créer des expériences mémorables : écrans tactiles, réalité augmentée, applications sur-mesure.',
     features: ['Bornes interactives', 'Affichage dynamique', 'Applications événementielles', 'Réalité augmentée'],
     color: '#7928ca',
+    categorySlug: 'solutions-digitales',
   },
   {
-    icon: 'solar:calendar-mark-linear',
-    title: 'Événementiel',
-    subtitle: 'De A à Z',
-    description: 'Organisation complète de vos événements corporate : séminaires, lancements produits, soirées d\'entreprise, team building.',
-    features: ['Conception créative', 'Gestion de projet', 'Production technique', 'Coordination jour J'],
-    color: '#00d4ff',
+    icon: 'solar:buildings-3-linear',
+    title: 'Stands Modulaires',
+    subtitle: 'BeMatrix Partner',
+    description: 'Conception et réalisation de stands d\'exposition modulaires, réutilisables et éco-responsables. Du design 3D au montage clé en main.',
+    features: ['Design sur-mesure', 'Système BeMatrix', 'Montage & démontage', 'Stockage & logistique'],
+    color: '#ff2d55',
+    categorySlug: 'stands-bematrix',
+  },
+  {
+    icon: 'solar:palette-linear',
+    title: 'Créations & Print',
+    subtitle: 'Design graphique',
+    description: 'Conception graphique et impression pour vos supports de communication : signalétique, kakémonos, bâches, PLV et habillage de stands.',
+    features: ['Signalétique & PLV', 'Kakémonos & bâches', 'Habillage de stands', 'Supports print'],
+    color: '#ff9500',
+    categorySlug: 'creations-print',
   },
 ];
 
@@ -78,18 +91,18 @@ export default async function SavoirFairePage() {
             Notre <span className="gradient-text">Savoir-Faire</span>
           </h1>
           <p className="text-xl text-zinc-400 leading-relaxed">
-            Trois expertises complémentaires pour donner vie à vos projets.
-            <strong className="text-white"> Du stand d'exposition à l'expérience digitale</strong>,
+            Quatre expertises complémentaires pour donner vie à vos projets.
+            <strong className="text-white"> De l'événement à l'expérience digitale</strong>,
             on maîtrise toute la chaîne.
           </p>
         </div>
 
         {/* Expertises */}
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 mb-24">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-24">
           {expertises.map((expertise, index) => (
             <div
               key={index}
-              className="bento-card rounded-2xl p-8 bg-zinc-900 border border-zinc-800 group hover:border-zinc-700 transition-all"
+              className="bento-card rounded-2xl p-8 bg-zinc-900 border border-zinc-800 group hover:border-zinc-700 transition-all flex flex-col"
             >
               <div
                 className="w-16 h-16 rounded-2xl flex items-center justify-center mb-6 transition-colors"
@@ -115,7 +128,7 @@ export default async function SavoirFairePage() {
               <h2 className="text-2xl font-bold text-white mb-4">{expertise.title}</h2>
               <p className="text-zinc-400 mb-6 leading-relaxed">{expertise.description}</p>
 
-              <ul className="space-y-2">
+              <ul className="space-y-2 mb-6">
                 {expertise.features.map((feature, i) => (
                   <li key={i} className="flex items-center gap-3 text-zinc-500">
                     <Icon
@@ -127,6 +140,15 @@ export default async function SavoirFairePage() {
                   </li>
                 ))}
               </ul>
+
+              <Link
+                href={`/realisations?category=${expertise.categorySlug}`}
+                className="mt-auto inline-flex items-center gap-2 text-sm font-medium transition-colors hover:gap-3"
+                style={{ color: expertise.color }}
+              >
+                Voir nos réalisations
+                <Icon icon="solar:arrow-right-linear" width={16} />
+              </Link>
             </div>
           ))}
         </div>
