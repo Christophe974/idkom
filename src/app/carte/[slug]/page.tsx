@@ -1,7 +1,14 @@
 import { notFound } from 'next/navigation';
+import { cache } from 'react';
 import { getVCard } from '@/lib/api';
 import VCardPageClient from './VCardPageClient';
 
+// Deduplicate API call between generateMetadata and Page
+const getCachedVCard = cache(async (slug: string) => {
+  return getVCard(slug);
+});
+
+// Cache for 1 hour, regenerate in background
 export const revalidate = 3600;
 
 interface PageProps {
@@ -11,7 +18,7 @@ interface PageProps {
 export async function generateMetadata({ params }: PageProps) {
   const { slug } = await params;
   try {
-    const card = await getVCard(slug);
+    const card = await getCachedVCard(slug);
     const fullName = `${card.first_name} ${card.last_name}`;
     return {
       title: `${fullName} - ${card.company || 'iDkom'}`,
@@ -34,7 +41,7 @@ export default async function Page({ params }: PageProps) {
   const { slug } = await params;
 
   try {
-    const card = await getVCard(slug);
+    const card = await getCachedVCard(slug);
     return <VCardPageClient card={card} />;
   } catch {
     notFound();
