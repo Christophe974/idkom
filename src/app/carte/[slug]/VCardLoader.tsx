@@ -1,8 +1,11 @@
 'use client';
 
 import { useState, useEffect } from 'react';
+import dynamic from 'next/dynamic';
 import type { VCardData } from '@/lib/api';
-import VCardPageClient from './VCardPageClient';
+
+// Lazy load the heavy card component - NOT included in Edge bundle
+const VCardPageClient = dynamic(() => import('./VCardPageClient'), { ssr: false });
 
 const API_URL = process.env.NEXT_PUBLIC_API_URL || 'https://api.idkom.fr';
 
@@ -23,7 +26,7 @@ export default function VCardLoader({ slug }: Props) {
 
     const tick = (now: number) => {
       const elapsed = now - start;
-      const p = Math.min(elapsed / duration, 0.95); // Cap at 95% until data arrives
+      const p = Math.min(elapsed / duration, 0.95);
       setProgress(Math.floor(p * 100));
       if (p < 0.95) rafId = requestAnimationFrame(tick);
     };
@@ -35,7 +38,6 @@ export default function VCardLoader({ slug }: Props) {
       .then(data => {
         if (data.success && data.data) {
           setProgress(100);
-          // Small delay for the 100% animation to be visible
           setTimeout(() => setCard(data.data), 300);
         } else {
           setError(true);
@@ -60,7 +62,7 @@ export default function VCardLoader({ slug }: Props) {
     );
   }
 
-  // Card loaded → show it
+  // Card loaded
   if (card) {
     return <VCardPageClient card={card} />;
   }
@@ -68,7 +70,6 @@ export default function VCardLoader({ slug }: Props) {
   // Splash screen with counter
   return (
     <div className="min-h-screen relative overflow-hidden flex items-center justify-center" style={{ background: '#09090b' }}>
-      {/* Background glow */}
       <div className="fixed inset-0 pointer-events-none">
         <div
           className="absolute w-[500px] h-[500px] rounded-full opacity-15 blur-[120px]"
@@ -90,9 +91,7 @@ export default function VCardLoader({ slug }: Props) {
         />
       </div>
 
-      {/* Splash content */}
       <div className="relative z-10 flex flex-col items-center">
-        {/* Logo */}
         <div className="mb-10" style={{ animation: 'fadeIn 0.3s ease-out both' }}>
           <svg width="140" height="45" viewBox="0 0 140 45" className="opacity-90">
             <text x="50%" y="50%" dominantBaseline="central" textAnchor="middle"
@@ -106,12 +105,9 @@ export default function VCardLoader({ slug }: Props) {
           </p>
         </div>
 
-        {/* Circular progress with counter */}
         <div className="relative mb-8" style={{ animation: 'fadeIn 0.4s ease-out 0.1s both' }}>
           <svg width="100" height="100" viewBox="0 0 100 100">
-            {/* Background circle */}
             <circle cx="50" cy="50" r="42" fill="none" stroke="rgba(255,255,255,0.05)" strokeWidth="3" />
-            {/* Progress circle */}
             <circle
               cx="50" cy="50" r="42" fill="none"
               stroke="url(#splashGrad)" strokeWidth="3"
@@ -128,8 +124,6 @@ export default function VCardLoader({ slug }: Props) {
               </linearGradient>
             </defs>
           </svg>
-
-          {/* Counter number */}
           <div className="absolute inset-0 flex items-center justify-center">
             <span className="text-white text-2xl font-bold tabular-nums">
               {progress}
@@ -138,7 +132,6 @@ export default function VCardLoader({ slug }: Props) {
           </div>
         </div>
 
-        {/* Loading text */}
         <p
           className="text-zinc-500 text-sm font-medium"
           style={{ animation: 'fadeIn 0.4s ease-out 0.2s both' }}
