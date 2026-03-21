@@ -1,0 +1,160 @@
+'use client';
+
+import { useState, useEffect } from 'react';
+import { useSearchParams } from 'next/navigation';
+import dynamic from 'next/dynamic';
+import type { VCardData } from '@/lib/api';
+
+// Lazy load the heavy card component
+const VCardPageClient = dynamic(
+  () => import('../carte/[slug]/VCardPageClient'),
+  { ssr: false }
+);
+
+const API_URL = process.env.NEXT_PUBLIC_API_URL || 'https://api.idkom.fr';
+
+export default function VCardLoaderStatic() {
+  const searchParams = useSearchParams();
+  const slug = searchParams.get('slug') || '';
+  const [card, setCard] = useState<VCardData | null>(null);
+  const [error, setError] = useState(false);
+  const [progress, setProgress] = useState(0);
+
+  useEffect(() => {
+    if (!slug) {
+      setError(true);
+      return;
+    }
+
+    // Animate progress counter
+    const start = performance.now();
+    const duration = 1500;
+    let rafId: number;
+
+    const tick = (now: number) => {
+      const elapsed = now - start;
+      const p = Math.min(elapsed / duration, 0.95);
+      setProgress(Math.floor(p * 100));
+      if (p < 0.95) rafId = requestAnimationFrame(tick);
+    };
+    rafId = requestAnimationFrame(tick);
+
+    // Fetch card data
+    fetch(`${API_URL}/vcards.php?action=get&slug=${encodeURIComponent(slug)}`)
+      .then(r => r.json())
+      .then(data => {
+        if (data.success && data.data) {
+          setProgress(100);
+          setTimeout(() => setCard(data.data), 300);
+        } else {
+          setError(true);
+        }
+      })
+      .catch(() => setError(true));
+
+    return () => cancelAnimationFrame(rafId);
+  }, [slug]);
+
+  if (error) {
+    return (
+      <div className="min-h-screen flex items-center justify-center" style={{ background: '#09090b' }}>
+        <div className="text-center">
+          <p className="text-zinc-400 text-lg mb-4">Carte introuvable</p>
+          <a href="https://www.idkom.fr" className="text-blue-400 hover:underline text-sm">
+            Visiter iDkom
+          </a>
+        </div>
+      </div>
+    );
+  }
+
+  if (card) {
+    return <VCardPageClient card={card} />;
+  }
+
+  // Splash screen
+  return (
+    <div className="min-h-screen relative overflow-hidden flex items-center justify-center" style={{ background: '#09090b' }}>
+      <div className="fixed inset-0 pointer-events-none">
+        <div
+          className="absolute w-[500px] h-[500px] rounded-full opacity-15 blur-[120px]"
+          style={{
+            background: '#3b82f6',
+            top: '20%',
+            right: '-10%',
+            animation: 'splashPulse 3s ease-in-out infinite',
+          }}
+        />
+        <div
+          className="absolute w-[400px] h-[400px] rounded-full opacity-10 blur-[100px]"
+          style={{
+            background: 'linear-gradient(135deg, #7928ca, #ff2d55)',
+            bottom: '10%',
+            left: '-10%',
+            animation: 'splashPulse 3s ease-in-out infinite 1s',
+          }}
+        />
+      </div>
+
+      <div className="relative z-10 flex flex-col items-center">
+        <div className="mb-10" style={{ animation: 'fadeIn 0.3s ease-out both' }}>
+          <svg width="140" height="45" viewBox="0 0 140 45" className="opacity-90">
+            <text x="50%" y="50%" dominantBaseline="central" textAnchor="middle"
+              fill="white" fontFamily="system-ui, -apple-system, sans-serif"
+              fontSize="32" fontWeight="700" letterSpacing="3">
+              IDKOM
+            </text>
+          </svg>
+          <p className="text-zinc-600 text-[10px] text-center tracking-[0.3em] uppercase mt-1">
+            L&apos;Atelier Phygital
+          </p>
+        </div>
+
+        <div className="relative mb-8" style={{ animation: 'fadeIn 0.4s ease-out 0.1s both' }}>
+          <svg width="100" height="100" viewBox="0 0 100 100">
+            <circle cx="50" cy="50" r="42" fill="none" stroke="rgba(255,255,255,0.05)" strokeWidth="3" />
+            <circle
+              cx="50" cy="50" r="42" fill="none"
+              stroke="url(#splashGrad)" strokeWidth="3"
+              strokeLinecap="round"
+              strokeDasharray={`${progress * 2.64} 264`}
+              transform="rotate(-90 50 50)"
+              style={{ transition: 'stroke-dasharray 0.3s ease-out' }}
+            />
+            <defs>
+              <linearGradient id="splashGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+                <stop offset="0%" stopColor="#3b82f6" />
+                <stop offset="50%" stopColor="#7928ca" />
+                <stop offset="100%" stopColor="#ff2d55" />
+              </linearGradient>
+            </defs>
+          </svg>
+          <div className="absolute inset-0 flex items-center justify-center">
+            <span className="text-white text-2xl font-bold tabular-nums">
+              {progress}
+              <span className="text-zinc-500 text-sm">%</span>
+            </span>
+          </div>
+        </div>
+
+        <p
+          className="text-zinc-500 text-sm font-medium"
+          style={{ animation: 'fadeIn 0.4s ease-out 0.2s both' }}
+        >
+          Chargement de votre carte...
+        </p>
+      </div>
+
+      <style>{`
+        @keyframes fadeIn {
+          from { opacity: 0; transform: translateY(10px); }
+          to { opacity: 1; transform: translateY(0); }
+        }
+        @keyframes splashPulse {
+          0%, 100% { opacity: 0.15; transform: scale(1); }
+          50% { opacity: 0.25; transform: scale(1.1); }
+        }
+      `}</style>
+    </div>
+  );
+}
