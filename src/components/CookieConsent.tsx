@@ -9,6 +9,9 @@ export default function CookieConsent() {
   const [isLeaving, setIsLeaving] = useState(false);
 
   useEffect(() => {
+    // Ne pas afficher sur les pages carte de visite
+    if (window.location.pathname.startsWith('/carte/')) return;
+
     // Vérifier si l'utilisateur a déjà fait un choix
     const consent = localStorage.getItem('cookie-consent');
     if (!consent) {

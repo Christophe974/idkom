@@ -14,7 +14,6 @@ interface Props {
 export default function VCardPageClient({ card }: Props) {
   const [copied, setCopied] = useState(false);
   const [downloaded, setDownloaded] = useState(false);
-  const [showFullCard, setShowFullCard] = useState(false);
   const [activeTab, setActiveTab] = useState<'contact' | 'about' | 'portfolio'>('contact');
 
   const fullName = `${card.first_name} ${card.last_name}`;
@@ -287,32 +286,20 @@ export default function VCardPageClient({ card }: Props) {
               {(['contact', 'about', 'portfolio'] as const).map((tab) => (
                 <button
                   key={tab}
-                  onClick={() => { setActiveTab(tab); setShowFullCard(true); }}
+                  onClick={() => setActiveTab(tab)}
                   className={`flex-1 py-3 text-xs font-semibold uppercase tracking-wider transition-all duration-300 border-b-2 ${
-                    activeTab === tab && showFullCard
+                    activeTab === tab
                       ? 'border-current'
                       : 'border-transparent text-zinc-600 hover:text-zinc-400'
                   }`}
-                  style={activeTab === tab && showFullCard ? { color: accent } : undefined}
+                  style={activeTab === tab ? { color: accent } : undefined}
                 >
                   {tab === 'contact' ? 'Contact' : tab === 'about' ? 'À propos' : 'Portfolio'}
                 </button>
               ))}
             </div>
 
-            {/* ========== EXPANDABLE CONTENT ========== */}
-            {!showFullCard ? (
-              /* Teaser - invite to explore */
-              <div className="px-6 py-5 animate-fade-in-up delay-500">
-                <button
-                  onClick={() => setShowFullCard(true)}
-                  className="w-full py-3 rounded-2xl text-zinc-400 font-medium text-sm flex items-center justify-center gap-2 border border-white/5 transition-all duration-300 hover:border-white/15 hover:text-white bg-white/[0.02]"
-                >
-                  <Icon icon="solar:alt-arrow-down-linear" width={18} />
-                  Voir la carte complète
-                </button>
-              </div>
-            ) : (
+            {/* ========== TAB CONTENT ========== */}
               <div className="px-6 py-5 animate-fade-in-up">
 
                 {/* ===== TAB: CONTACT ===== */}
@@ -582,7 +569,6 @@ export default function VCardPageClient({ card }: Props) {
                   </div>
                 )}
               </div>
-            )}
           </div>
 
           {/* QR Code section */}
