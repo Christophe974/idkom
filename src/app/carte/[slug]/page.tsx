@@ -1,8 +1,7 @@
 import VCardLoader from './VCardLoader';
 
-// Force static generation - no serverless function, served from CDN
-export const dynamic = 'force-static';
-export const dynamicParams = true;
+// Edge runtime = ZERO cold start (even on free Vercel)
+export const runtime = 'edge';
 
 interface PageProps {
   params: Promise<{ slug: string }>;
