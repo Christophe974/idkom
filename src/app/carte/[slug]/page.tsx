@@ -2,7 +2,7 @@ import { notFound } from 'next/navigation';
 import { getVCard } from '@/lib/api';
 import VCardPageClient from './VCardPageClient';
 
-export const revalidate = 60;
+export const revalidate = 3600; // Cache 1h - vCard data rarely changes
 
 interface PageProps {
   params: Promise<{ slug: string }>;
