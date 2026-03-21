@@ -508,6 +508,15 @@ export async function trackPropositionEvent(slug: string, event: string): Promis
 // ============================================================
 // Cartes de visite digitales (vCards)
 // ============================================================
+export interface VCardPartner {
+  name: string;
+  logo: string | null;
+  color_primary: string;
+  color_secondary: string;
+  agency: string | null;
+  welcome_text: string | null;
+}
+
 export interface VCardData {
   slug: string;
   first_name: string;
@@ -525,6 +534,7 @@ export interface VCardData {
   photo: string | null;
   accent_color: string;
   bio: string | null;
+  partner?: VCardPartner | null;
 }
 
 export async function getVCard(slug: string): Promise<VCardData> {

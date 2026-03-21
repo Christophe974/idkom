@@ -5,6 +5,7 @@ import Image from 'next/image';
 import type { VCardData } from '@/lib/api';
 import { downloadVcf } from './generateVcf';
 import QRCode from './QRCode';
+import PartnerBranding from './PartnerBranding';
 import {
   PhoneIcon, WhatsAppIcon, EmailIcon, ChatIcon, ShareIcon,
   UserPlusIcon, CheckCircleIcon, ArrowRightIcon,
@@ -198,6 +199,18 @@ export default function VCardPageClient({ card }: Props) {
                 )}
               </div>
             </div>
+
+            {/* ========== PARTNER BRANDING ========== */}
+            {card.partner && (
+              <div className="px-6 mt-4 animate-fade-in-up delay-200">
+                <PartnerBranding
+                  name={card.partner.name}
+                  logo={card.partner.logo}
+                  agency={card.partner.agency}
+                  colorPrimary={card.partner.color_primary}
+                />
+              </div>
+            )}
 
             {/* ========== QUICK ACTION BAR ========== */}
             <div className="flex justify-center gap-4 px-6 mt-5 animate-fade-in-up delay-300">
