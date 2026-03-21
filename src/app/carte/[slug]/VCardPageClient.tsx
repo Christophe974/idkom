@@ -4,7 +4,7 @@ import { useState } from 'react';
 import Image from 'next/image';
 import type { VCardData } from '@/lib/api';
 import { downloadVcf } from './generateVcf';
-// import QRCode from './QRCode'; // TEMP: disabled for perf test
+import QRCode from './QRCode';
 import PartnerBranding from './PartnerBranding';
 import {
   PhoneIcon, WhatsAppIcon, EmailIcon, ChatIcon, ShareIcon,
@@ -589,11 +589,11 @@ export default function VCardPageClient({ card }: Props) {
               </div>
           </div>
 
-          {/* QR Code section - TEMP disabled for perf test */}
-          {/* <div className="mt-5 flex flex-col items-center animate-fade-in-up delay-600">
+          {/* QR Code section */}
+          <div className="mt-5 flex flex-col items-center animate-fade-in-up delay-600">
             <QRCode url={pageUrl} size={80} color="ffffff" />
             <p className="text-zinc-600 text-xs mt-1.5">Scannez pour partager</p>
-          </div> */}
+          </div>
 
           {/* Footer */}
           <div className="mt-5 text-center animate-fade-in-up delay-600">
