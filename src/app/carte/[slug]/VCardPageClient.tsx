@@ -23,9 +23,12 @@ export default function VCardPageClient({ card }: Props) {
     ? window.location.href
     : `https://www.idkom.fr/carte/${card.slug}`;
 
-  // WhatsApp link
-  const whatsappUrl = card.phone
-    ? `https://wa.me/${card.phone.replace(/[^0-9+]/g, '').replace(/^0/, '33')}`
+  // For partner cards (porte-clé), hide About/Portfolio tabs and RDV link
+  const isPartnerCard = card.source === 'portecle' && !!card.partner;
+
+  // WhatsApp link - only show if whatsapp number is explicitly provided
+  const whatsappUrl = card.whatsapp
+    ? `https://wa.me/${card.whatsapp.replace(/[^0-9+]/g, '').replace(/^0/, '33')}`
     : null;
 
   // SMS link
@@ -298,22 +301,26 @@ export default function VCardPageClient({ card }: Props) {
             </div>
 
             {/* ========== TAB NAVIGATION ========== */}
-            <div className="flex border-b border-white/5 mt-5 px-6 animate-fade-in-up delay-400">
-              {(['contact', 'about', 'portfolio'] as const).map((tab) => (
-                <button
-                  key={tab}
-                  onClick={() => setActiveTab(tab)}
-                  className={`flex-1 py-3 text-xs font-semibold uppercase tracking-wider transition-all duration-300 border-b-2 ${
-                    activeTab === tab
-                      ? 'border-current'
-                      : 'border-transparent text-zinc-600 hover:text-zinc-400'
-                  }`}
-                  style={activeTab === tab ? { color: accent } : undefined}
-                >
-                  {tab === 'contact' ? 'Contact' : tab === 'about' ? 'À propos' : 'Portfolio'}
-                </button>
-              ))}
-            </div>
+            {!isPartnerCard ? (
+              <div className="flex border-b border-white/5 mt-5 px-6 animate-fade-in-up delay-400">
+                {(['contact', 'about', 'portfolio'] as const).map((tab) => (
+                  <button
+                    key={tab}
+                    onClick={() => setActiveTab(tab)}
+                    className={`flex-1 py-3 text-xs font-semibold uppercase tracking-wider transition-all duration-300 border-b-2 ${
+                      activeTab === tab
+                        ? 'border-current'
+                        : 'border-transparent text-zinc-600 hover:text-zinc-400'
+                    }`}
+                    style={activeTab === tab ? { color: accent } : undefined}
+                  >
+                    {tab === 'contact' ? 'Contact' : tab === 'about' ? 'À propos' : 'Portfolio'}
+                  </button>
+                ))}
+              </div>
+            ) : (
+              <div className="border-b border-white/5 mt-5" />
+            )}
 
             {/* ========== TAB CONTENT ========== */}
               <div className="px-6 py-5 animate-fade-in-up">
@@ -449,26 +456,28 @@ export default function VCardPageClient({ card }: Props) {
                       </div>
                     )}
 
-                    {/* RDV Button */}
-                    <a
-                      href="https://www.idkom.fr/rendez-vous"
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="flex items-center gap-3 w-full p-3 rounded-xl border border-dashed transition-all duration-300 hover:translate-x-1 group mt-2"
-                      style={{
-                        borderColor: `${accent}30`,
-                        background: `${accent}08`,
-                      }}
-                    >
-                      <div className="w-9 h-9 rounded-lg flex items-center justify-center flex-shrink-0" style={{ background: `${accent}20` }}>
-                        <Icon icon="solar:calendar-bold" width={18} style={{ color: accent }} />
-                      </div>
-                      <div className="flex-1 min-w-0">
-                        <p className="text-white text-sm font-medium">Prendre rendez-vous</p>
-                        <p className="text-zinc-500 text-xs">Réservez un créneau en ligne</p>
-                      </div>
-                      <Icon icon="solar:arrow-right-linear" width={14} className="text-zinc-700 group-hover:text-zinc-400 transition-colors" />
-                    </a>
+                    {/* RDV Button - only for iDkom cards */}
+                    {!isPartnerCard && (
+                      <a
+                        href="https://www.idkom.fr/rendez-vous"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="flex items-center gap-3 w-full p-3 rounded-xl border border-dashed transition-all duration-300 hover:translate-x-1 group mt-2"
+                        style={{
+                          borderColor: `${accent}30`,
+                          background: `${accent}08`,
+                        }}
+                      >
+                        <div className="w-9 h-9 rounded-lg flex items-center justify-center flex-shrink-0" style={{ background: `${accent}20` }}>
+                          <Icon icon="solar:calendar-bold" width={18} style={{ color: accent }} />
+                        </div>
+                        <div className="flex-1 min-w-0">
+                          <p className="text-white text-sm font-medium">Prendre rendez-vous</p>
+                          <p className="text-zinc-500 text-xs">Réservez un créneau en ligne</p>
+                        </div>
+                        <Icon icon="solar:arrow-right-linear" width={14} className="text-zinc-700 group-hover:text-zinc-400 transition-colors" />
+                      </a>
+                    )}
                   </div>
                 )}
 

@@ -534,6 +534,8 @@ export interface VCardData {
   photo: string | null;
   accent_color: string;
   bio: string | null;
+  whatsapp?: string | null;
+  source?: string;
   partner?: VCardPartner | null;
 }
 
