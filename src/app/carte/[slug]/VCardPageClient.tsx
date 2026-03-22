@@ -2,17 +2,11 @@
 
 import { useState } from 'react';
 import Image from 'next/image';
+import { Icon } from '@iconify/react';
 import type { VCardData } from '@/lib/api';
 import { downloadVcf } from './generateVcf';
 import QRCode from './QRCode';
 import PartnerBranding from './PartnerBranding';
-import {
-  PhoneIcon, WhatsAppIcon, EmailIcon, ChatIcon, ShareIcon,
-  UserPlusIcon, CheckCircleIcon, ArrowRightIcon,
-  MapPinIcon, GlobeIcon, CalendarIcon,
-  LinkedInIcon, InstagramIcon, FacebookIcon,
-  UserIcon, StarIcon, GalleryIcon,
-} from './icons';
 
 interface Props {
   card: VCardData;
@@ -67,34 +61,37 @@ export default function VCardPageClient({ card }: Props) {
 
   return (
     <div className="min-h-screen relative overflow-hidden" style={{ background: '#09090b' }}>
-      {/* Animated mesh gradient background */}
+      {/* Animated mesh gradient background — GPU-optimized */}
       <div className="fixed inset-0 pointer-events-none">
         <div
-          className="absolute w-[600px] h-[600px] rounded-full opacity-20 blur-[120px]"
+          className="absolute w-[400px] h-[400px] rounded-full opacity-15 blur-[80px]"
           style={{
             background: accent,
             top: '-10%',
             right: '-10%',
             animation: 'meshFloat1 8s ease-in-out infinite',
+            willChange: 'transform',
           }}
         />
         <div
-          className="absolute w-[500px] h-[500px] rounded-full opacity-10 blur-[100px]"
+          className="absolute w-[350px] h-[350px] rounded-full opacity-10 blur-[70px]"
           style={{
             background: `linear-gradient(135deg, ${accent}, #7928ca)`,
             bottom: '-5%',
             left: '-10%',
             animation: 'meshFloat2 10s ease-in-out infinite',
+            willChange: 'transform',
           }}
         />
         <div
-          className="absolute w-[300px] h-[300px] rounded-full opacity-10 blur-[80px]"
+          className="absolute w-[200px] h-[200px] rounded-full opacity-10 blur-[60px]"
           style={{
             background: '#00d4ff',
             top: '50%',
             left: '50%',
             transform: 'translate(-50%, -50%)',
             animation: 'meshFloat3 12s ease-in-out infinite',
+            willChange: 'transform',
           }}
         />
       </div>
@@ -108,8 +105,8 @@ export default function VCardPageClient({ card }: Props) {
             className="rounded-3xl border border-white/10 overflow-hidden animate-fade-in-up"
             style={{
               background: 'rgba(24, 24, 27, 0.85)',
-              backdropFilter: 'blur(40px)',
-              WebkitBackdropFilter: 'blur(40px)',
+              backdropFilter: 'blur(20px)',
+              WebkitBackdropFilter: 'blur(20px)',
             }}
           >
             {/* Cover Banner */}
@@ -164,7 +161,7 @@ export default function VCardPageClient({ card }: Props) {
                     />
                   ) : (
                     <div className="w-full h-full rounded-full bg-zinc-800 flex items-center justify-center">
-                      <UserIcon width={40} className="text-zinc-600" />
+                      <Icon icon="solar:user-bold" width={40} className="text-zinc-600" />
                     </div>
                   )}
                 </div>
@@ -223,7 +220,7 @@ export default function VCardPageClient({ card }: Props) {
                     className="w-12 h-12 rounded-2xl flex items-center justify-center transition-all duration-300 group-hover:scale-110 group-active:scale-95"
                     style={{ background: `${accent}20`, boxShadow: `0 4px 15px ${accent}15` }}
                   >
-                    <PhoneIcon width={22} style={{ color: accent }} />
+                    <Icon icon="solar:phone-bold" width={22} style={{ color: accent }} />
                   </div>
                   <span className="text-[10px] text-zinc-500 font-medium">Appeler</span>
                 </a>
@@ -236,7 +233,7 @@ export default function VCardPageClient({ card }: Props) {
                   className="flex flex-col items-center gap-1.5 group"
                 >
                   <div className="w-12 h-12 rounded-2xl flex items-center justify-center bg-emerald-500/15 transition-all duration-300 group-hover:scale-110 group-active:scale-95" style={{ boxShadow: '0 4px 15px rgba(16,185,129,0.1)' }}>
-                    <WhatsAppIcon width={24} className="text-emerald-400" />
+                    <Icon icon="mdi:whatsapp" width={24} className="text-emerald-400" />
                   </div>
                   <span className="text-[10px] text-zinc-500 font-medium">WhatsApp</span>
                 </a>
@@ -247,7 +244,7 @@ export default function VCardPageClient({ card }: Props) {
                   className="flex flex-col items-center gap-1.5 group"
                 >
                   <div className="w-12 h-12 rounded-2xl flex items-center justify-center bg-cyan-500/15 transition-all duration-300 group-hover:scale-110 group-active:scale-95" style={{ boxShadow: '0 4px 15px rgba(6,182,212,0.1)' }}>
-                    <EmailIcon width={22} className="text-cyan-400" />
+                    <Icon icon="solar:letter-bold" width={22} className="text-cyan-400" />
                   </div>
                   <span className="text-[10px] text-zinc-500 font-medium">Email</span>
                 </a>
@@ -258,7 +255,7 @@ export default function VCardPageClient({ card }: Props) {
                   className="flex flex-col items-center gap-1.5 group"
                 >
                   <div className="w-12 h-12 rounded-2xl flex items-center justify-center bg-purple-500/15 transition-all duration-300 group-hover:scale-110 group-active:scale-95" style={{ boxShadow: '0 4px 15px rgba(168,85,247,0.1)' }}>
-                    <ChatIcon width={22} className="text-purple-400" />
+                    <Icon icon="solar:chat-round-dots-bold" width={22} className="text-purple-400" />
                   </div>
                   <span className="text-[10px] text-zinc-500 font-medium">SMS</span>
                 </a>
@@ -268,7 +265,7 @@ export default function VCardPageClient({ card }: Props) {
                 className="flex flex-col items-center gap-1.5 group"
               >
                 <div className="w-12 h-12 rounded-2xl flex items-center justify-center bg-white/5 transition-all duration-300 group-hover:scale-110 group-active:scale-95 border border-white/5">
-                  <ShareIcon width={20} className="text-zinc-400" />
+                  <Icon icon="solar:share-bold" width={20} className="text-zinc-400" />
                 </div>
                 <span className="text-[10px] text-zinc-500 font-medium">
                   {copied ? 'Copié !' : 'Partager'}
@@ -288,12 +285,12 @@ export default function VCardPageClient({ card }: Props) {
               >
                 {downloaded ? (
                   <>
-                    <CheckCircleIcon width={20} />
+                    <Icon icon="solar:check-circle-bold" width={20} />
                     Contact enregistré !
                   </>
                 ) : (
                   <>
-                    <UserPlusIcon width={20} />
+                    <Icon icon="solar:user-plus-bold" width={20} />
                     Enregistrer le contact
                   </>
                 )}
@@ -331,13 +328,13 @@ export default function VCardPageClient({ card }: Props) {
                         style={{ background: 'rgba(255,255,255,0.02)' }}
                       >
                         <div className="w-9 h-9 rounded-lg flex items-center justify-center flex-shrink-0" style={{ background: `${accent}15` }}>
-                          <PhoneIcon width={18} style={{ color: accent }} />
+                          <Icon icon="solar:phone-bold" width={18} style={{ color: accent }} />
                         </div>
                         <div className="flex-1 min-w-0">
                           <p className="text-white text-sm font-medium">Téléphone</p>
                           <p className="text-zinc-500 text-xs truncate">{card.phone}</p>
                         </div>
-                        <ArrowRightIcon className="text-zinc-700 group-hover:text-zinc-400 transition-colors" />
+                        <Icon icon="solar:arrow-right-linear" width={14} className="text-zinc-700 group-hover:text-zinc-400 transition-colors" />
                       </a>
                     )}
 
@@ -348,13 +345,13 @@ export default function VCardPageClient({ card }: Props) {
                         style={{ background: 'rgba(255,255,255,0.02)' }}
                       >
                         <div className="w-9 h-9 rounded-lg flex items-center justify-center flex-shrink-0 bg-purple-500/10">
-                          <PhoneIcon width={18} className="text-purple-400" />
+                          <Icon icon="solar:phone-bold" width={18} className="text-purple-400" />
                         </div>
                         <div className="flex-1 min-w-0">
                           <p className="text-white text-sm font-medium">Tél. secondaire</p>
                           <p className="text-zinc-500 text-xs truncate">{card.phone_secondary}</p>
                         </div>
-                        <ArrowRightIcon className="text-zinc-700 group-hover:text-zinc-400 transition-colors" />
+                        <Icon icon="solar:arrow-right-linear" width={14} className="text-zinc-700 group-hover:text-zinc-400 transition-colors" />
                       </a>
                     )}
 
@@ -365,13 +362,13 @@ export default function VCardPageClient({ card }: Props) {
                         style={{ background: 'rgba(255,255,255,0.02)' }}
                       >
                         <div className="w-9 h-9 rounded-lg flex items-center justify-center flex-shrink-0 bg-cyan-500/10">
-                          <EmailIcon width={18} className="text-cyan-400" />
+                          <Icon icon="solar:letter-bold" width={18} className="text-cyan-400" />
                         </div>
                         <div className="flex-1 min-w-0">
                           <p className="text-white text-sm font-medium">Email</p>
                           <p className="text-zinc-500 text-xs truncate">{card.email}</p>
                         </div>
-                        <ArrowRightIcon className="text-zinc-700 group-hover:text-zinc-400 transition-colors" />
+                        <Icon icon="solar:arrow-right-linear" width={14} className="text-zinc-700 group-hover:text-zinc-400 transition-colors" />
                       </a>
                     )}
 
@@ -384,13 +381,13 @@ export default function VCardPageClient({ card }: Props) {
                         style={{ background: 'rgba(255,255,255,0.02)' }}
                       >
                         <div className="w-9 h-9 rounded-lg flex items-center justify-center flex-shrink-0 bg-green-500/10">
-                          <MapPinIcon width={18} className="text-green-400" />
+                          <Icon icon="solar:map-point-bold" width={18} className="text-green-400" />
                         </div>
                         <div className="flex-1 min-w-0">
                           <p className="text-white text-sm font-medium">Adresse</p>
                           <p className="text-zinc-500 text-xs truncate">{card.address}</p>
                         </div>
-                        <ArrowRightIcon className="text-zinc-700 group-hover:text-zinc-400 transition-colors" />
+                        <Icon icon="solar:arrow-right-linear" width={14} className="text-zinc-700 group-hover:text-zinc-400 transition-colors" />
                       </a>
                     )}
 
@@ -403,13 +400,13 @@ export default function VCardPageClient({ card }: Props) {
                         style={{ background: 'rgba(255,255,255,0.02)' }}
                       >
                         <div className="w-9 h-9 rounded-lg flex items-center justify-center flex-shrink-0 bg-blue-500/10">
-                          <GlobeIcon width={18} className="text-blue-400" />
+                          <Icon icon="solar:global-bold" width={18} className="text-blue-400" />
                         </div>
                         <div className="flex-1 min-w-0">
                           <p className="text-white text-sm font-medium">Site web</p>
                           <p className="text-zinc-500 text-xs truncate">{card.website.replace(/^https?:\/\//, '')}</p>
                         </div>
-                        <ArrowRightIcon className="text-zinc-700 group-hover:text-zinc-400 transition-colors" />
+                        <Icon icon="solar:arrow-right-linear" width={14} className="text-zinc-700 group-hover:text-zinc-400 transition-colors" />
                       </a>
                     )}
 
@@ -423,7 +420,7 @@ export default function VCardPageClient({ card }: Props) {
                             rel="noopener noreferrer"
                             className="flex-1 h-11 rounded-xl flex items-center justify-center gap-2 border border-white/5 transition-all duration-300 hover:border-white/15 hover:scale-105 bg-white/[0.02]"
                           >
-                            <LinkedInIcon width={18} className="text-[#0A66C2]" />
+                            <Icon icon="mdi:linkedin" width={18} className="text-[#0A66C2]" />
                             <span className="text-xs text-zinc-500">LinkedIn</span>
                           </a>
                         )}
@@ -434,7 +431,7 @@ export default function VCardPageClient({ card }: Props) {
                             rel="noopener noreferrer"
                             className="flex-1 h-11 rounded-xl flex items-center justify-center gap-2 border border-white/5 transition-all duration-300 hover:border-white/15 hover:scale-105 bg-white/[0.02]"
                           >
-                            <InstagramIcon width={18} className="text-[#E4405F]" />
+                            <Icon icon="mdi:instagram" width={18} className="text-[#E4405F]" />
                             <span className="text-xs text-zinc-500">Instagram</span>
                           </a>
                         )}
@@ -445,7 +442,7 @@ export default function VCardPageClient({ card }: Props) {
                             rel="noopener noreferrer"
                             className="flex-1 h-11 rounded-xl flex items-center justify-center gap-2 border border-white/5 transition-all duration-300 hover:border-white/15 hover:scale-105 bg-white/[0.02]"
                           >
-                            <FacebookIcon width={18} className="text-[#1877F2]" />
+                            <Icon icon="mdi:facebook" width={18} className="text-[#1877F2]" />
                             <span className="text-xs text-zinc-500">Facebook</span>
                           </a>
                         )}
@@ -464,13 +461,13 @@ export default function VCardPageClient({ card }: Props) {
                       }}
                     >
                       <div className="w-9 h-9 rounded-lg flex items-center justify-center flex-shrink-0" style={{ background: `${accent}20` }}>
-                        <CalendarIcon width={18} style={{ color: accent }} />
+                        <Icon icon="solar:calendar-bold" width={18} style={{ color: accent }} />
                       </div>
                       <div className="flex-1 min-w-0">
                         <p className="text-white text-sm font-medium">Prendre rendez-vous</p>
                         <p className="text-zinc-500 text-xs">Réservez un créneau en ligne</p>
                       </div>
-                      <ArrowRightIcon className="text-zinc-700 group-hover:text-zinc-400 transition-colors" />
+                      <Icon icon="solar:arrow-right-linear" width={14} className="text-zinc-700 group-hover:text-zinc-400 transition-colors" />
                     </a>
                   </div>
                 )}
@@ -517,7 +514,7 @@ export default function VCardPageClient({ card }: Props) {
                         <div className="text-center p-3 rounded-xl border border-white/5 bg-white/[0.02]">
                           <div className="flex items-center justify-center gap-1">
                             <p className="text-white font-bold text-lg">5.0</p>
-                            <StarIcon width={14} className="text-yellow-400" />
+                            <Icon icon="solar:star-bold" width={14} className="text-yellow-400" />
                           </div>
                           <p className="text-zinc-500 text-[10px] font-medium mt-0.5">Google</p>
                         </div>
@@ -564,7 +561,7 @@ export default function VCardPageClient({ card }: Props) {
                           style={{ background: item.gradient }}
                         >
                           <div className="text-center">
-                            <GalleryIcon width={28} className="text-white/30 mx-auto mb-2" />
+                            <Icon icon="solar:gallery-bold" width={28} className="text-white/30 mx-auto mb-2" />
                             <span className="text-white/50 text-xs font-medium">{item.label}</span>
                           </div>
                         </div>
