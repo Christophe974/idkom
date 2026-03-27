@@ -601,7 +601,11 @@ export interface CityPage {
 }
 
 export async function getCityPages(): Promise<CityPageListItem[]> {
-  return fetchApi<CityPageListItem[]>('city-pages.php');
+  try {
+    return await fetchApi<CityPageListItem[]>('city-pages.php');
+  } catch {
+    return [];
+  }
 }
 
 export async function getCityPageBySlug(slug: string): Promise<CityPage> {
