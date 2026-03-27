@@ -10,7 +10,7 @@ import { getHomepageData } from '@/lib/api';
 
 export const metadata: Metadata = {
   title: 'Stand BeMatrix | Location & installation de stands modulaires',
-  description: 'iDkom, expert stand BeMatrix en France. Location et installation de stands modulaires pour salons professionnels. Plus de 4000 pièces en stock, éclairage intégré, LEDskin®, conception sur-mesure. Devis gratuit.',
+  description: 'iDkom, expert stand BeMatrix en France. Location et installation de stands modulaires pour salons professionnels. Plus de 4000 pièces en stock, éclairage intégré, LEDskin®, conception sur-mesure.',
   keywords: ['BeMatrix', 'stand modulaire', 'stand BeMatrix', 'bematrix stand', 'bematrix éclairage', 'LEDskin', 'location stand modulaire', 'salon professionnel', 'événementiel', 'standiste BeMatrix France'],
   alternates: {
     canonical: 'https://www.idkom.fr/bematrix',
@@ -18,7 +18,7 @@ export const metadata: Metadata = {
   },
   openGraph: {
     title: 'Stand BeMatrix | Location & installation par iDkom',
-    description: 'Expert stand BeMatrix en France. Plus de 4000 pièces en stock, éclairage intégré, LEDskin®. Devis gratuit.',
+    description: 'Expert stand BeMatrix en France. Plus de 4000 pièces en stock, éclairage intégré, LEDskin®, conception sur-mesure.',
     url: 'https://www.idkom.fr/bematrix',
     siteName: 'iDkom',
     locale: 'fr_FR',
