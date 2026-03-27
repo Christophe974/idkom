@@ -1,6 +1,7 @@
 import Link from 'next/link';
+import { Icon } from '@iconify/react';
 import { ArrowRightIcon } from '@/components/Icons';
-import { getHomepageData } from '@/lib/api';
+import { getHomepageData, getCityPages } from '@/lib/api';
 import NavbarServer from '@/components/NavbarServer';
 import FooterServer from '@/components/FooterServer';
 import AmbientBackground from '@/components/AmbientBackground';
@@ -11,7 +12,10 @@ import CTASection from '@/components/CTASection';
 export const revalidate = 300; // Revalidate every 5 minutes
 
 export default async function Home() {
-  const data = await getHomepageData();
+  const [data, cities] = await Promise.all([
+    getHomepageData(),
+    getCityPages(),
+  ]);
 
   return (
     <>
@@ -45,6 +49,41 @@ export default async function Home() {
             ))}
           </div>
         </section>
+
+        {/* Section Animations par ville */}
+        {cities.length > 0 && (
+          <section className="mt-24">
+            <div className="flex flex-col md:flex-row md:items-end justify-between mb-10 gap-4">
+              <div>
+                <h2 className="text-3xl md:text-4xl font-bold text-white">Nos animations près de chez vous</h2>
+                <p className="text-zinc-500 mt-2">Bar goodies, photobooth, kermesse 2.0 — partout en France</p>
+              </div>
+              <Link
+                prefetch={false}
+                href="/animations-evenementielles"
+                className="text-sm text-zinc-400 hover:text-white transition-colors duration-300 flex items-center gap-2 group"
+              >
+                Toutes nos villes
+                <ArrowRightIcon className="group-hover:translate-x-1 transition-transform" size={16} />
+              </Link>
+            </div>
+
+            <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-3">
+              {cities.slice(0, 6).map((city) => (
+                <Link
+                  key={city.slug}
+                  href={`/animations-evenementielles/${city.slug}`}
+                  prefetch={false}
+                  className="group p-4 rounded-2xl bg-zinc-900/50 border border-white/10 hover:border-[#ff2d55]/30 transition-all text-center"
+                >
+                  <Icon icon="solar:map-point-linear" className="text-[#ff2d55] mx-auto mb-2" width={24} />
+                  <p className="text-white font-medium text-sm group-hover:text-[#ff2d55] transition-colors">{city.city_name}</p>
+                  <p className="text-zinc-600 text-xs">{city.department_code}</p>
+                </Link>
+              ))}
+            </div>
+          </section>
+        )}
 
         {/* CTA Final */}
         <CTASection phone={data.site.phone} />

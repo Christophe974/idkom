@@ -19,6 +19,7 @@ export default function Navbar({ menus }: NavbarProps) {
     { label: "L'Atelier", url: '/atelier' },
     { label: 'Réalisations', url: '/realisations' },
     { label: 'Savoir-faire', url: '/savoir-faire' },
+    { label: 'Nos Animations', url: '/animations-evenementielles' },
     { label: 'Stock BeMatrix', url: '/catalogue' },
     { label: 'Blog', url: '/blog' },
   ];

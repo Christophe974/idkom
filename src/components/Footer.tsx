@@ -28,6 +28,7 @@ export default function Footer({ site, social, footerServices, footerLegal }: Fo
     { label: 'Stands BeMatrix', url: '/savoir-faire#stands' },
     { label: 'Solutions Digitales', url: '/savoir-faire#digital' },
     { label: 'Événementiel', url: '/savoir-faire#events' },
+    { label: 'Animations par ville', url: '/animations-evenementielles' },
     { label: 'Catalogue BeMatrix', url: '/catalogue' },
   ];
 
