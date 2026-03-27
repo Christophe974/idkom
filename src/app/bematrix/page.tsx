@@ -9,9 +9,9 @@ import Counter from '@/components/Counter';
 import { getHomepageData } from '@/lib/api';
 
 export const metadata: Metadata = {
-  title: 'Stand BeMatrix | Système modulaire premium | iDkom',
-  description: 'Expert en structures BeMatrix pour salons et événements. Plus de 4000 pièces en stock, intégration LEDskin, conception sur-mesure. La référence mondiale du cadre aluminium.',
-  keywords: ['BeMatrix', 'stand modulaire', 'salon professionnel', 'événementiel', 'LEDskin', 'cadre aluminium'],
+  title: 'Stand BeMatrix | Système modulaire premium pour salons',
+  description: 'Expert en structures BeMatrix pour salons professionnels et événements. Plus de 4000 pièces en stock, intégration LEDskin, conception sur-mesure. Location et installation de stands modulaires en cadre aluminium à Besançon, Belfort et toute la France.',
+  keywords: ['BeMatrix', 'stand modulaire', 'salon professionnel', 'événementiel', 'LEDskin', 'cadre aluminium', 'stand BeMatrix', 'location stand modulaire', 'standiste BeMatrix France'],
   alternates: { canonical: 'https://www.idkom.fr/bematrix' },
 };
 
@@ -46,7 +46,7 @@ export default async function BematrixPage() {
     },
     {
       icon: 'solar:monitor-linear',
-      title: 'Intégration LEDskin®',
+      title: 'Technologie LEDskin®',
       description: '12 m² de modules LED haute résolution intégrés directement dans les cadres pour un rendu ultra-moderne.',
       color: '#7928ca',
     },
@@ -109,6 +109,8 @@ export default async function BematrixPage() {
                   Expert en structures BeMatrix pour salons et événements.
                   Un stand design, éco-responsable et ultra-personnalisable
                   avec la référence mondiale du cadre aluminium.
+                  Découvrez <Link href="/savoir-faire" className="text-[#ff2d55] hover:underline">notre savoir-faire</Link> et
+                  notre <Link href="/atelier" className="text-[#ff2d55] hover:underline">atelier de fabrication</Link>.
                 </p>
                 <div className="flex flex-wrap gap-4">
                   <Link
@@ -424,6 +426,66 @@ export default async function BematrixPage() {
           </div>
         </section>
 
+        {/* FAQ Section */}
+        <section className="py-24 px-6 bg-zinc-900/30">
+          <div className="max-w-4xl mx-auto">
+            <div className="text-center mb-16 animate-fade-in-up">
+              <h2 className="text-3xl md:text-4xl font-bold text-white mb-4">
+                Questions fréquentes sur <span className="gradient-text">BeMatrix</span>
+              </h2>
+              <p className="text-zinc-400">
+                Tout ce que vous devez savoir sur nos solutions de stands modulaires BeMatrix.
+              </p>
+            </div>
+
+            <div className="space-y-4">
+              {[
+                {
+                  question: "Qu'est-ce qu'un stand BeMatrix ?",
+                  answer: "BeMatrix est un système de construction modulaire basé sur des cadres en aluminium légers et réutilisables. Ces cadres s'assemblent rapidement grâce au système breveté Quick-and-Easy pour créer des stands sur-mesure pour salons professionnels et événements. Chez iDkom, nous disposons de plus de 4 000 pièces en stock pour répondre à tous vos besoins.",
+                },
+                {
+                  question: "Quels sont les avantages de BeMatrix par rapport à un stand traditionnel ?",
+                  answer: "BeMatrix offre une modularité totale (parois droites, angles, structures suspendues), un montage 2 à 3 fois plus rapide qu'un stand sur-mesure classique, une solution éco-responsable car 100% réutilisable et recyclable, et la possibilité d'intégrer des écrans LED directement dans les cadres grâce à la technologie LEDskin®.",
+                },
+                {
+                  question: "Qu'est-ce que la technologie LEDskin® ?",
+                  answer: "LEDskin® est une technologie exclusive de BeMatrix qui permet d'intégrer des écrans LED haute résolution directement dans les cadres aluminium, sans aucun cadre d'écran visible. iDkom dispose de 12 m² de modules LEDskin® pour apporter un impact visuel maximum à votre stand.",
+                },
+                {
+                  question: "Peut-on louer du matériel BeMatrix chez iDkom ?",
+                  answer: "Oui, iDkom propose la location de son parc technique BeMatrix : cadres, connecteurs, finitions, accessoires et modules LEDskin®. Nous proposons aussi des prestations clé en main incluant la conception 3D, la livraison, le montage et le démontage sur site.",
+                },
+                {
+                  question: "Dans quelles régions intervenez-vous ?",
+                  answer: "Basés à Brevilliers en Franche-Comté, nous intervenons sur tout le territoire français pour l'installation de stands BeMatrix : Besançon, Belfort, Montbéliard, Mulhouse, Strasbourg, Lyon, Paris et toutes les villes accueillant des salons professionnels.",
+                },
+                {
+                  question: "Quel est le délai pour installer un stand BeMatrix ?",
+                  answer: "Grâce au système Quick-and-Easy de BeMatrix, le montage est 2 à 3 fois plus rapide qu'un stand traditionnel. Un stand de taille moyenne (30-50 m²) peut être monté en une journée. Notre bureau d'études prend en charge la conception en amont pour optimiser les délais sur site.",
+                },
+              ].map((faq, index) => (
+                <details
+                  key={index}
+                  className="group rounded-2xl bg-zinc-900/50 border border-white/10 overflow-hidden"
+                >
+                  <summary className="flex items-center justify-between cursor-pointer p-6 text-white font-medium hover:bg-white/5 transition-colors">
+                    <span className="pr-4">{faq.question}</span>
+                    <Icon
+                      icon="solar:alt-arrow-down-linear"
+                      className="flex-shrink-0 transition-transform duration-300 group-open:rotate-180 text-zinc-500"
+                      width={20}
+                    />
+                  </summary>
+                  <div className="px-6 pb-6 text-zinc-400 leading-relaxed">
+                    {faq.answer}
+                  </div>
+                </details>
+              ))}
+            </div>
+          </div>
+        </section>
+
         {/* Final CTA */}
         <section className="py-24 px-6 border-t border-white/5">
           <div className="max-w-4xl mx-auto text-center">
@@ -445,6 +507,121 @@ export default async function BematrixPage() {
           </div>
         </section>
       </main>
+
+      {/* FAQ Schema */}
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify({
+            '@context': 'https://schema.org',
+            '@type': 'FAQPage',
+            mainEntity: [
+              {
+                '@type': 'Question',
+                name: "Qu'est-ce qu'un stand BeMatrix ?",
+                acceptedAnswer: {
+                  '@type': 'Answer',
+                  text: "BeMatrix est un système de construction modulaire basé sur des cadres en aluminium légers et réutilisables. Ces cadres s'assemblent rapidement grâce au système breveté Quick-and-Easy pour créer des stands sur-mesure pour salons professionnels et événements. Chez iDkom, nous disposons de plus de 4 000 pièces en stock.",
+                },
+              },
+              {
+                '@type': 'Question',
+                name: 'Quels sont les avantages de BeMatrix par rapport à un stand traditionnel ?',
+                acceptedAnswer: {
+                  '@type': 'Answer',
+                  text: "BeMatrix offre une modularité totale, un montage 2 à 3 fois plus rapide, une solution éco-responsable 100% réutilisable et recyclable, et la possibilité d'intégrer des écrans LED grâce à la technologie LEDskin®.",
+                },
+              },
+              {
+                '@type': 'Question',
+                name: "Qu'est-ce que la technologie LEDskin® ?",
+                acceptedAnswer: {
+                  '@type': 'Answer',
+                  text: "LEDskin® est une technologie exclusive de BeMatrix qui permet d'intégrer des écrans LED haute résolution directement dans les cadres aluminium. iDkom dispose de 12 m² de modules LEDskin®.",
+                },
+              },
+              {
+                '@type': 'Question',
+                name: 'Peut-on louer du matériel BeMatrix chez iDkom ?',
+                acceptedAnswer: {
+                  '@type': 'Answer',
+                  text: "Oui, iDkom propose la location de son parc technique BeMatrix incluant cadres, connecteurs, finitions, accessoires et modules LEDskin®. Nous proposons aussi des prestations clé en main.",
+                },
+              },
+              {
+                '@type': 'Question',
+                name: 'Dans quelles régions intervenez-vous ?',
+                acceptedAnswer: {
+                  '@type': 'Answer',
+                  text: "Basés en Franche-Comté, nous intervenons sur tout le territoire français : Besançon, Belfort, Montbéliard, Mulhouse, Strasbourg, Lyon, Paris et toutes les villes accueillant des salons professionnels.",
+                },
+              },
+              {
+                '@type': 'Question',
+                name: 'Quel est le délai pour installer un stand BeMatrix ?',
+                acceptedAnswer: {
+                  '@type': 'Answer',
+                  text: "Grâce au système Quick-and-Easy, le montage est 2 à 3 fois plus rapide qu'un stand traditionnel. Un stand de 30-50 m² peut être monté en une journée.",
+                },
+              },
+            ],
+          }),
+        }}
+      />
+
+      {/* Service Schema */}
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify({
+            '@context': 'https://schema.org',
+            '@type': 'Service',
+            name: 'Stand BeMatrix - Location et installation',
+            description: "Location et installation de stands modulaires BeMatrix pour salons professionnels et événements. Conception sur-mesure, intégration LEDskin®, montage et démontage clé en main.",
+            provider: {
+              '@type': 'LocalBusiness',
+              name: 'iDkom',
+              url: 'https://www.idkom.fr',
+            },
+            url: 'https://www.idkom.fr/bematrix',
+            serviceType: 'Location et installation de stands modulaires',
+            areaServed: {
+              '@type': 'Country',
+              name: 'France',
+            },
+            hasOfferCatalog: {
+              '@type': 'OfferCatalog',
+              name: 'Services BeMatrix iDkom',
+              itemListElement: [
+                {
+                  '@type': 'Offer',
+                  itemOffered: {
+                    '@type': 'Service',
+                    name: 'Conception et installation de stand BeMatrix',
+                    description: "Bureau d'études, conception 3D, livraison, montage et démontage sur site.",
+                  },
+                },
+                {
+                  '@type': 'Offer',
+                  itemOffered: {
+                    '@type': 'Service',
+                    name: 'Location de parc technique BeMatrix',
+                    description: 'Location de cadres aluminium, connecteurs, finitions et modules LEDskin®.',
+                  },
+                },
+                {
+                  '@type': 'Offer',
+                  itemOffered: {
+                    '@type': 'Service',
+                    name: 'Intégration LEDskin®',
+                    description: "12 m² d'écrans LED haute résolution intégrés dans les cadres BeMatrix.",
+                  },
+                },
+              ],
+            },
+          }),
+        }}
+      />
 
       <FooterServer site={data.site} social={data.social} />
     </>
