@@ -542,3 +542,68 @@ export interface VCardData {
 export async function getVCard(slug: string): Promise<VCardData> {
   return fetchApi<VCardData>(`vcards.php?action=get&slug=${encodeURIComponent(slug)}`);
 }
+
+// ============================================================
+// CITY PAGES (SEO local)
+// ============================================================
+
+export interface CityPageConcept {
+  name: string;
+  description: string;
+  icon: string;
+  link: string;
+}
+
+export interface CityPageVenue {
+  name: string;
+  description: string;
+}
+
+export interface CityPageFaq {
+  question: string;
+  answer: string;
+}
+
+export interface CityPageListItem {
+  slug: string;
+  city_name: string;
+  department: string;
+  department_code: string;
+  region: string;
+  description: string | null;
+  updated_at: string;
+}
+
+export interface CityPage {
+  id: number;
+  slug: string;
+  city_name: string;
+  department: string;
+  department_code: string;
+  region: string;
+  intro_text: string | null;
+  concepts: CityPageConcept[] | null;
+  venues: CityPageVenue[] | null;
+  local_clients: string | null;
+  transport_info: string | null;
+  faq: CityPageFaq[] | null;
+  seo: {
+    title: string;
+    description: string;
+  };
+  updated_at: string;
+  other_cities: {
+    slug: string;
+    city_name: string;
+    department: string;
+    department_code: string;
+  }[];
+}
+
+export async function getCityPages(): Promise<CityPageListItem[]> {
+  return fetchApi<CityPageListItem[]>('city-pages.php');
+}
+
+export async function getCityPageBySlug(slug: string): Promise<CityPage> {
+  return fetchApi<CityPage>(`city-pages.php?slug=${encodeURIComponent(slug)}`);
+}

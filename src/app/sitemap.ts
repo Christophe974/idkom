@@ -3,6 +3,23 @@ import type { MetadataRoute } from "next";
 const BASE_URL = "https://www.idkom.fr";
 const API_URL = process.env.NEXT_PUBLIC_API_URL || "https://api.idkom.fr";
 
+async function fetchCityPages(): Promise<{ slug: string; updated_at: string }[]> {
+  try {
+    const res = await fetch(`${API_URL}/city-pages.php`, {
+      next: { revalidate: 3600 },
+    });
+    if (!res.ok) return [];
+    const data = await res.json();
+    if (!data.success || !Array.isArray(data.data)) return [];
+    return data.data.map((item: { slug: string; updated_at: string }) => ({
+      slug: item.slug,
+      updated_at: item.updated_at,
+    }));
+  } catch {
+    return [];
+  }
+}
+
 async function fetchSlugs(endpoint: string): Promise<string[]> {
   try {
     const res = await fetch(`${API_URL}/${endpoint}`, {
@@ -96,10 +113,11 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   ];
 
   // Pages dynamiques
-  const [projetSlugs, blogSlugs, animationSlugs] = await Promise.all([
+  const [projetSlugs, blogSlugs, animationSlugs, cityPages] = await Promise.all([
     fetchSlugs("projets.php"),
     fetchSlugs("blog.php"),
     fetchSlugs("animations.php"),
+    fetchCityPages(),
   ]);
 
   const projetPages: MetadataRoute.Sitemap = projetSlugs.map((slug) => ({
@@ -123,5 +141,23 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     priority: 0.7,
   }));
 
-  return [...staticPages, ...projetPages, ...blogPages, ...animationPages];
+  // Page index des villes
+  const cityIndexPage: MetadataRoute.Sitemap = [
+    {
+      url: `${BASE_URL}/animations-evenementielles`,
+      lastModified: new Date("2026-03-27"),
+      changeFrequency: "weekly" as const,
+      priority: 0.8,
+    },
+  ];
+
+  // Pages villes individuelles
+  const cityDetailPages: MetadataRoute.Sitemap = cityPages.map((city) => ({
+    url: `${BASE_URL}/animations-evenementielles/${city.slug}`,
+    lastModified: city.updated_at ? new Date(city.updated_at) : new Date(),
+    changeFrequency: "monthly" as const,
+    priority: 0.7,
+  }));
+
+  return [...staticPages, ...projetPages, ...blogPages, ...animationPages, ...cityIndexPage, ...cityDetailPages];
 }
