@@ -43,6 +43,7 @@ export const metadata: Metadata = {
   },
   alternates: {
     canonical: "https://www.idkom.fr",
+    languages: { 'fr': 'https://www.idkom.fr' },
   },
 };
 

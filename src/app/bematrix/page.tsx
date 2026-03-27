@@ -9,10 +9,21 @@ import Counter from '@/components/Counter';
 import { getHomepageData } from '@/lib/api';
 
 export const metadata: Metadata = {
-  title: 'Stand BeMatrix | Système modulaire premium pour salons',
-  description: 'Expert en structures BeMatrix pour salons professionnels et événements. Plus de 4000 pièces en stock, intégration LEDskin, conception sur-mesure. Location et installation de stands modulaires en cadre aluminium à Besançon, Belfort et toute la France.',
-  keywords: ['BeMatrix', 'stand modulaire', 'salon professionnel', 'événementiel', 'LEDskin', 'cadre aluminium', 'stand BeMatrix', 'location stand modulaire', 'standiste BeMatrix France'],
-  alternates: { canonical: 'https://www.idkom.fr/bematrix' },
+  title: 'Stand BeMatrix | Location & installation de stands modulaires',
+  description: 'iDkom, expert stand BeMatrix en France. Location et installation de stands modulaires pour salons professionnels. Plus de 4000 pièces en stock, éclairage intégré, LEDskin®, conception sur-mesure. Devis gratuit.',
+  keywords: ['BeMatrix', 'stand modulaire', 'stand BeMatrix', 'bematrix stand', 'bematrix éclairage', 'LEDskin', 'location stand modulaire', 'salon professionnel', 'événementiel', 'standiste BeMatrix France'],
+  alternates: {
+    canonical: 'https://www.idkom.fr/bematrix',
+    languages: { 'fr': 'https://www.idkom.fr/bematrix' },
+  },
+  openGraph: {
+    title: 'Stand BeMatrix | Location & installation par iDkom',
+    description: 'Expert stand BeMatrix en France. Plus de 4000 pièces en stock, éclairage intégré, LEDskin®. Devis gratuit.',
+    url: 'https://www.idkom.fr/bematrix',
+    siteName: 'iDkom',
+    locale: 'fr_FR',
+    type: 'website',
+  },
 };
 
 export const revalidate = 3600;
@@ -61,6 +72,12 @@ export default async function BematrixPage() {
       title: 'Montage rapide',
       description: 'Système "Quick-and-Easy" pour un montage express. Réduisez vos coûts de main-d\'œuvre.',
       color: '#22c55e',
+    },
+    {
+      icon: 'solar:lamp-linear',
+      title: 'Éclairage intégré',
+      description: 'Systèmes d\'éclairage LED encastrés dans les cadres BeMatrix. Spots, bandeaux et rétro-éclairage pour sublimer votre stand.',
+      color: '#f59e0b',
     },
   ];
 
@@ -209,7 +226,7 @@ export default async function BematrixPage() {
               </p>
             </div>
 
-            <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
+            <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
               {features.map((feature, index) => (
                 <div
                   key={feature.title}
@@ -464,6 +481,10 @@ export default async function BematrixPage() {
                   question: "Quel est le délai pour installer un stand BeMatrix ?",
                   answer: "Grâce au système Quick-and-Easy de BeMatrix, le montage est 2 à 3 fois plus rapide qu'un stand traditionnel. Un stand de taille moyenne (30-50 m²) peut être monté en une journée. Notre bureau d'études prend en charge la conception en amont pour optimiser les délais sur site.",
                 },
+                {
+                  question: "Quelles solutions d'éclairage sont disponibles avec BeMatrix ?",
+                  answer: "BeMatrix propose des systèmes d'éclairage intégrés directement dans les cadres aluminium : spots LED encastrés, bandeaux lumineux, rétro-éclairage de panneaux et bien sûr la technologie LEDskin® qui transforme vos parois en écrans vidéo. iDkom vous conseille sur la mise en lumière optimale de votre stand pour un impact visuel maximum en salon.",
+                },
               ].map((faq, index) => (
                 <details
                   key={index}
@@ -562,6 +583,14 @@ export default async function BematrixPage() {
                 acceptedAnswer: {
                   '@type': 'Answer',
                   text: "Grâce au système Quick-and-Easy, le montage est 2 à 3 fois plus rapide qu'un stand traditionnel. Un stand de 30-50 m² peut être monté en une journée.",
+                },
+              },
+              {
+                '@type': 'Question',
+                name: "Quelles solutions d'éclairage sont disponibles avec BeMatrix ?",
+                acceptedAnswer: {
+                  '@type': 'Answer',
+                  text: "BeMatrix propose des systèmes d'éclairage intégrés : spots LED encastrés, bandeaux lumineux, rétro-éclairage et technologie LEDskin® qui transforme les parois en écrans vidéo.",
                 },
               },
             ],
