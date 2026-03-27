@@ -5,7 +5,8 @@ import { Icon } from '@iconify/react';
 import NavbarServer from '@/components/NavbarServer';
 import FooterServer from '@/components/FooterServer';
 import AmbientBackground from '@/components/AmbientBackground';
-import { getHomepageData, getCityPageBySlug, CityPage, CityPageConcept } from '@/lib/api';
+import { getHomepageData, getCityPageBySlug } from '@/lib/api';
+import type { CityPage as CityPageData, CityPageConcept } from '@/lib/api';
 
 export const revalidate = 3600;
 
@@ -52,7 +53,7 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
 export default async function CityPage({ params }: PageProps) {
   const { slug } = await params;
 
-  let city: CityPage;
+  let city: CityPageData;
   try {
     city = await getCityPageBySlug(slug);
   } catch {
