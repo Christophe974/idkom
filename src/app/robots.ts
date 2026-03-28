@@ -18,5 +18,6 @@ export default function robots(): MetadataRoute.Robots {
       },
     ],
     sitemap: "https://www.idkom.fr/sitemap.xml",
+    host: "https://www.idkom.fr",
   };
 }

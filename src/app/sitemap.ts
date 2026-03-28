@@ -40,7 +40,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const staticPages: MetadataRoute.Sitemap = [
     {
       url: BASE_URL,
-      lastModified: new Date("2026-03-15"),
+      lastModified: new Date("2026-03-28"),
       changeFrequency: "weekly",
       priority: 1,
     },
@@ -82,9 +82,9 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     },
     {
       url: `${BASE_URL}/bematrix`,
-      lastModified: new Date("2026-03-27"),
-      changeFrequency: "monthly",
-      priority: 0.8,
+      lastModified: new Date("2026-03-28"),
+      changeFrequency: "weekly",
+      priority: 0.9,
     },
     {
       url: `${BASE_URL}/contact`,
@@ -145,7 +145,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const cityIndexPage: MetadataRoute.Sitemap = [
     {
       url: `${BASE_URL}/animations-evenementielles`,
-      lastModified: new Date("2026-03-27"),
+      lastModified: new Date("2026-03-28"),
       changeFrequency: "weekly" as const,
       priority: 0.8,
     },

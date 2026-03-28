@@ -17,16 +17,16 @@ export const viewport: Viewport = {
 
 export const metadata: Metadata = {
   title: {
-    default: "iDkom | Agence Événementielle & Stands sur-mesure — Franche-Comté",
+    default: "iDkom | Agence Événementielle & Solutions Digitales — Franche-Comté",
     template: "%s | iDkom",
   },
-  description: "Agence événementielle en Franche-Comté : événements sur-mesure, solutions digitales et stands BeMatrix. 30 ans d'expérience, 600+ projets réalisés.",
-  keywords: ["agence événementielle", "stands BeMatrix", "événementiel", "salon professionnel", "agence communication", "Besançon", "Franche-Comté", "iDkom"],
+  description: "Agence événementielle et solutions digitales pour l'événementiel en Franche-Comté : stands BeMatrix, animations innovantes, bar goodies et photobooth IA. 30 ans d'expérience, 600+ projets.",
+  keywords: ["agence événementielle", "solution digitale événementiel", "solutions digitales évènementielles", "stands BeMatrix", "événementiel", "salon professionnel", "agence communication Montbéliard", "bar goodies", "Besançon", "Franche-Comté", "iDkom"],
   authors: [{ name: "iDkom" }],
   metadataBase: new URL("https://www.idkom.fr"),
   openGraph: {
-    title: "iDkom | Agence Événementielle & Stands sur-mesure",
-    description: "Événements sur-mesure, solutions digitales et stands BeMatrix. 30 ans d'expérience en Franche-Comté.",
+    title: "iDkom | Agence Événementielle & Solutions Digitales",
+    description: "Solutions digitales pour l'événementiel, stands BeMatrix et animations innovantes. 30 ans d'expérience en Franche-Comté.",
     url: "https://www.idkom.fr",
     siteName: "iDkom",
     locale: "fr_FR",
@@ -34,8 +34,8 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: "summary_large_image",
-    title: "iDkom | Agence Événementielle & Stands sur-mesure",
-    description: "Événements sur-mesure, solutions digitales et stands BeMatrix. 30 ans d'expérience en Franche-Comté.",
+    title: "iDkom | Agence Événementielle & Solutions Digitales",
+    description: "Solutions digitales pour l'événementiel, stands BeMatrix et animations innovantes. 30 ans d'expérience en Franche-Comté.",
   },
   robots: {
     index: true,
@@ -58,7 +58,7 @@ const jsonLd = {
       url: "https://www.idkom.fr",
       logo: "https://www.idkom.fr/images/idkom-favicon.svg",
       description:
-        "Agence événementielle spécialisée en stands BeMatrix, solutions digitales et événementiel sur-mesure.",
+        "Agence événementielle spécialisée en solutions digitales pour l'événementiel, stands BeMatrix, animations innovantes et événementiel sur-mesure en Franche-Comté.",
       foundingDate: "1996",
       sameAs: [
         "https://www.instagram.com/idkom_atelier_phygital/",
@@ -92,7 +92,10 @@ const jsonLd = {
         { "@type": "City", name: "Belfort" },
         { "@type": "City", name: "Montbéliard" },
         { "@type": "City", name: "Mulhouse" },
+        { "@type": "City", name: "Strasbourg" },
+        { "@type": "City", name: "Lyon" },
         { "@type": "AdministrativeArea", name: "Franche-Comté" },
+        { "@type": "AdministrativeArea", name: "Grand Est" },
         { "@type": "Country", name: "France" },
       ],
       priceRange: "€€",

@@ -9,20 +9,26 @@ import Counter from '@/components/Counter';
 import { getHomepageData } from '@/lib/api';
 
 export const metadata: Metadata = {
-  title: 'Stand BeMatrix | Location & installation de stands modulaires',
-  description: 'iDkom, expert stand BeMatrix en France. Location et installation de stands modulaires pour salons professionnels. Plus de 4000 pièces en stock, éclairage intégré, LEDskin®, conception sur-mesure.',
-  keywords: ['BeMatrix', 'stand modulaire', 'stand BeMatrix', 'bematrix stand', 'bematrix éclairage', 'LEDskin', 'location stand modulaire', 'salon professionnel', 'événementiel', 'standiste BeMatrix France'],
+  title: 'Standiste BeMatrix France | +4000 pièces en stock — iDkom',
+  description: 'Standiste certifié BeMatrix en France : location de stands modulaires, éclairage intégré, LEDskin® et conception sur-mesure. 4000+ pièces en stock, montage clé en main pour vos salons.',
+  keywords: ['BeMatrix', 'be matrix', 'stand BeMatrix', 'bematrix stand', 'bematrix stands', 'standiste BeMatrix', 'standbouwer bematrix', 'bematrix éclairage', 'bematrix LEDskin', 'stand bematrix', 'location stand modulaire', 'stand modulaire salon', 'bematrix catalogue', 'bematrix France', 'standiste France'],
   alternates: {
     canonical: 'https://www.idkom.fr/bematrix',
     languages: { 'fr': 'https://www.idkom.fr/bematrix' },
   },
   openGraph: {
-    title: 'Stand BeMatrix | Location & installation par iDkom',
-    description: 'Expert stand BeMatrix en France. Plus de 4000 pièces en stock, éclairage intégré, LEDskin®, conception sur-mesure.',
+    title: 'Standiste BeMatrix France | +4000 pièces en stock — iDkom',
+    description: 'Standiste certifié BeMatrix : 4000+ pièces, LEDskin®, éclairage intégré. Location et installation clé en main pour salons professionnels.',
     url: 'https://www.idkom.fr/bematrix',
     siteName: 'iDkom',
     locale: 'fr_FR',
     type: 'website',
+    images: [{ url: 'https://www.idkom.fr/images/bematrix-hero.jpg', width: 1200, height: 630, alt: 'Stand BeMatrix par iDkom — standiste en France' }],
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'Standiste BeMatrix France | +4000 pièces — iDkom',
+    description: 'Location de stands modulaires BeMatrix, LEDskin®, éclairage intégré. Montage clé en main.',
   },
 };
 
@@ -118,16 +124,17 @@ export default async function BematrixPage() {
                   Partenaire BeMatrix
                 </div>
                 <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold text-white leading-tight mb-6">
-                  Stand <span className="gradient-text">BeMatrix</span>
+                  Standiste <span className="gradient-text">BeMatrix</span> en France
                   <br />
-                  <span className="text-zinc-400 text-3xl md:text-4xl lg:text-5xl">La puissance du modulable</span>
+                  <span className="text-zinc-400 text-3xl md:text-4xl lg:text-5xl">+4 000 pièces en stock</span>
                 </h1>
                 <p className="text-lg text-zinc-400 mb-8 max-w-xl leading-relaxed">
-                  Expert en structures BeMatrix pour salons et événements.
-                  Un stand design, éco-responsable et ultra-personnalisable
+                  Votre partenaire stand BeMatrix pour salons et événements.
+                  Location, conception sur-mesure et installation clé en main
                   avec la référence mondiale du cadre aluminium.
-                  Découvrez <Link href="/savoir-faire" className="text-[#ff2d55] hover:underline">notre savoir-faire</Link> et
-                  notre <Link href="/atelier" className="text-[#ff2d55] hover:underline">atelier de fabrication</Link>.
+                  Découvrez <Link href="/savoir-faire" className="text-[#ff2d55] hover:underline">notre savoir-faire</Link>,
+                  notre <Link href="/atelier" className="text-[#ff2d55] hover:underline">atelier de fabrication</Link> et
+                  nos <Link href="/animations-evenementielles" className="text-[#ff2d55] hover:underline">animations événementielles</Link>.
                 </p>
                 <div className="flex flex-wrap gap-4">
                   <Link
@@ -528,6 +535,21 @@ export default async function BematrixPage() {
           </div>
         </section>
       </main>
+
+      {/* Breadcrumb Schema */}
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify({
+            '@context': 'https://schema.org',
+            '@type': 'BreadcrumbList',
+            itemListElement: [
+              { '@type': 'ListItem', position: 1, name: 'iDkom', item: 'https://www.idkom.fr' },
+              { '@type': 'ListItem', position: 2, name: 'Stand BeMatrix', item: 'https://www.idkom.fr/bematrix' },
+            ],
+          }),
+        }}
+      />
 
       {/* FAQ Schema */}
       <script
