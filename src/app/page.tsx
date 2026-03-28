@@ -30,8 +30,8 @@ export default async function Home() {
         <section id="projets" className="mt-24">
           <div className="flex flex-col md:flex-row md:items-end justify-between mb-10 gap-4">
             <div>
-              <h2 className="text-3xl md:text-4xl font-bold text-white">Dernières réalisations</h2>
-              <p className="text-zinc-500 mt-2">Des projets qui font la différence sur le terrain</p>
+              <h2 className="text-3xl md:text-4xl font-bold text-white">Nos réalisations événementielles</h2>
+              <p className="text-zinc-500 mt-2">Stands BeMatrix, solutions digitales et animations — des projets qui font la différence</p>
             </div>
             <Link
               prefetch={false}
@@ -55,8 +55,8 @@ export default async function Home() {
           <section className="mt-24">
             <div className="flex flex-col md:flex-row md:items-end justify-between mb-10 gap-4">
               <div>
-                <h2 className="text-3xl md:text-4xl font-bold text-white">Nos animations près de chez vous</h2>
-                <p className="text-zinc-500 mt-2">Bar goodies, photobooth, kermesse 2.0 — partout en France</p>
+                <h2 className="text-3xl md:text-4xl font-bold text-white">Animations événementielles près de chez vous</h2>
+                <p className="text-zinc-500 mt-2">Bar goodies, photobooth IA, kermesse 2.0 — nos solutions digitales partout en France</p>
               </div>
               <Link
                 prefetch={false}
@@ -88,6 +88,40 @@ export default async function Home() {
         {/* CTA Final */}
         <CTASection phone={data.site.phone} />
       </main>
+
+      {/* WebSite Schema — aide Google à afficher les sitelinks */}
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify({
+            '@context': 'https://schema.org',
+            '@type': 'WebSite',
+            name: 'iDkom',
+            alternateName: 'iDkom — Agence Événementielle & Solutions Digitales',
+            url: 'https://www.idkom.fr',
+          }),
+        }}
+      />
+
+      {/* ItemList Schema — pages principales */}
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify({
+            '@context': 'https://schema.org',
+            '@type': 'ItemList',
+            name: 'Services iDkom',
+            itemListElement: [
+              { '@type': 'ListItem', position: 1, name: 'Stands BeMatrix', url: 'https://www.idkom.fr/bematrix' },
+              { '@type': 'ListItem', position: 2, name: 'Animations Événementielles', url: 'https://www.idkom.fr/animations' },
+              { '@type': 'ListItem', position: 3, name: 'Réalisations', url: 'https://www.idkom.fr/realisations' },
+              { '@type': 'ListItem', position: 4, name: 'Savoir-faire', url: 'https://www.idkom.fr/savoir-faire' },
+              { '@type': 'ListItem', position: 5, name: 'Catalogue BeMatrix', url: 'https://www.idkom.fr/catalogue' },
+              { '@type': 'ListItem', position: 6, name: 'Contact', url: 'https://www.idkom.fr/contact' },
+            ],
+          }),
+        }}
+      />
 
       <FooterServer site={data.site} social={data.social} />
     </>
