@@ -23,8 +23,8 @@ export default function BentoGrid({ data }: BentoGridProps) {
 
   return (
     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4" style={{ gridAutoRows: '140px' }}>
-      {/* HERO - 2x3 */}
-      <div className="md:col-span-2 row-span-3 bento-card rounded-3xl p-8 bg-gradient-to-br from-[#ff2d55]/10 via-[#7928ca]/5 to-transparent md:backdrop-blur-sm border border-white/10 relative gradient-border animate-fade-in-up">
+      {/* HERO - 2x4 */}
+      <div className="md:col-span-2 row-span-4 bento-card rounded-3xl p-8 bg-gradient-to-br from-[#ff2d55]/10 via-[#7928ca]/5 to-transparent md:backdrop-blur-sm border border-white/10 relative gradient-border animate-fade-in-up">
         <div className="h-full flex flex-col justify-between relative z-10">
           <div>
             <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-white/5 border border-white/10 text-xs text-zinc-400 mb-6">

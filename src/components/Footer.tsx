@@ -25,11 +25,10 @@ interface FooterProps {
 
 export default function Footer({ site, social, footerServices, footerLegal }: FooterProps) {
   const defaultServices = [
-    { label: 'Stands BeMatrix', url: '/savoir-faire#stands' },
+    { label: 'Stands BeMatrix', url: '/bematrix' },
     { label: 'Solutions Digitales', url: '/savoir-faire#digital' },
     { label: 'Événementiel', url: '/savoir-faire#events' },
-    { label: 'Animations par ville', url: '/animations-evenementielles' },
-    { label: 'Catalogue BeMatrix', url: '/catalogue' },
+    { label: 'Animations événementielles', url: '/animations-evenementielles' },
   ];
 
   const defaultLegal = [
