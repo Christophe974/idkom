@@ -611,3 +611,35 @@ export async function getCityPages(): Promise<CityPageListItem[]> {
 export async function getCityPageBySlug(slug: string): Promise<CityPage> {
   return fetchApi<CityPage>(`city-pages.php?slug=${encodeURIComponent(slug)}`);
 }
+
+// ============================================================
+// Gravure événementielle
+// ============================================================
+export interface GravureEvent {
+  event_name: string;
+  client_name: string;
+  logo_url: string | null;
+  max_chars_line1: number;
+  max_chars_line2: number;
+  slots_remaining: number;
+}
+
+export interface GravureSubmitResult {
+  queue_number: number;
+  message: string;
+}
+
+export async function getGravureEvent(code: string): Promise<GravureEvent> {
+  return fetchApi<GravureEvent>(`gravure.php?action=event&code=${encodeURIComponent(code)}`);
+}
+
+export async function submitGravure(data: {
+  event_code: string;
+  line_1: string;
+  line_2: string;
+}): Promise<GravureSubmitResult> {
+  return fetchApi<GravureSubmitResult>('gravure.php?action=submit', {
+    method: 'POST',
+    body: JSON.stringify(data),
+  });
+}
