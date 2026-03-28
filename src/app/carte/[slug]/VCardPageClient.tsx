@@ -532,7 +532,12 @@ export default function VCardPageClient({ card }: Props) {
 
                     {/* Company */}
                     {card.company && (
-                      <div className="flex items-center gap-3 p-3 rounded-xl border border-white/5 bg-white/[0.02]">
+                      <a
+                        href="https://www.idkom.fr/atelier"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="flex items-center gap-3 p-3 rounded-xl border border-white/5 bg-white/[0.02] hover:border-white/10 hover:bg-white/[0.04] transition-all duration-300 group"
+                      >
                         <div className="w-10 h-10 rounded-lg bg-white/10 flex items-center justify-center overflow-hidden">
                           <Image
                             src="/images/logo-white.svg"
@@ -542,11 +547,12 @@ export default function VCardPageClient({ card }: Props) {
                             className="w-7 h-auto"
                           />
                         </div>
-                        <div>
+                        <div className="flex-1">
                           <p className="text-white text-sm font-medium">{card.company}</p>
                           <p className="text-zinc-500 text-xs">L&apos;Atelier Phygital</p>
                         </div>
-                      </div>
+                        <Icon icon="solar:arrow-right-linear" width={16} className="text-zinc-600 group-hover:text-zinc-400 transition-colors" />
+                      </a>
                     )}
                   </div>
                 )}
@@ -556,39 +562,38 @@ export default function VCardPageClient({ card }: Props) {
                   <div className="space-y-4">
                     <h3 className="text-xs font-semibold uppercase tracking-wider text-zinc-500 mb-3">Nos réalisations</h3>
 
-                    {/* Gallery grid */}
+                    {/* Gallery grid — links to site albums */}
                     <div className="grid grid-cols-2 gap-2">
                       {[
-                        { label: 'Stand BeMatrix', gradient: `linear-gradient(135deg, ${accent}30, #7928ca20)` },
-                        { label: 'Event Setup', gradient: 'linear-gradient(135deg, #0ea5e930, #06b6d420)' },
-                        { label: 'Signalétique', gradient: 'linear-gradient(135deg, #22c55e30, #10b98120)' },
-                        { label: 'Digital', gradient: 'linear-gradient(135deg, #f59e0b30, #eab30820)' },
+                        { label: 'Stands BeMatrix', icon: 'solar:widget-5-bold', category: 'stands-bematrix', gradient: `linear-gradient(135deg, ${accent}30, #7928ca20)` },
+                        { label: 'Événementiel', icon: 'solar:calendar-bold', category: 'evenementiel', gradient: 'linear-gradient(135deg, #0ea5e930, #06b6d420)' },
+                        { label: 'Solutions Digitales', icon: 'solar:monitor-smartphone-bold', category: 'solutions-digitales', gradient: 'linear-gradient(135deg, #22c55e30, #10b98120)' },
+                        { label: 'Créations & Print', icon: 'solar:printer-bold', category: 'creations-print', gradient: 'linear-gradient(135deg, #f59e0b30, #eab30820)' },
                       ].map((item) => (
-                        <div
+                        <a
                           key={item.label}
-                          className="aspect-square rounded-xl border border-white/5 flex items-center justify-center transition-all duration-300 hover:scale-[1.03] cursor-pointer"
+                          href={`https://www.idkom.fr/realisations?category=${item.category}`}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="aspect-square rounded-xl border border-white/5 flex items-center justify-center transition-all duration-300 hover:scale-[1.03] cursor-pointer group"
                           style={{ background: item.gradient }}
                         >
                           <div className="text-center">
-                            <Icon icon="solar:gallery-bold" width={28} className="text-white/30 mx-auto mb-2" />
-                            <span className="text-white/50 text-xs font-medium">{item.label}</span>
+                            <Icon icon={item.icon} width={28} className="text-white/40 group-hover:text-white/60 mx-auto mb-2 transition-colors" />
+                            <span className="text-white/50 group-hover:text-white/70 text-xs font-medium transition-colors">{item.label}</span>
                           </div>
-                        </div>
+                        </a>
                       ))}
                     </div>
 
-                    <p className="text-zinc-600 text-xs text-center italic">
-                      Ajoutez vos photos depuis l&apos;admin pour les afficher ici
-                    </p>
-
                     {/* CTA */}
                     <a
-                      href="https://www.idkom.fr"
+                      href="https://www.idkom.fr/realisations"
                       target="_blank"
                       rel="noopener noreferrer"
                       className="block w-full py-3 rounded-xl text-center text-sm font-medium border border-white/10 text-zinc-300 hover:text-white hover:border-white/20 transition-all duration-300 bg-white/[0.02]"
                     >
-                      Découvrir tous nos projets
+                      Découvrir tous nos projets →
                     </a>
                   </div>
                 )}
