@@ -35,7 +35,7 @@ function PartnerTopBar() {
             </div>
           )}
           <span className="text-white font-semibold text-sm hidden sm:block group-hover:text-pink-400 transition-colors">
-            {partner.name}
+            {partner.agency_name || ''}
           </span>
         </Link>
 
