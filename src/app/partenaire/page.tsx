@@ -109,7 +109,7 @@ export default function PartnerDashboard() {
           headers: { Authorization: `Bearer ${token}` },
         });
         const json = await res.json();
-        if (!json.success) throw new Error(json.error || 'Erreur');
+        if (!json.success) throw new Error(json.error?.message || json.error || 'Erreur');
         setData(json.data);
       } catch (err) {
         setError(err instanceof Error ? err.message : 'Erreur de chargement');

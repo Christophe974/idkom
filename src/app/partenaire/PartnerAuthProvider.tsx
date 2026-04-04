@@ -94,7 +94,7 @@ export default function PartnerAuthProvider({ children }: { children: ReactNode 
         body: JSON.stringify({ email, password }),
       });
       const json = await res.json();
-      if (!json.success) throw new Error(json.error || 'Identifiants incorrects');
+      if (!json.success) throw new Error(json.error?.message || json.error || 'Identifiants incorrects');
 
       const jwt = json.data.token as string;
       localStorage.setItem('partner_token', jwt);

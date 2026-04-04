@@ -78,7 +78,7 @@ export default function PorteClesPage() {
         headers: { Authorization: `Bearer ${token}` },
       });
       const json = await res.json();
-      if (!json.success) throw new Error(json.error || 'Erreur');
+      if (!json.success) throw new Error(json.error?.message || json.error || 'Erreur');
 
       const result = json.data as CardsResponse;
       setCards(result.cards);

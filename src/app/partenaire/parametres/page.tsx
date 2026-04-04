@@ -55,7 +55,7 @@ export default function PartnerSettingsPage() {
         }),
       });
       const json = await res.json();
-      if (!json.success) throw new Error(json.error || 'Erreur de sauvegarde');
+      if (!json.success) throw new Error(json.error?.message || json.error || 'Erreur de sauvegarde');
 
       await refreshPartner();
       setSuccess('Parametres enregistres avec succes');
@@ -91,7 +91,7 @@ export default function PartnerSettingsPage() {
         body: formData,
       });
       const json = await res.json();
-      if (!json.success) throw new Error(json.error || 'Erreur d\'upload');
+      if (!json.success) throw new Error(json.error?.message || json.error || 'Erreur d\'upload');
 
       setLogoPreview(json.data.logo_url);
       setLogoFile(null);

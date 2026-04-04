@@ -58,7 +58,7 @@ function ActivateForm() {
       const json = await res.json();
 
       if (!json.success) {
-        throw new Error(json.error || 'Erreur lors de l\'activation');
+        throw new Error(json.error?.message || json.error || 'Erreur lors de l\'activation');
       }
 
       // Store the JWT and redirect
