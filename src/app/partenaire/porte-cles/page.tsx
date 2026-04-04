@@ -8,27 +8,13 @@ const API_URL = process.env.NEXT_PUBLIC_API_URL || 'https://api.idkom.fr';
 
 interface KeychainCard {
   id: number;
-  slug: string;
-  first_name: string;
-  last_name: string;
-  email: string | null;
-  phone: string | null;
-  photo: string | null;
-  company: string | null;
+  token: string;
   status: 'available' | 'claimed' | 'activated';
-  scans_count: number;
-  claimed_at: string | null;
-  activated_at: string | null;
-}
-
-interface CardsResponse {
-  cards: KeychainCard[];
-  pagination: {
-    page: number;
-    per_page: number;
-    total: number;
-    total_pages: number;
-  };
+  owner_name: string;
+  owner_email: string | null;
+  owner_photo: string | null;
+  view_count: number;
+  created_at: string;
 }
 
 type StatusFilter = 'all' | 'available' | 'claimed' | 'activated';
@@ -80,10 +66,12 @@ export default function PorteClesPage() {
       const json = await res.json();
       if (!json.success) throw new Error(json.error?.message || json.error || 'Erreur');
 
-      const result = json.data as CardsResponse;
-      setCards(result.cards);
-      setTotalPages(result.pagination.total_pages);
-      setTotal(result.pagination.total);
+      setCards(json.data as KeychainCard[]);
+      const pag = json.meta?.pagination;
+      if (pag) {
+        setTotalPages(pag.total_pages);
+        setTotal(pag.total);
+      }
     } catch (err) {
       setError(err instanceof Error ? err.message : 'Erreur de chargement');
     } finally {
@@ -196,11 +184,11 @@ export default function PorteClesPage() {
               {/* Header: photo + status */}
               <div className="flex items-start justify-between mb-4">
                 <div className="flex items-center gap-3">
-                  {card.photo ? (
+                  {card.owner_photo ? (
                     // eslint-disable-next-line @next/next/no-img-element
                     <img
-                      src={card.photo}
-                      alt={`${card.first_name} ${card.last_name}`}
+                      src={card.owner_photo}
+                      alt={card.owner_name}
                       className="w-10 h-10 rounded-full object-cover border border-zinc-700"
                     />
                   ) : (
@@ -212,11 +200,9 @@ export default function PorteClesPage() {
                     <p className="text-white font-medium text-sm truncate">
                       {card.status === 'available'
                         ? 'Non attribue'
-                        : `${card.first_name} ${card.last_name}`}
+                        : card.owner_name || 'Sans nom'}
                     </p>
-                    {card.company && (
-                      <p className="text-zinc-600 text-xs truncate">{card.company}</p>
-                    )}
+                    <p className="text-zinc-600 text-xs truncate font-mono">{card.token.slice(0, 8)}...</p>
                   </div>
                 </div>
                 <StatusBadge status={card.status} />
@@ -224,37 +210,20 @@ export default function PorteClesPage() {
 
               {/* Info rows */}
               <div className="space-y-2">
-                {card.email && (
+                {card.owner_email && (
                   <div className="flex items-center gap-2 text-xs text-zinc-500">
                     <Icon icon="solar:letter-bold" width={14} className="text-zinc-600 flex-shrink-0" />
-                    <span className="truncate">{card.email}</span>
-                  </div>
-                )}
-                {card.phone && (
-                  <div className="flex items-center gap-2 text-xs text-zinc-500">
-                    <Icon icon="solar:phone-bold" width={14} className="text-zinc-600 flex-shrink-0" />
-                    <span>{card.phone}</span>
+                    <span className="truncate">{card.owner_email}</span>
                   </div>
                 )}
               </div>
 
-              {/* Footer: scans + link */}
+              {/* Footer: scans */}
               <div className="flex items-center justify-between mt-4 pt-3 border-t border-zinc-800">
                 <div className="flex items-center gap-1.5 text-xs text-zinc-500">
                   <Icon icon="solar:qr-code-bold" width={14} className="text-zinc-600" />
-                  <span>{card.scans_count} scan{card.scans_count > 1 ? 's' : ''}</span>
+                  <span>{card.view_count} scan{card.view_count > 1 ? 's' : ''}</span>
                 </div>
-                {card.status !== 'available' && (
-                  <a
-                    href={`https://www.idkom.fr/carte/${card.slug}`}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="text-xs text-zinc-600 hover:text-pink-400 transition-colors flex items-center gap-1"
-                  >
-                    Voir la carte
-                    <Icon icon="solar:arrow-right-up-linear" width={12} />
-                  </a>
-                )}
               </div>
             </div>
           ))}
