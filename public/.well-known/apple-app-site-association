@@ -1,0 +1,21 @@
+{
+    "appclips": {
+        "apps": [
+            "5PVZST552A.fr.idkom.carte.Clip"
+        ]
+    },
+    "applinks": {
+        "details": [
+            {
+                "appIDs": [
+                    "5PVZST552A.fr.idkom.carte.Clip"
+                ],
+                "components": [
+                    {
+                        "/": "/carte/*"
+                    }
+                ]
+            }
+        ]
+    }
+}
