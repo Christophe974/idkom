@@ -53,7 +53,7 @@ function ActivateForm() {
       const res = await fetch(`${API_URL}/partner-auth.php?action=activate`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ token: activationToken, password }),
+        body: JSON.stringify({ token: activationToken, password, password_confirm: confirmPassword }),
       });
       const json = await res.json();
 
