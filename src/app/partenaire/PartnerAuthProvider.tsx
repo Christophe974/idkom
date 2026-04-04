@@ -6,16 +6,15 @@ import { useRouter, usePathname } from 'next/navigation';
 const API_URL = process.env.NEXT_PUBLIC_API_URL || 'https://api.idkom.fr';
 
 export interface PartnerData {
-  id: number;
   name: string;
-  agency: string | null;
-  email: string;
-  phone: string | null;
+  agency_name: string | null;
+  contact_name: string | null;
+  contact_email: string | null;
+  contact_phone: string | null;
   logo: string | null;
   color_primary: string;
   color_secondary: string;
   welcome_text: string | null;
-  created_at: string;
 }
 
 interface PartnerAuthContextType {

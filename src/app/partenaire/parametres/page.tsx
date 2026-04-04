@@ -25,7 +25,7 @@ export default function PartnerSettingsPage() {
   // Populate form from partner data
   useEffect(() => {
     if (partner) {
-      setPhone(partner.phone || '');
+      setPhone(partner.contact_phone || '');
       setWelcomeText(partner.welcome_text || '');
       setColorPrimary(partner.color_primary || '#ff2d55');
       setColorSecondary(partner.color_secondary || '#7928ca');
@@ -180,13 +180,13 @@ export default function PartnerSettingsPage() {
               <div>
                 <label className="block text-xs font-medium text-zinc-500 mb-1.5">Agence</label>
                 <div className="bg-zinc-800/50 border border-zinc-700/50 text-zinc-400 rounded-xl px-4 py-3 text-sm">
-                  {partner.agency || 'Non definie'}
+                  {partner.agency_name || 'Non definie'}
                 </div>
               </div>
               <div className="sm:col-span-2">
                 <label className="block text-xs font-medium text-zinc-500 mb-1.5">Email</label>
                 <div className="bg-zinc-800/50 border border-zinc-700/50 text-zinc-400 rounded-xl px-4 py-3 text-sm">
-                  {partner.email}
+                  {partner.contact_email}
                 </div>
               </div>
             </div>
@@ -394,8 +394,8 @@ export default function PartnerSettingsPage() {
 
                 {/* Partner name */}
                 <p className="text-center text-white font-semibold text-sm">{partner.name}</p>
-                {partner.agency && (
-                  <p className="text-center text-zinc-500 text-xs mt-0.5">{partner.agency}</p>
+                {partner.agency_name && (
+                  <p className="text-center text-zinc-500 text-xs mt-0.5">{partner.agency_name}</p>
                 )}
 
                 {/* Welcome text preview */}
