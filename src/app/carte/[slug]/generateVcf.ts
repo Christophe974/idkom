@@ -2,13 +2,13 @@ import type { VCardData } from '@/lib/api';
 
 /**
  * Télécharge le .vcf via l'API PHP côté serveur.
- * Le serveur embarque la photo en base64 dans le fichier,
- * ce qui permet qu'elle s'enregistre dans le téléphone du contact.
+ * Sur iOS : navigation directe pour que Safari propose "Ajouter aux contacts"
+ * Sur desktop/Android : téléchargement classique via lien temporaire
  */
 export function downloadVcf(card: VCardData): void {
   const apiUrl = process.env.NEXT_PUBLIC_API_URL || 'https://api.idkom.fr';
   const downloadUrl = `${apiUrl}/vcards.php?action=download&slug=${encodeURIComponent(card.slug)}`;
 
-  // Ouvrir le lien de téléchargement (le navigateur détecte le Content-Disposition: attachment)
-  window.open(downloadUrl, '_blank');
+  // Navigation directe — iOS Safari détecte le .vcf et propose "Ajouter aux contacts"
+  window.location.href = downloadUrl;
 }
