@@ -7,14 +7,14 @@ import { usePartnerAuth } from './PartnerAuthProvider';
 const API_URL = process.env.NEXT_PUBLIC_API_URL || 'https://api.idkom.fr';
 
 interface DashboardData {
-  total_cards: number;
-  claimed_cards: number;
-  activated_cards: number;
+  total_keychains: number;
+  total_claimed: number;
+  total_activated: number;
   total_scans: number;
   activation_rate: number;
   recent_scans: {
     id: number;
-    card_name: string;
+    owner_name: string;
     scanned_at: string;
     city: string | null;
   }[];
@@ -160,19 +160,19 @@ export default function PartnerDashboard() {
       <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
         <StatCard
           label="Porte-cles total"
-          value={data.total_cards}
+          value={data.total_keychains}
           icon="solar:key-bold"
           color="#ff2d55"
         />
         <StatCard
           label="Reclames"
-          value={data.claimed_cards}
+          value={data.total_claimed}
           icon="solar:hand-stars-bold"
           color="#7928ca"
         />
         <StatCard
           label="Actives"
-          value={data.activated_cards}
+          value={data.total_activated}
           icon="solar:check-circle-bold"
           color="#00d4ff"
         />
@@ -191,7 +191,7 @@ export default function PartnerDashboard() {
           <h3 className="text-sm font-medium text-zinc-400 mb-4">Taux d&apos;activation</h3>
           <CircularProgress value={data.activation_rate} />
           <p className="text-xs text-zinc-600 mt-3">
-            {data.activated_cards} sur {data.total_cards} porte-cles
+            {data.total_activated} sur {data.total_keychains} porte-cles
           </p>
         </div>
 
@@ -219,7 +219,7 @@ export default function PartnerDashboard() {
                       <Icon icon="solar:qr-code-bold" width={16} className="text-pink-400" />
                     </div>
                     <div>
-                      <p className="text-sm text-white font-medium">{scan.card_name}</p>
+                      <p className="text-sm text-white font-medium">{scan.owner_name}</p>
                       {scan.city && (
                         <p className="text-xs text-zinc-600">{scan.city}</p>
                       )}
