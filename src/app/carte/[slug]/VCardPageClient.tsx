@@ -608,7 +608,7 @@ export default function VCardPageClient({ card }: Props) {
                   </div>
                 )}
                 <div className="flex-1 min-w-0">
-                  <p className="text-zinc-500 text-[10px] uppercase tracking-wider font-medium">Offert par</p>
+                  <p className="text-zinc-500 text-[10px] uppercase tracking-wider font-medium">Ce porte-clé NFC vous est offert par</p>
                   <p className="text-white text-sm font-semibold truncate">{card.partner.name}</p>
                   {card.partner.agency && (
                     <p className="text-zinc-500 text-xs truncate">{card.partner.agency}</p>
@@ -649,15 +649,22 @@ export default function VCardPageClient({ card }: Props) {
             </a>
           </div>
 
-          {/* Footer */}
+          {/* Footer with iDkom logo */}
           <div className="mt-4 mb-2 text-center animate-fade-in-up delay-600">
             <a
               href="https://www.idkom.fr"
               target="_blank"
               rel="noopener noreferrer"
-              className="text-zinc-700 text-xs hover:text-zinc-500 transition-colors"
+              className="inline-flex items-center gap-2 text-zinc-700 text-xs hover:text-zinc-500 transition-colors"
             >
-              Propulsé par <span className="gradient-text font-medium">iDkom</span>
+              Propulsé par
+              <Image
+                src="/images/logo-white.svg"
+                alt="iDkom"
+                width={50}
+                height={16}
+                className="h-3.5 w-auto opacity-50 hover:opacity-80 transition-opacity"
+              />
             </a>
           </div>
         </div>
