@@ -633,8 +633,14 @@ export default function VCardPageClient({ card }: Props) {
               className="block rounded-2xl border border-white/5 p-5 text-center transition-all duration-300 hover:border-white/10 group"
               style={{ background: 'rgba(24, 24, 27, 0.5)' }}
             >
-              <div className="w-10 h-10 mx-auto mb-3 rounded-xl bg-gradient-to-br from-pink-500/20 to-purple-600/20 flex items-center justify-center">
-                <Icon icon="solar:nfc-bold" width={22} className="text-pink-400" />
+              <div className="w-12 h-12 mx-auto mb-3 rounded-xl bg-white/10 flex items-center justify-center p-2">
+                <Image
+                  src="/images/logo-white.svg"
+                  alt="iDkom"
+                  width={40}
+                  height={20}
+                  className="w-auto h-5 opacity-80"
+                />
               </div>
               <p className="text-white text-sm font-semibold mb-1">
                 Vous aussi, adoptez la carte de visite NFC
