@@ -126,18 +126,20 @@ export default function VCardPageClient({ card }: Props) {
                 backgroundSize: '60px 60px, 40px 40px, 80px 80px',
                 animation: 'patternMove 20s linear infinite',
               }} />
-              {/* Logo iDkom in banner */}
-              <div className="absolute top-3 right-3">
-                <a href="https://www.idkom.fr" target="_blank" rel="noopener noreferrer">
-                  <Image
-                    src="/images/logo-white.svg"
-                    alt="iDkom"
-                    width={70}
-                    height={22}
-                    className="h-5 w-auto opacity-40 hover:opacity-80 transition-opacity duration-300"
-                  />
-                </a>
-              </div>
+              {/* Logo iDkom in banner — only for non-partner cards */}
+              {!isPartnerCard && (
+                <div className="absolute top-3 right-3">
+                  <a href="https://www.idkom.fr" target="_blank" rel="noopener noreferrer">
+                    <Image
+                      src="/images/logo-white.svg"
+                      alt="iDkom"
+                      width={70}
+                      height={22}
+                      className="h-5 w-auto opacity-40 hover:opacity-80 transition-opacity duration-300"
+                    />
+                  </a>
+                </div>
+              )}
               {/* Bottom fade */}
               <div className="absolute bottom-0 left-0 right-0 h-16" style={{
                 background: 'linear-gradient(transparent, rgba(24, 24, 27, 0.85))',
@@ -199,18 +201,6 @@ export default function VCardPageClient({ card }: Props) {
                 )}
               </div>
             </div>
-
-            {/* ========== PARTNER BRANDING ========== */}
-            {card.partner && (
-              <div className="px-6 mt-4 animate-fade-in-up delay-200">
-                <PartnerBranding
-                  name={card.partner.name}
-                  logo={card.partner.logo}
-                  agency={card.partner.agency}
-                  colorPrimary={card.partner.color_primary}
-                />
-              </div>
-            )}
 
             {/* ========== QUICK ACTION BAR ========== */}
             <div className="flex justify-center gap-4 px-6 mt-5 animate-fade-in-up delay-300">
@@ -600,14 +590,67 @@ export default function VCardPageClient({ card }: Props) {
               </div>
           </div>
 
-          {/* QR Code section */}
+          {/* ========== PARTNER BRANDING (before QR) ========== */}
+          {card.partner && (
+            <div className="mt-5 animate-fade-in-up delay-500">
+              <div
+                className="rounded-2xl border border-white/5 p-4 flex items-center gap-4"
+                style={{ background: 'rgba(24, 24, 27, 0.7)' }}
+              >
+                {card.partner.logo && (
+                  <div className="w-14 h-14 rounded-xl bg-white flex items-center justify-center flex-shrink-0 p-2">
+                    {/* eslint-disable-next-line @next/next/no-img-element */}
+                    <img
+                      src={card.partner.logo}
+                      alt={card.partner.name}
+                      className="w-full h-full object-contain"
+                    />
+                  </div>
+                )}
+                <div className="flex-1 min-w-0">
+                  <p className="text-zinc-500 text-[10px] uppercase tracking-wider font-medium">Offert par</p>
+                  <p className="text-white text-sm font-semibold truncate">{card.partner.name}</p>
+                  {card.partner.agency && (
+                    <p className="text-zinc-500 text-xs truncate">{card.partner.agency}</p>
+                  )}
+                </div>
+              </div>
+            </div>
+          )}
+
+          {/* QR Code section — cliquable pour agrandir/réduire */}
           <div className="mt-5 flex flex-col items-center animate-fade-in-up delay-600">
             <QRCode url={pageUrl} size={80} color="ffffff" />
-            <p className="text-zinc-600 text-xs mt-1.5">Scannez pour partager</p>
+            <p className="text-zinc-600 text-xs mt-1.5">Touchez pour agrandir</p>
+          </div>
+
+          {/* ========== PROMO iDKOM ========== */}
+          <div className="mt-6 animate-fade-in-up delay-600">
+            <a
+              href="https://www.idkom.fr/carte-de-visite-nfc"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="block rounded-2xl border border-white/5 p-5 text-center transition-all duration-300 hover:border-white/10 group"
+              style={{ background: 'rgba(24, 24, 27, 0.5)' }}
+            >
+              <div className="w-10 h-10 mx-auto mb-3 rounded-xl bg-gradient-to-br from-pink-500/20 to-purple-600/20 flex items-center justify-center">
+                <Icon icon="solar:nfc-bold" width={22} className="text-pink-400" />
+              </div>
+              <p className="text-white text-sm font-semibold mb-1">
+                Vous aussi, adoptez la carte de visite NFC
+              </p>
+              <p className="text-zinc-500 text-xs leading-relaxed">
+                Offrez à vos clients un porte-clé connecté à leur image. Moderne, mémorable, et toujours à jour.
+              </p>
+              <div className="mt-3 inline-flex items-center gap-1.5 text-xs font-medium group-hover:gap-2.5 transition-all duration-300" style={{ color: accent }}>
+                En savoir plus
+                <Icon icon="solar:arrow-right-linear" width={14} />
+              </div>
+            </a>
           </div>
 
           {/* Footer */}
-          <div className="mt-5 text-center animate-fade-in-up delay-600">
+          <div className="mt-4 mb-2 text-center animate-fade-in-up delay-600">
             <a
               href="https://www.idkom.fr"
               target="_blank"
