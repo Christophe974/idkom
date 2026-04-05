@@ -147,10 +147,10 @@ export default function VCardPageClient({ card }: Props) {
             </div>
 
             {/* Photo - overlapping banner */}
-            <div className="flex justify-center -mt-14 relative z-10 animate-fade-in-up delay-100">
+            <div className="flex justify-center -mt-20 relative z-10 animate-fade-in-up delay-100">
               <div className="relative">
                 <div
-                  className="w-24 h-24 rounded-full overflow-hidden border-[3px] p-[2px]"
+                  className="w-36 h-36 rounded-full overflow-hidden border-[3px] p-[2px]"
                   style={{
                     borderColor: accent,
                     boxShadow: `0 0 30px ${accent}40, 0 4px 20px rgba(0,0,0,0.5)`,
