@@ -20,13 +20,13 @@ export const metadata: Metadata = {
     default: "iDkom | Agence Événementielle & Solutions Digitales — Franche-Comté",
     template: "%s | iDkom",
   },
-  description: "Agence événementielle et solutions digitales pour l'événementiel en Franche-Comté : stands BeMatrix, animations innovantes, bar goodies et photobooth IA. 30 ans d'expérience, 600+ projets.",
+  description: "Agence de communication événementielle à Montbéliard. Stands BeMatrix, animations innovantes, photobooth IA et solutions digitales sur-mesure. 30 ans d'expérience, 600+ projets en Franche-Comté et partout en France.",
   keywords: ["agence événementielle", "solution digitale événementiel", "solutions digitales évènementielles", "stands BeMatrix", "événementiel", "salon professionnel", "agence communication Montbéliard", "bar goodies", "Besançon", "Franche-Comté", "iDkom"],
   authors: [{ name: "iDkom" }],
   metadataBase: new URL("https://www.idkom.fr"),
   openGraph: {
     title: "iDkom | Agence Événementielle & Solutions Digitales",
-    description: "Solutions digitales pour l'événementiel, stands BeMatrix et animations innovantes. 30 ans d'expérience en Franche-Comté.",
+    description: "Agence de communication événementielle à Montbéliard. Stands BeMatrix, animations, photobooth IA. 30 ans d'expérience, 600+ projets.",
     url: "https://www.idkom.fr",
     siteName: "iDkom",
     locale: "fr_FR",
@@ -35,7 +35,7 @@ export const metadata: Metadata = {
   twitter: {
     card: "summary_large_image",
     title: "iDkom | Agence Événementielle & Solutions Digitales",
-    description: "Solutions digitales pour l'événementiel, stands BeMatrix et animations innovantes. 30 ans d'expérience en Franche-Comté.",
+    description: "Agence de communication événementielle à Montbéliard. Stands BeMatrix, animations, photobooth IA. 30 ans d'expérience, 600+ projets.",
   },
   robots: {
     index: true,

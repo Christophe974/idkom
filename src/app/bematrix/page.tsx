@@ -9,16 +9,19 @@ import Counter from '@/components/Counter';
 import { getHomepageData } from '@/lib/api';
 
 export const metadata: Metadata = {
-  title: 'Standiste BeMatrix France | +4000 pièces en stock — iDkom',
-  description: 'Standiste certifié BeMatrix en France : location de stands modulaires, éclairage intégré, LEDskin® et conception sur-mesure. 4000+ pièces en stock, montage clé en main pour vos salons.',
-  keywords: ['BeMatrix', 'be matrix', 'stand BeMatrix', 'bematrix stand', 'bematrix stands', 'standiste BeMatrix', 'standbouwer bematrix', 'bematrix éclairage', 'bematrix LEDskin', 'stand bematrix', 'location stand modulaire', 'stand modulaire salon', 'bematrix catalogue', 'bematrix France', 'standiste France'],
+  title: 'Stand BeMatrix en France — Location & Installation | iDkom',
+  description: 'Location et montage de stands BeMatrix clé en main. 4 000+ pièces en stock, LEDskin® 12 m², éclairage intégré. Conception 3D, livraison et installation sur site partout en France.',
+  keywords: ['BeMatrix', 'be matrix', 'stand BeMatrix', 'bematrix stand', 'standiste BeMatrix', 'bematrix éclairage', 'bematrix LEDskin', 'stand bematrix', 'location stand modulaire', 'stand modulaire salon', 'bematrix catalogue', 'bematrix France', 'standiste France', 'location stand salon professionnel'],
   alternates: {
     canonical: 'https://www.idkom.fr/bematrix',
-    languages: { 'fr': 'https://www.idkom.fr/bematrix' },
+    languages: {
+      'fr-FR': 'https://www.idkom.fr/bematrix',
+      'x-default': 'https://www.idkom.fr/bematrix',
+    },
   },
   openGraph: {
-    title: 'Standiste BeMatrix France | +4000 pièces en stock — iDkom',
-    description: 'Standiste certifié BeMatrix : 4000+ pièces, LEDskin®, éclairage intégré. Location et installation clé en main pour salons professionnels.',
+    title: 'Stand BeMatrix en France — Location & Installation | iDkom',
+    description: '4 000+ pièces BeMatrix en stock, LEDskin® 12 m², éclairage intégré. Montage clé en main pour salons professionnels partout en France.',
     url: 'https://www.idkom.fr/bematrix',
     siteName: 'iDkom',
     locale: 'fr_FR',
@@ -27,8 +30,8 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'Standiste BeMatrix France | +4000 pièces — iDkom',
-    description: 'Location de stands modulaires BeMatrix, LEDskin®, éclairage intégré. Montage clé en main.',
+    title: 'Stand BeMatrix en France — Location & Installation | iDkom',
+    description: '4 000+ pièces en stock, LEDskin® 12 m², montage clé en main partout en France.',
   },
 };
 
