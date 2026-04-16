@@ -1,0 +1,813 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Interview Drag'Lionnes">
+<meta name="theme-color" content="#002366">
+<title>Interview Frédéric Bois — Drag'Lionnes Ladies</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --cm-blue: #003DA5;
+    --cm-blue-dark: #002366;
+    --cm-blue-accent: #0072CE;
+    --cm-green: #00875A;
+    --color-sophie: #CE93D8;
+    --color-gregory: #FFB74D;
+    --color-jeanclaude: #4DD0E1;
+    --white: #ffffff;
+    --white-soft: rgba(255,255,255,0.85);
+    --white-dim: rgba(255,255,255,0.55);
+    --white-faint: rgba(255,255,255,0.12);
+  }
+
+  * {
+    box-sizing: border-box;
+    -webkit-tap-highlight-color: transparent;
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    user-select: none;
+  }
+
+  html, body {
+    margin: 0;
+    padding: 0;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    background: #000;
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    color: var(--white);
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    overscroll-behavior: none;
+    touch-action: none;
+  }
+
+  body {
+    position: fixed;
+    top: 0; left: 0; right: 0; bottom: 0;
+  }
+
+  /* Deck container */
+  .deck {
+    position: relative;
+    width: 100vw;
+    height: 100vh;
+    overflow: hidden;
+  }
+
+  .slides {
+    display: flex;
+    width: 100%;
+    height: 100%;
+    transition: transform 0.5s cubic-bezier(0.77, 0, 0.175, 1);
+    will-change: transform;
+  }
+
+  .slide {
+    flex: 0 0 100%;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 80px 140px;
+    position: relative;
+    overflow: hidden;
+  }
+
+  /* -------- Cover slide -------- */
+  .slide.cover {
+    background:
+      radial-gradient(ellipse at 20% 10%, rgba(0,114,206,0.4) 0%, transparent 55%),
+      radial-gradient(ellipse at 80% 90%, rgba(0,61,165,0.55) 0%, transparent 55%),
+      linear-gradient(135deg, #001844 0%, #002366 50%, #001030 100%);
+  }
+
+  .cover-brand {
+    position: absolute;
+    top: 60px;
+    left: 80px;
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    font-size: 15px;
+    font-weight: 600;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--white-dim);
+  }
+
+  .cover-brand::before {
+    content: '';
+    display: block;
+    width: 30px;
+    height: 2px;
+    background: var(--white-dim);
+  }
+
+  .cover-kicker {
+    font-size: 20px;
+    font-weight: 500;
+    letter-spacing: 0.35em;
+    text-transform: uppercase;
+    color: var(--white-dim);
+    margin-bottom: 40px;
+  }
+
+  .cover h1 {
+    font-size: 120px;
+    font-weight: 800;
+    line-height: 1;
+    margin: 0 0 30px;
+    letter-spacing: -0.04em;
+    text-align: center;
+    background: linear-gradient(135deg, #ffffff 0%, #7ec4ff 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  .cover h2 {
+    font-size: 54px;
+    font-weight: 300;
+    margin: 0 0 70px;
+    letter-spacing: -0.01em;
+    color: var(--white-soft);
+    text-align: center;
+  }
+
+  .cover-guest {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 14px;
+    padding: 30px 60px;
+    border: 1px solid var(--white-faint);
+    border-radius: 24px;
+    background: rgba(255,255,255,0.03);
+    backdrop-filter: blur(10px);
+  }
+
+  .cover-guest-label {
+    font-size: 13px;
+    font-weight: 600;
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+    color: var(--white-dim);
+  }
+
+  .cover-guest-name {
+    font-size: 38px;
+    font-weight: 700;
+    color: var(--white);
+  }
+
+  .cover-guest-role {
+    font-size: 22px;
+    font-weight: 400;
+    color: var(--white-soft);
+    text-align: center;
+    line-height: 1.4;
+  }
+
+  .cover-footer {
+    position: absolute;
+    bottom: 60px;
+    left: 50%;
+    transform: translateX(-50%);
+    font-size: 16px;
+    font-weight: 500;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--white-dim);
+    text-align: center;
+    white-space: nowrap;
+  }
+
+  /* -------- Section divider slides -------- */
+  .slide.divider {
+    background: linear-gradient(135deg, #001844 0%, #003DA5 100%);
+  }
+
+  .slide.divider.part-1 {
+    background: linear-gradient(135deg, #001844 0%, #003DA5 100%);
+  }
+
+  .slide.divider.part-2 {
+    background: linear-gradient(135deg, #003820 0%, #00875A 100%);
+  }
+
+  .slide.divider.part-3 {
+    background: linear-gradient(135deg, #002050 0%, #0072CE 100%);
+  }
+
+  .divider-bignum {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-size: 720px;
+    font-weight: 900;
+    color: rgba(255,255,255,0.06);
+    line-height: 1;
+    letter-spacing: -0.05em;
+    pointer-events: none;
+    user-select: none;
+  }
+
+  .divider-label {
+    position: relative;
+    font-size: 18px;
+    font-weight: 600;
+    letter-spacing: 0.4em;
+    text-transform: uppercase;
+    color: var(--white-dim);
+    margin-bottom: 30px;
+  }
+
+  .divider-emoji {
+    position: relative;
+    font-size: 140px;
+    line-height: 1;
+    margin-bottom: 50px;
+  }
+
+  .divider-title {
+    position: relative;
+    font-size: 100px;
+    font-weight: 700;
+    line-height: 1.05;
+    margin: 0 0 70px;
+    letter-spacing: -0.03em;
+    text-align: center;
+    max-width: 1800px;
+    color: var(--white);
+  }
+
+  .divider-handover {
+    position: relative;
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    padding: 24px 44px;
+    border: 1px solid var(--white-faint);
+    border-radius: 999px;
+    background: rgba(0,0,0,0.25);
+    backdrop-filter: blur(10px);
+  }
+
+  .handover-dot {
+    width: 14px;
+    height: 14px;
+    border-radius: 50%;
+    flex-shrink: 0;
+  }
+
+  .handover-dot.sophie { background: var(--color-sophie); box-shadow: 0 0 20px rgba(206,147,216,0.6); }
+  .handover-dot.gregory { background: var(--color-gregory); box-shadow: 0 0 20px rgba(255,183,77,0.6); }
+  .handover-dot.jeanclaude { background: var(--color-jeanclaude); box-shadow: 0 0 20px rgba(77,208,225,0.6); }
+
+  .handover-text {
+    font-size: 26px;
+    font-weight: 500;
+    color: var(--white);
+    letter-spacing: 0.02em;
+  }
+
+  .handover-text strong {
+    font-weight: 700;
+  }
+
+  .handover-text .sep {
+    margin: 0 14px;
+    color: var(--white-dim);
+  }
+
+  /* -------- Question slides -------- */
+  .slide.question {
+    background:
+      radial-gradient(ellipse at 30% 20%, rgba(0,114,206,0.25) 0%, transparent 60%),
+      radial-gradient(ellipse at 70% 85%, rgba(0,35,102,0.7) 0%, transparent 60%),
+      linear-gradient(180deg, #001030 0%, #002366 50%, #001844 100%);
+  }
+
+  .question-badge {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 120px;
+    height: 120px;
+    border-radius: 50%;
+    background: rgba(255,255,255,0.08);
+    border: 2px solid rgba(255,255,255,0.2);
+    backdrop-filter: blur(10px);
+    font-size: 44px;
+    font-weight: 800;
+    letter-spacing: -0.02em;
+    color: var(--white);
+    margin-bottom: 70px;
+    box-shadow: 0 10px 40px rgba(0,0,0,0.3);
+  }
+
+  .question-badge .q-letter {
+    opacity: 0.6;
+    margin-right: 3px;
+  }
+
+  .question-text {
+    font-size: 56px;
+    font-weight: 500;
+    line-height: 1.25;
+    color: var(--white);
+    text-align: center;
+    max-width: 1950px;
+    letter-spacing: -0.015em;
+    margin: 0;
+    text-wrap: balance;
+  }
+
+  .question-host {
+    position: absolute;
+    bottom: 90px;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    padding: 14px 28px;
+    border: 1px solid var(--white-faint);
+    border-radius: 999px;
+    background: rgba(0,0,0,0.35);
+    backdrop-filter: blur(10px);
+  }
+
+  .host-dot {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    flex-shrink: 0;
+  }
+
+  .host-dot.sophie { background: var(--color-sophie); box-shadow: 0 0 12px rgba(206,147,216,0.8); }
+  .host-dot.gregory { background: var(--color-gregory); box-shadow: 0 0 12px rgba(255,183,77,0.8); }
+  .host-dot.jeanclaude { background: var(--color-jeanclaude); box-shadow: 0 0 12px rgba(77,208,225,0.8); }
+
+  .host-name {
+    font-size: 18px;
+    font-weight: 500;
+    color: var(--white-soft);
+    letter-spacing: 0.02em;
+  }
+
+  /* -------- End slide -------- */
+  .slide.end {
+    background:
+      radial-gradient(ellipse at center, rgba(0,114,206,0.3) 0%, transparent 60%),
+      linear-gradient(135deg, #001030 0%, #002366 50%, #001030 100%);
+  }
+
+  .end-kicker {
+    font-size: 18px;
+    font-weight: 600;
+    letter-spacing: 0.4em;
+    text-transform: uppercase;
+    color: var(--white-dim);
+    margin-bottom: 40px;
+  }
+
+  .end h1 {
+    font-size: 180px;
+    font-weight: 800;
+    line-height: 1;
+    margin: 0 0 40px;
+    letter-spacing: -0.04em;
+    background: linear-gradient(135deg, #ffffff 0%, #7ec4ff 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    text-align: center;
+  }
+
+  .end-subtitle {
+    font-size: 34px;
+    font-weight: 400;
+    color: var(--white-soft);
+    text-align: center;
+    letter-spacing: 0.02em;
+    max-width: 1600px;
+    line-height: 1.4;
+  }
+
+  /* -------- UI : counter + dots -------- */
+  .counter {
+    position: fixed;
+    top: 40px;
+    right: 50px;
+    font-size: 14px;
+    font-weight: 500;
+    letter-spacing: 0.2em;
+    color: var(--white-dim);
+    padding: 10px 18px;
+    border: 1px solid var(--white-faint);
+    border-radius: 999px;
+    background: rgba(0,0,0,0.25);
+    backdrop-filter: blur(10px);
+    z-index: 10;
+    font-variant-numeric: tabular-nums;
+  }
+
+  .dots {
+    position: fixed;
+    bottom: 36px;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    gap: 8px;
+    z-index: 10;
+    padding: 10px 18px;
+    border-radius: 999px;
+    background: rgba(0,0,0,0.25);
+    backdrop-filter: blur(10px);
+    border: 1px solid var(--white-faint);
+  }
+
+  .dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: rgba(255,255,255,0.3);
+    transition: all 0.35s ease;
+    cursor: pointer;
+  }
+
+  .dot.active {
+    width: 28px;
+    border-radius: 999px;
+    background: var(--white);
+  }
+
+  /* Hide UI on end slide for cleaner look... actually keep it visible */
+
+  /* Prevent text selection on long press */
+  .slide, .slide * {
+    -webkit-user-select: none;
+    user-select: none;
+  }
+
+  /* iPad Pro 12.9" landscape specific tweaks */
+  @media (max-width: 2200px) {
+    .cover h1 { font-size: 110px; }
+    .divider-title { font-size: 92px; }
+    .question-text { font-size: 52px; }
+  }
+
+  @media (max-width: 1400px) {
+    .slide { padding: 60px 100px; }
+    .cover h1 { font-size: 90px; }
+    .cover h2 { font-size: 42px; }
+    .divider-bignum { font-size: 520px; }
+    .divider-title { font-size: 72px; }
+    .divider-emoji { font-size: 110px; }
+    .question-badge { width: 100px; height: 100px; font-size: 36px; margin-bottom: 50px; }
+    .question-text { font-size: 44px; }
+    .end h1 { font-size: 140px; }
+    .end-subtitle { font-size: 28px; }
+  }
+
+  @media (max-width: 900px) {
+    .slide { padding: 40px 50px; }
+    .cover-brand { top: 30px; left: 30px; font-size: 12px; }
+    .cover-kicker { font-size: 14px; margin-bottom: 20px; }
+    .cover h1 { font-size: 56px; margin-bottom: 16px; }
+    .cover h2 { font-size: 26px; margin-bottom: 40px; }
+    .cover-guest { padding: 20px 30px; }
+    .cover-guest-name { font-size: 24px; }
+    .cover-guest-role { font-size: 16px; }
+    .cover-footer { font-size: 11px; bottom: 80px; white-space: normal; max-width: 80%; line-height: 1.6; }
+    .divider-bignum { font-size: 340px; }
+    .divider-label { font-size: 13px; margin-bottom: 20px; }
+    .divider-emoji { font-size: 80px; margin-bottom: 30px; }
+    .divider-title { font-size: 46px; margin-bottom: 40px; }
+    .divider-handover { padding: 14px 24px; }
+    .handover-text { font-size: 16px; }
+    .handover-text .sep { margin: 0 8px; }
+    .question-badge { width: 70px; height: 70px; font-size: 26px; margin-bottom: 30px; }
+    .question-text { font-size: 26px; }
+    .question-host { bottom: 80px; padding: 10px 20px; }
+    .host-name { font-size: 14px; }
+    .end h1 { font-size: 80px; }
+    .end-subtitle { font-size: 18px; }
+    .counter { top: 20px; right: 20px; font-size: 11px; padding: 6px 12px; }
+    .dots { bottom: 20px; padding: 8px 14px; }
+    .dot { width: 6px; height: 6px; }
+    .dot.active { width: 22px; }
+  }
+</style>
+</head>
+<body>
+<div class="deck" id="deck">
+  <div class="counter" id="counter">01 / 16</div>
+
+  <div class="slides" id="slides">
+
+    <!-- Slide 0 : Cover -->
+    <section class="slide cover">
+      <div class="cover-brand">Crédit Mutuel Belfort Centre</div>
+      <div class="cover-kicker">Interview Podcast</div>
+      <h1>Les Drag'Lionnes<br>Ladies</h1>
+      <h2>Une aventure humaine et sportive</h2>
+      <div class="cover-guest">
+        <div class="cover-guest-label">Notre invité</div>
+        <div class="cover-guest-name">Frédéric Bois</div>
+        <div class="cover-guest-role">Président du BACK90<br>Fondateur des Drag'Lionnes Ladies</div>
+      </div>
+      <div class="cover-footer">Assemblée Générale · 24 avril 2026 · Crédit Mutuel Belfort Centre</div>
+    </section>
+
+    <!-- Slide 1 : Divider Part 1 -->
+    <section class="slide divider part-1">
+      <div class="divider-bignum">01</div>
+      <div class="divider-label">Partie 1</div>
+      <div class="divider-emoji">🎤</div>
+      <h2 class="divider-title">L'homme<br>et sa passion</h2>
+      <div class="divider-handover">
+        <span class="handover-dot sophie"></span>
+        <span class="handover-text"><strong>Sophie Tetot</strong><span class="sep">·</span>tient l'iPad</span>
+      </div>
+    </section>
+
+    <!-- Slide 2 : Q1 Sophie -->
+    <section class="slide question">
+      <div class="question-badge"><span class="q-letter">Q</span>1</div>
+      <p class="question-text">Frédéric, pour ceux qui ne te connaissent pas encore, est-ce que tu peux te présenter et nous dire qui tu es ?</p>
+      <div class="question-host">
+        <span class="host-dot sophie"></span>
+        <span class="host-name">Sophie Tetot</span>
+      </div>
+    </section>
+
+    <!-- Slide 3 : Q2 Sophie -->
+    <section class="slide question">
+      <div class="question-badge"><span class="q-letter">Q</span>2</div>
+      <p class="question-text">En 2017, tu reprends le club de canoë-kayak de Belfort et tu décides de tout orienter vers le sport-santé et le dragon boat. Qu'est-ce qui t'a donné cette impulsion ?</p>
+      <div class="question-host">
+        <span class="host-dot sophie"></span>
+        <span class="host-name">Sophie Tetot</span>
+      </div>
+    </section>
+
+    <!-- Slide 4 : Q3 Sophie -->
+    <section class="slide question">
+      <div class="question-badge"><span class="q-letter">Q</span>3</div>
+      <p class="question-text">En octobre 2018, le club acquiert deux dragon boats pour Octobre Rose. Comment est née l'idée de créer les Drag'Lionnes Ladies ?</p>
+      <div class="question-host">
+        <span class="host-dot sophie"></span>
+        <span class="host-name">Sophie Tetot</span>
+      </div>
+    </section>
+
+    <!-- Slide 5 : Divider Part 2 -->
+    <section class="slide divider part-2">
+      <div class="divider-bignum">02</div>
+      <div class="divider-label">Partie 2</div>
+      <div class="divider-emoji">🛶</div>
+      <h2 class="divider-title">Les Drag'Lionnes<br>Ladies</h2>
+      <div class="divider-handover">
+        <span class="handover-dot gregory"></span>
+        <span class="handover-text"><strong>Grégory Abad</strong><span class="sep">·</span>prend l'iPad</span>
+      </div>
+    </section>
+
+    <!-- Slide 6 : Q4 Grégory -->
+    <section class="slide question">
+      <div class="question-badge"><span class="q-letter">Q</span>4</div>
+      <p class="question-text">Aujourd'hui, l'équipe rassemble 22 femmes et 6 hommes. Qu'est-ce qui unit ce groupe ? Qu'est-ce qu'on ressent quand on voit ces pagaies se lever ensemble sur l'Étang des Forges ?</p>
+      <div class="question-host">
+        <span class="host-dot gregory"></span>
+        <span class="host-name">Grégory Abad</span>
+      </div>
+    </section>
+
+    <!-- Slide 7 : Q5 Grégory -->
+    <section class="slide question">
+      <div class="question-badge"><span class="q-letter">Q</span>5</div>
+      <p class="question-text">On sait que le mouvement de la pagaie a des bienfaits concrets, notamment pour le drainage lymphatique du bras opéré. Est-ce que des participantes t'ont confié que le dragon boat avait changé quelque chose pour elles ?</p>
+      <div class="question-host">
+        <span class="host-dot gregory"></span>
+        <span class="host-name">Grégory Abad</span>
+      </div>
+    </section>
+
+    <!-- Slide 8 : Q6 Grégory -->
+    <section class="slide question">
+      <div class="question-badge"><span class="q-letter">Q</span>6</div>
+      <p class="question-text">L'équipe a relevé des défis incroyables : la Vogalonga à Venise, 30 km dans la lagune, la TraverSeine à Paris. Quel est le souvenir le plus fort de ces aventures ?</p>
+      <div class="question-host">
+        <span class="host-dot gregory"></span>
+        <span class="host-name">Grégory Abad</span>
+      </div>
+    </section>
+
+    <!-- Slide 9 : Q7 Grégory -->
+    <section class="slide question">
+      <div class="question-badge"><span class="q-letter">Q</span>7</div>
+      <p class="question-text">Le dragon boat, c'est un sport où tout le monde pagaie au même rythme, mais chacune peut moduler son effort. Comment on gère ça dans un groupe où les parcours de santé sont si différents ?</p>
+      <div class="question-host">
+        <span class="host-dot gregory"></span>
+        <span class="host-name">Grégory Abad</span>
+      </div>
+    </section>
+
+    <!-- Slide 10 : Divider Part 3 -->
+    <section class="slide divider part-3">
+      <div class="divider-bignum">03</div>
+      <div class="divider-label">Partie 3</div>
+      <div class="divider-emoji">🤝</div>
+      <h2 class="divider-title">Le Crédit Mutuel<br>et l'avenir</h2>
+      <div class="divider-handover">
+        <span class="handover-dot jeanclaude"></span>
+        <span class="handover-text"><strong>Jean-Claude Jeannin</strong><span class="sep">·</span>prend l'iPad</span>
+      </div>
+    </section>
+
+    <!-- Slide 11 : Q8 Jean-Claude -->
+    <section class="slide question">
+      <div class="question-badge"><span class="q-letter">Q</span>8</div>
+      <p class="question-text">Le Crédit Mutuel Belfort Centre accompagne votre association au quotidien. Qu'est-ce que ça représente pour vous d'avoir une banque locale à vos côtés, qui comprend votre projet ?</p>
+      <div class="question-host">
+        <span class="host-dot jeanclaude"></span>
+        <span class="host-name">Jean-Claude Jeannin</span>
+      </div>
+    </section>
+
+    <!-- Slide 12 : Q9 Jean-Claude -->
+    <section class="slide question">
+      <div class="question-badge"><span class="q-letter">Q</span>9</div>
+      <p class="question-text">Vous êtes aussi soutenus par la Ligue contre le cancer. Comment ces partenariats, qu'ils soient associatifs ou bancaires, vous permettent d'aller plus loin ?</p>
+      <div class="question-host">
+        <span class="host-dot jeanclaude"></span>
+        <span class="host-name">Jean-Claude Jeannin</span>
+      </div>
+    </section>
+
+    <!-- Slide 13 : Q10 Jean-Claude -->
+    <section class="slide question">
+      <div class="question-badge"><span class="q-letter">Q</span>10</div>
+      <p class="question-text">Quels sont les prochains défis pour les Drag'Lionnes ? On a entendu parler de Barcelone…</p>
+      <div class="question-host">
+        <span class="host-dot jeanclaude"></span>
+        <span class="host-name">Jean-Claude Jeannin</span>
+      </div>
+    </section>
+
+    <!-- Slide 14 : Q11 Jean-Claude -->
+    <section class="slide question">
+      <div class="question-badge"><span class="q-letter">Q</span>11</div>
+      <p class="question-text">Une dernière question, Frédéric. Si quelqu'un dans cette salle ce soir, ou un de ses proches, est touché par le cancer du sein et hésite à vous rejoindre, qu'est-ce que tu lui dirais ?</p>
+      <div class="question-host">
+        <span class="host-dot jeanclaude"></span>
+        <span class="host-name">Jean-Claude Jeannin</span>
+      </div>
+    </section>
+
+    <!-- Slide 15 : End -->
+    <section class="slide end">
+      <div class="end-kicker">Fin de l'interview</div>
+      <h1>Merci Frédéric</h1>
+      <p class="end-subtitle">Les Drag'Lionnes Ladies · Crédit Mutuel Belfort Centre</p>
+    </section>
+
+  </div>
+
+  <div class="dots" id="dots"></div>
+</div>
+
+<script>
+(function() {
+  const slidesEl = document.getElementById('slides');
+  const dotsEl = document.getElementById('dots');
+  const counterEl = document.getElementById('counter');
+  const deckEl = document.getElementById('deck');
+  const totalSlides = slidesEl.children.length;
+  let current = 0;
+
+  // Build dots
+  for (let i = 0; i < totalSlides; i++) {
+    const dot = document.createElement('div');
+    dot.className = 'dot' + (i === 0 ? ' active' : '');
+    dot.addEventListener('click', (e) => {
+      e.stopPropagation();
+      goTo(i);
+    });
+    dotsEl.appendChild(dot);
+  }
+
+  function pad(n) { return n < 10 ? '0' + n : '' + n; }
+
+  function render() {
+    slidesEl.style.transform = `translateX(-${current * 100}%)`;
+    counterEl.textContent = pad(current + 1) + ' / ' + pad(totalSlides);
+    Array.from(dotsEl.children).forEach((d, i) => {
+      d.classList.toggle('active', i === current);
+    });
+  }
+
+  function goTo(i) {
+    current = Math.max(0, Math.min(totalSlides - 1, i));
+    render();
+  }
+
+  function next() { goTo(current + 1); }
+  function prev() { goTo(current - 1); }
+
+  // Keyboard navigation
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'ArrowRight' || e.key === ' ' || e.key === 'PageDown') {
+      e.preventDefault();
+      next();
+    } else if (e.key === 'ArrowLeft' || e.key === 'PageUp') {
+      e.preventDefault();
+      prev();
+    } else if (e.key === 'Home') {
+      e.preventDefault();
+      goTo(0);
+    } else if (e.key === 'End') {
+      e.preventDefault();
+      goTo(totalSlides - 1);
+    }
+  });
+
+  // Tap navigation (left/right half)
+  let tapDisabled = false;
+  deckEl.addEventListener('click', (e) => {
+    if (tapDisabled) return;
+    // Ignore if click is on a dot
+    if (e.target.classList.contains('dot')) return;
+    const w = window.innerWidth;
+    if (e.clientX > w / 2) {
+      next();
+    } else {
+      prev();
+    }
+  });
+
+  // Swipe navigation
+  let touchStartX = null;
+  let touchStartY = null;
+  let touchStartT = 0;
+  const SWIPE_THRESHOLD = 50;
+  const VERTICAL_TOLERANCE = 80;
+
+  deckEl.addEventListener('touchstart', (e) => {
+    if (e.touches.length !== 1) return;
+    touchStartX = e.touches[0].clientX;
+    touchStartY = e.touches[0].clientY;
+    touchStartT = Date.now();
+    tapDisabled = false;
+  }, { passive: true });
+
+  deckEl.addEventListener('touchend', (e) => {
+    if (touchStartX === null) return;
+    const touch = e.changedTouches[0];
+    const dx = touch.clientX - touchStartX;
+    const dy = touch.clientY - touchStartY;
+    const absDx = Math.abs(dx);
+    const absDy = Math.abs(dy);
+
+    if (absDx >= SWIPE_THRESHOLD && absDx > absDy) {
+      // Swipe: disable the upcoming click so we don't double-navigate
+      tapDisabled = true;
+      setTimeout(() => { tapDisabled = false; }, 350);
+      if (dx < 0) {
+        next();
+      } else {
+        prev();
+      }
+    }
+    touchStartX = null;
+    touchStartY = null;
+  }, { passive: true });
+
+  // Prevent pinch/zoom scrolling gestures
+  document.addEventListener('gesturestart', (e) => e.preventDefault());
+  document.addEventListener('gesturechange', (e) => e.preventDefault());
+
+  // Initial render
+  render();
+
+  // Prevent iOS rubber banding
+  document.addEventListener('touchmove', (e) => {
+    if (e.scale && e.scale !== 1) e.preventDefault();
+  }, { passive: false });
+})();
+</script>
+</body>
+</html>
