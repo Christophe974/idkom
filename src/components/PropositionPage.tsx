@@ -419,46 +419,50 @@ export default function PropositionPage({ proposition: prop, slug }: { propositi
                 ))}
               </div>
 
-              <div className="border-t border-zinc-800 bg-black/40 px-6 md:px-8 py-6 space-y-3">
+              <div className="border-t border-zinc-800 bg-black/40 px-6 md:px-8 py-8 space-y-5">
+                {/* TOTAL HT en héros — le plus visible */}
                 {prop.recap.total_ht !== null && (
-                  <div className="grid md:grid-cols-3 gap-4 md:gap-6">
-                    <div className="text-center md:text-left">
-                      <div className="text-[10px] uppercase tracking-widest text-zinc-500 mb-1">Total HT</div>
-                      <div className="text-2xl md:text-3xl font-bold text-white">{formatPrice(prop.recap.total_ht)}</div>
-                    </div>
-                    {(prop.recap.reduction_ht !== null || prop.recap.reduction_percent !== null) && (
-                      <div className="text-center md:text-left">
-                        <div className="text-[10px] uppercase tracking-widest text-zinc-500 mb-1">
-                          Réduction{prop.recap.reduction_percent ? ` (${prop.recap.reduction_percent.toLocaleString('fr-FR', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}\u00a0%)` : ''}
-                        </div>
-                        <div className="text-2xl md:text-3xl font-bold text-zinc-400">
-                          -{formatPrice(prop.recap.reduction_ht ?? (prop.recap.total_ht && prop.recap.reduction_percent ? prop.recap.total_ht * prop.recap.reduction_percent / 100 : 0))}
-                        </div>
-                      </div>
-                    )}
-                    <div className="text-center md:text-right md:ml-auto">
-                      <div className="text-[10px] uppercase tracking-widest text-zinc-500 mb-1">
-                        TVA {prop.recap.tva_rate.toLocaleString('fr-FR', { minimumFractionDigits: 2, maximumFractionDigits: 2 })} %
-                      </div>
-                      <div className="text-2xl md:text-3xl font-bold text-zinc-400">
-                        {(() => {
-                          const red = prop.recap.reduction_ht ?? (prop.recap.total_ht && prop.recap.reduction_percent ? prop.recap.total_ht * prop.recap.reduction_percent / 100 : 0);
-                          const netHt = (prop.recap.total_ht ?? 0) - (red ?? 0);
-                          return formatPrice(netHt * prop.recap.tva_rate / 100);
-                        })()}
-                      </div>
+                  <div className="text-center md:text-right pb-5 border-b border-zinc-800/60">
+                    <div className="text-[10px] uppercase tracking-widest text-zinc-500 mb-1">Total HT</div>
+                    <div className="text-4xl md:text-5xl font-bold">
+                      <span className="gradient-text">{formatPrice(prop.recap.total_ht)}</span>
                     </div>
                   </div>
                 )}
 
-                {prop.recap.total_ttc !== null && (
-                  <div className="pt-4 border-t border-zinc-800/60 text-center md:text-right">
-                    <div className="text-[10px] uppercase tracking-widest text-zinc-500 mb-1">Total TTC</div>
-                    <div className="text-4xl md:text-5xl font-bold">
-                      <span className="gradient-text">{formatPrice(prop.recap.total_ttc)}</span>
+                {/* Lignes détail TVA / Réduction / TTC — plus discrets */}
+                <div className="grid grid-cols-2 md:grid-cols-3 gap-3 md:gap-6 text-sm">
+                  {(prop.recap.reduction_ht !== null || prop.recap.reduction_percent !== null) && (
+                    <div className="text-center md:text-left">
+                      <div className="text-[10px] uppercase tracking-widest text-zinc-500 mb-1">
+                        Réduction{prop.recap.reduction_percent ? ` (${prop.recap.reduction_percent.toLocaleString('fr-FR', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}\u00a0%)` : ''}
+                      </div>
+                      <div className="text-lg md:text-xl font-semibold text-zinc-400">
+                        -{formatPrice(prop.recap.reduction_ht ?? (prop.recap.total_ht && prop.recap.reduction_percent ? prop.recap.total_ht * prop.recap.reduction_percent / 100 : 0))}
+                      </div>
+                    </div>
+                  )}
+                  <div className="text-center md:text-left">
+                    <div className="text-[10px] uppercase tracking-widest text-zinc-500 mb-1">
+                      TVA {prop.recap.tva_rate.toLocaleString('fr-FR', { minimumFractionDigits: 2, maximumFractionDigits: 2 })} %
+                    </div>
+                    <div className="text-lg md:text-xl font-semibold text-zinc-400">
+                      {(() => {
+                        const red = prop.recap.reduction_ht ?? (prop.recap.total_ht && prop.recap.reduction_percent ? prop.recap.total_ht * prop.recap.reduction_percent / 100 : 0);
+                        const netHt = (prop.recap.total_ht ?? 0) - (red ?? 0);
+                        return formatPrice(netHt * prop.recap.tva_rate / 100);
+                      })()}
                     </div>
                   </div>
-                )}
+                  {prop.recap.total_ttc !== null && (
+                    <div className="text-center md:text-right md:ml-auto col-span-2 md:col-span-1">
+                      <div className="text-[10px] uppercase tracking-widest text-zinc-500 mb-1">Total TTC</div>
+                      <div className="text-lg md:text-xl font-semibold text-zinc-300">
+                        {formatPrice(prop.recap.total_ttc)}
+                      </div>
+                    </div>
+                  )}
+                </div>
               </div>
             </div>
           </section>
