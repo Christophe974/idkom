@@ -131,6 +131,10 @@ const PROPOSAL = {
   signature: {
     name: 'Katia Menegaux',
     role: 'Développement commercial — iDkom',
+    photo: 'https://api.idkom.fr/uploads/vcards/photo_69e293492f16f.webp',
+    email: 'katia@idkom.fr',
+    phone: '+33 6 46 39 00 93',
+    card: 'https://www.idkom.fr/carte/katia-menegaux',
     url: 'www.idkom.fr',
   },
 };
@@ -196,17 +200,17 @@ export default function PropositionDemo() {
         {/* HERO */}
         {/* ============================================================ */}
         <section className="pt-20 md:pt-28 pb-16 md:pb-24">
-          {/* Brand mark */}
-          <div className="flex items-center justify-center gap-3 mb-12 md:mb-16">
-            <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-[#ff2d55] via-[#7928ca] to-[#00d4ff] p-[1px]">
-              <div className="w-full h-full rounded-[11px] bg-black flex items-center justify-center">
-                <span className="text-white font-bold text-sm">iD</span>
-              </div>
-            </div>
-            <div className="flex flex-col leading-tight">
-              <span className="text-white font-semibold text-sm">iDkom</span>
-              <span className="text-zinc-500 text-[10px] uppercase tracking-widest">L&apos;Atelier Phygital</span>
-            </div>
+          {/* Brand mark — logo iDkom */}
+          <div className="flex flex-col items-center gap-3 mb-12 md:mb-16">
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img
+              src="/images/logo-white.svg"
+              alt="iDkom"
+              className="h-10 md:h-12 w-auto"
+            />
+            <span className="text-zinc-500 text-[10px] uppercase tracking-[0.25em]">
+              L&apos;Atelier Phygital
+            </span>
           </div>
 
           {/* Kicker */}
@@ -258,6 +262,20 @@ export default function PropositionDemo() {
             <blockquote className="relative pl-6 md:pl-10 text-lg md:text-xl text-zinc-300 leading-relaxed font-light">
               {PROPOSAL.intro}
             </blockquote>
+            <div className="flex items-center gap-3 mt-6 pl-6 md:pl-10">
+              <div className="w-10 h-10 rounded-full p-[2px] bg-gradient-to-br from-[#ff2d55] via-[#7928ca] to-[#00d4ff]">
+                {/* eslint-disable-next-line @next/next/no-img-element */}
+                <img
+                  src={PROPOSAL.signature.photo}
+                  alt={PROPOSAL.signature.name}
+                  className="w-full h-full rounded-full object-cover bg-black"
+                />
+              </div>
+              <div className="text-sm">
+                <div className="text-white font-medium">{PROPOSAL.signature.name}</div>
+                <div className="text-zinc-500 text-xs">{PROPOSAL.signature.role}</div>
+              </div>
+            </div>
           </div>
         </section>
 
@@ -646,22 +664,65 @@ export default function PropositionDemo() {
         </section>
 
         {/* ============================================================ */}
-        {/* SIGNATURE */}
+        {/* SIGNATURE — Katia */}
         {/* ============================================================ */}
         <section className="mb-16">
-          <div className="flex flex-col md:flex-row items-center justify-between gap-6 py-8 border-t border-zinc-900">
-            <div className="flex items-center gap-4">
-              <div className="w-12 h-12 rounded-full bg-gradient-to-br from-[#ff2d55] via-[#7928ca] to-[#00d4ff] flex items-center justify-center text-white font-bold text-sm">
-                {PROPOSAL.signature.name.charAt(0)}
+          <div className="relative rounded-2xl border border-zinc-800/80 bg-zinc-900/20 backdrop-blur-sm p-6 md:p-8 overflow-hidden">
+            <div className="absolute -top-20 -right-20 w-60 h-60 bg-[#ff2d55]/10 blur-[100px] rounded-full pointer-events-none" />
+
+            <div className="relative flex flex-col md:flex-row items-center md:items-start gap-6">
+              {/* Photo */}
+              <div className="relative flex-shrink-0">
+                <div className="absolute inset-0 rounded-full bg-gradient-to-br from-[#ff2d55] via-[#7928ca] to-[#00d4ff] blur-md opacity-60" />
+                <div className="relative w-24 h-24 md:w-28 md:h-28 rounded-full p-[2px] bg-gradient-to-br from-[#ff2d55] via-[#7928ca] to-[#00d4ff]">
+                  {/* eslint-disable-next-line @next/next/no-img-element */}
+                  <img
+                    src={PROPOSAL.signature.photo}
+                    alt={PROPOSAL.signature.name}
+                    className="w-full h-full rounded-full object-cover bg-black"
+                  />
+                </div>
               </div>
-              <div>
-                <div className="text-white font-semibold text-sm">{PROPOSAL.signature.name}</div>
-                <div className="text-zinc-500 text-xs">{PROPOSAL.signature.role}</div>
+
+              {/* Info */}
+              <div className="flex-1 text-center md:text-left">
+                <div className="text-[10px] uppercase tracking-[0.2em] text-zinc-500 mb-1">
+                  Votre interlocutrice
+                </div>
+                <div className="text-white font-bold text-xl md:text-2xl mb-1">
+                  {PROPOSAL.signature.name}
+                </div>
+                <div className="text-zinc-400 text-sm mb-4">
+                  {PROPOSAL.signature.role}
+                </div>
+
+                <div className="flex flex-wrap gap-2 md:gap-3 justify-center md:justify-start">
+                  <a
+                    href={`tel:${PROPOSAL.signature.phone.replace(/\s/g, '')}`}
+                    className="inline-flex items-center gap-2 px-4 py-2 rounded-lg border border-zinc-800 bg-black/40 text-zinc-300 hover:border-zinc-700 hover:bg-zinc-900/60 transition-colors text-sm"
+                  >
+                    <Icon icon="solar:phone-linear" width={16} className="text-[#ff2d55]" />
+                    {PROPOSAL.signature.phone}
+                  </a>
+                  <a
+                    href={`mailto:${PROPOSAL.signature.email}`}
+                    className="inline-flex items-center gap-2 px-4 py-2 rounded-lg border border-zinc-800 bg-black/40 text-zinc-300 hover:border-zinc-700 hover:bg-zinc-900/60 transition-colors text-sm"
+                  >
+                    <Icon icon="solar:letter-linear" width={16} className="text-[#7928ca]" />
+                    {PROPOSAL.signature.email}
+                  </a>
+                  <a
+                    href={PROPOSAL.signature.card}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="inline-flex items-center gap-2 px-4 py-2 rounded-lg border border-[#00d4ff]/30 bg-[#00d4ff]/5 text-[#00d4ff] hover:bg-[#00d4ff]/10 transition-colors text-sm"
+                  >
+                    <Icon icon="solar:card-linear" width={16} />
+                    Sa carte de visite
+                  </a>
+                </div>
               </div>
             </div>
-            <a href="https://www.idkom.fr" className="text-zinc-500 hover:text-zinc-300 transition-colors text-sm">
-              {PROPOSAL.signature.url}
-            </a>
           </div>
         </section>
 
