@@ -445,9 +445,11 @@ export async function getAuditByToken(token: string): Promise<AuditPublic> {
 export interface PropositionSection {
   id: number;
   order: number;
+  icon: string | null;
   title: string;
   description: string;
   photos: { url: string; alt: string }[];
+  sub_items: { title: string; description: string }[] | null;
 }
 
 export interface PropositionOption {
@@ -459,9 +461,24 @@ export interface PropositionOption {
   price: number | null;
 }
 
+export interface PropositionRecapItem {
+  label: string;
+  amount_label?: string | null;
+  amount?: number | null;
+}
+
+export interface PropositionTimelineStep {
+  title: string;
+  description: string;
+}
+
 export interface Proposition {
   title: string;
   slug: string;
+  proposal_ref: string | null;
+  issue_city: string | null;
+  issue_date: string | null;
+  validity_days: number;
   reseller: {
     company: string;
     contact: string;
@@ -473,12 +490,28 @@ export interface Proposition {
   client: {
     company: string;
     contact: string | null;
+    baseline: string | null;
     logo: { url: string; alt: string } | null;
   };
   presentation: string | null;
+  intro_message: string | null;
   featured_image: { url: string; alt: string; width?: number; height?: number } | null;
   sections: PropositionSection[];
   options: PropositionOption[];
+  exclusions: string[] | null;
+  recap: {
+    items: PropositionRecapItem[] | null;
+    total_ht: number | null;
+    reduction_percent: number | null;
+    reduction_ht: number | null;
+    tva_rate: number;
+    total_ttc: number | null;
+  };
+  timeline: PropositionTimelineStep[] | null;
+  sellsy: {
+    quote_number: string | null;
+    quickpay_url: string | null;
+  };
   media: {
     music_url: string | null;
     audio_message_url: string | null;
