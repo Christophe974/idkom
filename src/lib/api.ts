@@ -221,8 +221,9 @@ export async function getBlogArticles(options?: {
   return fetchApi<BlogArticle[]>(`blog.php${query}`);
 }
 
-export async function getBlogArticleBySlug(slug: string): Promise<BlogArticle> {
-  return fetchApi<BlogArticle>(`blog.php?slug=${slug}`);
+export async function getBlogArticleBySlug(slug: string, options?: { notrack?: boolean }): Promise<BlogArticle> {
+  const qs = options?.notrack ? `&notrack=1` : '';
+  return fetchApi<BlogArticle>(`blog.php?slug=${slug}${qs}`);
 }
 
 // Menus
@@ -524,10 +525,18 @@ export interface Proposition {
   views_count: number;
 }
 
-export async function getPropositionBySlug(slug: string, code?: string, preview?: string): Promise<Proposition> {
+export async function getPropositionBySlug(
+  slug: string,
+  code?: string,
+  preview?: string,
+  options?: { notrack?: boolean }
+): Promise<Proposition> {
   const params = new URLSearchParams({ slug });
   if (code) params.set('code', code);
   if (preview) params.set('preview', preview);
+  // notrack=1 : used by generateMetadata so the metadata fetch doesn't
+  // double-count the visitor's view.
+  if (options?.notrack) params.set('notrack', '1');
   return fetchApi<Proposition>(`propositions.php?${params.toString()}`);
 }
 

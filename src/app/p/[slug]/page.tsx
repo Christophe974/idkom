@@ -15,7 +15,10 @@ interface PageProps {
 export async function generateMetadata({ params }: PageProps) {
   const { slug } = await params;
   try {
-    const prop = await getPropositionBySlug(slug);
+    // notrack=true : cette fetch est faite par Next.js uniquement pour
+    // construire le <title> du navigateur. Sans ce flag, l'API incrémente
+    // 2 fois les vues à chaque chargement (metadata + rendering).
+    const prop = await getPropositionBySlug(slug, undefined, undefined, { notrack: true });
     return {
       title: `${prop.title} | ${prop.reseller.company}`,
       robots: 'noindex, nofollow',

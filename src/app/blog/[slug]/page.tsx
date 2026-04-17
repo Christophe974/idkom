@@ -17,7 +17,8 @@ interface PageProps {
 export async function generateMetadata({ params }: PageProps) {
   const { slug } = await params;
   try {
-    const article = await getBlogArticleBySlug(slug);
+    // notrack=true : évite de compter 2 vues par chargement (metadata + render).
+    const article = await getBlogArticleBySlug(slug, { notrack: true });
     return {
       title: `${article.title} | Blog iDkom`,
       description: article.excerpt || article.meta_description,
