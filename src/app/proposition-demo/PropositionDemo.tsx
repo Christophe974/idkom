@@ -1,7 +1,31 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { Icon } from '@iconify/react';
+
+// ============================================================
+// useInView — trigger color reveal when element enters viewport
+// ============================================================
+function useInView<T extends HTMLElement>(threshold = 0.25) {
+  const ref = useRef<T>(null);
+  const [inView, setInView] = useState(false);
+  useEffect(() => {
+    const el = ref.current;
+    if (!el) return;
+    const obs = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          setInView(true);
+          obs.unobserve(el);
+        }
+      },
+      { threshold, rootMargin: '0px 0px -10% 0px' }
+    );
+    obs.observe(el);
+    return () => obs.disconnect();
+  }, [threshold]);
+  return { ref, inView };
+}
 
 // ============================================================
 // Data — Terre'Happy proposition (demo content)
@@ -208,8 +232,8 @@ export default function PropositionDemo() {
               alt="iDkom"
               className="h-10 md:h-12 w-auto"
             />
-            <span className="text-zinc-500 text-[10px] uppercase tracking-[0.25em]">
-              L&apos;Atelier Phygital
+            <span className="text-zinc-500 text-[10px] uppercase tracking-[0.25em] text-center">
+              Agence Événementielle &amp; Solutions Digitales
             </span>
           </div>
 
@@ -298,92 +322,7 @@ export default function PropositionDemo() {
         {/* ============================================================ */}
         <section className="mb-24 md:mb-32 space-y-6 md:space-y-8">
           {PROPOSAL.deliverables.map((d) => (
-            <div
-              key={d.n}
-              className="group relative rounded-2xl border border-zinc-800/80 bg-zinc-900/30 backdrop-blur-sm overflow-hidden hover:border-zinc-700/80 transition-colors"
-            >
-              <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none">
-                <div className="absolute -inset-px rounded-2xl bg-gradient-to-br from-[#ff2d55]/10 via-transparent to-[#00d4ff]/10" />
-              </div>
-
-              <div className="relative p-6 md:p-10">
-                <div className="flex items-start gap-5 md:gap-8 mb-5">
-                  {/* Number */}
-                  <div className="flex-shrink-0">
-                    <div className="text-5xl md:text-7xl font-bold leading-none">
-                      <span className="bg-gradient-to-br from-zinc-700 to-zinc-900 bg-clip-text text-transparent group-hover:from-[#ff2d55] group-hover:via-[#7928ca] group-hover:to-[#00d4ff] transition-all duration-500">
-                        {String(d.n).padStart(2, '0')}
-                      </span>
-                    </div>
-                  </div>
-
-                  {/* Title + icon */}
-                  <div className="flex-1 min-w-0 pt-1">
-                    <div className="flex items-center gap-3 mb-2 text-[#7928ca]">
-                      <Icon icon={d.icon} width={22} />
-                      <span className="text-xs uppercase tracking-widest text-zinc-500">Étape {d.n}</span>
-                    </div>
-                    <h3 className="text-2xl md:text-3xl font-bold text-white leading-tight">
-                      {d.title}
-                    </h3>
-                  </div>
-                </div>
-
-                <p className="text-zinc-400 text-base md:text-lg leading-relaxed ml-0 md:ml-[calc(5rem+2rem)]">
-                  {d.body}
-                </p>
-
-                {/* Bullets */}
-                {d.bullets && (
-                  <ul className="mt-6 grid sm:grid-cols-2 gap-3 md:ml-[calc(5rem+2rem)]">
-                    {d.bullets.map((b, i) => (
-                      <li key={i} className="flex items-start gap-3 text-zinc-300">
-                        <div className="mt-1.5 w-1.5 h-1.5 rounded-full bg-gradient-to-r from-[#ff2d55] to-[#7928ca] flex-shrink-0" />
-                        <span className="text-sm md:text-base">{b}</span>
-                      </li>
-                    ))}
-                  </ul>
-                )}
-
-                {/* Pages grid */}
-                {d.pages && (
-                  <div className="mt-8 md:ml-[calc(5rem+2rem)] grid gap-3">
-                    {d.pages.map((p, i) => (
-                      <div
-                        key={i}
-                        className="group/page grid md:grid-cols-[180px_1fr] gap-3 md:gap-6 p-5 rounded-xl bg-black/30 border border-zinc-800/60 hover:border-zinc-700/80 transition-colors"
-                      >
-                        <div className="flex items-center gap-3">
-                          <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-[#ff2d55]/20 to-[#7928ca]/20 border border-zinc-800 flex items-center justify-center text-zinc-400 group-hover/page:text-white transition-colors text-xs font-bold">
-                            {String(i + 1).padStart(2, '0')}
-                          </div>
-                          <div className="font-semibold text-white">{p.title}</div>
-                        </div>
-                        <p className="text-zinc-400 text-sm leading-relaxed">{p.desc}</p>
-                      </div>
-                    ))}
-                  </div>
-                )}
-
-                {/* SEO grid */}
-                {d.seo && (
-                  <div className="mt-8 md:ml-[calc(5rem+2rem)] grid md:grid-cols-2 gap-3">
-                    {d.seo.map((s, i) => (
-                      <div
-                        key={i}
-                        className="p-5 rounded-xl bg-black/30 border border-zinc-800/60 hover:border-[#7928ca]/40 transition-colors"
-                      >
-                        <div className="flex items-center gap-2 mb-2 text-[#00d4ff]">
-                          <Icon icon="solar:check-circle-bold" width={16} />
-                          <span className="font-semibold text-white text-sm">{s.what}</span>
-                        </div>
-                        <p className="text-zinc-500 text-xs leading-relaxed">{s.why}</p>
-                      </div>
-                    ))}
-                  </div>
-                )}
-              </div>
-            </div>
+            <DeliverableCard key={d.n} d={d} />
           ))}
         </section>
 
@@ -728,10 +667,152 @@ export default function PropositionDemo() {
 
         {/* Footer */}
         <footer className="text-center py-10 border-t border-zinc-900 text-xs text-zinc-600 space-y-2">
-          <div>iDkom — L&apos;Atelier Phygital &middot; Brévilliers, Franche-Comté</div>
+          <div>iDkom — Agence Événementielle &amp; Solutions Digitales &middot; Brévilliers, Franche-Comté</div>
           <div>Proposition {PROPOSAL.ref} &middot; valable 30 jours à compter du {PROPOSAL.date}</div>
         </footer>
       </div>
     </main>
+  );
+}
+
+// ============================================================
+// DeliverableCard — activates its gradient colors on scroll-in
+// (works on mobile where :hover doesn't exist; also hover-active on desktop)
+// ============================================================
+type Deliverable = typeof PROPOSAL.deliverables[number];
+
+function DeliverableCard({ d }: { d: Deliverable }) {
+  const { ref, inView } = useInView<HTMLDivElement>(0.2);
+
+  return (
+    <div
+      ref={ref}
+      data-active={inView}
+      className="group relative rounded-2xl border border-zinc-800/80 data-[active=true]:border-zinc-700/80 bg-zinc-900/30 backdrop-blur-sm overflow-hidden hover:border-zinc-700/80 transition-all duration-500"
+    >
+      <div
+        className={`absolute inset-0 transition-opacity duration-700 pointer-events-none ${
+          inView ? 'opacity-100' : 'opacity-0'
+        } group-hover:opacity-100`}
+      >
+        <div className="absolute -inset-px rounded-2xl bg-gradient-to-br from-[#ff2d55]/10 via-transparent to-[#00d4ff]/10" />
+      </div>
+
+      <div className="relative p-6 md:p-10">
+        <div className="flex items-start gap-5 md:gap-8 mb-5">
+          {/* Number — fades from dark zinc to gradient when in view */}
+          <div className="flex-shrink-0">
+            <div className="text-5xl md:text-7xl font-bold leading-none relative">
+              {/* Base (muted) layer */}
+              <span
+                className={`bg-gradient-to-br from-zinc-700 to-zinc-900 bg-clip-text text-transparent transition-opacity duration-700 ${
+                  inView ? 'opacity-0' : 'opacity-100'
+                } group-hover:opacity-0`}
+              >
+                {String(d.n).padStart(2, '0')}
+              </span>
+              {/* Gradient layer — same position, fades in */}
+              <span
+                className={`absolute inset-0 bg-gradient-to-br from-[#ff2d55] via-[#7928ca] to-[#00d4ff] bg-clip-text text-transparent transition-opacity duration-700 ${
+                  inView ? 'opacity-100' : 'opacity-0'
+                } group-hover:opacity-100`}
+              >
+                {String(d.n).padStart(2, '0')}
+              </span>
+            </div>
+          </div>
+
+          {/* Title + icon */}
+          <div className="flex-1 min-w-0 pt-1">
+            <div className="flex items-center gap-3 mb-2 text-[#7928ca]">
+              <Icon icon={d.icon} width={22} />
+              <span className="text-xs uppercase tracking-widest text-zinc-500">Étape {d.n}</span>
+            </div>
+            <h3 className="text-2xl md:text-3xl font-bold text-white leading-tight">
+              {d.title}
+            </h3>
+          </div>
+        </div>
+
+        <p className="text-zinc-400 text-base md:text-lg leading-relaxed ml-0 md:ml-[calc(5rem+2rem)]">
+          {d.body}
+        </p>
+
+        {d.bullets && (
+          <ul className="mt-6 grid sm:grid-cols-2 gap-3 md:ml-[calc(5rem+2rem)]">
+            {d.bullets.map((b, i) => (
+              <li key={i} className="flex items-start gap-3 text-zinc-300">
+                <div className="mt-1.5 w-1.5 h-1.5 rounded-full bg-gradient-to-r from-[#ff2d55] to-[#7928ca] flex-shrink-0" />
+                <span className="text-sm md:text-base">{b}</span>
+              </li>
+            ))}
+          </ul>
+        )}
+
+        {d.pages && (
+          <div className="mt-8 md:ml-[calc(5rem+2rem)] grid gap-3">
+            {d.pages.map((p, i) => (
+              <PageItem key={i} index={i} title={p.title} desc={p.desc} />
+            ))}
+          </div>
+        )}
+
+        {d.seo && (
+          <div className="mt-8 md:ml-[calc(5rem+2rem)] grid md:grid-cols-2 gap-3">
+            {d.seo.map((s, i) => (
+              <SeoItem key={i} what={s.what} why={s.why} />
+            ))}
+          </div>
+        )}
+      </div>
+    </div>
+  );
+}
+
+// ============================================================
+// PageItem — each "page" sub-card with scroll-activated highlight
+// ============================================================
+function PageItem({ index, title, desc }: { index: number; title: string; desc: string }) {
+  const { ref, inView } = useInView<HTMLDivElement>(0.4);
+  return (
+    <div
+      ref={ref}
+      className={`group/page grid md:grid-cols-[180px_1fr] gap-3 md:gap-6 p-5 rounded-xl bg-black/30 border transition-all duration-500 ${
+        inView ? 'border-zinc-700/80' : 'border-zinc-800/60'
+      } hover:border-zinc-700/80`}
+    >
+      <div className="flex items-center gap-3">
+        <div
+          className={`w-8 h-8 rounded-lg bg-gradient-to-br from-[#ff2d55]/20 to-[#7928ca]/20 border border-zinc-800 flex items-center justify-center text-xs font-bold transition-colors duration-500 ${
+            inView ? 'text-white' : 'text-zinc-400'
+          } group-hover/page:text-white`}
+        >
+          {String(index + 1).padStart(2, '0')}
+        </div>
+        <div className="font-semibold text-white">{title}</div>
+      </div>
+      <p className="text-zinc-400 text-sm leading-relaxed">{desc}</p>
+    </div>
+  );
+}
+
+// ============================================================
+// SeoItem — SEO checklist card with scroll-activated purple border
+// ============================================================
+function SeoItem({ what, why }: { what: string; why: string }) {
+  const { ref, inView } = useInView<HTMLDivElement>(0.4);
+  return (
+    <div
+      ref={ref}
+      className={`p-5 rounded-xl bg-black/30 border transition-all duration-500 ${
+        inView ? 'border-[#7928ca]/40' : 'border-zinc-800/60'
+      } hover:border-[#7928ca]/40`}
+    >
+      <div className="flex items-center gap-2 mb-2 text-[#00d4ff]">
+        <Icon icon="solar:check-circle-bold" width={16} />
+        <span className="font-semibold text-white text-sm">{what}</span>
+      </div>
+      <p className="text-zinc-500 text-xs leading-relaxed">{why}</p>
+    </div>
   );
 }
