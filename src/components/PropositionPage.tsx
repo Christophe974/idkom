@@ -693,6 +693,8 @@ function DeliverableCard({ section, index }: { section: PropositionSection; inde
                 key={i}
                 src={photo.url}
                 alt={photo.alt || ''}
+                loading="lazy"
+                decoding="async"
                 className="w-full h-48 object-cover rounded-xl border border-zinc-800/60"
               />
             ))}

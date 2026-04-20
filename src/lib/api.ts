@@ -537,7 +537,17 @@ export async function getPropositionBySlug(
   // notrack=1 : used by generateMetadata so the metadata fetch doesn't
   // double-count the visitor's view.
   if (options?.notrack) params.set('notrack', '1');
-  return fetchApi<Proposition>(`propositions.php?${params.toString()}`);
+
+  // Next.js ISR cache : 5 min de TTL au niveau fetch.
+  // Les vues sont incrémentées une fois par revalidation (pas à chaque chargement),
+  // ce qui est déjà le comportement de la page avec revalidate=300 côté layout.
+  // Invalidable à la demande via `revalidateTag('proposition-<slug>')`.
+  return fetchApi<Proposition>(`propositions.php?${params.toString()}`, {
+    next: {
+      revalidate: 300,
+      tags: [`proposition-${slug}`],
+    },
+  } as RequestInit);
 }
 
 export async function trackPropositionEvent(slug: string, event: string): Promise<void> {

@@ -5,30 +5,24 @@ import PropositionPage from '@/components/PropositionPage';
 import PropositionAccessCode from '@/components/PropositionAccessCode';
 import PropositionExpired from '@/components/PropositionExpired';
 
-export const revalidate = 60;
+// Cache ISR : la page reste servie depuis le cache Vercel edge pendant 5 min,
+// puis est revalidée en arrière-plan. La proposition bouge rarement, le compteur
+// de vues est géré server-side via le fetch cached.
+export const revalidate = 300;
 
 interface PageProps {
   params: Promise<{ slug: string }>;
   searchParams: Promise<{ code?: string; preview?: string }>;
 }
 
-export async function generateMetadata({ params }: PageProps) {
-  const { slug } = await params;
-  try {
-    // notrack=true : cette fetch est faite par Next.js uniquement pour
-    // construire le <title> du navigateur. Sans ce flag, l'API incrémente
-    // 2 fois les vues à chaque chargement (metadata + rendering).
-    const prop = await getPropositionBySlug(slug, undefined, undefined, { notrack: true });
-    return {
-      title: `${prop.title} | ${prop.reseller.company}`,
-      robots: 'noindex, nofollow',
-    };
-  } catch {
-    return {
-      title: 'Proposition',
-      robots: 'noindex, nofollow',
-    };
-  }
+// Metadata : zéro appel API — on construit un titre générique (la page est
+// noindex de toute façon, le title ne sert qu'à l'onglet navigateur).
+// Gain : un round-trip OVH économisé par chargement.
+export function generateMetadata() {
+  return {
+    title: 'Proposition commerciale | iDkom',
+    robots: 'noindex, nofollow',
+  };
 }
 
 export default async function Page({ params, searchParams }: PageProps) {
