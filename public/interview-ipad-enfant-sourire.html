@@ -1,0 +1,532 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black">
+<title>Interview Un Enfant, Un Sourire — Crédit Mutuel Belfort Centre</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap');
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  :root {
+    --cm-blue: #003DA5;
+    --cm-dark-blue: #002366;
+    --asso-pink: #D81B60;
+    --asso-dark-pink: #880E4F;
+    --asso-light-pink: #FCE4EC;
+    --cm-green: #00875A;
+    --cm-dark-green: #004D40;
+    --cm-accent: #0072CE;
+    --white: #FFFFFF;
+    --light-gray: #F0F2F5;
+    --med-gray: #8B95A5;
+  }
+
+  html, body {
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+    background: var(--asso-dark-pink);
+    -webkit-tap-highlight-color: transparent;
+    touch-action: pan-x;
+  }
+
+  .slides-container {
+    width: 100%;
+    height: 100%;
+    position: relative;
+  }
+
+  .slide {
+    position: absolute;
+    top: 0; left: 0;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 60px 80px;
+    opacity: 0;
+    transform: translateX(100%);
+    transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+    pointer-events: none;
+  }
+
+  .slide.active {
+    opacity: 1;
+    transform: translateX(0);
+    pointer-events: auto;
+  }
+
+  .slide.prev {
+    opacity: 0;
+    transform: translateX(-100%);
+  }
+
+  /* Slide backgrounds */
+  .slide-cover { background: linear-gradient(135deg, var(--asso-dark-pink) 0%, var(--asso-pink) 100%); }
+  .slide-section-1 { background: linear-gradient(135deg, var(--asso-dark-pink) 0%, var(--asso-pink) 100%); }
+  .slide-section-2 { background: linear-gradient(135deg, var(--cm-dark-green) 0%, var(--cm-green) 100%); }
+  .slide-section-3 { background: linear-gradient(135deg, #003366 0%, var(--cm-accent) 100%); }
+  .slide-question { background: linear-gradient(170deg, #3E0021 0%, var(--asso-pink) 100%); }
+  .slide-question-green { background: linear-gradient(170deg, #002618 0%, var(--cm-green) 100%); }
+  .slide-question-blue { background: linear-gradient(170deg, #001A3A 0%, var(--cm-accent) 100%); }
+  .slide-end { background: linear-gradient(135deg, var(--asso-dark-pink) 0%, var(--asso-pink) 100%); }
+
+  /* Cover slide */
+  .cover-logo {
+    font-size: 14px;
+    letter-spacing: 6px;
+    text-transform: uppercase;
+    color: rgba(255,255,255,0.5);
+    margin-bottom: 40px;
+  }
+
+  .cover-icon {
+    font-size: 80px;
+    margin-bottom: 30px;
+    filter: drop-shadow(0 4px 20px rgba(0,0,0,0.3));
+  }
+
+  .cover-title {
+    font-size: 48px;
+    font-weight: 800;
+    color: var(--white);
+    text-align: center;
+    line-height: 1.2;
+    margin-bottom: 20px;
+    letter-spacing: -1px;
+  }
+
+  .cover-subtitle {
+    font-size: 26px;
+    font-weight: 300;
+    color: rgba(255,255,255,0.8);
+    text-align: center;
+    margin-bottom: 50px;
+    font-style: italic;
+  }
+
+  .cover-guest {
+    background: rgba(255,255,255,0.1);
+    border: 1px solid rgba(255,255,255,0.2);
+    border-radius: 20px;
+    padding: 30px 50px;
+    text-align: center;
+    backdrop-filter: blur(10px);
+  }
+
+  .cover-guest-name {
+    font-size: 28px;
+    font-weight: 700;
+    color: var(--white);
+    margin-bottom: 8px;
+  }
+
+  .cover-guest-role {
+    font-size: 18px;
+    color: rgba(255,255,255,0.7);
+  }
+
+  .cover-footer {
+    position: absolute;
+    bottom: 40px;
+    font-size: 14px;
+    color: rgba(255,255,255,0.4);
+    letter-spacing: 2px;
+  }
+
+  /* Section slides */
+  .section-number {
+    font-size: 120px;
+    font-weight: 900;
+    color: rgba(255,255,255,0.1);
+    position: absolute;
+    top: 40px;
+    right: 80px;
+    line-height: 1;
+  }
+
+  .section-emoji {
+    font-size: 64px;
+    margin-bottom: 24px;
+  }
+
+  .section-title {
+    font-size: 44px;
+    font-weight: 800;
+    color: var(--white);
+    text-align: center;
+    margin-bottom: 16px;
+  }
+
+  .section-who {
+    display: inline-flex;
+    align-items: center;
+    gap: 12px;
+    background: rgba(255,255,255,0.15);
+    border-radius: 50px;
+    padding: 14px 32px;
+    margin-top: 20px;
+    backdrop-filter: blur(10px);
+  }
+
+  .section-who-dot {
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    background: var(--white);
+  }
+
+  .section-who-name {
+    font-size: 20px;
+    font-weight: 600;
+    color: var(--white);
+  }
+
+  /* Question slides */
+  .q-badge {
+    background: rgba(255,255,255,0.12);
+    border: 2px solid rgba(255,255,255,0.25);
+    border-radius: 50%;
+    width: 100px;
+    height: 100px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 40px;
+  }
+
+  .q-badge span {
+    font-size: 36px;
+    font-weight: 800;
+    color: var(--white);
+  }
+
+  .q-text {
+    font-size: 36px;
+    font-weight: 500;
+    color: var(--white);
+    text-align: center;
+    line-height: 1.5;
+    max-width: 900px;
+  }
+
+  .q-who {
+    position: absolute;
+    bottom: 50px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 16px;
+    color: rgba(255,255,255,0.5);
+  }
+
+  .q-who-color {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+  }
+
+  /* End slide */
+  .end-icon {
+    font-size: 80px;
+    margin-bottom: 30px;
+  }
+
+  .end-title {
+    font-size: 44px;
+    font-weight: 800;
+    color: var(--white);
+    margin-bottom: 16px;
+  }
+
+  .end-subtitle {
+    font-size: 22px;
+    color: rgba(255,255,255,0.6);
+    font-style: italic;
+  }
+
+  /* Navigation */
+  .nav-dots {
+    position: fixed;
+    bottom: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    gap: 8px;
+    z-index: 100;
+  }
+
+  .nav-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: rgba(255,255,255,0.25);
+    transition: all 0.3s;
+    cursor: pointer;
+  }
+
+  .nav-dot.active {
+    background: var(--white);
+    width: 24px;
+    border-radius: 4px;
+  }
+
+  .slide-counter {
+    position: fixed;
+    top: 24px;
+    right: 30px;
+    font-size: 14px;
+    color: rgba(255,255,255,0.35);
+    z-index: 100;
+    font-weight: 500;
+  }
+
+  /* Swipe hint on first slide */
+  .swipe-hint {
+    position: absolute;
+    bottom: 70px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    color: rgba(255,255,255,0.3);
+    font-size: 14px;
+    animation: pulse 2s infinite;
+  }
+
+  @keyframes pulse {
+    0%, 100% { opacity: 0.3; }
+    50% { opacity: 0.7; }
+  }
+
+  /* Transitions for question text */
+  .slide.active .q-text {
+    animation: fadeInUp 0.6s 0.2s both;
+  }
+
+  .slide.active .q-badge {
+    animation: fadeInUp 0.5s 0.1s both;
+  }
+
+  @keyframes fadeInUp {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+</style>
+</head>
+<body>
+
+<div class="slides-container" id="slidesContainer">
+
+  <!-- SLIDE 0: Cover -->
+  <div class="slide slide-cover active" data-index="0">
+    <div class="cover-logo">CRÉDIT MUTUEL BELFORT CENTRE</div>
+    <div class="cover-icon">🎤</div>
+    <div class="cover-title">Interview Podcast</div>
+    <div class="cover-subtitle">Un Enfant, Un Sourire</div>
+    <div class="cover-guest">
+      <div class="cover-guest-name">Interviewé par Arnaud</div>
+      <div class="cover-guest-role">Améliorer le quotidien des enfants hospitalisés · Pédiatrie HNFC</div>
+    </div>
+    <div class="cover-footer">ASSEMBLÉE GÉNÉRALE · 24 AVRIL 2026</div>
+    <div class="swipe-hint">Swipe pour commencer →</div>
+  </div>
+
+  <!-- SLIDE 1: Section 1 -->
+  <div class="slide slide-section-1" data-index="1">
+    <div class="section-number">01</div>
+    <div class="section-emoji">👶</div>
+    <div class="section-title">L'association et sa mission</div>
+    <div class="section-who">
+      <div class="section-who-dot" style="background:#F48FB1"></div>
+      <div class="section-who-name">Arnaud</div>
+    </div>
+  </div>
+
+  <!-- SLIDE 2: Q1 -->
+  <div class="slide slide-question" data-index="2">
+    <div class="q-badge"><span>Q1</span></div>
+    <div class="q-text">Bonjour ! Avant tout, est-ce que vous pouvez vous présenter pour ceux qui ne vous connaissent pas encore ?</div>
+    <div class="q-who"><div class="q-who-color" style="background:#F48FB1"></div> Arnaud</div>
+  </div>
+
+  <!-- SLIDE 3: Q2 -->
+  <div class="slide slide-question" data-index="3">
+    <div class="q-badge"><span>Q2</span></div>
+    <div class="q-text">« Un Enfant, Un Sourire », c'est un très beau nom. Comment est née cette association et surtout, qui a eu cette idée un peu folle de vouloir transformer un hôpital en terrain de jeu ?</div>
+    <div class="q-who"><div class="q-who-color" style="background:#F48FB1"></div> Arnaud</div>
+  </div>
+
+  <!-- SLIDE 4: Q3 -->
+  <div class="slide slide-question" data-index="4">
+    <div class="q-badge"><span>Q3</span></div>
+    <div class="q-text">Concrètement, quand un enfant pousse la porte de la pédiatrie à l'Hôpital Nord Franche-Comté aujourd'hui, qu'est-ce qu'il découvre grâce à vous ?</div>
+    <div class="q-who"><div class="q-who-color" style="background:#F48FB1"></div> Arnaud</div>
+  </div>
+
+  <!-- SLIDE 5: Section 2 -->
+  <div class="slide slide-section-2" data-index="5">
+    <div class="section-number">02</div>
+    <div class="section-emoji">🎮</div>
+    <div class="section-title">Les actions coup de cœur</div>
+    <div class="section-who">
+      <div class="section-who-dot" style="background:#81C784"></div>
+      <div class="section-who-name">Arnaud</div>
+    </div>
+  </div>
+
+  <!-- SLIDE 6: Q4 -->
+  <div class="slide slide-question-green" data-index="6">
+    <div class="q-badge"><span>Q4</span></div>
+    <div class="q-text">Vous avez équipé le service avec des casques de réalité virtuelle. Alors là, il faut nous expliquer : on met un casque à un enfant à l'hôpital et il se retrouve où ? Sur la lune ? À Disneyland ?</div>
+    <div class="q-who"><div class="q-who-color" style="background:#81C784"></div> Arnaud</div>
+  </div>
+
+  <!-- SLIDE 7: Q5 -->
+  <div class="slide slide-question-green" data-index="7">
+    <div class="q-badge"><span>Q5</span></div>
+    <div class="q-text">Vous avez aussi tenu une sandwicherie solidaire aux Eurockéennes de Belfort. Racontez-nous : c'était comment de vendre des sandwichs au milieu d'un festival de rock pour financer des jouets d'hôpital ?</div>
+    <div class="q-who"><div class="q-who-color" style="background:#81C784"></div> Arnaud</div>
+  </div>
+
+  <!-- SLIDE 8: Q6 -->
+  <div class="slide slide-question-green" data-index="8">
+    <div class="q-badge"><span>Q6</span></div>
+    <div class="q-text">Est-ce qu'il y a un moment, un souvenir avec un enfant ou une famille, qui vous a particulièrement touché et qui résume pourquoi vous faites tout ça ?</div>
+    <div class="q-who"><div class="q-who-color" style="background:#81C784"></div> Arnaud</div>
+  </div>
+
+  <!-- SLIDE 9: Q7 -->
+  <div class="slide slide-question-green" data-index="9">
+    <div class="q-badge"><span>Q7</span></div>
+    <div class="q-text">30 000 euros pour décorer un hôpital, des casques VR, du matériel de confort pour les bébés… Comment vous faites pour financer tout ça ? C'est le secret le mieux gardé de Belfort ?</div>
+    <div class="q-who"><div class="q-who-color" style="background:#81C784"></div> Arnaud</div>
+  </div>
+
+  <!-- SLIDE 10: Section 3 -->
+  <div class="slide slide-section-3" data-index="10">
+    <div class="section-number">03</div>
+    <div class="section-emoji">🤝</div>
+    <div class="section-title">Le Crédit Mutuel et la suite</div>
+    <div class="section-who">
+      <div class="section-who-dot" style="background:#64B5F6"></div>
+      <div class="section-who-name">Arnaud</div>
+    </div>
+  </div>
+
+  <!-- SLIDE 11: Q8 -->
+  <div class="slide slide-question-blue" data-index="11">
+    <div class="q-badge"><span>Q8</span></div>
+    <div class="q-text">Le Crédit Mutuel Belfort Centre vous accompagne au quotidien. Qu'est-ce que ça représente pour une association comme la vôtre d'avoir une banque locale qui croit en votre projet ?</div>
+    <div class="q-who"><div class="q-who-color" style="background:#64B5F6"></div> Arnaud</div>
+  </div>
+
+  <!-- SLIDE 12: Q9 -->
+  <div class="slide slide-question-blue" data-index="12">
+    <div class="q-badge"><span>Q9</span></div>
+    <div class="q-text">C'est quoi la prochaine étape ? Vous avez décoré les murs, mis de la VR, amélioré le confort… C'est quoi le prochain rêve pour les enfants ?</div>
+    <div class="q-who"><div class="q-who-color" style="background:#64B5F6"></div> Arnaud</div>
+  </div>
+
+  <!-- SLIDE 13: Q10 -->
+  <div class="slide slide-question-blue" data-index="13">
+    <div class="q-badge"><span>Q10</span></div>
+    <div class="q-text">Dernière question. Si quelqu'un dans cette salle ce soir a envie de vous donner un coup de main, de participer, ou tout simplement de faire un geste, c'est quoi le premier pas ?</div>
+    <div class="q-who"><div class="q-who-color" style="background:#64B5F6"></div> Arnaud</div>
+  </div>
+
+  <!-- SLIDE 14: End -->
+  <div class="slide slide-end" data-index="14">
+    <div class="end-icon">👶</div>
+    <div class="end-title">Merci !</div>
+    <div class="end-subtitle">Un Enfant, Un Sourire · Crédit Mutuel Belfort Centre</div>
+  </div>
+
+</div>
+
+<div class="slide-counter" id="counter">1 / 15</div>
+<div class="nav-dots" id="navDots"></div>
+
+<script>
+  const slides = document.querySelectorAll('.slide');
+  const counter = document.getElementById('counter');
+  const navDots = document.getElementById('navDots');
+  let current = 0;
+  let startX = 0;
+  let isDragging = false;
+
+  // Create dots
+  slides.forEach((_, i) => {
+    const dot = document.createElement('div');
+    dot.className = 'nav-dot' + (i === 0 ? ' active' : '');
+    dot.addEventListener('click', () => goTo(i));
+    navDots.appendChild(dot);
+  });
+
+  function goTo(index) {
+    if (index < 0 || index >= slides.length || index === current) return;
+    const direction = index > current ? 1 : -1;
+    slides[current].classList.remove('active');
+    slides[current].classList.add(direction > 0 ? 'prev' : '');
+    slides[current].style.transform = `translateX(${direction > 0 ? '-100%' : '100%'})`;
+
+    current = index;
+    slides[current].classList.remove('prev');
+    slides[current].classList.add('active');
+
+    // Reset non-active slides
+    slides.forEach((s, i) => {
+      if (i !== current) {
+        setTimeout(() => {
+          s.classList.remove('active', 'prev');
+          if (i > current) s.style.transform = 'translateX(100%)';
+          else s.style.transform = 'translateX(-100%)';
+        }, 500);
+      }
+    });
+
+    counter.textContent = `${current + 1} / ${slides.length}`;
+    document.querySelectorAll('.nav-dot').forEach((d, i) => {
+      d.classList.toggle('active', i === current);
+    });
+  }
+
+  // Touch events
+  document.addEventListener('touchstart', (e) => {
+    startX = e.touches[0].clientX;
+    isDragging = true;
+  }, { passive: true });
+
+  document.addEventListener('touchend', (e) => {
+    if (!isDragging) return;
+    const diff = startX - e.changedTouches[0].clientX;
+    if (Math.abs(diff) > 50) {
+      if (diff > 0) goTo(current + 1);
+      else goTo(current - 1);
+    }
+    isDragging = false;
+  }, { passive: true });
+
+  // Keyboard
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'ArrowRight' || e.key === ' ') { e.preventDefault(); goTo(current + 1); }
+    if (e.key === 'ArrowLeft') { e.preventDefault(); goTo(current - 1); }
+  });
+
+  // Click left/right
+  document.addEventListener('click', (e) => {
+    if (e.target.closest('.nav-dot')) return;
+    const x = e.clientX / window.innerWidth;
+    if (x > 0.5) goTo(current + 1);
+    else goTo(current - 1);
+  });
+</script>
+
+</body>
+</html>
