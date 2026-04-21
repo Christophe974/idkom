@@ -472,24 +472,26 @@
   function goTo(index) {
     if (index < 0 || index >= slides.length || index === current) return;
     const direction = index > current ? 1 : -1;
-    slides[current].classList.remove('active');
-    slides[current].classList.add(direction > 0 ? 'prev' : '');
-    slides[current].style.transform = `translateX(${direction > 0 ? '-100%' : '100%'})`;
+    const prevIndex = current;
+
+    // Outgoing slide
+    slides[prevIndex].classList.remove('active');
+    slides[prevIndex].style.transform = `translateX(${direction > 0 ? '-100%' : '100%'})`;
+    slides[prevIndex].style.opacity = '0';
+
+    // Incoming slide: position off-screen instantly (no transition), then slide in
+    const incoming = slides[index];
+    incoming.style.transition = 'none';
+    incoming.style.transform = `translateX(${direction > 0 ? '100%' : '-100%'})`;
+    incoming.style.opacity = '0';
+    // Force reflow so the "none" transition is committed before we re-enable it
+    void incoming.offsetWidth;
+    incoming.style.transition = '';
+    incoming.classList.add('active');
+    incoming.style.transform = 'translateX(0)';
+    incoming.style.opacity = '1';
 
     current = index;
-    slides[current].classList.remove('prev');
-    slides[current].classList.add('active');
-
-    // Reset non-active slides
-    slides.forEach((s, i) => {
-      if (i !== current) {
-        setTimeout(() => {
-          s.classList.remove('active', 'prev');
-          if (i > current) s.style.transform = 'translateX(100%)';
-          else s.style.transform = 'translateX(-100%)';
-        }, 500);
-      }
-    });
 
     counter.textContent = `${current + 1} / ${slides.length}`;
     document.querySelectorAll('.nav-dot').forEach((d, i) => {
