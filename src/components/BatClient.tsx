@@ -7,6 +7,7 @@ import { Icon } from '@iconify/react';
 import type { BatPublic, BatVisual } from '@/lib/api';
 import { trackBatEvent } from '@/lib/api';
 import AuditScrollAnimator from '@/components/AuditScrollAnimator';
+import BatSignatureModal from '@/components/BatSignatureModal';
 
 interface Props {
   bat: BatPublic;
@@ -23,6 +24,10 @@ const STATUS_LABEL: Record<BatPublic['status'], { text: string; color: string; i
 
 export default function BatClient({ bat }: Props) {
   const [zoomVisual, setZoomVisual] = useState<BatVisual | null>(null);
+  const [signOpen, setSignOpen] = useState(false);
+  // Etat client-side du flag has_signed (passe a true apres signature reussie sans recharger)
+  const [hasSigned, setHasSigned] = useState(bat.has_signed);
+  const [justSigned, setJustSigned] = useState(false);
   const trackedZoom = useRef(new Set<number>());
 
   // Keyboard close on lightbox
@@ -47,9 +52,40 @@ export default function BatClient({ bat }: Props) {
     }
   };
 
+  // Confettis aux couleurs iDkom apres une signature reussie
+  const handleSigned = async () => {
+    setHasSigned(true);
+    setJustSigned(true);
+    setSignOpen(false);
+    try {
+      const confetti = (await import('canvas-confetti')).default;
+      const colors = ['#ff2d55', '#7928ca', '#00d4ff'];
+      const fire = (origin: { x: number; y: number }) =>
+        confetti({
+          particleCount: 80,
+          spread: 70,
+          startVelocity: 45,
+          origin,
+          colors,
+          ticks: 200,
+        });
+      // 3 bursts pour un effet plus riche
+      fire({ x: 0.5, y: 0.6 });
+      setTimeout(() => fire({ x: 0.2, y: 0.7 }), 200);
+      setTimeout(() => fire({ x: 0.8, y: 0.7 }), 400);
+    } catch {
+      // canvas-confetti facultatif : si import echoue on continue sans
+    }
+    // Scroll vers le bandeau success
+    setTimeout(() => {
+      document.getElementById('bat-signed-banner')?.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    }, 100);
+  };
+
   const status = STATUS_LABEL[bat.status] ?? STATUS_LABEL.sent;
   const firstName = bat.client.contact_name.trim().split(' ')[0] || '';
   const totalVisuals = bat.visuals.length;
+  const canSign = bat.config.require_signature && !hasSigned && bat.status !== 'expired';
 
   return (
     <>
@@ -200,16 +236,23 @@ export default function BatClient({ bat }: Props) {
           )}
         </div>
 
-        {/* CTA bandeau (Phase 6 ajoutera la signature) */}
-        {bat.has_signed ? (
+        {/* CTA bandeau de signature */}
+        {hasSigned ? (
           <AuditScrollAnimator delay={0.1}>
-            <div className="bg-gradient-to-br from-green-500/10 via-emerald-500/5 to-transparent border border-green-500/30 rounded-2xl p-10 text-center">
+            <div
+              id="bat-signed-banner"
+              className="bg-gradient-to-br from-green-500/10 via-emerald-500/5 to-transparent border border-green-500/30 rounded-2xl p-10 text-center"
+            >
               <div className="w-16 h-16 mx-auto mb-4 rounded-2xl bg-green-500/15 flex items-center justify-center">
                 <Icon icon="solar:check-circle-bold" width={36} className="text-green-400" />
               </div>
-              <h2 className="text-2xl md:text-3xl font-bold text-white mb-3">BAT valide</h2>
+              <h2 className="text-2xl md:text-3xl font-bold text-white mb-3">
+                {justSigned ? 'Merci, votre BAT est signe !' : 'BAT valide'}
+              </h2>
               <p className="text-zinc-400 max-w-xl mx-auto">
-                Merci d&apos;avoir signe ce bon a tirer. Notre equipe a recu votre validation et lance la production.
+                {justSigned
+                  ? "Une confirmation vient d'etre envoyee dans votre boite mail. Notre equipe lance la production."
+                  : "Merci d'avoir signe ce bon a tirer. Notre equipe a recu votre validation et lance la production."}
               </p>
             </div>
           </AuditScrollAnimator>
@@ -235,27 +278,30 @@ export default function BatClient({ bat }: Props) {
                 <h2 className="text-2xl md:text-3xl font-bold text-white mb-3">
                   Pret a valider votre BAT&nbsp;?
                 </h2>
-                <p className="text-zinc-400 mb-2 max-w-xl mx-auto leading-relaxed">
-                  La signature en ligne et les commentaires sur visuels arrivent tres bientot.
+                <p className="text-zinc-400 mb-8 max-w-xl mx-auto leading-relaxed">
+                  Signez electroniquement pour donner votre accord et lancer la production.
+                  Votre signature fera foi.
                 </p>
-                <p className="text-zinc-500 text-sm mb-8 max-w-xl mx-auto">
-                  En attendant, contactez{' '}
-                  {bat.sender?.first_name ? (
-                    <span className="text-white">{bat.sender.first_name}</span>
-                  ) : (
-                    <span className="text-white">votre interlocuteur iDkom</span>
-                  )}{' '}
-                  pour valider ce BAT.
-                </p>
-                <button
-                  type="button"
-                  disabled
-                  className="inline-flex items-center gap-2 px-8 py-4 bg-zinc-800 text-zinc-500 font-medium rounded-xl cursor-not-allowed"
-                  title="Disponible tres bientot"
-                >
-                  <Icon icon="solar:pen-new-square-linear" width={20} />
-                  Signer ce BAT (bientot disponible)
-                </button>
+                {canSign ? (
+                  <button
+                    type="button"
+                    onClick={() => setSignOpen(true)}
+                    className="inline-flex items-center gap-2 px-8 py-4 bg-gradient-to-r from-[#ff2d55] via-[#7928ca] to-[#00d4ff] text-white font-semibold rounded-xl hover:opacity-90 transition-opacity text-lg shadow-lg shadow-[#7928ca]/20"
+                  >
+                    <Icon icon="solar:pen-new-square-bold" width={22} />
+                    Signer ce BAT
+                  </button>
+                ) : (
+                  <p className="text-zinc-500 text-sm">
+                    La signature n&apos;est pas requise sur ce BAT. Contactez{' '}
+                    {bat.sender?.first_name ? (
+                      <span className="text-white">{bat.sender.first_name}</span>
+                    ) : (
+                      <span className="text-white">votre interlocuteur iDkom</span>
+                    )}{' '}
+                    pour valider.
+                  </p>
+                )}
               </div>
             </div>
           </AuditScrollAnimator>
@@ -337,6 +383,14 @@ export default function BatClient({ bat }: Props) {
           )}
         </div>
       )}
+
+      {/* Modal de signature */}
+      <BatSignatureModal
+        bat={bat}
+        isOpen={signOpen}
+        onClose={() => setSignOpen(false)}
+        onSigned={handleSigned}
+      />
     </>
   );
 }

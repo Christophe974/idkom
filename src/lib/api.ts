@@ -780,3 +780,24 @@ export async function trackBatEvent(
     },
   );
 }
+
+export interface BatSignPayload {
+  signer_name: string;
+  signer_email: string;
+  signer_role?: string | null;
+  signature_data: string; // dataURL PNG
+  accepted_terms: boolean;
+}
+
+export interface BatSignResult {
+  signed: boolean;
+  signature_id: number;
+  signed_at: string;
+}
+
+export async function signBat(token: string, payload: BatSignPayload): Promise<BatSignResult> {
+  return fetchApi<BatSignResult>(`bat.php?action=sign&token=${encodeURIComponent(token)}`, {
+    method: 'POST',
+    body: JSON.stringify(payload),
+  });
+}
