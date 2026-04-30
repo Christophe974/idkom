@@ -176,11 +176,11 @@ export default async function CarteDeVisiteNFCPage() {
             La carte de visite qui ne finit{' '}
             <span className="gradient-text">jamais à la poubelle</span>
           </h1>
-          <p className="text-lg md:text-xl text-zinc-400 max-w-2xl mx-auto mb-10 leading-relaxed animate-fade-in [animation-delay:0.2s]">
+          <p className="text-lg md:text-xl text-zinc-400 max-w-2xl mx-auto mb-10 leading-relaxed animate-fade-in [animation-delay:0.1s]">
             Un porte-clé NFC connecté, personnalisable, et toujours à jour
           </p>
 
-          <div className="flex flex-col sm:flex-row items-center justify-center gap-4 mb-12 animate-fade-in [animation-delay:0.4s]">
+          <div className="flex flex-col sm:flex-row items-center justify-center gap-4 mb-12 animate-fade-in [animation-delay:0.2s]">
             <a
               href="#offres"
               className="px-8 py-4 bg-gradient-to-r from-[#ff2d55] to-[#7928ca] text-white font-semibold rounded-xl hover:opacity-90 transition-opacity flex items-center gap-2"
@@ -197,18 +197,22 @@ export default async function CarteDeVisiteNFCPage() {
             </a>
           </div>
 
-          {/* Hero image */}
+          {/* Hero image with glow */}
           <div
             id="hero-image"
-            className="w-full max-w-sm mx-auto mt-8 aspect-square relative animate-fade-in [animation-delay:0.6s]"
+            className="w-full max-w-sm mx-auto mt-8 aspect-square relative animate-fade-in [animation-delay:0.3s]"
           >
+            {/* Glow behind image */}
+            <div className="absolute inset-0 -z-10 flex items-center justify-center">
+              <div className="w-3/4 h-3/4 rounded-full bg-gradient-to-br from-[#ff2d55]/40 via-[#7928ca]/40 to-[#00d4ff]/30 blur-[80px] animate-pulse-slow" />
+            </div>
             <Image
               src="/images/porte-cle-nfc-hero.png"
               alt="Porte-clé NFC iDkom"
               fill
               priority
               sizes="(max-width: 640px) 100vw, 384px"
-              className="object-contain"
+              className="object-contain drop-shadow-[0_20px_50px_rgba(121,40,202,0.4)]"
             />
           </div>
         </section>
