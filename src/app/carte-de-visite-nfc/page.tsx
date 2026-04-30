@@ -1,12 +1,12 @@
 import { Suspense } from 'react';
 import Link from 'next/link';
-import Image from 'next/image';
 import { Icon } from '@iconify/react';
 import { getHomepageData } from '@/lib/api';
 import NavbarServer from '@/components/NavbarServer';
 import FooterServer from '@/components/FooterServer';
 import AmbientBackground from '@/components/AmbientBackground';
 import FAQAccordion from './FAQAccordion';
+import ModelViewer3D from './ModelViewer3D';
 
 async function FooterWithData() {
   const homeData = await getHomepageData();
@@ -201,23 +201,12 @@ export default function CarteDeVisiteNFCPage() {
             </a>
           </div>
 
-          {/* Hero image with glow */}
+          {/* Hero 3D model */}
           <div
             id="hero-image"
-            className="w-full max-w-sm mx-auto mt-8 aspect-square relative animate-fade-in [animation-delay:0.3s]"
+            className="w-full max-w-md mx-auto mt-8 aspect-square relative animate-fade-in [animation-delay:0.3s]"
           >
-            {/* Glow behind image */}
-            <div className="absolute inset-0 -z-10 flex items-center justify-center">
-              <div className="w-3/4 h-3/4 rounded-full bg-gradient-to-br from-[#ff2d55]/40 via-[#7928ca]/40 to-[#00d4ff]/30 blur-[80px] animate-pulse-slow" />
-            </div>
-            <Image
-              src="/images/porte-cle-nfc-hero.png"
-              alt="Porte-clé NFC iDkom"
-              fill
-              priority
-              sizes="(max-width: 640px) 100vw, 384px"
-              className="object-contain drop-shadow-[0_20px_50px_rgba(121,40,202,0.4)]"
-            />
+            <ModelViewer3D />
           </div>
         </section>
 
