@@ -1,13 +1,14 @@
 'use client';
 
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useMemo, useRef, useState } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
 import { Icon } from '@iconify/react';
-import type { BatPublic, BatVisual } from '@/lib/api';
-import { trackBatEvent } from '@/lib/api';
+import type { BatPublic, BatVisual, BatComment } from '@/lib/api';
+import { trackBatEvent, submitBatComment, requestBatRevision } from '@/lib/api';
 import AuditScrollAnimator from '@/components/AuditScrollAnimator';
 import BatSignatureModal from '@/components/BatSignatureModal';
+import BatCommentsPanel from '@/components/BatCommentsPanel';
 
 interface Props {
   bat: BatPublic;
@@ -25,9 +26,24 @@ const STATUS_LABEL: Record<BatPublic['status'], { text: string; color: string; i
 export default function BatClient({ bat }: Props) {
   const [zoomVisual, setZoomVisual] = useState<BatVisual | null>(null);
   const [signOpen, setSignOpen] = useState(false);
-  // Etat client-side du flag has_signed (passe a true apres signature reussie sans recharger)
   const [hasSigned, setHasSigned] = useState(bat.has_signed);
   const [justSigned, setJustSigned] = useState(false);
+  // Commentaires
+  const [comments, setComments] = useState<BatComment[]>(bat.comments);
+  const [panelOpen, setPanelOpen] = useState(false);
+  const [panelContextVisualId, setPanelContextVisualId] = useState<number | null>(null);
+  // Mode annoter dans le lightbox + pin temporaire
+  const [annotateMode, setAnnotateMode] = useState(false);
+  const [pendingPin, setPendingPin] = useState<{ visualId: number; x: number; y: number } | null>(null);
+  const [pinBody, setPinBody] = useState('');
+  const [pinSubmitting, setPinSubmitting] = useState(false);
+  const [pinError, setPinError] = useState<string | null>(null);
+  // Demande de revision
+  const [revisionOpen, setRevisionOpen] = useState(false);
+  const [revisionMsg, setRevisionMsg] = useState('');
+  const [revisionSubmitting, setRevisionSubmitting] = useState(false);
+  const [revisionError, setRevisionError] = useState<string | null>(null);
+  const [statusOverride, setStatusOverride] = useState<BatPublic['status'] | null>(null);
   const trackedZoom = useRef(new Set<number>());
 
   // Keyboard close on lightbox
@@ -46,11 +62,82 @@ export default function BatClient({ bat }: Props) {
 
   const handleZoom = (visual: BatVisual) => {
     setZoomVisual(visual);
+    setAnnotateMode(false);
+    setPendingPin(null);
     if (!trackedZoom.current.has(visual.id)) {
       trackedZoom.current.add(visual.id);
       trackBatEvent(bat.token, 'visual_zoomed', visual.id).catch(() => {});
     }
   };
+
+  // Pose un pin a la position cliquee dans l image du lightbox
+  const handleVisualClick = (e: React.MouseEvent<HTMLImageElement>) => {
+    if (!annotateMode || !zoomVisual) return;
+    e.stopPropagation();
+    const img = e.currentTarget;
+    const rect = img.getBoundingClientRect();
+    const x = ((e.clientX - rect.left) / rect.width) * 100;
+    const y = ((e.clientY - rect.top) / rect.height) * 100;
+    setPendingPin({ visualId: zoomVisual.id, x, y });
+    setPinBody('');
+    setPinError(null);
+  };
+
+  const submitPin = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!pendingPin || pinBody.trim().length < 1) return;
+    setPinSubmitting(true);
+    setPinError(null);
+    try {
+      const cmt = await submitBatComment(bat.token, {
+        body: pinBody.trim(),
+        visual_id: pendingPin.visualId,
+        pin_x: Number(pendingPin.x.toFixed(2)),
+        pin_y: Number(pendingPin.y.toFixed(2)),
+      });
+      setComments((prev) => [...prev, cmt]);
+      setPendingPin(null);
+      setPinBody('');
+    } catch (err) {
+      setPinError(err instanceof Error ? err.message : 'Erreur');
+    } finally {
+      setPinSubmitting(false);
+    }
+  };
+
+  // Click sur un pin existant : ouvre le side panel filtre sur ce visuel
+  const openPanelForVisual = (visualId: number | null) => {
+    setPanelContextVisualId(visualId);
+    setPanelOpen(true);
+  };
+
+  const handleCommentAdded = (cmt: BatComment) => {
+    setComments((prev) => [...prev, cmt]);
+  };
+
+  // Pins groupes par visuel (pour overlay dans le lightbox)
+  const pinsByVisual = useMemo(() => {
+    const m = new Map<number, BatComment[]>();
+    comments.forEach((c) => {
+      if (c.pin_x !== null && c.pin_y !== null && c.visual_id !== null && !c.parent_id) {
+        const arr = m.get(c.visual_id) ?? [];
+        arr.push(c);
+        m.set(c.visual_id, arr);
+      }
+    });
+    return m;
+  }, [comments]);
+
+  // Compteurs de commentaires par visuel (pour badge dans la galerie)
+  const commentCountByVisual = useMemo(() => {
+    const m = new Map<number, number>();
+    comments.forEach((c) => {
+      if (c.visual_id !== null && !c.parent_id) {
+        m.set(c.visual_id, (m.get(c.visual_id) ?? 0) + 1);
+      }
+    });
+    return m;
+  }, [comments]);
 
   // Confettis aux couleurs iDkom apres une signature reussie
   const handleSigned = async () => {
@@ -82,10 +169,30 @@ export default function BatClient({ bat }: Props) {
     }, 100);
   };
 
-  const status = STATUS_LABEL[bat.status] ?? STATUS_LABEL.sent;
+  const handleRequestRevision = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setRevisionSubmitting(true);
+    setRevisionError(null);
+    try {
+      await requestBatRevision(bat.token, revisionMsg.trim());
+      setStatusOverride('revision_requested');
+      setRevisionOpen(false);
+      setRevisionMsg('');
+    } catch (err) {
+      setRevisionError(err instanceof Error ? err.message : 'Erreur');
+    } finally {
+      setRevisionSubmitting(false);
+    }
+  };
+
+  const effectiveStatus = statusOverride ?? bat.status;
+  const status = STATUS_LABEL[effectiveStatus] ?? STATUS_LABEL.sent;
   const firstName = bat.client.contact_name.trim().split(' ')[0] || '';
   const totalVisuals = bat.visuals.length;
-  const canSign = bat.config.require_signature && !hasSigned && bat.status !== 'expired';
+  const canSign = bat.config.require_signature && !hasSigned && effectiveStatus !== 'expired' && effectiveStatus !== 'revision_requested';
+  const canRequestRevision = !hasSigned
+    && effectiveStatus !== 'expired'
+    && effectiveStatus !== 'revision_requested';
 
   return (
     <>
@@ -229,7 +336,14 @@ export default function BatClient({ bat }: Props) {
             <div className="space-y-8">
               {bat.visuals.map((v, i) => (
                 <AuditScrollAnimator key={v.id} delay={0.05 * i}>
-                  <BatVisualCard visual={v} index={i + 1} total={totalVisuals} onZoom={handleZoom} />
+                  <BatVisualCard
+                    visual={v}
+                    index={i + 1}
+                    total={totalVisuals}
+                    onZoom={handleZoom}
+                    commentCount={commentCountByVisual.get(v.id) ?? 0}
+                    onShowComments={() => openPanelForVisual(v.id)}
+                  />
                 </AuditScrollAnimator>
               ))}
             </div>
@@ -256,13 +370,26 @@ export default function BatClient({ bat }: Props) {
               </p>
             </div>
           </AuditScrollAnimator>
-        ) : bat.status === 'expired' ? (
+        ) : effectiveStatus === 'expired' ? (
           <AuditScrollAnimator delay={0.1}>
             <div className="bg-red-500/5 border border-red-500/20 rounded-2xl p-8 text-center">
               <Icon icon="solar:close-circle-linear" width={36} className="text-red-400 mx-auto mb-3" />
               <h2 className="text-xl font-bold text-white mb-2">Lien expire</h2>
               <p className="text-zinc-400">
                 Ce BAT a depasse sa date de validation. Contactez votre interlocuteur iDkom pour le reactiver.
+              </p>
+            </div>
+          </AuditScrollAnimator>
+        ) : effectiveStatus === 'revision_requested' ? (
+          <AuditScrollAnimator delay={0.1}>
+            <div className="bg-orange-500/5 border border-orange-500/30 rounded-2xl p-10 text-center">
+              <div className="w-16 h-16 mx-auto mb-4 rounded-2xl bg-orange-500/15 flex items-center justify-center">
+                <Icon icon="solar:refresh-linear" width={36} className="text-orange-400" />
+              </div>
+              <h2 className="text-2xl md:text-3xl font-bold text-white mb-3">Revision en cours de preparation</h2>
+              <p className="text-zinc-400 max-w-xl mx-auto">
+                Votre demande a ete transmise. {bat.sender?.first_name ?? 'Notre equipe'} prepare une nouvelle version
+                qui vous sera envoyee tres prochainement.
               </p>
             </div>
           </AuditScrollAnimator>
@@ -280,28 +407,40 @@ export default function BatClient({ bat }: Props) {
                 </h2>
                 <p className="text-zinc-400 mb-8 max-w-xl mx-auto leading-relaxed">
                   Signez electroniquement pour donner votre accord et lancer la production.
-                  Votre signature fera foi.
+                  Si quelque chose ne vous convient pas, demandez une revision.
                 </p>
-                {canSign ? (
-                  <button
-                    type="button"
-                    onClick={() => setSignOpen(true)}
-                    className="inline-flex items-center gap-2 px-8 py-4 bg-gradient-to-r from-[#ff2d55] via-[#7928ca] to-[#00d4ff] text-white font-semibold rounded-xl hover:opacity-90 transition-opacity text-lg shadow-lg shadow-[#7928ca]/20"
-                  >
-                    <Icon icon="solar:pen-new-square-bold" width={22} />
-                    Signer ce BAT
-                  </button>
-                ) : (
-                  <p className="text-zinc-500 text-sm">
-                    La signature n&apos;est pas requise sur ce BAT. Contactez{' '}
-                    {bat.sender?.first_name ? (
-                      <span className="text-white">{bat.sender.first_name}</span>
-                    ) : (
-                      <span className="text-white">votre interlocuteur iDkom</span>
-                    )}{' '}
-                    pour valider.
-                  </p>
-                )}
+                <div className="flex flex-col sm:flex-row gap-3 justify-center items-center">
+                  {canSign ? (
+                    <button
+                      type="button"
+                      onClick={() => setSignOpen(true)}
+                      className="inline-flex items-center gap-2 px-8 py-4 bg-gradient-to-r from-[#ff2d55] via-[#7928ca] to-[#00d4ff] text-white font-semibold rounded-xl hover:opacity-90 transition-opacity text-lg shadow-lg shadow-[#7928ca]/20"
+                    >
+                      <Icon icon="solar:pen-new-square-bold" width={22} />
+                      Signer ce BAT
+                    </button>
+                  ) : (
+                    <p className="text-zinc-500 text-sm">
+                      La signature n&apos;est pas requise sur ce BAT. Contactez{' '}
+                      {bat.sender?.first_name ? (
+                        <span className="text-white">{bat.sender.first_name}</span>
+                      ) : (
+                        <span className="text-white">votre interlocuteur iDkom</span>
+                      )}{' '}
+                      pour valider.
+                    </p>
+                  )}
+                  {canRequestRevision && (
+                    <button
+                      type="button"
+                      onClick={() => setRevisionOpen(true)}
+                      className="inline-flex items-center gap-2 px-6 py-4 bg-zinc-800 hover:bg-zinc-700 text-zinc-300 hover:text-white font-medium rounded-xl transition-colors"
+                    >
+                      <Icon icon="solar:refresh-linear" width={20} />
+                      Demander une revision
+                    </button>
+                  )}
+                </div>
               </div>
             </div>
           </AuditScrollAnimator>
@@ -321,10 +460,16 @@ export default function BatClient({ bat }: Props) {
       </main>
 
       {/* LIGHTBOX */}
-      {zoomVisual && (
+      {zoomVisual && (() => {
+        const visualPins = pinsByVisual.get(zoomVisual.id) ?? [];
+        const canAnnotate = bat.config.allow_comments && !hasSigned && bat.status !== 'expired' && !zoomVisual.is_pdf;
+        return (
         <div
           className="fixed inset-0 z-50 bg-black/95 backdrop-blur-md flex flex-col"
-          onClick={() => setZoomVisual(null)}
+          onClick={() => {
+            if (annotateMode || pendingPin) return; // ne pas fermer en cours d annotation
+            setZoomVisual(null);
+          }}
         >
           {/* Top bar */}
           <div className="flex items-center justify-between px-6 py-4 border-b border-zinc-800/50 shrink-0">
@@ -339,19 +484,50 @@ export default function BatClient({ bat }: Props) {
                   ? 'Document PDF'
                   : ''}
               </span>
+              {visualPins.length > 0 && (
+                <span className="text-xs px-2 py-0.5 rounded-full bg-[#7928ca]/20 text-[#7928ca]">
+                  {visualPins.length} epingle{visualPins.length > 1 ? 's' : ''}
+                </span>
+              )}
             </div>
-            <button
-              type="button"
-              onClick={(e) => {
-                e.stopPropagation();
-                setZoomVisual(null);
-              }}
-              className="p-2 text-zinc-400 hover:text-white hover:bg-zinc-800 rounded-lg transition-colors"
-              aria-label="Fermer"
-            >
-              <Icon icon="solar:close-circle-linear" width={28} />
-            </button>
+            <div className="flex items-center gap-2">
+              {canAnnotate && (
+                <button
+                  type="button"
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    setAnnotateMode((v) => !v);
+                    setPendingPin(null);
+                  }}
+                  className={`flex items-center gap-2 px-3 py-2 text-sm rounded-lg transition-colors ${annotateMode ? 'bg-[#7928ca] text-white' : 'bg-zinc-800 text-zinc-300 hover:bg-zinc-700'}`}
+                >
+                  <Icon icon="solar:map-point-add-linear" width={16} />
+                  {annotateMode ? 'Mode annotation actif' : 'Annoter'}
+                </button>
+              )}
+              <button
+                type="button"
+                onClick={(e) => {
+                  e.stopPropagation();
+                  setZoomVisual(null);
+                  setAnnotateMode(false);
+                  setPendingPin(null);
+                }}
+                className="p-2 text-zinc-400 hover:text-white hover:bg-zinc-800 rounded-lg transition-colors"
+                aria-label="Fermer"
+              >
+                <Icon icon="solar:close-circle-linear" width={28} />
+              </button>
+            </div>
           </div>
+
+          {/* Hint mode annoter */}
+          {annotateMode && !pendingPin && (
+            <div className="px-6 py-2 bg-[#7928ca]/15 border-b border-[#7928ca]/20 text-center text-sm text-[#c4a5ff] shrink-0">
+              <Icon icon="solar:cursor-linear" width={14} className="inline-block mr-1" />
+              Cliquez sur la maquette a l&apos;endroit que vous souhaitez commenter.
+            </div>
+          )}
 
           {/* Content */}
           <div
@@ -365,13 +541,80 @@ export default function BatClient({ bat }: Props) {
                 title={zoomVisual.title ?? 'Document PDF'}
               />
             ) : (
-              // eslint-disable-next-line @next/next/no-img-element
-              <img
-                src={zoomVisual.url}
-                alt={zoomVisual.title ?? ''}
-                className="max-w-full max-h-full object-contain rounded-lg"
-                style={{ touchAction: 'pinch-zoom' }}
-              />
+              <div className="relative inline-block max-w-full max-h-full">
+                {/* eslint-disable-next-line @next/next/no-img-element */}
+                <img
+                  src={zoomVisual.url}
+                  alt={zoomVisual.title ?? ''}
+                  className={`max-w-full max-h-[80vh] object-contain rounded-lg ${annotateMode ? 'cursor-crosshair' : ''}`}
+                  style={{ touchAction: annotateMode ? 'none' : 'pinch-zoom' }}
+                  onClick={handleVisualClick}
+                />
+                {/* Pins existants */}
+                {visualPins.map((pin, i) => (
+                  <button
+                    key={pin.id}
+                    type="button"
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      openPanelForVisual(zoomVisual.id);
+                    }}
+                    className="absolute -translate-x-1/2 -translate-y-1/2 group/pin"
+                    style={{ left: `${pin.pin_x}%`, top: `${pin.pin_y}%` }}
+                    title={pin.body}
+                  >
+                    <div className="w-7 h-7 rounded-full bg-gradient-to-br from-[#ff2d55] to-[#7928ca] flex items-center justify-center text-white text-xs font-bold shadow-lg shadow-black/50 ring-2 ring-white/80 group-hover/pin:scale-110 transition-transform">
+                      {i + 1}
+                    </div>
+                  </button>
+                ))}
+                {/* Pin temporaire (en cours de saisie) */}
+                {pendingPin && pendingPin.visualId === zoomVisual.id && (
+                  <div
+                    className="absolute -translate-x-1/2 -translate-y-1/2 z-10"
+                    style={{ left: `${pendingPin.x}%`, top: `${pendingPin.y}%` }}
+                  >
+                    <div className="w-7 h-7 rounded-full bg-gradient-to-br from-[#ff2d55] to-[#7928ca] ring-2 ring-white/80 animate-pulse" />
+                    {/* Popup */}
+                    <form
+                      onSubmit={submitPin}
+                      onClick={(e) => e.stopPropagation()}
+                      className="absolute top-9 left-1/2 -translate-x-1/2 w-72 bg-zinc-900 border border-zinc-700 rounded-xl shadow-2xl p-3 z-20"
+                    >
+                      <textarea
+                        value={pinBody}
+                        onChange={(e) => setPinBody(e.target.value)}
+                        autoFocus
+                        rows={3}
+                        maxLength={2000}
+                        placeholder="Votre commentaire sur cette zone..."
+                        disabled={pinSubmitting}
+                        className="w-full px-3 py-2 bg-zinc-800 border border-zinc-700 rounded-lg text-white text-sm focus:outline-none focus:border-[#7928ca] resize-none disabled:opacity-50"
+                      />
+                      {pinError && (
+                        <p className="text-xs text-red-300 mt-1">{pinError}</p>
+                      )}
+                      <div className="flex items-center justify-between gap-2 mt-2">
+                        <button
+                          type="button"
+                          onClick={() => setPendingPin(null)}
+                          disabled={pinSubmitting}
+                          className="text-xs text-zinc-400 hover:text-white px-2 py-1 disabled:opacity-50"
+                        >
+                          Annuler
+                        </button>
+                        <button
+                          type="submit"
+                          disabled={pinSubmitting || pinBody.trim().length === 0}
+                          className="text-xs px-3 py-1.5 bg-gradient-to-r from-[#ff2d55] via-[#7928ca] to-[#00d4ff] text-white rounded-md disabled:opacity-30 disabled:cursor-not-allowed"
+                        >
+                          {pinSubmitting ? 'Envoi...' : 'Ajouter'}
+                        </button>
+                      </div>
+                    </form>
+                  </div>
+                )}
+              </div>
             )}
           </div>
 
@@ -382,7 +625,40 @@ export default function BatClient({ bat }: Props) {
             </div>
           )}
         </div>
+        );
+      })()}
+
+      {/* FAB commentaires (flottant en bas-droite) */}
+      {bat.config.allow_comments && !hasSigned && bat.status !== 'expired' && (
+        <button
+          type="button"
+          onClick={() => {
+            setPanelContextVisualId(null);
+            setPanelOpen(true);
+          }}
+          className="fixed bottom-6 right-6 z-40 inline-flex items-center gap-2 px-5 py-3 bg-gradient-to-r from-[#ff2d55] via-[#7928ca] to-[#00d4ff] text-white font-medium rounded-full shadow-2xl shadow-[#7928ca]/30 hover:opacity-90 transition-opacity"
+        >
+          <Icon icon="solar:chat-round-line-bold" width={18} />
+          <span className="hidden sm:inline">Commentaires</span>
+          {comments.length > 0 && (
+            <span className="bg-white/20 text-white text-xs font-bold px-2 py-0.5 rounded-full">
+              {comments.length}
+            </span>
+          )}
+        </button>
       )}
+
+      {/* Side panel commentaires */}
+      <BatCommentsPanel
+        token={bat.token}
+        visuals={bat.visuals}
+        initialComments={comments}
+        isOpen={panelOpen}
+        onClose={() => setPanelOpen(false)}
+        onAdded={handleCommentAdded}
+        contextVisualId={panelContextVisualId}
+        canComment={bat.config.allow_comments && !hasSigned && bat.status !== 'expired'}
+      />
 
       {/* Modal de signature */}
       <BatSignatureModal
@@ -391,6 +667,70 @@ export default function BatClient({ bat }: Props) {
         onClose={() => setSignOpen(false)}
         onSigned={handleSigned}
       />
+
+      {/* Modal demande de revision */}
+      {revisionOpen && (
+        <div className="fixed inset-0 z-[60] bg-black/80 backdrop-blur-md flex items-center justify-center p-4" onClick={() => !revisionSubmitting && setRevisionOpen(false)}>
+          <form
+            onSubmit={handleRequestRevision}
+            onClick={(e) => e.stopPropagation()}
+            className="w-full max-w-lg bg-zinc-900 border border-zinc-800 rounded-2xl p-6 space-y-4 shadow-2xl"
+          >
+            <div className="flex items-start gap-3">
+              <div className="w-10 h-10 rounded-xl bg-orange-500/15 flex items-center justify-center shrink-0">
+                <Icon icon="solar:refresh-linear" width={20} className="text-orange-400" />
+              </div>
+              <div className="flex-1">
+                <h3 className="text-white font-semibold text-lg">Demander une revision</h3>
+                <p className="text-zinc-400 text-sm">
+                  Decrivez ce qui doit etre ajuste. Notre equipe preparera une nouvelle version.
+                </p>
+              </div>
+            </div>
+            <textarea
+              value={revisionMsg}
+              onChange={(e) => setRevisionMsg(e.target.value)}
+              maxLength={2000}
+              rows={5}
+              placeholder="Ex: les couleurs du logo doivent etre plus vives, et la position du visuel 2 a ajuster..."
+              disabled={revisionSubmitting}
+              className="w-full px-3 py-2.5 bg-zinc-950 border border-zinc-800 rounded-lg text-white text-sm focus:outline-none focus:border-orange-400 resize-none disabled:opacity-50"
+            />
+            {revisionError && (
+              <div className="text-xs text-red-300 bg-red-500/10 border border-red-500/20 rounded-lg px-3 py-2">
+                {revisionError}
+              </div>
+            )}
+            <div className="flex items-center justify-end gap-3">
+              <button
+                type="button"
+                onClick={() => setRevisionOpen(false)}
+                disabled={revisionSubmitting}
+                className="px-4 py-2 text-sm text-zinc-400 hover:text-white disabled:opacity-50"
+              >
+                Annuler
+              </button>
+              <button
+                type="submit"
+                disabled={revisionSubmitting}
+                className="inline-flex items-center gap-2 px-5 py-2 bg-orange-500 hover:bg-orange-400 text-white text-sm font-medium rounded-lg transition-colors disabled:opacity-50"
+              >
+                {revisionSubmitting ? (
+                  <>
+                    <Icon icon="solar:refresh-linear" width={16} className="animate-spin" />
+                    Envoi...
+                  </>
+                ) : (
+                  <>
+                    <Icon icon="solar:plain-2-linear" width={16} />
+                    Envoyer la demande
+                  </>
+                )}
+              </button>
+            </div>
+          </form>
+        </div>
+      )}
     </>
   );
 }
@@ -403,9 +743,11 @@ interface VisualCardProps {
   index: number;
   total: number;
   onZoom: (v: BatVisual) => void;
+  commentCount: number;
+  onShowComments: () => void;
 }
 
-function BatVisualCard({ visual, index, total, onZoom }: VisualCardProps) {
+function BatVisualCard({ visual, index, total, onZoom, commentCount, onShowComments }: VisualCardProps) {
   const aspectRatio =
     visual.width && visual.height ? `${visual.width} / ${visual.height}` : '16 / 9';
 
@@ -421,14 +763,27 @@ function BatVisualCard({ visual, index, total, onZoom }: VisualCardProps) {
             <span className="text-white font-medium text-sm">{visual.title}</span>
           )}
         </div>
-        <button
-          type="button"
-          onClick={() => onZoom(visual)}
-          className="flex items-center gap-1.5 text-xs text-zinc-400 hover:text-white px-3 py-1.5 rounded-lg hover:bg-zinc-800 transition-colors"
-        >
-          <Icon icon="solar:magnifer-zoom-in-linear" width={16} />
-          Agrandir
-        </button>
+        <div className="flex items-center gap-1">
+          {commentCount > 0 && (
+            <button
+              type="button"
+              onClick={onShowComments}
+              className="flex items-center gap-1.5 text-xs text-amber-300 hover:text-amber-200 px-3 py-1.5 rounded-lg hover:bg-amber-500/10 transition-colors"
+              title="Voir les commentaires de ce visuel"
+            >
+              <Icon icon="solar:chat-round-line-bold" width={14} />
+              {commentCount}
+            </button>
+          )}
+          <button
+            type="button"
+            onClick={() => onZoom(visual)}
+            className="flex items-center gap-1.5 text-xs text-zinc-400 hover:text-white px-3 py-1.5 rounded-lg hover:bg-zinc-800 transition-colors"
+          >
+            <Icon icon="solar:magnifer-zoom-in-linear" width={16} />
+            Agrandir
+          </button>
+        </div>
       </div>
 
       {/* Visual */}

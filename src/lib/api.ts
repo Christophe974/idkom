@@ -801,3 +801,31 @@ export async function signBat(token: string, payload: BatSignPayload): Promise<B
     body: JSON.stringify(payload),
   });
 }
+
+export interface BatCommentInput {
+  body: string;
+  visual_id?: number | null;
+  pin_x?: number | null;
+  pin_y?: number | null;
+  pin_page?: number | null;
+}
+
+export async function submitBatComment(token: string, payload: BatCommentInput): Promise<BatComment> {
+  return fetchApi<BatComment>(`bat.php?action=comment&token=${encodeURIComponent(token)}`, {
+    method: 'POST',
+    body: JSON.stringify(payload),
+  });
+}
+
+export async function requestBatRevision(
+  token: string,
+  message: string,
+): Promise<{ status: string }> {
+  return fetchApi<{ status: string }>(
+    `bat.php?action=request_revision&token=${encodeURIComponent(token)}`,
+    {
+      method: 'POST',
+      body: JSON.stringify({ message }),
+    },
+  );
+}
