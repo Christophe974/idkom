@@ -535,11 +535,26 @@ export default function BatClient({ bat }: Props) {
             onClick={(e) => e.stopPropagation()}
           >
             {zoomVisual.is_pdf ? (
-              <iframe
-                src={zoomVisual.url}
-                className="w-full h-full max-w-5xl bg-white rounded-lg"
-                title={zoomVisual.title ?? 'Document PDF'}
-              />
+              <div className="text-center max-w-md">
+                <div className="inline-flex items-center justify-center w-24 h-24 rounded-2xl bg-red-500/10 border border-red-500/20 mb-6">
+                  <Icon icon="solar:document-bold" width={56} className="text-red-400" />
+                </div>
+                <h3 className="text-white text-xl font-semibold mb-2">{zoomVisual.title ?? 'Document PDF'}</h3>
+                {zoomVisual.pages_count && (
+                  <p className="text-zinc-500 text-sm mb-6">
+                    {zoomVisual.pages_count} page{zoomVisual.pages_count > 1 ? 's' : ''}
+                  </p>
+                )}
+                <a
+                  href={zoomVisual.url}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center gap-2 px-6 py-3 bg-gradient-to-r from-[#ff2d55] via-[#7928ca] to-[#00d4ff] text-white font-medium rounded-xl hover:opacity-90 transition-opacity"
+                >
+                  <Icon icon="solar:square-arrow-right-up-linear" width={20} />
+                  Ouvrir le PDF dans un nouvel onglet
+                </a>
+              </div>
             ) : (
               <div className="relative inline-block max-w-full max-h-full">
                 {/* eslint-disable-next-line @next/next/no-img-element */}
@@ -775,46 +790,72 @@ function BatVisualCard({ visual, index, total, onZoom, commentCount, onShowComme
               {commentCount}
             </button>
           )}
-          <button
-            type="button"
-            onClick={() => onZoom(visual)}
-            className="flex items-center gap-1.5 text-xs text-zinc-400 hover:text-white px-3 py-1.5 rounded-lg hover:bg-zinc-800 transition-colors"
-          >
-            <Icon icon="solar:magnifer-zoom-in-linear" width={16} />
-            Agrandir
-          </button>
+          {visual.is_pdf ? (
+            <a
+              href={visual.url}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="flex items-center gap-1.5 text-xs text-zinc-400 hover:text-white px-3 py-1.5 rounded-lg hover:bg-zinc-800 transition-colors"
+            >
+              <Icon icon="solar:square-arrow-right-up-linear" width={16} />
+              Ouvrir
+            </a>
+          ) : (
+            <button
+              type="button"
+              onClick={() => onZoom(visual)}
+              className="flex items-center gap-1.5 text-xs text-zinc-400 hover:text-white px-3 py-1.5 rounded-lg hover:bg-zinc-800 transition-colors"
+            >
+              <Icon icon="solar:magnifer-zoom-in-linear" width={16} />
+              Agrandir
+            </button>
+          )}
         </div>
       </div>
 
       {/* Visual */}
-      <button
-        type="button"
-        onClick={() => onZoom(visual)}
-        className="block w-full bg-black/40 cursor-zoom-in"
-      >
-        <div className="relative w-full" style={{ aspectRatio }}>
-          {visual.is_pdf ? (
-            <div className="absolute inset-0 flex flex-col items-center justify-center text-zinc-400">
-              <Icon icon="solar:document-bold" width={64} className="text-red-400 mb-3" />
-              <p className="text-sm">Document PDF</p>
+      {visual.is_pdf ? (
+        <a
+          href={visual.url}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="block w-full bg-black/40 cursor-pointer group/pdf"
+        >
+          <div className="relative w-full flex items-center justify-center py-16 bg-gradient-to-br from-red-500/5 via-transparent to-[#7928ca]/5">
+            <div className="text-center">
+              <div className="inline-flex items-center justify-center w-20 h-20 rounded-2xl bg-red-500/10 border border-red-500/20 mb-4 group-hover/pdf:scale-105 transition-transform">
+                <Icon icon="solar:document-bold" width={44} className="text-red-400" />
+              </div>
+              <p className="text-white font-medium mb-1">Document PDF</p>
               {visual.pages_count && (
-                <p className="text-xs text-zinc-600 mt-1">
+                <p className="text-xs text-zinc-500 mb-3">
                   {visual.pages_count} page{visual.pages_count > 1 ? 's' : ''}
                 </p>
               )}
-              <p className="text-xs text-[#7928ca] mt-3">Cliquez pour ouvrir</p>
+              <p className="inline-flex items-center gap-1.5 text-sm text-[#7928ca] group-hover/pdf:text-[#a78bfa]">
+                <Icon icon="solar:square-arrow-right-up-linear" width={16} />
+                Ouvrir le PDF dans un nouvel onglet
+              </p>
             </div>
-          ) : (
-            // eslint-disable-next-line @next/next/no-img-element
+          </div>
+        </a>
+      ) : (
+        <button
+          type="button"
+          onClick={() => onZoom(visual)}
+          className="block w-full bg-black/40 cursor-zoom-in"
+        >
+          <div className="relative w-full" style={{ aspectRatio }}>
+            {/* eslint-disable-next-line @next/next/no-img-element */}
             <img
               src={visual.url}
               alt={visual.title ?? `Visuel ${index}`}
               className="absolute inset-0 w-full h-full object-contain group-hover:scale-[1.01] transition-transform duration-500"
               loading="lazy"
             />
-          )}
-        </div>
-      </button>
+          </div>
+        </button>
+      )}
 
       {/* Caption */}
       {visual.caption && (
