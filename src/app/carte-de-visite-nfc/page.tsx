@@ -1,4 +1,5 @@
 import Link from 'next/link';
+import Image from 'next/image';
 import { Icon } from '@iconify/react';
 import { getHomepageData } from '@/lib/api';
 import NavbarServer from '@/components/NavbarServer';
@@ -196,12 +197,19 @@ export default async function CarteDeVisiteNFCPage() {
             </a>
           </div>
 
-          {/* Hero image placeholder */}
+          {/* Hero image */}
           <div
             id="hero-image"
-            className="w-full max-w-sm mx-auto mt-8 aspect-square rounded-2xl bg-zinc-900 border border-zinc-800 flex items-center justify-center animate-fade-in [animation-delay:0.6s]"
+            className="w-full max-w-sm mx-auto mt-8 aspect-square relative animate-fade-in [animation-delay:0.6s]"
           >
-            <p className="text-zinc-600 text-sm">Image porte-clé NFC</p>
+            <Image
+              src="/images/porte-cle-nfc-hero.png"
+              alt="Porte-clé NFC iDkom"
+              fill
+              priority
+              sizes="(max-width: 640px) 100vw, 384px"
+              className="object-contain"
+            />
           </div>
         </section>
 
