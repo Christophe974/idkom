@@ -695,3 +695,88 @@ export async function submitGravure(data: {
     body: JSON.stringify(data),
   });
 }
+
+// ============================================================
+// BAT (Bon À Tirer) — pages publiques de validation maquette
+// ============================================================
+export interface BatVisual {
+  id: number;
+  sort_order: number;
+  url: string;
+  mime_type: string;
+  is_pdf: boolean;
+  file_size: number;
+  width: number | null;
+  height: number | null;
+  pages_count: number | null;
+  title: string | null;
+  caption: string | null;
+}
+
+export interface BatComment {
+  id: number;
+  visual_id: number | null;
+  parent_id: number | null;
+  author_type: 'client' | 'admin';
+  author_name: string | null;
+  body: string;
+  pin_x: number | null;
+  pin_y: number | null;
+  pin_page: number | null;
+  is_resolved: boolean;
+  created_at: string;
+}
+
+export interface BatSender {
+  first_name: string | null;
+  last_name: string | null;
+  avatar_url: string | null;
+}
+
+export interface BatPublic {
+  token: string;
+  title: string;
+  project_ref: string | null;
+  client: {
+    company: string;
+    contact_name: string;
+  };
+  intro_message: string | null;
+  sender: BatSender | null;
+  config: {
+    require_signature: boolean;
+    allow_comments: boolean;
+    allow_download: boolean;
+  };
+  status:
+    | 'sent'
+    | 'viewed'
+    | 'commented'
+    | 'signed'
+    | 'revision_requested'
+    | 'expired';
+  current_version: number;
+  expiry_date: string | null;
+  sent_at: string | null;
+  visuals: BatVisual[];
+  comments: BatComment[];
+  has_signed: boolean;
+}
+
+export async function getBatByToken(token: string): Promise<BatPublic> {
+  return fetchApi<BatPublic>(`bat.php?action=get&token=${encodeURIComponent(token)}`);
+}
+
+export async function trackBatEvent(
+  token: string,
+  type: 'email_opened' | 'visual_zoomed',
+  visualId?: number,
+): Promise<{ logged: boolean }> {
+  return fetchApi<{ logged: boolean }>(
+    `bat.php?action=track&token=${encodeURIComponent(token)}`,
+    {
+      method: 'POST',
+      body: JSON.stringify({ type, visual_id: visualId ?? null }),
+    },
+  );
+}
