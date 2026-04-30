@@ -1,3 +1,4 @@
+import { Suspense } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
 import { Icon } from '@iconify/react';
@@ -6,6 +7,11 @@ import NavbarServer from '@/components/NavbarServer';
 import FooterServer from '@/components/FooterServer';
 import AmbientBackground from '@/components/AmbientBackground';
 import FAQAccordion from './FAQAccordion';
+
+async function FooterWithData() {
+  const homeData = await getHomepageData();
+  return <FooterServer site={homeData.site} social={homeData.social} />;
+}
 
 export const revalidate = 300;
 
@@ -154,9 +160,7 @@ const faqItems = [
   },
 ];
 
-export default async function CarteDeVisiteNFCPage() {
-  const homeData = await getHomepageData();
-
+export default function CarteDeVisiteNFCPage() {
   return (
     <>
       <AmbientBackground />
@@ -528,7 +532,9 @@ export default async function CarteDeVisiteNFCPage() {
         </section>
       </main>
 
-      <FooterServer site={homeData.site} social={homeData.social} />
+      <Suspense fallback={null}>
+        <FooterWithData />
+      </Suspense>
 
       {/* Fade-in animation */}
       <style>{`

@@ -144,8 +144,15 @@ async function fetchApi<T>(endpoint: string, options?: RequestInit): Promise<T> 
   const controller = new AbortController();
   const timeoutId = setTimeout(() => controller.abort(), 10000); // 10s timeout
 
+  // Default: cache GET requests for 5min (mutations/POST opt out via cache: 'no-store')
+  const isMutation = options?.method && options.method !== 'GET';
+  const nextOptions = isMutation || options?.cache
+    ? {}
+    : { next: { revalidate: 300 } };
+
   try {
     const res = await fetch(`${API_URL}/${endpoint}`, {
+      ...nextOptions,
       ...options,
       signal: controller.signal,
       headers: {
