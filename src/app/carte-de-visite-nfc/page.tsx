@@ -401,6 +401,33 @@ export default function CarteDeVisiteNFCPage() {
           </div>
         </section>
 
+        {/* ===== PERSONNALISATION ===== */}
+        <section className="max-w-7xl mx-auto px-6 py-20">
+          <div className="text-center mb-14">
+            <h2 className="text-3xl md:text-4xl font-bold text-white mb-4">
+              À votre <span className="gradient-text">image</span>
+            </h2>
+            <p className="text-zinc-400 max-w-xl mx-auto">
+              Forme, couleur, logo, gravure : chaque porte-clé est unique et adapté à votre marque
+            </p>
+          </div>
+
+          <div className="relative animate-fade-in rounded-3xl overflow-hidden border border-white/10 bg-zinc-900/50">
+            {/* Glow */}
+            <div className="absolute inset-0 -z-10 flex items-center justify-center pointer-events-none">
+              <div className="w-2/3 h-2/3 rounded-full bg-gradient-to-br from-[#ff2d55]/20 via-[#7928ca]/20 to-[#00d4ff]/15 blur-[100px] animate-pulse-slow" />
+            </div>
+            <Image
+              src="/images/porte-cles-collection.webp"
+              alt="Collection de porte-clés NFC personnalisés iDkom : couleurs, logos, gravures variés"
+              width={1920}
+              height={1080}
+              sizes="(max-width: 1280px) 100vw, 1280px"
+              className="w-full h-auto object-cover"
+            />
+          </div>
+        </section>
+
         {/* ===== OFFRES ===== */}
         <section id="offres" className="max-w-7xl mx-auto px-6 py-20">
           <div className="text-center mb-14">
