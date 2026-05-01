@@ -362,10 +362,10 @@ export default function CarteDeVisiteNFCPage() {
             </p>
           </div>
 
-          <div className="flex flex-col lg:flex-row items-center justify-center gap-12">
-            {/* Scan in action — visual proof */}
-            <div className="relative animate-fade-in w-full max-w-md aspect-square">
-              {/* Glow */}
+          {/* Scan flow: action → result */}
+          <div className="grid grid-cols-1 lg:grid-cols-[1fr_auto_1fr] items-center gap-8 lg:gap-12 mb-16">
+            {/* Step 1 — Scan in action */}
+            <div className="relative animate-fade-in w-full max-w-md mx-auto aspect-square">
               <div className="absolute inset-0 -z-10 flex items-center justify-center pointer-events-none">
                 <div className="w-3/4 h-3/4 rounded-full bg-gradient-to-br from-[#ff2d55]/30 via-[#7928ca]/30 to-[#00d4ff]/20 blur-[80px] animate-pulse-slow" />
               </div>
@@ -376,28 +376,56 @@ export default function CarteDeVisiteNFCPage() {
                 sizes="(max-width: 768px) 100vw, 448px"
                 className="object-contain drop-shadow-[0_20px_50px_rgba(121,40,202,0.4)]"
               />
-            </div>
-
-            {/* QR Code + text */}
-            <div className="text-center lg:text-left animate-fade-in [animation-delay:0.2s]">
-              <div className="bg-zinc-900 border border-zinc-800 rounded-2xl p-8 inline-block mb-6">
-                {/* eslint-disable-next-line @next/next/no-img-element */}
-                <img
-                  src="https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=https://www.idkom.fr/carte/christophe-bracchini&bgcolor=000000&color=ffffff"
-                  alt="QR code pour voir la carte de Christophe Bracchini"
-                  width={200}
-                  height={200}
-                  className="rounded-lg"
-                />
-              </div>
-              <p className="text-zinc-400 text-sm max-w-xs mx-auto lg:mx-0">
-                Scannez avec votre téléphone ou{' '}
-                <Link href="/carte/christophe-bracchini" className="text-[#00d4ff] hover:underline">
-                  cliquez ici
-                </Link>{' '}
-                pour voir la carte en direct
+              <p className="absolute -bottom-2 left-1/2 -translate-x-1/2 text-zinc-500 text-sm whitespace-nowrap">
+                1. On approche
               </p>
             </div>
+
+            {/* Arrow / chevron */}
+            <div className="hidden lg:flex items-center justify-center text-zinc-700">
+              <Icon icon="solar:arrow-right-linear" width={48} />
+            </div>
+            <div className="lg:hidden flex items-center justify-center text-zinc-700">
+              <Icon icon="solar:arrow-down-linear" width={32} />
+            </div>
+
+            {/* Step 2 — Card appears */}
+            <div className="relative animate-fade-in [animation-delay:0.2s] w-full max-w-sm mx-auto aspect-[3/4]">
+              <div className="absolute inset-0 -z-10 flex items-center justify-center pointer-events-none">
+                <div className="w-2/3 h-2/3 rounded-full bg-gradient-to-br from-[#7928ca]/30 via-[#ff2d55]/20 to-[#00d4ff]/20 blur-[80px] animate-pulse-slow [animation-delay:1s]" />
+              </div>
+              <Image
+                src="/images/carte-digitale-mockup.png"
+                alt="Carte de visite digitale affichée sur iPhone"
+                fill
+                sizes="(max-width: 768px) 100vw, 384px"
+                className="object-contain drop-shadow-[0_20px_50px_rgba(121,40,202,0.5)]"
+              />
+              <p className="absolute -bottom-2 left-1/2 -translate-x-1/2 text-zinc-500 text-sm whitespace-nowrap">
+                2. La carte apparaît
+              </p>
+            </div>
+          </div>
+
+          {/* QR Code + try-it text */}
+          <div className="flex flex-col items-center text-center animate-fade-in [animation-delay:0.4s]">
+            <div className="bg-zinc-900 border border-zinc-800 rounded-2xl p-6 inline-block mb-4">
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img
+                src="https://api.qrserver.com/v1/create-qr-code/?size=180x180&data=https://www.idkom.fr/carte/christophe-bracchini&bgcolor=000000&color=ffffff"
+                alt="QR code pour voir une carte de visite NFC en direct"
+                width={180}
+                height={180}
+                className="rounded-lg"
+              />
+            </div>
+            <p className="text-zinc-400 text-sm max-w-xs">
+              Scannez avec votre téléphone ou{' '}
+              <Link href="/carte/christophe-bracchini" className="text-[#00d4ff] hover:underline">
+                cliquez ici
+              </Link>{' '}
+              pour voir une carte en direct
+            </p>
           </div>
         </section>
 
