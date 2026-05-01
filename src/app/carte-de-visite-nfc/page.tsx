@@ -363,36 +363,19 @@ export default function CarteDeVisiteNFCPage() {
           </div>
 
           <div className="flex flex-col lg:flex-row items-center justify-center gap-12">
-            {/* Phone mockup */}
-            <div className="relative animate-fade-in">
-              <div className="w-[280px] h-[560px] bg-zinc-950 border-4 border-zinc-700 rounded-[3rem] p-3 relative overflow-hidden shadow-2xl shadow-black/50">
-                {/* Notch */}
-                <div className="absolute top-0 left-1/2 -translate-x-1/2 w-28 h-6 bg-zinc-950 rounded-b-2xl z-20" />
-                {/* Screen */}
-                <div className="w-full h-full bg-zinc-900 rounded-[2.2rem] overflow-hidden flex items-center justify-center">
-                  <div className="text-center p-6">
-                    <div className="w-20 h-20 rounded-full bg-gradient-to-r from-[#ff2d55] to-[#7928ca] mx-auto mb-4 flex items-center justify-center">
-                      <Icon icon="solar:user-bold" className="text-white" width={36} />
-                    </div>
-                    <p className="text-white font-semibold text-lg mb-1">Christophe Bracchini</p>
-                    <p className="text-zinc-500 text-xs mb-4">Fondateur @ iDkom</p>
-                    <div className="space-y-2">
-                      <div className="bg-zinc-800 rounded-lg px-4 py-2 text-xs text-zinc-400 flex items-center gap-2">
-                        <Icon icon="solar:phone-linear" width={14} />
-                        Téléphone
-                      </div>
-                      <div className="bg-zinc-800 rounded-lg px-4 py-2 text-xs text-zinc-400 flex items-center gap-2">
-                        <Icon icon="solar:letter-linear" width={14} />
-                        Email
-                      </div>
-                      <div className="bg-zinc-800 rounded-lg px-4 py-2 text-xs text-zinc-400 flex items-center gap-2">
-                        <Icon icon="solar:global-linear" width={14} />
-                        Site web
-                      </div>
-                    </div>
-                  </div>
-                </div>
+            {/* Scan in action — visual proof */}
+            <div className="relative animate-fade-in w-full max-w-md aspect-square">
+              {/* Glow */}
+              <div className="absolute inset-0 -z-10 flex items-center justify-center pointer-events-none">
+                <div className="w-3/4 h-3/4 rounded-full bg-gradient-to-br from-[#ff2d55]/30 via-[#7928ca]/30 to-[#00d4ff]/20 blur-[80px] animate-pulse-slow" />
               </div>
+              <Image
+                src="/images/scan-nfc-action.webp"
+                alt="Porte-clé NFC en action : scan d'un iPhone"
+                fill
+                sizes="(max-width: 768px) 100vw, 448px"
+                className="object-contain drop-shadow-[0_20px_50px_rgba(121,40,202,0.4)]"
+              />
             </div>
 
             {/* QR Code + text */}
