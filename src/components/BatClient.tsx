@@ -1014,16 +1014,19 @@ function formatDimensions(visual: BatVisual): string | null {
 // ============================================================
 // Helpers
 // ============================================================
+// Formatage deterministe (sans Intl, sans Date) — identique cote serveur (Node ICU)
+// et cote navigateur, donc pas de risque d hydration mismatch (React #418).
+const MONTHS_FR = [
+  'janvier', 'fevrier', 'mars', 'avril', 'mai', 'juin',
+  'juillet', 'aout', 'septembre', 'octobre', 'novembre', 'decembre',
+];
 function formatFr(date: string): string {
-  try {
-    return new Intl.DateTimeFormat('fr-FR', {
-      day: '2-digit',
-      month: 'long',
-      year: 'numeric',
-    }).format(new Date(date));
-  } catch {
-    return date;
-  }
+  const m = /^(\d{4})-(\d{2})-(\d{2})/.exec(date);
+  if (!m) return date;
+  const [, y, mo, d] = m;
+  const monthName = MONTHS_FR[parseInt(mo, 10) - 1];
+  if (!monthName) return date;
+  return `${parseInt(d, 10)} ${monthName} ${y}`;
 }
 
 /**

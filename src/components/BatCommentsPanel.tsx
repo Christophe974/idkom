@@ -250,16 +250,17 @@ function CommentItem({
   );
 }
 
+// Formatage deterministe (sans Intl, sans timezone) pour eviter les mismatch
+// d hydratation entre le rendu serveur (Node ICU sur Vercel) et le navigateur.
+const MONTHS_SHORT_FR = [
+  'janv.', 'fevr.', 'mars', 'avr.', 'mai', 'juin',
+  'juil.', 'aout', 'sept.', 'oct.', 'nov.', 'dec.',
+];
 function formatDateTime(iso: string): string {
-  try {
-    const d = new Date(iso);
-    return new Intl.DateTimeFormat('fr-FR', {
-      day: '2-digit',
-      month: 'short',
-      hour: '2-digit',
-      minute: '2-digit',
-    }).format(d);
-  } catch {
-    return iso;
-  }
+  const m = /^(\d{4})-(\d{2})-(\d{2})[T ](\d{2}):(\d{2})/.exec(iso);
+  if (!m) return iso;
+  const [, , mo, d, hh, mm] = m;
+  const monthName = MONTHS_SHORT_FR[parseInt(mo, 10) - 1];
+  if (!monthName) return iso;
+  return `${parseInt(d, 10)} ${monthName} ${hh}:${mm}`;
 }
