@@ -35,11 +35,11 @@ const nextConfig: NextConfig = {
             key: "Content-Security-Policy",
             value: [
               "default-src 'self'",
-              "script-src 'self' 'unsafe-inline' 'unsafe-eval' https://www.googletagmanager.com https://www.google-analytics.com https://api.iconify.design",
+              "script-src 'self' 'unsafe-inline' 'unsafe-eval' https://www.googletagmanager.com https://www.google-analytics.com https://api.iconify.design https://api.simplesvg.com https://api.unisvg.com",
               "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com",
               "font-src 'self' https://fonts.gstatic.com",
               "img-src 'self' data: blob: https://api.idkom.fr https://ovh.idkom.fr https://idkom.fr https://*.googleusercontent.com https://lh3.googleusercontent.com",
-              "connect-src 'self' https://api.idkom.fr https://api.iconify.design https://www.google-analytics.com https://www.googletagmanager.com",
+              "connect-src 'self' https://api.idkom.fr https://api.iconify.design https://api.simplesvg.com https://api.unisvg.com https://www.google-analytics.com https://www.googletagmanager.com",
               "frame-src 'self' https://www.youtube.com https://player.vimeo.com",
               "frame-ancestors 'self'",
             ].join("; "),
