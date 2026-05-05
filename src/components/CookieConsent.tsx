@@ -9,8 +9,15 @@ export default function CookieConsent() {
   const [isLeaving, setIsLeaving] = useState(false);
 
   useEffect(() => {
-    // Ne pas afficher sur les pages carte de visite
-    if (window.location.pathname.startsWith('/carte/')) return;
+    // Pages privees, accessibles uniquement via lien tokenise par email :
+    // pas de trackers tiers charges, events first-party strictement necessaires
+    // au service (exemption RGPD/CNIL), aucun cookie HTTP. Le banner n est pas
+    // requis et plombe le LCP en etant souvent le plus gros element au-dessus
+    // du fold.
+    const path = window.location.pathname;
+    if (path.startsWith('/carte/')) return;
+    if (path.startsWith('/bat/')) return;
+    if (path.startsWith('/p/')) return;
 
     // Vérifier si l'utilisateur a déjà fait un choix
     const consent = localStorage.getItem('cookie-consent');
