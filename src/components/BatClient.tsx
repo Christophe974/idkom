@@ -50,19 +50,45 @@ export default function BatClient({ bat }: Props) {
   const [statusOverride, setStatusOverride] = useState<BatPublic['status'] | null>(null);
   const trackedZoom = useRef(new Set<number>());
 
-  // Lazy-load model-viewer si au moins un visuel 3D
+  // Lazy-load model-viewer apres que la page soit interactive (idle).
+  // Le bundle pese ~290 Ko + 7s d evaluation main thread (Three.js + Web Component) ;
+  // l importer au mount detruit le TBT/LCP. Avec requestIdleCallback, le 3D arrive
+  // ~1s apres l affichage de la page, pour un TBT proche de 0.
   useEffect(() => {
     if (!has3dVisual) return;
     let cancelled = false;
-    import('@google/model-viewer')
-      .then(() => {
-        if (!cancelled) setModelViewerReady(true);
-      })
-      .catch(() => {
-        // Si le bundle echoue (offline / CDN HS), on laisse le placeholder
-      });
+    let idleId: number | undefined;
+    let timeoutId: number | undefined;
+
+    const start = () => {
+      if (cancelled) return;
+      import('@google/model-viewer')
+        .then(() => {
+          if (!cancelled) setModelViewerReady(true);
+        })
+        .catch(() => {
+          // Si le bundle echoue (offline / CDN HS), on laisse le placeholder
+        });
+    };
+
+    const win = window as Window & {
+      requestIdleCallback?: (cb: () => void, opts?: { timeout?: number }) => number;
+      cancelIdleCallback?: (id: number) => void;
+    };
+
+    if (typeof win.requestIdleCallback === 'function') {
+      idleId = win.requestIdleCallback(start, { timeout: 3000 });
+    } else {
+      // Fallback Safari (pas de requestIdleCallback) : on differe d 1.5s
+      timeoutId = window.setTimeout(start, 1500);
+    }
+
     return () => {
       cancelled = true;
+      if (idleId !== undefined && typeof win.cancelIdleCallback === 'function') {
+        win.cancelIdleCallback(idleId);
+      }
+      if (timeoutId !== undefined) window.clearTimeout(timeoutId);
     };
   }, [has3dVisual]);
 
