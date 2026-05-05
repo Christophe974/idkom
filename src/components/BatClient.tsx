@@ -24,6 +24,8 @@ const STATUS_LABEL: Record<BatPublic['status'], { text: string; color: string; i
 };
 
 export default function BatClient({ bat }: Props) {
+  const has3dVisual = useMemo(() => bat.visuals.some((v) => v.is_3d), [bat.visuals]);
+  const [modelViewerReady, setModelViewerReady] = useState(false);
   const [zoomVisual, setZoomVisual] = useState<BatVisual | null>(null);
   const [signOpen, setSignOpen] = useState(false);
   const [hasSigned, setHasSigned] = useState(bat.has_signed);
@@ -45,6 +47,22 @@ export default function BatClient({ bat }: Props) {
   const [revisionError, setRevisionError] = useState<string | null>(null);
   const [statusOverride, setStatusOverride] = useState<BatPublic['status'] | null>(null);
   const trackedZoom = useRef(new Set<number>());
+
+  // Lazy-load model-viewer si au moins un visuel 3D
+  useEffect(() => {
+    if (!has3dVisual) return;
+    let cancelled = false;
+    import('@google/model-viewer')
+      .then(() => {
+        if (!cancelled) setModelViewerReady(true);
+      })
+      .catch(() => {
+        // Si le bundle echoue (offline / CDN HS), on laisse le placeholder
+      });
+    return () => {
+      cancelled = true;
+    };
+  }, [has3dVisual]);
 
   // Keyboard close on lightbox
   useEffect(() => {
@@ -343,6 +361,7 @@ export default function BatClient({ bat }: Props) {
                     onZoom={handleZoom}
                     commentCount={commentCountByVisual.get(v.id) ?? 0}
                     onShowComments={() => openPanelForVisual(v.id)}
+                    modelViewerReady={modelViewerReady}
                   />
                 </AuditScrollAnimator>
               ))}
@@ -462,7 +481,7 @@ export default function BatClient({ bat }: Props) {
       {/* LIGHTBOX */}
       {zoomVisual && (() => {
         const visualPins = pinsByVisual.get(zoomVisual.id) ?? [];
-        const canAnnotate = bat.config.allow_comments && !hasSigned && bat.status !== 'expired' && !zoomVisual.is_pdf;
+        const canAnnotate = bat.config.allow_comments && !hasSigned && bat.status !== 'expired' && !zoomVisual.is_pdf && !zoomVisual.is_3d;
         return (
         <div
           className="fixed inset-0 z-50 bg-black/95 backdrop-blur-md flex flex-col"
@@ -478,12 +497,20 @@ export default function BatClient({ bat }: Props) {
                 <span className="text-white font-medium">{zoomVisual.title}</span>
               )}
               <span className="text-zinc-600 text-xs">
-                {zoomVisual.width && zoomVisual.height
-                  ? `${zoomVisual.width} × ${zoomVisual.height} px`
+                {zoomVisual.is_3d
+                  ? 'Modele 3D'
                   : zoomVisual.is_pdf
                   ? 'Document PDF'
+                  : zoomVisual.width && zoomVisual.height
+                  ? `${zoomVisual.width} × ${zoomVisual.height} px`
                   : ''}
               </span>
+              {formatDimensions(zoomVisual) && (
+                <span className="flex items-center gap-1 text-xs text-[#00d4ff]">
+                  <Icon icon="solar:ruler-linear" width={13} />
+                  {formatDimensions(zoomVisual)}
+                </span>
+              )}
               {visualPins.length > 0 && (
                 <span className="text-xs px-2 py-0.5 rounded-full bg-[#7928ca]/20 text-[#7928ca]">
                   {visualPins.length} epingle{visualPins.length > 1 ? 's' : ''}
@@ -554,6 +581,36 @@ export default function BatClient({ bat }: Props) {
                   <Icon icon="solar:square-arrow-right-up-linear" width={20} />
                   Ouvrir le PDF dans un nouvel onglet
                 </a>
+              </div>
+            ) : zoomVisual.is_3d ? (
+              <div className="w-full h-full max-w-5xl mx-auto flex items-center justify-center">
+                {modelViewerReady ? (
+                  <model-viewer
+                    src={zoomVisual.url}
+                    alt={zoomVisual.title ?? 'Modele 3D'}
+                    auto-rotate
+                    camera-controls
+                    touch-action="pan-y"
+                    shadow-intensity="1"
+                    shadow-softness="0.8"
+                    exposure="1.1"
+                    environment-image="neutral"
+                    rotation-per-second="20deg"
+                    auto-rotate-delay="0"
+                    interaction-prompt="when-focused"
+                    loading="eager"
+                    style={{
+                      width: '100%',
+                      height: '80vh',
+                      background: 'transparent',
+                    }}
+                  />
+                ) : (
+                  <div className="text-zinc-500 text-sm flex items-center gap-2">
+                    <Icon icon="solar:cube-linear" width={20} className="animate-pulse" />
+                    Chargement du modele 3D...
+                  </div>
+                )}
               </div>
             ) : (
               <div className="relative inline-block max-w-full max-h-full">
@@ -760,22 +817,36 @@ interface VisualCardProps {
   onZoom: (v: BatVisual) => void;
   commentCount: number;
   onShowComments: () => void;
+  modelViewerReady: boolean;
 }
 
-function BatVisualCard({ visual, index, total, onZoom, commentCount, onShowComments }: VisualCardProps) {
+function BatVisualCard({ visual, index, total, onZoom, commentCount, onShowComments, modelViewerReady }: VisualCardProps) {
   const aspectRatio =
     visual.width && visual.height ? `${visual.width} / ${visual.height}` : '16 / 9';
+  const dims = formatDimensions(visual);
 
   return (
     <article className="group bg-zinc-900/40 border border-zinc-800/50 rounded-2xl overflow-hidden backdrop-blur-sm hover:border-zinc-700 transition-colors">
       {/* Header */}
-      <div className="flex items-center justify-between px-5 py-3 border-b border-zinc-800/50">
-        <div className="flex items-center gap-3">
+      <div className="flex items-center justify-between px-5 py-3 border-b border-zinc-800/50 gap-3 flex-wrap">
+        <div className="flex items-center gap-3 flex-wrap">
           <span className="text-xs font-medium text-zinc-500">
             {String(index).padStart(2, '0')} / {String(total).padStart(2, '0')}
           </span>
           {visual.title && (
             <span className="text-white font-medium text-sm">{visual.title}</span>
+          )}
+          {visual.is_3d && (
+            <span className="inline-flex items-center gap-1 text-[10px] uppercase tracking-wider px-2 py-0.5 rounded-full bg-gradient-to-r from-[#7928ca]/20 to-[#00d4ff]/20 text-[#00d4ff] border border-[#00d4ff]/20">
+              <Icon icon="solar:cube-linear" width={11} />
+              3D
+            </span>
+          )}
+          {dims && (
+            <span className="inline-flex items-center gap-1 text-xs text-zinc-400">
+              <Icon icon="solar:ruler-linear" width={13} className="text-[#00d4ff]" />
+              {dims}
+            </span>
           )}
         </div>
         <div className="flex items-center gap-1">
@@ -800,6 +871,15 @@ function BatVisualCard({ visual, index, total, onZoom, commentCount, onShowComme
               <Icon icon="solar:square-arrow-right-up-linear" width={16} />
               Ouvrir
             </a>
+          ) : visual.is_3d ? (
+            <button
+              type="button"
+              onClick={() => onZoom(visual)}
+              className="flex items-center gap-1.5 text-xs text-zinc-400 hover:text-white px-3 py-1.5 rounded-lg hover:bg-zinc-800 transition-colors"
+            >
+              <Icon icon="solar:full-screen-linear" width={16} />
+              Plein ecran
+            </button>
           ) : (
             <button
               type="button"
@@ -839,6 +919,37 @@ function BatVisualCard({ visual, index, total, onZoom, commentCount, onShowComme
             </div>
           </div>
         </a>
+      ) : visual.is_3d ? (
+        <div className="relative w-full bg-gradient-to-br from-[#0f0f1a] via-[#1a1530] to-[#0f1a25] aspect-square sm:aspect-[16/10]">
+          {modelViewerReady ? (
+            <model-viewer
+              src={visual.url}
+              alt={visual.title ?? `Modele 3D ${index}`}
+              auto-rotate
+              camera-controls
+              touch-action="pan-y"
+              shadow-intensity="1"
+              shadow-softness="0.8"
+              exposure="1.1"
+              environment-image="neutral"
+              rotation-per-second="20deg"
+              auto-rotate-delay="0"
+              interaction-prompt="when-focused"
+              loading="lazy"
+              style={{ width: '100%', height: '100%', background: 'transparent' }}
+            />
+          ) : (
+            <div className="absolute inset-0 flex items-center justify-center text-zinc-500 text-sm gap-2">
+              <Icon icon="solar:cube-linear" width={20} className="animate-pulse" />
+              Chargement du modele 3D...
+            </div>
+          )}
+          {/* Indicateur d interaction discret */}
+          <div className="absolute bottom-3 right-3 inline-flex items-center gap-1.5 text-[11px] text-zinc-400 bg-black/40 backdrop-blur px-2.5 py-1 rounded-full pointer-events-none">
+            <Icon icon="solar:hand-shake-linear" width={12} />
+            Tournez avec la souris
+          </div>
+        </div>
       ) : (
         <button
           type="button"
@@ -863,6 +974,26 @@ function BatVisualCard({ visual, index, total, onZoom, commentCount, onShowComme
       )}
     </article>
   );
+}
+
+// ============================================================
+// Format dimensions: returns "50 × 30 × 8 mm" or null
+// ============================================================
+function formatDimensions(visual: BatVisual): string | null {
+  const { dim_width_mm, dim_height_mm, dim_depth_mm, dim_unit } = visual;
+  if (!dim_width_mm && !dim_height_mm && !dim_depth_mm) return null;
+  const div = dim_unit === 'mm' ? 1 : 10;
+  const fmt = (mm: number | null) => {
+    if (mm === null) return null;
+    const v = mm / div;
+    // Pas de decimales inutiles
+    return Number.isInteger(v) ? String(v) : v.toFixed(1).replace(/\.0$/, '');
+  };
+  const parts = [fmt(dim_width_mm), fmt(dim_height_mm), fmt(dim_depth_mm)].filter(
+    (p): p is string => p !== null,
+  );
+  if (parts.length === 0) return null;
+  return `${parts.join(' × ')} ${dim_unit}`;
 }
 
 // ============================================================

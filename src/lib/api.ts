@@ -712,10 +712,15 @@ export interface BatVisual {
   url: string;
   mime_type: string;
   is_pdf: boolean;
+  is_3d: boolean;
   file_size: number;
   width: number | null;
   height: number | null;
   pages_count: number | null;
+  dim_width_mm: number | null;
+  dim_height_mm: number | null;
+  dim_depth_mm: number | null;
+  dim_unit: 'mm' | 'cm';
   title: string | null;
   caption: string | null;
 }
