@@ -15,12 +15,14 @@ interface Props {
 }
 
 const STATUS_LABEL: Record<BatPublic['status'], { text: string; color: string; icon: string }> = {
+  draft: { text: 'Brouillon (non envoye)', color: 'text-zinc-400', icon: 'solar:pen-linear' },
   sent: { text: 'En attente de votre validation', color: 'text-blue-400', icon: 'solar:clock-circle-linear' },
   viewed: { text: 'En cours de consultation', color: 'text-cyan-400', icon: 'solar:eye-linear' },
   commented: { text: 'Commentaires en cours', color: 'text-amber-400', icon: 'solar:chat-round-line-linear' },
   signed: { text: 'BAT signe', color: 'text-green-400', icon: 'solar:check-circle-bold' },
   revision_requested: { text: 'Revision demandee', color: 'text-orange-400', icon: 'solar:refresh-linear' },
   expired: { text: 'BAT expire', color: 'text-red-400', icon: 'solar:close-circle-linear' },
+  archived: { text: 'BAT archive', color: 'text-zinc-500', icon: 'solar:archive-linear' },
 };
 
 export default function BatClient({ bat }: Props) {
@@ -207,8 +209,14 @@ export default function BatClient({ bat }: Props) {
   const status = STATUS_LABEL[effectiveStatus] ?? STATUS_LABEL.sent;
   const firstName = bat.client.contact_name.trim().split(' ')[0] || '';
   const totalVisuals = bat.visuals.length;
-  const canSign = bat.config.require_signature && !hasSigned && effectiveStatus !== 'expired' && effectiveStatus !== 'revision_requested';
-  const canRequestRevision = !hasSigned
+  const isPreview = bat.is_preview;
+  const canSign = !isPreview
+    && bat.config.require_signature
+    && !hasSigned
+    && effectiveStatus !== 'expired'
+    && effectiveStatus !== 'revision_requested';
+  const canRequestRevision = !isPreview
+    && !hasSigned
     && effectiveStatus !== 'expired'
     && effectiveStatus !== 'revision_requested';
 
@@ -234,7 +242,14 @@ export default function BatClient({ bat }: Props) {
         </div>
       </header>
 
-      <main className="relative z-10 max-w-6xl mx-auto px-6 pt-28 pb-24">
+      {isPreview && (
+        <div className="fixed top-16 left-0 right-0 z-30 bg-gradient-to-r from-[#7928ca] via-[#ff2d55] to-[#00d4ff] text-white text-sm font-medium px-6 py-2.5 flex items-center justify-center gap-3 shadow-lg">
+          <Icon icon="solar:eye-linear" width={18} />
+          <span>Mode aper&ccedil;u (admin) &mdash; les actions sont desactivees, le client ne voit pas ce bandeau.</span>
+        </div>
+      )}
+
+      <main className={`relative z-10 max-w-6xl mx-auto px-6 ${isPreview ? 'pt-40' : 'pt-28'} pb-24`}>
         {/* HERO CINEMATIQUE */}
         <AuditScrollAnimator>
           <div className="text-center mb-16 md:mb-24">
@@ -481,7 +496,7 @@ export default function BatClient({ bat }: Props) {
       {/* LIGHTBOX */}
       {zoomVisual && (() => {
         const visualPins = pinsByVisual.get(zoomVisual.id) ?? [];
-        const canAnnotate = bat.config.allow_comments && !hasSigned && bat.status !== 'expired' && !zoomVisual.is_pdf && !zoomVisual.is_3d;
+        const canAnnotate = !isPreview && bat.config.allow_comments && !hasSigned && bat.status !== 'expired' && !zoomVisual.is_pdf && !zoomVisual.is_3d;
         return (
         <div
           className="fixed inset-0 z-50 bg-black/95 backdrop-blur-md flex flex-col"
@@ -701,7 +716,7 @@ export default function BatClient({ bat }: Props) {
       })()}
 
       {/* FAB commentaires (flottant en bas-droite) */}
-      {bat.config.allow_comments && !hasSigned && bat.status !== 'expired' && (
+      {!isPreview && bat.config.allow_comments && !hasSigned && bat.status !== 'expired' && (
         <button
           type="button"
           onClick={() => {

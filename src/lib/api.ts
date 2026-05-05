@@ -761,22 +761,26 @@ export interface BatPublic {
     allow_download: boolean;
   };
   status:
+    | 'draft'
     | 'sent'
     | 'viewed'
     | 'commented'
     | 'signed'
     | 'revision_requested'
-    | 'expired';
+    | 'expired'
+    | 'archived';
   current_version: number;
   expiry_date: string | null;
   sent_at: string | null;
   visuals: BatVisual[];
   comments: BatComment[];
   has_signed: boolean;
+  is_preview: boolean;
 }
 
-export async function getBatByToken(token: string): Promise<BatPublic> {
-  return fetchApi<BatPublic>(`bat.php?action=get&token=${encodeURIComponent(token)}`);
+export async function getBatByToken(token: string, preview?: string): Promise<BatPublic> {
+  const previewParam = preview ? `&preview=${encodeURIComponent(preview)}` : '';
+  return fetchApi<BatPublic>(`bat.php?action=get&token=${encodeURIComponent(token)}${previewParam}`);
 }
 
 export async function trackBatEvent(

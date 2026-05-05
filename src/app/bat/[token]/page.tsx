@@ -7,12 +7,14 @@ export const revalidate = 0; // Pas de cache : tracking de vue à chaque chargem
 
 interface PageProps {
   params: Promise<{ token: string }>;
+  searchParams: Promise<{ preview?: string }>;
 }
 
-export async function generateMetadata({ params }: PageProps) {
+export async function generateMetadata({ params, searchParams }: PageProps) {
   const { token } = await params;
+  const { preview } = await searchParams;
   try {
-    const bat = await getBatByToken(token);
+    const bat = await getBatByToken(token, preview);
     return {
       title: `${bat.title} | BAT iDkom`,
       description: `Bon a tirer pour ${bat.client.company}. Validez vos maquettes en ligne.`,
@@ -23,12 +25,13 @@ export async function generateMetadata({ params }: PageProps) {
   }
 }
 
-export default async function BatPublicPage({ params }: PageProps) {
+export default async function BatPublicPage({ params, searchParams }: PageProps) {
   const { token } = await params;
+  const { preview } = await searchParams;
 
   let bat;
   try {
-    bat = await getBatByToken(token);
+    bat = await getBatByToken(token, preview);
   } catch {
     notFound();
   }
