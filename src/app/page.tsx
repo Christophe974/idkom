@@ -172,30 +172,8 @@ export default async function Home() {
         }}
       />
 
-      {/* LocalBusiness Schema — carte d'identité de l'entreprise pour Google & les IA */}
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{
-          __html: JSON.stringify({
-            '@context': 'https://schema.org',
-            '@type': 'LocalBusiness',
-            '@id': 'https://www.idkom.fr/#organization',
-            name: data.site.name || 'iDkom',
-            description: data.site.description,
-            url: 'https://www.idkom.fr',
-            telephone: data.site.phone || undefined,
-            email: data.site.email || undefined,
-            foundingDate: '1996',
-            address: data.site.address
-              ? { '@type': 'PostalAddress', streetAddress: data.site.address, addressCountry: 'FR' }
-              : undefined,
-            areaServed: 'France',
-            sameAs: [data.social.linkedin, data.social.instagram, data.social.facebook].filter(Boolean),
-          }),
-        }}
-      />
-
-      {/* FAQPage Schema — réponses citables par Google et les IA */}
+      {/* FAQPage Schema — réponses citables par Google et les IA
+          (LocalBusiness/Organization déjà déclarés dans layout.tsx) */}
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{
