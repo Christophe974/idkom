@@ -11,6 +11,29 @@ import CTASection from '@/components/CTASection';
 
 export const revalidate = 300; // Revalidate every 5 minutes
 
+const faqs = [
+  {
+    q: 'Où intervient iDkom ?',
+    a: 'Basés à Montbéliard, nous réalisons des stands et des animations événementielles en Franche-Comté, dans le Grand Est et partout en France.',
+  },
+  {
+    q: 'Quels types de stands proposez-vous ?',
+    a: 'Des stands modulaires BeMatrix sur-mesure, du petit stand au grand espace, réutilisables salon après salon et entièrement personnalisables.',
+  },
+  {
+    q: 'Quels sont les délais pour un stand ou une animation ?',
+    a: 'Selon le projet, comptez généralement de 3 à 6 semaines. Pour un salon daté, contactez-nous au plus tôt afin de sécuriser la production et le montage.',
+  },
+  {
+    q: 'Proposez-vous des animations digitales ?',
+    a: 'Oui : photobooth IA, bar à goodies connecté, kermesse 2.0, bornes et expériences interactives entièrement brandées à vos couleurs.',
+  },
+  {
+    q: 'Comment obtenir un devis ?',
+    a: 'Décrivez-nous votre projet via notre formulaire de contact ou par téléphone : nous revenons vers vous rapidement avec une proposition adaptée.',
+  },
+];
+
 export default async function Home() {
   const [data, cities] = await Promise.all([
     getHomepageData(),
@@ -85,6 +108,32 @@ export default async function Home() {
           </section>
         )}
 
+        {/* FAQ */}
+        <section id="faq" className="mt-24 max-w-3xl mx-auto">
+          <div className="text-center mb-10">
+            <h2 className="text-3xl md:text-4xl font-bold text-white">Questions fréquentes</h2>
+            <p className="text-zinc-500 mt-2">Stands, animations, délais, zone d&apos;intervention — l&apos;essentiel en quelques réponses</p>
+          </div>
+          <div className="space-y-3">
+            {faqs.map((f, i) => (
+              <details
+                key={i}
+                className="group rounded-2xl bg-zinc-900/50 border border-white/10 p-5 [&_summary::-webkit-details-marker]:hidden"
+              >
+                <summary className="flex items-center justify-between cursor-pointer list-none text-white font-medium">
+                  {f.q}
+                  <Icon
+                    icon="solar:alt-arrow-down-linear"
+                    width={20}
+                    className="text-zinc-500 transition-transform group-open:rotate-180"
+                  />
+                </summary>
+                <p className="text-zinc-400 mt-3 leading-relaxed">{f.a}</p>
+              </details>
+            ))}
+          </div>
+        </section>
+
         {/* CTA Final */}
         <CTASection phone={data.site.phone} />
       </main>
@@ -119,6 +168,45 @@ export default async function Home() {
               { '@type': 'ListItem', position: 5, name: 'Catalogue BeMatrix', url: 'https://www.idkom.fr/catalogue' },
               { '@type': 'ListItem', position: 6, name: 'Contact', url: 'https://www.idkom.fr/contact' },
             ],
+          }),
+        }}
+      />
+
+      {/* LocalBusiness Schema — carte d'identité de l'entreprise pour Google & les IA */}
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify({
+            '@context': 'https://schema.org',
+            '@type': 'LocalBusiness',
+            '@id': 'https://www.idkom.fr/#organization',
+            name: data.site.name || 'iDkom',
+            description: data.site.description,
+            url: 'https://www.idkom.fr',
+            telephone: data.site.phone || undefined,
+            email: data.site.email || undefined,
+            foundingDate: '1996',
+            address: data.site.address
+              ? { '@type': 'PostalAddress', streetAddress: data.site.address, addressCountry: 'FR' }
+              : undefined,
+            areaServed: 'France',
+            sameAs: [data.social.linkedin, data.social.instagram, data.social.facebook].filter(Boolean),
+          }),
+        }}
+      />
+
+      {/* FAQPage Schema — réponses citables par Google et les IA */}
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify({
+            '@context': 'https://schema.org',
+            '@type': 'FAQPage',
+            mainEntity: faqs.map((f) => ({
+              '@type': 'Question',
+              name: f.q,
+              acceptedAnswer: { '@type': 'Answer', text: f.a },
+            })),
           }),
         }}
       />
