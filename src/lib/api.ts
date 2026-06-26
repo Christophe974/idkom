@@ -572,27 +572,42 @@ export interface BookingResult {
   };
 }
 
+// Rendez-vous — servi par l'endpoint CRM (Supabase + iCal + Brevo).
 export async function getBookingSettings(): Promise<BookingSettings> {
-  return fetchApi<BookingSettings>('bookings.php?action=settings');
+  const res = await fetch(`${CRM_URL}/api/booking?action=settings`, { cache: 'no-store' });
+  if (!res.ok) throw new Error('Booking settings indisponibles');
+  return res.json();
 }
 
 export async function getAvailableDates(month: string): Promise<{ month: string; dates: DateAvailability[] }> {
-  return fetchApi<{ month: string; dates: DateAvailability[] }>(
-    `bookings.php?action=available_dates&month=${month}`
-  );
+  const res = await fetch(`${CRM_URL}/api/booking?action=available_dates&month=${month}`, { cache: 'no-store' });
+  if (!res.ok) throw new Error('Dates indisponibles');
+  return res.json();
 }
 
 export async function getAvailableSlots(date: string): Promise<{ date: string; slots: TimeSlot[] }> {
-  return fetchApi<{ date: string; slots: TimeSlot[] }>(
-    `bookings.php?action=availability&date=${date}`
-  );
+  const res = await fetch(`${CRM_URL}/api/booking?action=availability&date=${date}`, { cache: 'no-store' });
+  if (!res.ok) throw new Error('Créneaux indisponibles');
+  return res.json();
 }
 
 export async function submitBooking(data: BookingFormData): Promise<BookingResult> {
-  return fetchApi<BookingResult>('bookings.php?action=book', {
+  const res = await fetch(`${CRM_URL}/api/booking`, {
     method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify(data),
+    cache: 'no-store',
   });
+  const json = (await res.json().catch(() => null)) as (BookingResult & { error?: string }) | null;
+  if (!res.ok || !json) throw new Error(json?.error || `Booking API ${res.status}`);
+  return json;
+}
+
+export async function cancelBooking(token: string): Promise<{ message: string }> {
+  const res = await fetch(`${CRM_URL}/api/booking?action=cancel&token=${encodeURIComponent(token)}`, { cache: 'no-store' });
+  const json = (await res.json().catch(() => null)) as { ok?: boolean; message?: string; error?: string } | null;
+  if (!res.ok || !json?.ok) throw new Error(json?.error || 'Annulation impossible');
+  return { message: json.message || 'Rendez-vous annulé.' };
 }
 
 // ============================================================
