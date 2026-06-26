@@ -183,9 +183,86 @@ async function fetchApi<T>(endpoint: string, options?: RequestInit): Promise<T> 
   }
 }
 
-// Homepage
+// Homepage — assemblé depuis Supabase (réglages + vedettes + témoignages + dernier article + catégories).
+// Forme identique à homepage.php → tous les composants (dont les footers de chaque page) restent inchangés.
+const num = (v: string | undefined) => {
+  const n = Number(v);
+  return Number.isFinite(n) ? n : 0;
+};
+
 export async function getHomepageData(): Promise<HomepageData> {
-  return fetchApi<HomepageData>('homepage.php');
+  const [settingsRes, featuredRes, testiRes, latestRes, catRes, projCatRes] = await Promise.all([
+    supabase.from('cms_settings').select('setting_key,setting_value'),
+    supabase
+      .from('cms_projets')
+      .select(PROJET_BASE_FIELDS + ',stats')
+      .eq('status', 'published')
+      .eq('is_featured', true)
+      .order('featured_order')
+      .order('published_at', { ascending: false }),
+    supabase
+      .from('cms_testimonials')
+      .select('legacy_id,quote,author_name,author_role,author_company,rating,is_featured,sort_order')
+      .eq('is_active', true)
+      .order('is_featured', { ascending: false })
+      .order('sort_order'),
+    supabase.from('cms_blog').select(BLOG_SELECT).eq('status', 'published').order('published_at', { ascending: false }).limit(1),
+    supabase.from('cms_categories').select('id,legacy_id,name,slug,color,icon,type'),
+    supabase.from('cms_projets').select('category_id').eq('status', 'published'),
+  ]);
+
+  const s: Record<string, string> = Object.fromEntries(
+    ((settingsRes.data ?? []) as any[]).map((r) => [r.setting_key, r.setting_value ?? ''])
+  );
+
+  const site: SiteSettings = {
+    name: s.site_name || 'iDkom',
+    tagline: s.site_tagline || '',
+    description: s.site_description || '',
+    email: s.site_email || '',
+    phone: s.site_phone || '',
+    address: s.site_address || '',
+  };
+  const stats: Stats = {
+    years: num(s.stat_years),
+    projects: num(s.stat_projects),
+    clients: num(s.stat_clients),
+    goodies: num(s.stat_goodies),
+    lines_of_code: num(s.stat_lines_of_code),
+  };
+  const social: Social = { linkedin: s.social_linkedin || '', instagram: s.social_instagram || '', facebook: s.social_facebook || '' };
+  const colors: Colors = {
+    primary: s.color_primary || '#ff2d55',
+    secondary: s.color_secondary || '#7928ca',
+    accent: s.color_accent || '#00d4ff',
+  };
+
+  const featured_projets = ((featuredRes.data ?? []) as any[]).map((r) => {
+    const p = mapProjetBase(r);
+    p.stats = r.stats && typeof r.stats === 'object' ? r.stats : undefined;
+    return p;
+  });
+
+  const testimonials: Testimonial[] = ((testiRes.data ?? []) as any[]).map((t) => ({
+    id: t.legacy_id ?? 0,
+    quote: t.quote,
+    author: { name: t.author_name, role: t.author_role ?? '', company: t.author_company ?? '' },
+    rating: t.rating ?? undefined,
+  }));
+
+  const latestRow = (latestRes.data ?? [])[0];
+  const latest_blog = latestRow ? mapBlog(latestRow) : ({} as BlogArticle);
+
+  // Comptage des réalisations publiées par catégorie (pour les filtres /realisations + la home)
+  const counts = new Map<string, number>();
+  for (const r of (projCatRes.data ?? []) as any[]) {
+    if (r.category_id) counts.set(r.category_id, (counts.get(r.category_id) ?? 0) + 1);
+  }
+  const categories: Category[] = ((catRes.data ?? []) as any[])
+    .map((c, idx) => ({ id: c.legacy_id ?? idx + 1, name: c.name, slug: c.slug, color: c.color, icon: c.icon ?? undefined, count: counts.get(c.id) ?? 0 }))
+    .filter((c) => (c.count ?? 0) > 0);
+
+  return { site, stats, social, colors, featured_projets, testimonials, latest_blog, categories };
 }
 
 // Projets / Réalisations — servi depuis Supabase (cms_projets). Forme identique à l'API PHP.
