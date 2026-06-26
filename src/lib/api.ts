@@ -1,7 +1,6 @@
 import { supabase } from './supabase';
 
 const API_URL = process.env.NEXT_PUBLIC_API_URL || 'https://api.idkom.fr';
-const CRM_URL = process.env.NEXT_PUBLIC_CRM_URL || 'https://crm.idkom.fr';
 
 export interface SiteSettings {
   name: string;
@@ -468,7 +467,7 @@ export interface ContactFormData {
 
 export async function submitContactForm(data: ContactFormData): Promise<void> {
   // Posté vers l'endpoint public du CRM (insert Supabase + notification Brevo).
-  const res = await fetch(`${CRM_URL}/api/contact`, {
+  const res = await fetch(`/api/contact`, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify(data),
@@ -574,25 +573,25 @@ export interface BookingResult {
 
 // Rendez-vous — servi par l'endpoint CRM (Supabase + iCal + Brevo).
 export async function getBookingSettings(): Promise<BookingSettings> {
-  const res = await fetch(`${CRM_URL}/api/booking?action=settings`, { cache: 'no-store' });
+  const res = await fetch(`/api/booking?action=settings`, { cache: 'no-store' });
   if (!res.ok) throw new Error('Booking settings indisponibles');
   return res.json();
 }
 
 export async function getAvailableDates(month: string): Promise<{ month: string; dates: DateAvailability[] }> {
-  const res = await fetch(`${CRM_URL}/api/booking?action=available_dates&month=${month}`, { cache: 'no-store' });
+  const res = await fetch(`/api/booking?action=available_dates&month=${month}`, { cache: 'no-store' });
   if (!res.ok) throw new Error('Dates indisponibles');
   return res.json();
 }
 
 export async function getAvailableSlots(date: string): Promise<{ date: string; slots: TimeSlot[] }> {
-  const res = await fetch(`${CRM_URL}/api/booking?action=availability&date=${date}`, { cache: 'no-store' });
+  const res = await fetch(`/api/booking?action=availability&date=${date}`, { cache: 'no-store' });
   if (!res.ok) throw new Error('Créneaux indisponibles');
   return res.json();
 }
 
 export async function submitBooking(data: BookingFormData): Promise<BookingResult> {
-  const res = await fetch(`${CRM_URL}/api/booking`, {
+  const res = await fetch(`/api/booking`, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify(data),
@@ -604,7 +603,7 @@ export async function submitBooking(data: BookingFormData): Promise<BookingResul
 }
 
 export async function cancelBooking(token: string): Promise<{ message: string }> {
-  const res = await fetch(`${CRM_URL}/api/booking?action=cancel&token=${encodeURIComponent(token)}`, { cache: 'no-store' });
+  const res = await fetch(`/api/booking?action=cancel&token=${encodeURIComponent(token)}`, { cache: 'no-store' });
   const json = (await res.json().catch(() => null)) as { ok?: boolean; message?: string; error?: string } | null;
   if (!res.ok || !json?.ok) throw new Error(json?.error || 'Annulation impossible');
   return { message: json.message || 'Rendez-vous annulé.' };
