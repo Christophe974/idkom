@@ -1,3 +1,5 @@
+import { supabase } from './supabase';
+
 const API_URL = process.env.NEXT_PUBLIC_API_URL || 'https://api.idkom.fr';
 
 export interface SiteSettings {
@@ -209,7 +211,40 @@ export async function getProjetBySlug(slug: string): Promise<Projet> {
   return fetchApi<Projet>(`projets.php?slug=${slug}`);
 }
 
-// Blog
+// Blog — servi depuis Supabase (cms_blog). Forme identique à l'ancienne API PHP.
+const BLOG_SELECT =
+  'legacy_id,title,slug,excerpt,content,reading_time,published_at,author_name,views_count,meta_title,meta_description,' +
+  'category:cms_categories(name,color,slug),' +
+  'media:cms_medias!cms_blog_featured_image_id_fkey(url,alt_text,width,height)';
+
+function one<T>(v: T | T[] | null | undefined): T | undefined {
+  return Array.isArray(v) ? v[0] : (v ?? undefined);
+}
+
+function mapBlog(r: any): BlogArticle {
+  const m = one<any>(r.media);
+  const c = one<any>(r.category);
+  const image = m ? { url: m.url, alt: m.alt_text || undefined } : undefined;
+  return {
+    id: r.legacy_id ?? 0,
+    title: r.title,
+    slug: r.slug,
+    excerpt: r.excerpt ?? '',
+    content: r.content ?? undefined,
+    reading_time: r.reading_time ?? 0,
+    published_at: r.published_at ?? '',
+    category: c ? { name: c.name, color: c.color } : undefined,
+    image,
+    featured_image: m
+      ? { url: m.url, alt: m.alt_text || undefined, width: m.width ?? undefined, height: m.height ?? undefined }
+      : undefined,
+    author_name: r.author_name ?? undefined,
+    views_count: r.views_count ?? 0,
+    meta_title: r.meta_title ?? undefined,
+    meta_description: r.meta_description ?? undefined,
+  };
+}
+
 export async function getBlogArticles(options?: {
   featured?: boolean;
   category?: string;
@@ -217,20 +252,39 @@ export async function getBlogArticles(options?: {
   page?: number;
   per_page?: number;
 }): Promise<BlogArticle[]> {
-  const params = new URLSearchParams();
-  if (options?.featured) params.set('featured', '1');
-  if (options?.category) params.set('category', options.category);
-  if (options?.limit) params.set('limit', options.limit.toString());
-  if (options?.page) params.set('page', options.page.toString());
-  if (options?.per_page) params.set('per_page', options.per_page.toString());
+  let q = supabase
+    .from('cms_blog')
+    .select(BLOG_SELECT)
+    .eq('status', 'published')
+    .order('published_at', { ascending: false });
 
-  const query = params.toString() ? `?${params.toString()}` : '';
-  return fetchApi<BlogArticle[]>(`blog.php${query}`);
+  if (options?.featured) q = q.eq('is_featured', true);
+  const limit = options?.per_page ?? options?.limit;
+  if (limit) q = q.limit(limit);
+
+  const { data, error } = await q;
+  if (error) throw error;
+  let raw = (data ?? []) as any[];
+  if (options?.category) {
+    raw = raw.filter((r) => one<any>(r.category)?.slug === options.category);
+  }
+  return raw.map(mapBlog);
 }
 
 export async function getBlogArticleBySlug(slug: string, options?: { notrack?: boolean }): Promise<BlogArticle> {
-  const qs = options?.notrack ? `&notrack=1` : '';
-  return fetchApi<BlogArticle>(`blog.php?slug=${slug}${qs}`);
+  const { data, error } = await supabase
+    .from('cms_blog')
+    .select(BLOG_SELECT)
+    .eq('slug', slug)
+    .eq('status', 'published')
+    .maybeSingle();
+  if (error) throw error;
+  if (!data) throw new Error(`Article introuvable: ${slug}`);
+  if (!options?.notrack) {
+    // Incrément des vues (fire-and-forget, ne bloque pas le rendu)
+    supabase.rpc('cms_blog_increment_views', { p_slug: slug }).then(undefined, () => {});
+  }
+  return mapBlog(data);
 }
 
 // Menus
@@ -487,6 +541,8 @@ export interface Proposition {
   issue_city: string | null;
   issue_date: string | null;
   validity_days: number;
+  /** true = propale revendeur (marque blanche) : on masque toute mention iDkom/Brévilliers */
+  is_reseller: boolean;
   reseller: {
     company: string;
     contact: string;
