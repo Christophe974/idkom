@@ -188,7 +188,38 @@ export async function getHomepageData(): Promise<HomepageData> {
   return fetchApi<HomepageData>('homepage.php');
 }
 
-// Projets
+// Projets / Réalisations — servi depuis Supabase (cms_projets). Forme identique à l'API PHP.
+const PROJET_BASE_FIELDS =
+  'legacy_id,title,slug,excerpt,client_name,location,surface,event_name,project_date,meta_title,meta_description,is_featured,published_at,' +
+  'category:cms_categories(id,name,color,slug,icon),' +
+  'media:cms_medias!cms_projets_featured_image_id_fkey(url,alt_text,width,height)';
+const PROJET_DETAIL_SELECT =
+  PROJET_BASE_FIELDS + ',content,stats,gallery,testimonial_text,testimonial_author,testimonial_role';
+
+function mapProjetBase(r: any): Projet {
+  const m = one<any>(r.media);
+  const c = one<any>(r.category);
+  const image = m ? { url: m.url, alt: m.alt_text || undefined } : undefined;
+  return {
+    id: r.legacy_id ?? 0,
+    title: r.title,
+    slug: r.slug,
+    excerpt: r.excerpt ?? '',
+    client_name: r.client_name ?? '',
+    location: r.location ?? '',
+    surface: r.surface ?? undefined,
+    event_name: r.event_name ?? undefined,
+    project_date: r.project_date ?? undefined,
+    category: c ? { id: 0, name: c.name, slug: c.slug, color: c.color, icon: c.icon ?? undefined } : undefined,
+    image,
+    featured_image: m
+      ? { url: m.url, alt: m.alt_text || undefined, width: m.width ?? undefined, height: m.height ?? undefined }
+      : undefined,
+    meta_title: r.meta_title ?? undefined,
+    meta_description: r.meta_description ?? undefined,
+  };
+}
+
 export async function getProjets(options?: {
   featured?: boolean;
   category?: string;
@@ -196,19 +227,57 @@ export async function getProjets(options?: {
   page?: number;
   per_page?: number;
 }): Promise<Projet[]> {
-  const params = new URLSearchParams();
-  if (options?.featured) params.set('featured', '1');
-  if (options?.category) params.set('category', options.category);
-  if (options?.limit) params.set('limit', options.limit.toString());
-  if (options?.page) params.set('page', options.page.toString());
-  if (options?.per_page) params.set('per_page', options.per_page.toString());
+  let q = supabase
+    .from('cms_projets')
+    .select(PROJET_BASE_FIELDS)
+    .eq('status', 'published')
+    .order('published_at', { ascending: false });
 
-  const query = params.toString() ? `?${params.toString()}` : '';
-  return fetchApi<Projet[]>(`projets.php${query}`);
+  if (options?.featured) q = q.eq('is_featured', true);
+  const limit = options?.per_page ?? options?.limit;
+  if (limit) q = q.limit(limit);
+
+  const { data, error } = await q;
+  if (error) throw error;
+  let raw = (data ?? []) as any[];
+  if (options?.category) {
+    raw = raw.filter((r) => one<any>(r.category)?.slug === options.category);
+  }
+  return raw.map(mapProjetBase);
 }
 
 export async function getProjetBySlug(slug: string): Promise<Projet> {
-  return fetchApi<Projet>(`projets.php?slug=${slug}`);
+  const { data, error } = await supabase
+    .from('cms_projets')
+    .select(PROJET_DETAIL_SELECT)
+    .eq('slug', slug)
+    .eq('status', 'published')
+    .maybeSingle();
+  if (error) throw error;
+  if (!data) throw new Error(`Réalisation introuvable: ${slug}`);
+
+  const projet = mapProjetBase(data);
+  const r = data as any;
+  projet.content = r.content ?? undefined;
+  projet.stats = r.stats && typeof r.stats === 'object' ? r.stats : undefined;
+  if (r.testimonial_text) {
+    projet.testimonial = {
+      quote: r.testimonial_text,
+      author: r.testimonial_author ?? '',
+      role: r.testimonial_role ?? undefined,
+    };
+  }
+  // Galerie : tableau d'UUID de médias -> [{url, alt}] en préservant l'ordre
+  const gids: string[] = Array.isArray(r.gallery) ? r.gallery : [];
+  if (gids.length) {
+    const { data: gm } = await supabase.from('cms_medias').select('id,url,alt_text').in('id', gids);
+    const byId = new Map((gm ?? []).map((x: any) => [x.id, x]));
+    projet.gallery = gids
+      .map((id) => byId.get(id))
+      .filter(Boolean)
+      .map((x: any) => ({ url: x.url, alt: x.alt_text || undefined }));
+  }
+  return projet;
 }
 
 // Blog — servi depuis Supabase (cms_blog). Forme identique à l'ancienne API PHP.
