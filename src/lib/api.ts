@@ -1,6 +1,7 @@
 import { supabase } from './supabase';
 
 const API_URL = process.env.NEXT_PUBLIC_API_URL || 'https://api.idkom.fr';
+const CRM_URL = process.env.NEXT_PUBLIC_CRM_URL || 'https://crm.idkom.fr';
 
 export interface SiteSettings {
   name: string;
@@ -465,11 +466,18 @@ export interface ContactFormData {
   source?: string;
 }
 
-export async function submitContactForm(data: ContactFormData): Promise<{ message: string; id: number }> {
-  return fetchApi<{ message: string; id: number }>('contact.php', {
+export async function submitContactForm(data: ContactFormData): Promise<void> {
+  // Posté vers l'endpoint public du CRM (insert Supabase + notification Brevo).
+  const res = await fetch(`${CRM_URL}/api/contact`, {
     method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify(data),
+    cache: 'no-store',
   });
+  const json = (await res.json().catch(() => null)) as { ok?: boolean; error?: string } | null;
+  if (!res.ok || !json?.ok) {
+    throw new Error(json?.error || `Contact API ${res.status}`);
+  }
 }
 
 // ============================================================
