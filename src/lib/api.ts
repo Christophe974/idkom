@@ -861,16 +861,67 @@ export interface CityPage {
   }[];
 }
 
+// Villes (SEO local) — servi depuis Supabase (cms_city_pages). Forme identique à city-pages.php.
 export async function getCityPages(): Promise<CityPageListItem[]> {
-  try {
-    return await fetchApi<CityPageListItem[]>('city-pages.php');
-  } catch {
-    return [];
-  }
+  const { data, error } = await supabase
+    .from('cms_city_pages')
+    .select('slug,city_name,department,department_code,region,meta_description,updated_at')
+    .eq('status', 'published')
+    .order('sort_order');
+  if (error) return [];
+  return ((data ?? []) as any[]).map((c) => ({
+    slug: c.slug,
+    city_name: c.city_name,
+    department: c.department ?? '',
+    department_code: c.department_code ?? '',
+    region: c.region ?? '',
+    description: c.meta_description ?? null,
+    updated_at: c.updated_at ?? '',
+  }));
 }
 
 export async function getCityPageBySlug(slug: string): Promise<CityPage> {
-  return fetchApi<CityPage>(`city-pages.php?slug=${encodeURIComponent(slug)}`);
+  const { data, error } = await supabase
+    .from('cms_city_pages')
+    .select(
+      'legacy_id,slug,city_name,department,department_code,region,intro_text,concepts,venues,local_clients,transport_info,faq,meta_title,meta_description,updated_at'
+    )
+    .eq('slug', slug)
+    .eq('status', 'published')
+    .maybeSingle();
+  if (error) throw error;
+  if (!data) throw new Error(`Ville introuvable: ${slug}`);
+  const r = data as any;
+
+  const { data: others } = await supabase
+    .from('cms_city_pages')
+    .select('slug,city_name,department,department_code')
+    .eq('status', 'published')
+    .neq('slug', slug)
+    .order('sort_order');
+
+  return {
+    id: r.legacy_id ?? 0,
+    slug: r.slug,
+    city_name: r.city_name,
+    department: r.department ?? '',
+    department_code: r.department_code ?? '',
+    region: r.region ?? '',
+    intro_text: r.intro_text ?? null,
+    concepts: Array.isArray(r.concepts) ? r.concepts : null,
+    venues: Array.isArray(r.venues) ? r.venues : null,
+    local_clients: r.local_clients ?? null,
+    transport_info: r.transport_info ?? null,
+    faq: Array.isArray(r.faq) ? r.faq : null,
+    seo: { title: r.meta_title ?? '', description: r.meta_description ?? '' },
+    updated_at: r.updated_at ?? '',
+    other_cities: ((others ?? []) as any[]).map((o) => ({
+      slug: o.slug,
+      city_name: o.city_name,
+      department: o.department ?? '',
+      department_code: o.department_code ?? '',
+    })),
+  };
 }
 
 // ============================================================
