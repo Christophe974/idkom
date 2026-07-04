@@ -203,9 +203,11 @@ export default function PropositionPage({ proposition: prop, slug }: { propositi
                 className="h-10 md:h-12 w-auto"
               />
             )}
-            <span className="text-zinc-500 text-[10px] uppercase tracking-[0.25em] text-center">
-              Agence Événementielle &amp; Solutions Digitales
-            </span>
+            {!prop.is_reseller && (
+              <span className="text-zinc-500 text-[10px] uppercase tracking-[0.25em] text-center">
+                Agence Événementielle &amp; Solutions Digitales
+              </span>
+            )}
           </div>
 
           {/* Kicker */}
@@ -623,7 +625,9 @@ export default function PropositionPage({ proposition: prop, slug }: { propositi
 
         {/* Footer */}
         <footer className="text-center py-10 border-t border-zinc-900 text-xs text-zinc-600 space-y-2">
-          <div>iDkom — Agence Événementielle &amp; Solutions Digitales &middot; Brévilliers, Franche-Comté</div>
+          {!prop.is_reseller && (
+            <div>iDkom — Agence Événementielle &amp; Solutions Digitales &middot; Brévilliers, Franche-Comté</div>
+          )}
           {prop.proposal_ref && prop.issue_date && (
             <div>Proposition {prop.proposal_ref} &middot; valable {prop.validity_days} jours à compter du {formatDate(prop.issue_date)}</div>
           )}

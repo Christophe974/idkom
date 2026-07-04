@@ -73,6 +73,56 @@ export default async function Home() {
           </div>
         </section>
 
+        {/* Section Boutique en ligne */}
+        <section id="boutique" className="mt-24">
+          <div className="relative overflow-hidden rounded-3xl border border-white/10 bg-gradient-to-br from-zinc-900 to-black p-8 md:p-12">
+            {/* halos décoratifs */}
+            <div className="pointer-events-none absolute -right-24 -top-24 h-72 w-72 rounded-full bg-[#ff2d55]/20 blur-3xl" />
+            <div className="pointer-events-none absolute -bottom-28 -left-20 h-72 w-72 rounded-full bg-[#7928ca]/20 blur-3xl" />
+
+            <div className="relative grid gap-10 md:grid-cols-2 md:items-center">
+              <div>
+                <span className="inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/5 px-3 py-1 text-xs font-medium text-[#ff2d55]">
+                  <Icon icon="solar:bag-smile-bold" width={14} /> Nouveau · Boutique en ligne
+                </span>
+                <h2 className="mt-4 text-3xl md:text-4xl font-bold text-white">La boutique iDkom</h2>
+                <p className="mt-3 text-zinc-400 leading-relaxed">
+                  Des <strong className="text-zinc-200">porte-clés NFC personnalisés</strong>, imprimés en 3D en France :
+                  au nom de votre cheval (carnet de bord connecté) ou aux couleurs de votre entreprise
+                  (carte de visite connectée). Un scan, et toutes vos infos apparaissent.
+                </p>
+                <ul className="mt-5 grid grid-cols-2 gap-2 text-sm text-zinc-300">
+                  <li className="flex items-center gap-2"><Icon icon="solar:hand-heart-linear" className="text-[#ff2d55]" width={17} /> Fait main en France</li>
+                  <li className="flex items-center gap-2"><Icon icon="solar:tag-horizontal-linear" className="text-[#ff2d55]" width={17} /> Puce NFC incluse</li>
+                  <li className="flex items-center gap-2"><Icon icon="solar:lock-keyhole-minimalistic-linear" className="text-[#ff2d55]" width={17} /> Paiement sécurisé</li>
+                  <li className="flex items-center gap-2"><Icon icon="solar:box-linear" className="text-[#ff2d55]" width={17} /> Livraison en France</li>
+                </ul>
+                <a
+                  href="https://boutique.idkom.fr"
+                  className="group mt-7 inline-flex items-center gap-2 rounded-full bg-gradient-to-r from-[#ff2d55] to-[#7928ca] px-6 py-3 text-sm font-semibold text-white transition-transform hover:scale-[1.03]"
+                >
+                  Découvrir la boutique
+                  <ArrowRightIcon className="group-hover:translate-x-1 transition-transform" size={16} />
+                </a>
+              </div>
+
+              {/* Deux univers */}
+              <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
+                <a href="https://boutique.idkom.fr" className="group rounded-2xl border border-white/10 bg-white/[0.03] p-5 transition-all hover:border-[#ff2d55]/40 hover:bg-white/[0.06]">
+                  <span className="flex h-11 w-11 items-center justify-center rounded-xl bg-[#ff2d55]/15 text-[#ff2d55]"><Icon icon="solar:magic-stick-3-bold" width={22} /></span>
+                  <h3 className="mt-3 font-semibold text-white">Porte-clé cheval</h3>
+                  <p className="mt-1 text-sm text-zinc-500">Au nom de votre cheval, sa fiche connectée : santé, contacts, journal de bord.</p>
+                </a>
+                <a href="https://boutique.idkom.fr" className="group rounded-2xl border border-white/10 bg-white/[0.03] p-5 transition-all hover:border-[#7928ca]/40 hover:bg-white/[0.06]">
+                  <span className="flex h-11 w-11 items-center justify-center rounded-xl bg-[#7928ca]/15 text-[#a855f7]"><Icon icon="solar:buildings-2-bold" width={22} /></span>
+                  <h3 className="mt-3 font-semibold text-white">Porte-clé entreprise</h3>
+                  <p className="mt-1 text-sm text-zinc-500">Votre logo, une puce NFC : carte de visite connectée que l&apos;on scanne d&apos;un geste.</p>
+                </a>
+              </div>
+            </div>
+          </div>
+        </section>
+
         {/* Section Animations par ville */}
         {cities.length > 0 && (
           <section className="mt-24">
