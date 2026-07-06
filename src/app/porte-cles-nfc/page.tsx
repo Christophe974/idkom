@@ -5,6 +5,7 @@ import { getHomepageData } from '@/lib/api';
 import NavbarServer from '@/components/NavbarServer';
 import FooterServer from '@/components/FooterServer';
 import AmbientBackground from '@/components/AmbientBackground';
+import PorteCleRealisations from '@/components/PorteCleRealisations';
 
 async function FooterWithData() {
   const homeData = await getHomepageData();
@@ -244,6 +245,20 @@ export default function PorteClesNFCPage() {
               </div>
             ))}
           </div>
+        </section>
+
+        {/* ===== RÉALISATIONS ===== */}
+        <section className="py-16">
+          <div className="max-w-6xl mx-auto px-6 text-center mb-10">
+            <span className="mb-3 inline-flex items-center gap-2 rounded-full border border-white/15 bg-white/5 px-4 py-1.5 text-xs font-semibold text-zinc-300">
+              <Icon icon="solar:cup-star-bold" width={14} className="text-[#ff2d55]" /> Fabriqués dans notre atelier
+            </span>
+            <h2 className="text-3xl md:text-4xl font-bold text-white">Ils ont laissé une empreinte, pas un bout de carton.</h2>
+            <p className="mx-auto mt-3 max-w-xl text-zinc-400">
+              Chaque création est unique. Aux couleurs de l&apos;entreprise. Imaginée pour être conservée.
+            </p>
+          </div>
+          <PorteCleRealisations />
         </section>
 
         {/* ===== LA CARTE DIGITALE (networking) ===== */}
