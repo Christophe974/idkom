@@ -140,9 +140,50 @@ const faqItems = [
   },
 ];
 
+// Données structurées (JSON-LD) — FAQPage + Product pour les rich results Google
+const faqJsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'FAQPage',
+  mainEntity: faqItems.map((item) => ({
+    '@type': 'Question',
+    name: item.question,
+    acceptedAnswer: { '@type': 'Answer', text: item.answer },
+  })),
+};
+
+const productJsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'Product',
+  name: 'Porte-clés NFC personnalisé pour entreprise',
+  description:
+    "Porte-clé NFC au logo de votre entreprise, imprimé en 3D en France. Une puce sans contact ouvre votre carte de visite connectée : coordonnées, site, réseaux — toujours à jour, en un scan.",
+  image: 'https://www.idkom.fr/images/porte-cle-nfc-hero.png',
+  url: 'https://www.idkom.fr/porte-cles-nfc',
+  category: 'Objet publicitaire connecté',
+  brand: { '@type': 'Brand', name: 'iDkom' },
+  manufacturer: { '@type': 'Organization', name: 'iDkom', url: 'https://www.idkom.fr' },
+  areaServed: { '@type': 'Country', name: 'France' },
+  // TODO prix : renseigner le tarif « à partir de » pour activer les rich results Offer
+  // offers: {
+  //   '@type': 'AggregateOffer',
+  //   priceCurrency: 'EUR',
+  //   lowPrice: 'XX.XX',
+  //   availability: 'https://schema.org/InStock',
+  //   url: 'https://boutique.idkom.fr/boutique-pro',
+  // },
+};
+
 export default function PorteClesNFCPage() {
   return (
     <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd) }}
+      />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(productJsonLd) }}
+      />
       <AmbientBackground />
       <NavbarServer />
 

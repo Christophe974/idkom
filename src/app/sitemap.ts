@@ -87,6 +87,24 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       priority: 0.9,
     },
     {
+      url: `${BASE_URL}/porte-cles-nfc`,
+      lastModified: new Date("2026-07-06"),
+      changeFrequency: "weekly",
+      priority: 0.9,
+    },
+    {
+      url: `${BASE_URL}/carte-de-visite-nfc`,
+      lastModified: new Date("2026-07-06"),
+      changeFrequency: "monthly",
+      priority: 0.7,
+    },
+    {
+      url: `${BASE_URL}/boutique`,
+      lastModified: new Date("2026-07-06"),
+      changeFrequency: "weekly",
+      priority: 0.8,
+    },
+    {
       url: `${BASE_URL}/contact`,
       lastModified: new Date("2026-01-15"),
       changeFrequency: "monthly",

@@ -230,6 +230,29 @@ const nextConfig: NextConfig = {
         destination: "/",
         permanent: true,
       },
+      // --- Pages boutique / NFC (évite les 404 sur la vitrine) ---
+      {
+        // Terme générique → page produit vitrine (consolide le SEO sur /porte-cles-nfc)
+        source: "/porte-cles",
+        destination: "/porte-cles-nfc",
+        permanent: true,
+      },
+      {
+        source: "/porte-cles/:path*",
+        destination: "/porte-cles-nfc",
+        permanent: true,
+      },
+      {
+        // Flux de commande pro → boutique
+        source: "/commander-pro",
+        destination: "https://boutique.idkom.fr/boutique-pro",
+        permanent: true,
+      },
+      {
+        source: "/commander-pro/:path*",
+        destination: "https://boutique.idkom.fr/boutique-pro",
+        permanent: true,
+      },
       // --- Redirects infrastructure ---
       {
         source: "/admin/:path*",
