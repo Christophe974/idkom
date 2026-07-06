@@ -232,6 +232,17 @@ const nextConfig: NextConfig = {
       },
       // --- Pages boutique / NFC (évite les 404 sur la vitrine) ---
       {
+        // Page obsolète → consolidée sur /porte-cles-nfc
+        source: "/carte-de-visite-nfc",
+        destination: "/porte-cles-nfc",
+        permanent: true,
+      },
+      {
+        source: "/carte-de-visite-nfc/:path*",
+        destination: "/porte-cles-nfc",
+        permanent: true,
+      },
+      {
         // Terme générique → page produit vitrine (consolide le SEO sur /porte-cles-nfc)
         source: "/porte-cles",
         destination: "/porte-cles-nfc",

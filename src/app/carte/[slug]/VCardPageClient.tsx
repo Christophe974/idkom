@@ -627,7 +627,7 @@ export default function VCardPageClient({ card }: Props) {
           {/* ========== PROMO iDKOM ========== */}
           <div className="mt-6 animate-fade-in-up delay-600">
             <a
-              href="https://www.idkom.fr/carte-de-visite-nfc"
+              href="https://www.idkom.fr/porte-cles-nfc"
               target="_blank"
               rel="noopener noreferrer"
               className="block rounded-2xl border border-white/5 p-5 text-center transition-all duration-300 hover:border-white/10 group"
