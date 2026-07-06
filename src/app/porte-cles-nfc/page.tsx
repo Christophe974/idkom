@@ -31,91 +31,111 @@ export const metadata = {
 };
 
 const trust = [
-  { icon: 'solar:hand-heart-bold', label: 'Fabriqué en France' },
-  { icon: 'solar:printer-3d-bold', label: 'Imprimé en 3D' },
-  { icon: 'solar:tag-horizontal-bold', label: 'Puce NFC incluse' },
-  { icon: 'solar:box-bold', label: 'Livraison offerte' },
+  { icon: 'solar:map-point-wave-bold', label: 'Fabriqué en France' },
+  { icon: 'solar:tag-price-bold', label: 'Tarifs dégressifs' },
+  { icon: 'solar:bill-check-bold', label: 'Prix HT pour les pros' },
+  { icon: 'solar:box-minimalistic-bold', label: 'Livraison offerte' },
 ];
 
 const steps = [
   {
     icon: 'solar:upload-square-bold',
-    title: 'Vous envoyez votre logo',
-    description: 'Import SVG ou image. On adapte votre identité au porte-clé, aperçu à l’appui.',
+    title: 'Votre logo prend vie',
+    description: 'Importez votre logo. On vérifie le fichier et on vous envoie un aperçu à valider si nécessaire.',
+  },
+  {
+    icon: 'solar:palette-bold',
+    title: 'Un objet à votre image',
+    description: 'Choisissez les couleurs, la quantité, et visualisez votre création avant fabrication.',
   },
   {
     icon: 'solar:printer-3d-bold',
-    title: 'On fabrique dans notre atelier',
-    description: 'Impression 3D en France, puce NFC intégrée, finition soignée. Aucun minimum absurde.',
-  },
-  {
-    icon: 'solar:smartphone-bold',
-    title: 'Un scan, tout apparaît',
-    description: 'Le contact approche son téléphone : votre carte connectée s’ouvre. Aucune application.',
+    title: 'Prêt à être offert',
+    description: 'On imprime chaque porte-clé dans notre atelier en France, puce NFC déjà intégrée.',
   },
 ];
 
-const usages = [
+const cardFeatures = [
+  {
+    icon: 'solar:smartphone-2-bold',
+    title: 'Votre carte dans leur téléphone',
+    description: 'Un simple geste : vos coordonnées, réseaux, site et contact sont enregistrés en quelques secondes.',
+  },
+  {
+    icon: 'solar:camera-bold',
+    title: 'Ne perdez plus jamais un contact',
+    description: 'Photographiez une carte papier : les informations sont récupérées automatiquement et enregistrées dans votre téléphone.',
+  },
+  {
+    icon: 'solar:shield-check-bold',
+    title: 'Toujours avec vous',
+    description: 'Même sans votre porte-clé, votre carte reste accessible depuis votre téléphone.',
+  },
+];
+
+const cases = [
   {
     icon: 'solar:users-group-rounded-bold',
-    title: 'Vos commerciaux',
-    description: 'Un porte-clé connecté à votre image pour toute l’équipe. Fini les cartes papier périmées.',
+    title: "Fini l'impression pour toute une équipe",
+    description:
+      'Une collectivité a équipé ses 45 agents. Chacun imprimait 200 à 300 cartes par an — place à un seul objet connecté, mis à jour en un clic.',
+    chip: '≈ 11 000 cartes / an en moins',
     color: '#ff2d55',
   },
   {
     icon: 'solar:gift-bold',
-    title: 'Cadeaux clients',
-    description: 'Un objet premium et utile, à votre marque, que vos clients gardent sur leurs clés.',
+    title: 'Le goodie qui travaille pour votre marque',
+    description:
+      "Un groupe l'offre à ses clients. Chacun le transforme en SA carte de visite… mais l'objet reste à vos couleurs. Votre logo circule dans des centaines de poches.",
+    chip: 'Votre marque, en continu',
     color: '#7928ca',
   },
   {
-    icon: 'solar:widget-5-bold',
-    title: 'Salons & événements',
-    description: 'Distribuez un objet mémorable qui renvoie vers votre site, un formulaire, un rendez-vous.',
+    icon: 'solar:card-bold',
+    title: "Le cadeau de bienvenue d'une banque",
+    description:
+      "Une banque pro l'offre à chaque créateur d'entreprise : « votre première carte de visite — et la seule dont vous aurez besoin ». Un cadeau utile qui marque durablement.",
+    chip: 'Fidélisation dès le jour 1',
     color: '#00d4ff',
-  },
-  {
-    icon: 'solar:buildings-3-bold',
-    title: 'Accueil & boutiques',
-    description: 'Sur un comptoir : un geste de scan qui ouvre vos avis, votre catalogue ou vos réseaux.',
-    color: '#ff9500',
   },
 ];
 
-const advantages = [
-  'À votre logo et vos couleurs, en impression 3D',
-  'Puce NFC compatible iPhone et Android (95% des téléphones)',
-  'La carte digitale se modifie à tout moment, sans réimpression',
-  'Statistiques de scans en temps réel',
-  'Tarifs dégressifs selon la quantité',
-  'Fabriqué et expédié depuis la France',
+const fleet = [
+  { icon: 'solar:refresh-square-bold', title: 'Une seule mise à jour', description: 'Toutes les cartes sont synchronisées en quelques secondes.' },
+  { icon: 'solar:link-bold', title: 'Une communication toujours à jour', description: 'Site web, téléphone, réseaux… une seule modification suffit.' },
+  { icon: 'solar:infinity-bold', title: "L'objet reste, les infos évoluent", description: 'Vos équipes gardent le même porte-clé. Votre communication évolue en permanence.' },
 ];
 
 const faqItems = [
   {
-    question: 'Faut-il installer une application ?',
+    question: 'Quel format de logo dois-je fournir ?',
     answer:
-      "Non. Le porte-clé utilise le NFC natif du téléphone. Le contact approche son smartphone et votre carte s’ouvre — aucune app, sur iPhone comme sur Android.",
+      "Un fichier SVG (vectoriel) pour un rendu net en 1 couleur. Si vous n'avez qu'un PNG, envoyez-le nous : on le vectorise et on vous soumet un aperçu à valider avant fabrication.",
+  },
+  {
+    question: 'Les prix sont-ils HT ou TTC ?',
+    answer:
+      "Vous choisissez : en tant qu'entreprise, les prix s'affichent en HT (vous récupérez la TVA). Un particulier voit les prix en TTC. Le paiement inclut toujours la TVA (20 %).",
+  },
+  {
+    question: 'À quoi sert la puce NFC ?',
+    answer:
+      "Un simple scan du porte-clé avec un smartphone ouvre le lien de votre choix : site web, coordonnées, carte de visite digitale, avis Google… sans aucune application.",
+  },
+  {
+    question: 'Comment fonctionne le scanner de cartes papier ?',
+    answer:
+      "Depuis votre espace, photographiez une carte reçue : notre système l'analyse automatiquement (nom, société, téléphone, email) et vous l'ajoutez en un geste au carnet d'adresses de votre téléphone.",
+  },
+  {
+    question: "Et si je n'ai pas mon porte-clé sur moi ?",
+    answer:
+      "Votre carte digitale est aussi accessible depuis votre téléphone : ajoutez-la à votre écran d'accueil et faites simplement scanner votre écran. Impossible d'être à court de cartes.",
   },
   {
     question: 'À partir de combien de porte-clés peut-on commander ?',
     answer:
-      "Il n’y a pas de gros minimum : vous pouvez démarrer petit pour tester, puis passer sur des tarifs dégressifs dès que la quantité augmente. Tout se configure directement dans la boutique entreprise.",
-  },
-  {
-    question: 'Peut-on mettre notre logo exact ?',
-    answer:
-      "Oui. Vous importez votre logo (idéalement en SVG) et on l’intègre au porte-clé. Vous validez un aperçu avant la fabrication.",
-  },
-  {
-    question: 'Que se passe-t-il si nos informations changent ?',
-    answer:
-      "La carte connectée derrière le porte-clé se modifie en ligne, à tout moment. Un changement de poste, de numéro ou de site ne nécessite jamais de réimprimer l’objet.",
-  },
-  {
-    question: 'Combien de temps dure un porte-clé ?',
-    answer:
-      "La puce NFC n’a pas de batterie et ne s’use pas. L’objet est imprimé en matière durable : comptez plusieurs années d’utilisation.",
+      "Il n'y a pas de gros minimum : démarrez petit pour tester, puis profitez de tarifs dégressifs dès que la quantité augmente. Tout se configure dans la boutique entreprise.",
   },
 ];
 
@@ -140,13 +160,13 @@ export default function PorteClesNFCPage() {
                 <Icon icon="solar:buildings-2-bold" width={14} /> L&apos;objet connecté des entreprises
               </span>
               <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold text-white mb-6 leading-[1.05]">
-                Vos porte-clés NFC,{' '}
-                <span className="gradient-text">à votre logo</span>
+                Chaque rencontre mérite mieux{' '}
+                <span className="gradient-text">qu&apos;une carte papier.</span>
               </h1>
               <p className="text-lg md:text-xl text-zinc-400 max-w-xl mb-8 leading-relaxed">
-                Un porte-clé imprimé en 3D à votre image, avec une puce NFC qui ouvre votre carte
-                de visite connectée. Distribué à vos équipes ou offert à vos clients : la carte
-                qu&apos;on garde, celle qui ne finit jamais à la poubelle.
+                Un porte-clé à votre logo, imprimé en 3D. Une carte digitale à leur image.
+                Une rencontre qui continue après le premier scan — distribué à vos équipes ou
+                offert à vos clients.
               </p>
 
               <div className="flex flex-col sm:flex-row items-start sm:items-center gap-4 mb-8">
@@ -154,15 +174,14 @@ export default function PorteClesNFCPage() {
                   href={ORDER_URL}
                   className="px-8 py-4 bg-gradient-to-r from-[#ff2d55] to-[#7928ca] text-white font-semibold rounded-xl hover:opacity-90 transition-opacity flex items-center gap-2"
                 >
-                  Commander pour mon entreprise
-                  <Icon icon="solar:arrow-right-linear" width={20} />
+                  <Icon icon="solar:upload-square-bold" width={20} /> Importer mon logo
                 </a>
                 <a
-                  href="/contact"
+                  href="#tarifs"
                   className="px-6 py-4 text-zinc-300 hover:text-white transition-colors font-medium flex items-center gap-2"
                 >
-                  Parler à un humain
-                  <Icon icon="solar:chat-round-line-linear" width={20} />
+                  Voir les tarifs
+                  <Icon icon="solar:arrow-down-linear" width={20} />
                 </a>
               </div>
 
@@ -188,24 +207,38 @@ export default function PorteClesNFCPage() {
                   className="w-full h-auto rounded-2xl"
                   priority
                 />
+                <span className="absolute bottom-6 left-1/2 -translate-x-1/2 rounded-full bg-black/60 px-3 py-1 text-[11px] text-zinc-300">
+                  Réalisation iDkom — imprimé en 3D dans notre atelier
+                </span>
               </div>
             </div>
           </div>
         </section>
 
+        {/* ===== BANDEAU DE CONFIANCE ===== */}
+        <section className="border-y border-white/5 bg-white/[0.015] py-6">
+          <p className="max-w-3xl mx-auto px-6 text-center text-sm font-medium text-zinc-400">
+            Déjà adopté par des collectivités, banques, réseaux d&apos;affaires, artisans et grands groupes.
+          </p>
+        </section>
+
         {/* ===== COMMENT ÇA MARCHE ===== */}
         <section className="max-w-7xl mx-auto px-6 py-20">
           <div className="text-center mb-14">
-            <h2 className="text-3xl md:text-4xl font-bold text-white mb-4">De votre logo à la poche de vos clients</h2>
-            <p className="text-zinc-400 max-w-2xl mx-auto">Trois étapes, zéro complexité. On s&apos;occupe de la fabrication, vous gardez la main sur le contenu.</p>
+            <h2 className="text-3xl md:text-4xl font-bold text-white mb-4">
+              Trois étapes. Une nouvelle façon de créer des contacts.
+            </h2>
+            <p className="text-zinc-400 max-w-2xl mx-auto">
+              On s&apos;occupe de la fabrication, vous gardez la main sur le contenu.
+            </p>
           </div>
           <div className="grid md:grid-cols-3 gap-6">
             {steps.map((step, i) => (
               <div key={step.title} className="relative rounded-2xl border border-white/10 bg-white/[0.03] p-8 hover:border-white/20 transition-colors">
-                <span className="absolute top-6 right-6 text-5xl font-bold text-white/5">{i + 1}</span>
-                <span className="flex h-14 w-14 items-center justify-center rounded-2xl bg-gradient-to-br from-[#ff2d55]/20 to-[#7928ca]/20 text-white mb-5">
-                  <Icon icon={step.icon} width={28} />
-                </span>
+                <div className="mb-5 flex items-center gap-3">
+                  <span className="flex h-11 w-11 items-center justify-center rounded-xl bg-gradient-to-br from-[#ff2d55] to-[#7928ca] text-lg font-bold text-white">{i + 1}</span>
+                  <Icon icon={step.icon} width={26} className="text-[#ff2d55]" />
+                </div>
                 <h3 className="text-xl font-semibold text-white mb-2">{step.title}</h3>
                 <p className="text-zinc-400 leading-relaxed">{step.description}</p>
               </div>
@@ -213,50 +246,158 @@ export default function PorteClesNFCPage() {
           </div>
         </section>
 
-        {/* ===== LE PRODUIT (collection) ===== */}
-        <section className="max-w-7xl mx-auto px-6 py-16">
-          <div className="grid lg:grid-cols-2 gap-12 items-center">
-            <div className="relative order-2 lg:order-1">
-              <div className="rounded-3xl border border-white/10 overflow-hidden">
+        {/* ===== LA CARTE DIGITALE (networking) ===== */}
+        <section className="relative py-20" style={{ background: 'radial-gradient(100% 80% at 20% 20%, #7928ca14, transparent 60%)' }}>
+          <div className="max-w-6xl mx-auto px-6">
+            <div className="text-center mb-14">
+              <span className="mb-3 inline-flex items-center gap-2 rounded-full border border-[#ff2d55]/40 bg-[#ff2d55]/10 px-4 py-1.5 text-xs font-semibold text-[#ff2d55]">
+                <Icon icon="solar:link-circle-bold" width={14} /> Une seule rencontre peut tout changer
+              </span>
+              <h2 className="text-3xl md:text-4xl font-bold text-white">
+                Transformez un simple contact en relation durable.
+              </h2>
+            </div>
+            <div className="grid items-center gap-12 lg:grid-cols-[minmax(0,360px)_1fr]">
+              {/* Mockup carte digitale */}
+              <div className="relative mx-auto w-full max-w-[320px]">
+                <div className="absolute inset-0 bg-gradient-to-tr from-[#ff2d55]/20 to-[#7928ca]/20 blur-[70px] rounded-full" />
                 <Image
-                  src="/images/porte-cles-collection.webp"
-                  alt="Collection de porte-clés NFC personnalisés iDkom"
-                  width={1672}
-                  height={941}
-                  className="w-full h-auto"
+                  src="/images/carte-digitale-mockup.png"
+                  alt="Carte de visite digitale affichée sur smartphone"
+                  width={543}
+                  height={750}
+                  className="relative w-full h-auto rounded-3xl"
                 />
               </div>
-            </div>
-            <div className="order-1 lg:order-2">
-              <h2 className="text-3xl md:text-4xl font-bold text-white mb-6">Un vrai objet, pas un gadget</h2>
-              <ul className="space-y-4">
-                {advantages.map((a) => (
-                  <li key={a} className="flex items-start gap-3 text-zinc-300">
-                    <Icon icon="solar:check-circle-bold" width={22} className="text-[#ff2d55] shrink-0 mt-0.5" />
-                    <span>{a}</span>
-                  </li>
+              {/* Les 3 fonctions */}
+              <div className="grid gap-5">
+                {cardFeatures.map((f) => (
+                  <div key={f.title} className="rounded-2xl border border-white/10 bg-white/[0.03] p-6 hover:border-white/20 transition-colors">
+                    <div className="flex items-start gap-4">
+                      <span className="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-gradient-to-br from-[#ff2d55]/25 to-[#7928ca]/20 text-[#ff8fa8]">
+                        <Icon icon={f.icon} width={24} />
+                      </span>
+                      <div>
+                        <h3 className="text-lg font-semibold text-white">{f.title}</h3>
+                        <p className="mt-1 text-sm leading-relaxed text-zinc-400">{f.description}</p>
+                      </div>
+                    </div>
+                  </div>
                 ))}
-              </ul>
+              </div>
             </div>
           </div>
         </section>
 
-        {/* ===== POUR LES ENTREPRISES ===== */}
-        <section className="max-w-7xl mx-auto px-6 py-20">
-          <div className="text-center mb-14">
-            <h2 className="text-3xl md:text-4xl font-bold text-white mb-4">Pensé pour les entreprises</h2>
-            <p className="text-zinc-400 max-w-2xl mx-auto">Un seul objet, plusieurs usages — tous connectés à votre marque.</p>
+        {/* ===== DOUBLE USAGE ===== */}
+        <section className="max-w-6xl mx-auto px-6 py-20">
+          <div className="text-center mb-12">
+            <span className="mb-3 inline-flex items-center gap-2 rounded-full border border-[#7928ca]/40 bg-[#7928ca]/10 px-4 py-1.5 text-xs font-semibold text-[#c4a4ff]">
+              <Icon icon="solar:magic-stick-3-bold" width={14} /> Deux usages, une seule création
+            </span>
+            <h2 className="text-3xl md:text-4xl font-bold text-white">Offrez-le. Ou équipez votre équipe.</h2>
           </div>
-          <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
-            {usages.map((u) => (
-              <div key={u.title} className="rounded-2xl border border-white/10 bg-white/[0.03] p-6 hover:border-white/20 transition-colors">
-                <span className="flex h-12 w-12 items-center justify-center rounded-xl mb-4" style={{ backgroundColor: `${u.color}22`, color: u.color }}>
-                  <Icon icon={u.icon} width={24} />
-                </span>
-                <h3 className="text-lg font-semibold text-white mb-2">{u.title}</h3>
-                <p className="text-sm text-zinc-400 leading-relaxed">{u.description}</p>
+          <div className="grid gap-6 md:grid-cols-2">
+            {[
+              { emoji: '🎁', grad: 'from-[#ff2d55]/25 to-[#7928ca]/20', ring: 'text-[#ff8fa8]', t: 'Vous l’offrez', points: ['Votre logo sur le porte-clé.', 'Leur carte digitale.', 'Votre marque continue de voyager.'] },
+              { emoji: '👥', grad: 'from-[#7928ca]/25 to-[#00d4ff]/20', ring: 'text-[#00d4ff]', t: 'Vous équipez vos équipes', points: ['Un porte-clé par collaborateur.', 'Gestion centralisée.', 'Toujours à jour.'] },
+            ].map((c) => (
+              <div key={c.t} className="flex h-full flex-col rounded-2xl border border-white/10 bg-white/[0.03] p-8">
+                <span className={`mb-5 flex h-14 w-14 items-center justify-center rounded-2xl bg-gradient-to-br ${c.grad} text-2xl`}>{c.emoji}</span>
+                <h3 className="text-xl font-semibold text-white">{c.t}</h3>
+                <ul className="mt-5 space-y-3">
+                  {c.points.map((p) => (
+                    <li key={p} className="flex items-start gap-2.5 text-zinc-300">
+                      <Icon icon="solar:check-circle-bold" width={18} className={`mt-0.5 shrink-0 ${c.ring}`} />
+                      <span className="text-sm leading-relaxed">{p}</span>
+                    </li>
+                  ))}
+                </ul>
               </div>
             ))}
+          </div>
+        </section>
+
+        {/* ===== CAS CONCRETS ===== */}
+        <section className="relative py-20" style={{ background: 'radial-gradient(90% 80% at 80% 20%, #00d4ff10, transparent 60%)' }}>
+          <div className="max-w-6xl mx-auto px-6">
+            <div className="text-center mb-12">
+              <span className="mb-3 inline-flex items-center gap-2 rounded-full border border-[#00d4ff]/40 bg-[#00d4ff]/10 px-4 py-1.5 text-xs font-semibold text-[#00d4ff]">
+                <Icon icon="solar:lightbulb-bolt-bold" width={14} /> Cas concrets
+              </span>
+              <h2 className="text-3xl md:text-4xl font-bold text-white">Un objet, mille façons de s&apos;en servir</h2>
+              <p className="mx-auto mt-3 max-w-xl text-zinc-400">Voici comment nos clients l&apos;utilisent déjà, chacun à sa manière.</p>
+            </div>
+            <div className="grid gap-6 md:grid-cols-3">
+              {cases.map((c) => (
+                <div key={c.title} className="flex h-full flex-col rounded-2xl border border-white/10 bg-white/[0.03] p-7">
+                  <span className="mb-4 flex h-12 w-12 items-center justify-center rounded-xl" style={{ backgroundColor: `${c.color}22`, color: c.color }}>
+                    <Icon icon={c.icon} width={24} />
+                  </span>
+                  <h3 className="text-lg font-semibold text-white">{c.title}</h3>
+                  <p className="mt-1.5 flex-1 text-sm leading-relaxed text-zinc-400">{c.description}</p>
+                  <span className="mt-4 inline-flex w-fit items-center gap-1.5 rounded-full px-3 py-1 text-xs font-semibold" style={{ backgroundColor: `${c.color}1a`, color: c.color }}>
+                    <Icon icon="solar:star-bold" width={12} /> {c.chip}
+                  </span>
+                </div>
+              ))}
+            </div>
+          </div>
+        </section>
+
+        {/* ===== GESTION CENTRALISÉE ===== */}
+        <section className="max-w-6xl mx-auto px-6 py-20">
+          <div className="grid items-center gap-12 lg:grid-cols-2">
+            <div>
+              <span className="mb-3 inline-flex items-center gap-2 rounded-full border border-[#ff2d55]/40 bg-[#ff2d55]/10 px-4 py-1.5 text-xs font-semibold text-[#ff2d55]">
+                <Icon icon="solar:settings-bold" width={14} /> Une seule modification. Partout.
+              </span>
+              <h2 className="text-3xl md:text-4xl font-bold text-white">Une flotte. Un seul tableau de bord.</h2>
+              <p className="mt-4 max-w-md leading-relaxed text-zinc-400">
+                Un changement d&apos;adresse ? Un nouveau site ? Un nouveau logo ?{' '}
+                <b className="text-white">Modifiez une seule fois.</b> Toutes les cartes sont
+                mises à jour automatiquement. Sans réimprimer, sans remplacer un seul objet.
+              </p>
+              <ul className="mt-6 space-y-3">
+                {fleet.map((f) => (
+                  <li key={f.title} className="flex items-start gap-3">
+                    <span className="mt-0.5 flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-[#ff2d55]/10 text-[#ff2d55]"><Icon icon={f.icon} width={18} /></span>
+                    <span><b className="text-white">{f.title}</b><span className="block text-sm text-zinc-400">{f.description}</span></span>
+                  </li>
+                ))}
+              </ul>
+            </div>
+
+            {/* visuel : panneau admin → cartes synchronisées */}
+            <div className="mx-auto w-full max-w-sm">
+              <div className="rounded-3xl border border-white/10 bg-white/[0.03] p-5 shadow-2xl">
+                <p className="mb-3 flex items-center gap-2 text-xs font-semibold uppercase tracking-wider text-zinc-500">
+                  <Icon icon="solar:settings-linear" width={14} /> Espace admin
+                </p>
+                <div className="space-y-2">
+                  {[['solar:global-bold', 'Site web', 'nouveau-site.fr'], ['ri:instagram-fill', 'Instagram', '@votre_entreprise'], ['solar:gallery-bold', 'Logo', 'logo-2026.svg']].map(([ic, l, v]) => (
+                    <div key={l} className="flex items-center gap-2.5 rounded-xl bg-white/5 px-3 py-2">
+                      <Icon icon={ic} width={16} className="text-[#ff2d55]" />
+                      <span className="text-xs text-zinc-500">{l}</span>
+                      <span className="ml-auto text-xs font-medium text-white">{v}</span>
+                    </div>
+                  ))}
+                </div>
+                <div className="mt-3 flex w-full items-center justify-center gap-2 rounded-xl bg-gradient-to-r from-[#ff2d55] to-[#7928ca] py-2.5 text-sm font-semibold text-white">
+                  <Icon icon="solar:refresh-bold" width={16} /> Appliquer à 45 cartes
+                </div>
+                <div className="mt-4 flex items-center justify-center gap-2">
+                  {[0, 1, 2, 3].map((i) => (
+                    <span key={i} className="flex h-10 w-7 flex-col items-center justify-center rounded-md border border-[#ff2d55]/30 bg-[#ff2d55]/5">
+                      <Icon icon="solar:card-linear" width={13} className="text-[#ff8fa8]" />
+                      <Icon icon="solar:check-circle-bold" width={9} className="mt-0.5 text-green-400" />
+                    </span>
+                  ))}
+                  <span className="ml-1 text-xs font-medium text-green-400">+41</span>
+                </div>
+                <p className="mt-2 text-center text-[11px] text-zinc-500">Toutes les cartes synchronisées ✓</p>
+              </div>
+            </div>
           </div>
         </section>
 
@@ -295,15 +436,52 @@ export default function PorteClesNFCPage() {
           </div>
         </section>
 
+        {/* ===== MOMENT DE MARQUE ===== */}
+        <section className="px-6 py-24">
+          <p className="mx-auto max-w-2xl text-center text-2xl font-medium leading-relaxed text-zinc-400 sm:text-3xl sm:leading-relaxed">
+            Ce n&apos;est pas un prospect.<br />Ce n&apos;est pas un client.<br />
+            <span className="text-white">C&apos;est une personne qui repart avec un objet qu&apos;elle gardera sans doute plusieurs années.</span>
+          </p>
+        </section>
+
+        {/* ===== TARIFS (teaser) ===== */}
+        <section id="tarifs" className="max-w-4xl mx-auto px-6 py-16 text-center">
+          <h2 className="text-3xl md:text-4xl font-bold text-white mb-4">Des tarifs dégressifs</h2>
+          <p className="mx-auto max-w-xl text-zinc-400 mb-8">
+            Plus vous en commandez, moins c&apos;est cher à l&apos;unité. Prix affichés HT pour les pros ·{' '}
+            <span className="text-green-400">livraison offerte</span>. Le prix exact selon votre quantité
+            s&apos;affiche en direct dans le configurateur.
+          </p>
+          <div className="flex flex-wrap justify-center gap-3 mb-9">
+            {['1 – 9', '10 – 49', '50 – 99', '100+'].map((range, i) => (
+              <div key={range} className="rounded-2xl border border-white/10 bg-white/[0.03] px-6 py-5 text-center">
+                <p className="text-xs text-zinc-500">{range} unités</p>
+                <p className="mt-1 text-lg font-bold text-white flex items-center justify-center gap-1">
+                  {Array.from({ length: 4 - i }).map((_, k) => (
+                    <Icon key={k} icon="solar:tag-price-bold" width={16} className="text-[#ff2d55]" />
+                  ))}
+                </p>
+                <p className="text-xs text-zinc-500">{i === 3 ? 'meilleur prix' : 'dégressif'}</p>
+              </div>
+            ))}
+          </div>
+          <a
+            href={ORDER_URL}
+            className="inline-flex items-center gap-2 rounded-xl bg-gradient-to-r from-[#ff2d55] to-[#7928ca] px-7 py-4 text-base font-semibold text-white hover:opacity-90 transition-opacity"
+          >
+            <Icon icon="solar:upload-square-bold" width={20} /> Voir mon prix et personnaliser
+          </a>
+        </section>
+
         {/* ===== FAQ ===== */}
-        <section className="max-w-3xl mx-auto px-6 py-20">
+        <section className="max-w-3xl mx-auto px-6 py-16">
           <h2 className="text-3xl md:text-4xl font-bold text-white text-center mb-12">Questions fréquentes</h2>
           <div className="space-y-3">
             {faqItems.map((item) => (
               <details key={item.question} className="group rounded-2xl border border-white/10 bg-white/[0.03] px-6 py-5 open:border-white/20">
-                <summary className="flex items-center justify-between cursor-pointer list-none text-white font-medium">
+                <summary className="flex items-center justify-between cursor-pointer list-none text-white font-medium gap-3">
                   {item.question}
-                  <Icon icon="solar:alt-arrow-down-linear" width={20} className="text-zinc-400 transition-transform group-open:rotate-180" />
+                  <Icon icon="solar:alt-arrow-down-linear" width={20} className="text-zinc-400 shrink-0 transition-transform group-open:rotate-180" />
                 </summary>
                 <p className="mt-4 text-zinc-400 leading-relaxed">{item.answer}</p>
               </details>
@@ -315,17 +493,19 @@ export default function PorteClesNFCPage() {
         <section className="max-w-5xl mx-auto px-6 py-20">
           <div className="relative rounded-3xl border border-white/10 bg-gradient-to-br from-[#ff2d55]/15 via-[#7928ca]/10 to-transparent p-10 md:p-16 text-center overflow-hidden">
             <div className="absolute -top-20 -right-20 w-72 h-72 bg-[#7928ca]/20 rounded-full blur-[100px]" />
-            <h2 className="relative text-3xl md:text-5xl font-bold text-white mb-5">Faites de chaque rencontre un scan mémorable</h2>
+            <h2 className="relative text-3xl md:text-5xl font-bold text-white mb-5 max-w-2xl mx-auto leading-tight">
+              Le prochain objet que vous offrirez pourrait devenir votre meilleur ambassadeur.
+            </h2>
             <p className="relative text-zinc-300 max-w-xl mx-auto mb-8">
-              Configurez vos porte-clés à votre logo, choisissez la quantité, on s&apos;occupe du reste.
+              Téléchargez votre logo. On s&apos;occupe du reste. Quelques jours plus tard, votre marque
+              est déjà entre de nouvelles mains.
             </p>
             <div className="relative flex flex-col sm:flex-row items-center justify-center gap-4">
               <a
                 href={ORDER_URL}
                 className="px-8 py-4 bg-gradient-to-r from-[#ff2d55] to-[#7928ca] text-white font-semibold rounded-xl hover:opacity-90 transition-opacity flex items-center gap-2"
               >
-                Commander maintenant
-                <Icon icon="solar:arrow-right-linear" width={20} />
+                <Icon icon="solar:upload-square-bold" width={20} /> Créer mes porte-clés
               </a>
               <a
                 href="/contact"
@@ -334,7 +514,10 @@ export default function PorteClesNFCPage() {
                 Poser une question
               </a>
             </div>
-            <p className="relative mt-8 text-sm text-zinc-500">
+            <p className="relative mt-8 text-lg font-medium text-zinc-300">
+              Les cartes se distribuent.<br />Les objets se conservent.
+            </p>
+            <p className="relative mt-6 text-sm text-zinc-500">
               Un porte-clé au nom de votre cheval ?{' '}
               <a href="https://boutique.idkom.fr/boutique-cheval" className="text-[#c4a4ff] hover:text-white underline underline-offset-2">
                 Découvrir la version cheval
