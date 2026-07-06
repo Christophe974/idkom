@@ -20,7 +20,7 @@ export const revalidate = 300;
 export const metadata = {
   title: 'Porte-clés NFC personnalisés pour entreprise',
   description:
-    "Porte-clés NFC au logo de votre entreprise, imprimés en 3D en France. La carte de visite connectée qu'on garde en poche — coordonnées à jour en un scan.",
+    'Porte-clés NFC au logo de votre entreprise, imprimés en 3D en France. Votre carte de visite connectée, toujours à jour, en un scan.',
   alternates: { canonical: 'https://www.idkom.fr/porte-cles-nfc' },
   openGraph: {
     title: 'Porte-clés NFC entreprise | iDkom',
