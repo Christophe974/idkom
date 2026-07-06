@@ -163,14 +163,16 @@ const productJsonLd = {
   brand: { '@type': 'Brand', name: 'iDkom' },
   manufacturer: { '@type': 'Organization', name: 'iDkom', url: 'https://www.idkom.fr' },
   areaServed: { '@type': 'Country', name: 'France' },
-  // TODO prix : renseigner le tarif « à partir de » pour activer les rich results Offer
-  // offers: {
-  //   '@type': 'AggregateOffer',
-  //   priceCurrency: 'EUR',
-  //   lowPrice: 'XX.XX',
-  //   availability: 'https://schema.org/InStock',
-  //   url: 'https://boutique.idkom.fr/boutique-pro',
-  // },
+  offers: {
+    '@type': 'AggregateOffer',
+    priceCurrency: 'EUR',
+    lowPrice: '11.90',
+    highPrice: '23.90',
+    offerCount: 4,
+    availability: 'https://schema.org/InStock',
+    url: 'https://boutique.idkom.fr/boutique-pro',
+    // Tarifs dégressifs HT : 23,90 € (1–4) → 17,90 € (5–24) → 14,90 € (25–99) → 11,90 € (100+)
+  },
 };
 
 export default function PorteClesNFCPage() {
