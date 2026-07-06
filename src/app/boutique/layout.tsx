@@ -21,6 +21,20 @@ export const metadata: Metadata = {
     siteName: 'iDkom Boutique',
     locale: 'fr_FR',
     type: 'website',
+    images: [
+      {
+        url: 'https://www.idkom.fr/images/porte-cles-collection.webp',
+        width: 1672,
+        height: 941,
+        alt: 'Collection de porte-clés personnalisés iDkom avec puce NFC',
+      },
+    ],
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'Boutique iDkom — Porte-clés personnalisés NFC',
+    description: 'Porte-clés et médailles personnalisés avec puce NFC programmable depuis ton téléphone.',
+    images: ['https://www.idkom.fr/images/porte-cles-collection.webp'],
   },
 };
 

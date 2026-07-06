@@ -24,8 +24,42 @@ export default async function BoutiqueHomePage() {
   ]);
   const featured = productsResult.data ?? [];
 
+  // Données structurées (JSON-LD) — fil d'Ariane + liste des catégories
+  const breadcrumbJsonLd = {
+    '@context': 'https://schema.org',
+    '@type': 'BreadcrumbList',
+    itemListElement: [
+      { '@type': 'ListItem', position: 1, name: 'Accueil', item: 'https://www.idkom.fr' },
+      { '@type': 'ListItem', position: 2, name: 'Boutique', item: 'https://www.idkom.fr/boutique' },
+    ],
+  };
+
+  const itemListJsonLd = categories.length > 0
+    ? {
+        '@context': 'https://schema.org',
+        '@type': 'ItemList',
+        name: 'Catégories de porte-clés personnalisés iDkom',
+        itemListElement: categories.map((cat, i) => ({
+          '@type': 'ListItem',
+          position: i + 1,
+          name: cat.name,
+          url: `https://www.idkom.fr/boutique/${cat.slug}`,
+        })),
+      }
+    : null;
+
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 py-10 md:py-16">
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbJsonLd) }}
+      />
+      {itemListJsonLd && (
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(itemListJsonLd) }}
+        />
+      )}
       {/* HERO */}
       <section className="relative overflow-hidden rounded-3xl border border-white/10 bg-gradient-to-br from-zinc-900 via-zinc-950 to-zinc-900 p-8 md:p-14">
         <div
