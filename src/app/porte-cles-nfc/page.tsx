@@ -20,7 +20,7 @@ export const revalidate = 300;
 export const metadata = {
   title: 'Porte-clés NFC personnalisés pour entreprise',
   description:
-    "Le porte-clé NFC au logo de votre entreprise, imprimé en 3D en France. Une puce sans contact qui ouvre votre carte de visite connectée : coordonnées, site, réseaux — toujours à jour, en un scan.",
+    "Porte-clés NFC au logo de votre entreprise, imprimés en 3D en France. La carte de visite connectée qu'on garde en poche — coordonnées à jour en un scan.",
   alternates: { canonical: 'https://www.idkom.fr/porte-cles-nfc' },
   openGraph: {
     title: 'Porte-clés NFC entreprise | iDkom',
@@ -203,10 +203,13 @@ export default function PorteClesNFCPage() {
               <span className="inline-flex items-center gap-2 rounded-full border border-[#7928ca]/40 bg-[#7928ca]/10 px-4 py-1.5 text-xs font-semibold text-[#c4a4ff] mb-6">
                 <Icon icon="solar:buildings-2-bold" width={14} /> L&apos;objet connecté des entreprises
               </span>
-              <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold text-white mb-6 leading-[1.05]">
+              <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold text-white mb-3 leading-[1.05]">
                 Chaque rencontre mérite mieux{' '}
                 <span className="gradient-text">qu&apos;une carte papier.</span>
               </h1>
+              <h2 className="text-lg md:text-xl font-semibold text-zinc-300 mb-6">
+                Porte-clés NFC personnalisés au logo de votre entreprise
+              </h2>
               <p className="text-lg md:text-xl text-zinc-400 max-w-xl mb-8 leading-relaxed">
                 Un porte-clé à votre logo, imprimé en 3D. Une carte digitale à leur image.
                 Une rencontre qui continue après le premier scan — distribué à vos équipes ou
