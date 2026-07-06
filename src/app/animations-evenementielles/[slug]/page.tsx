@@ -29,16 +29,24 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
   const { slug } = await params;
   try {
     const city = await getCityPageBySlug(slug);
+    // Fallback SEO : si le CMS ne renseigne pas title/description, on génère un défaut
+    // propre (sinon le <title> ressort vide → « | iDkom »).
+    const title =
+      city.seo?.title?.trim() ||
+      `Animations événementielles à ${city.city_name} (${city.department_code})`;
+    const description =
+      city.seo?.description?.trim() ||
+      `Agence événementielle à ${city.city_name} : bar à goodies, photobooth IA, stands BeMatrix, kermesse 2.0. iDkom anime vos salons et séminaires dans le ${city.department}.`;
     return {
-      title: city.seo.title,
-      description: city.seo.description,
+      title,
+      description,
       alternates: {
         canonical: `https://www.idkom.fr/animations-evenementielles/${slug}`,
         languages: { 'fr': `https://www.idkom.fr/animations-evenementielles/${slug}` },
       },
       openGraph: {
-        title: city.seo.title,
-        description: city.seo.description,
+        title: `${title} | iDkom`,
+        description,
         url: `https://www.idkom.fr/animations-evenementielles/${slug}`,
         siteName: 'iDkom',
         locale: 'fr_FR',
