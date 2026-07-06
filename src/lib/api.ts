@@ -505,24 +505,77 @@ export interface Animation {
   published_at: string;
 }
 
+// Animations — servies depuis Supabase (cms_animations). Forme identique à l'ancienne API PHP.
+const ANIM_SELECT =
+  'legacy_id,title,slug,excerpt,description,is_featured,published_at,meta_title,meta_description,' +
+  'media:cms_medias!cms_animations_featured_image_id_fkey(url,alt_text,width,height),' +
+  'steps:cms_animation_steps(id,step_order,title,description,photos)';
+
+function mapAnimation(r: any, withSteps: boolean): Animation {
+  const m = one<any>(r.media);
+  const image = m ? { url: m.url, alt: m.alt_text || r.title } : null;
+  const steps: AnimationStep[] = (r.steps ?? [])
+    .slice()
+    .sort((a: any, b: any) => (a.step_order ?? 0) - (b.step_order ?? 0))
+    .map((s: any) => ({
+      id: s.id,
+      order: s.step_order,
+      title: s.title,
+      description: s.description ?? '',
+      photos: Array.isArray(s.photos)
+        ? s.photos.map((p: any) => ({ url: p.url, alt: p.alt || s.title }))
+        : [],
+    }));
+  return {
+    id: r.legacy_id ?? 0,
+    title: r.title,
+    slug: r.slug,
+    excerpt: r.excerpt ?? '',
+    description: r.description ?? undefined,
+    featured_image: m
+      ? { url: m.url, alt: m.alt_text || r.title, width: m.width ?? undefined, height: m.height ?? undefined }
+      : null,
+    image,
+    steps: withSteps ? steps : undefined,
+    steps_count: (r.steps ?? []).length,
+    seo: { title: r.meta_title || `${r.title} | iDkom`, description: r.meta_description || r.excerpt || '' },
+    is_featured: !!r.is_featured,
+    published_at: r.published_at ?? '',
+  };
+}
+
 export async function getAnimations(options?: {
   featured?: boolean;
   limit?: number;
   page?: number;
   per_page?: number;
 }): Promise<Animation[]> {
-  const params = new URLSearchParams();
-  if (options?.featured) params.set('featured', '1');
-  if (options?.limit) params.set('limit', options.limit.toString());
-  if (options?.page) params.set('page', options.page.toString());
-  if (options?.per_page) params.set('per_page', options.per_page.toString());
+  let q = supabase
+    .from('cms_animations')
+    .select(ANIM_SELECT)
+    .eq('status', 'published')
+    .order('sort_order', { ascending: true })
+    .order('published_at', { ascending: false });
 
-  const query = params.toString() ? `?${params.toString()}` : '';
-  return fetchApi<Animation[]>(`animations.php${query}`);
+  if (options?.featured) q = q.eq('is_featured', true);
+  const limit = options?.per_page ?? options?.limit;
+  if (limit) q = q.limit(limit);
+
+  const { data, error } = await q;
+  if (error) throw error;
+  return (data ?? []).map((r) => mapAnimation(r, false));
 }
 
 export async function getAnimationBySlug(slug: string): Promise<Animation> {
-  return fetchApi<Animation>(`animations.php?slug=${slug}`);
+  const { data, error } = await supabase
+    .from('cms_animations')
+    .select(ANIM_SELECT)
+    .eq('slug', slug)
+    .eq('status', 'published')
+    .maybeSingle();
+  if (error) throw error;
+  if (!data) throw new Error(`Animation introuvable: ${slug}`);
+  return mapAnimation(data, true);
 }
 
 // ============================================================
