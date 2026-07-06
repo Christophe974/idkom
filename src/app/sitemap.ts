@@ -1,4 +1,5 @@
 import type { MetadataRoute } from "next";
+import { getBlogArticles } from "@/lib/api";
 
 const BASE_URL = "https://www.idkom.fr";
 const API_URL = process.env.NEXT_PUBLIC_API_URL || "https://api.idkom.fr";
@@ -125,9 +126,11 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   ];
 
   // Pages dynamiques
-  const [projetSlugs, blogSlugs, animationSlugs, cityPages] = await Promise.all([
+  // Blog : lu depuis Supabase (source réelle) — l'endpoint PHP blog.php est obsolète
+  // depuis la migration et ne renvoie pas les nouveaux articles.
+  const [projetSlugs, blogArticles, animationSlugs, cityPages] = await Promise.all([
     fetchSlugs("projets.php"),
-    fetchSlugs("blog.php"),
+    getBlogArticles().catch(() => []),
     fetchSlugs("animations.php"),
     fetchCityPages(),
   ]);
@@ -139,9 +142,9 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     priority: 0.7,
   }));
 
-  const blogPages: MetadataRoute.Sitemap = blogSlugs.map((slug) => ({
-    url: `${BASE_URL}/blog/${slug}`,
-    lastModified: new Date(),
+  const blogPages: MetadataRoute.Sitemap = blogArticles.map((article) => ({
+    url: `${BASE_URL}/blog/${article.slug}`,
+    lastModified: article.published_at ? new Date(article.published_at) : new Date(),
     changeFrequency: "weekly" as const,
     priority: 0.6,
   }));
