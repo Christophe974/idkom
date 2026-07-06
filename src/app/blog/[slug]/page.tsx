@@ -20,8 +20,10 @@ export async function generateMetadata({ params }: PageProps) {
     // notrack=true : évite de compter 2 vues par chargement (metadata + render).
     const article = await getBlogArticleBySlug(slug, { notrack: true });
     return {
-      title: `${article.title} | Blog iDkom`,
-      description: article.excerpt || article.meta_description,
+      // Titre simple : le template racine ajoute « | iDkom » (évite le double « | iDkom »).
+      // Priorité au meta_title CMS s'il est renseigné.
+      title: article.meta_title || article.title,
+      description: article.meta_description || article.excerpt,
       alternates: { canonical: `https://www.idkom.fr/blog/${slug}` },
     };
   } catch {
