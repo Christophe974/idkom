@@ -8,6 +8,11 @@ const nextConfig: NextConfig = {
         protocol: "https",
         hostname: "api.idkom.fr",
       },
+      {
+        protocol: "https",
+        hostname: "olmcbqiojczhupspzedo.supabase.co",
+        pathname: "/storage/v1/object/public/**",
+      },
     ],
   },
   async headers() {
