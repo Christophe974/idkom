@@ -16,6 +16,7 @@ export default function Navbar({ menus }: NavbarProps) {
   const [isOpen, setIsOpen] = useState(false);
 
   const defaultMenus = [
+    { label: 'Porte-clés NFC', url: '/porte-cles-nfc' },
     { label: "L'Atelier", url: '/atelier' },
     { label: 'Réalisations', url: '/realisations' },
     { label: 'Savoir-faire', url: '/savoir-faire' },
@@ -23,7 +24,13 @@ export default function Navbar({ menus }: NavbarProps) {
     { label: 'Blog', url: '/blog' },
   ];
 
-  const menuItems = menus || defaultMenus;
+  // Le porte-clé NFC est un produit à part entière : on garantit son entrée dans le
+  // menu même si le CMS (menus.php) ne la liste pas encore. Placée en tête.
+  const productLink = { label: 'Porte-clés NFC', url: '/porte-cles-nfc' };
+  const cmsMenus = menus || defaultMenus;
+  const menuItems = cmsMenus.some((m) => m.url === productLink.url)
+    ? cmsMenus
+    : [productLink, ...cmsMenus];
 
   return (
     <nav className="fixed top-0 w-full z-50 border-b border-white/5 bg-zinc-950/95 md:bg-zinc-950/80 md:backdrop-blur-xl">
