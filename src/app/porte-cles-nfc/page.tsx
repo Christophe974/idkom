@@ -163,16 +163,8 @@ const productJsonLd = {
   brand: { '@type': 'Brand', name: 'iDkom' },
   manufacturer: { '@type': 'Organization', name: 'iDkom', url: 'https://www.idkom.fr' },
   areaServed: { '@type': 'Country', name: 'France' },
-  offers: {
-    '@type': 'AggregateOffer',
-    priceCurrency: 'EUR',
-    lowPrice: '11.90',
-    highPrice: '23.90',
-    offerCount: 4,
-    availability: 'https://schema.org/InStock',
-    url: 'https://boutique.idkom.fr/boutique-pro',
-    // Tarifs dégressifs HT : 23,90 € (1–4) → 17,90 € (5–24) → 14,90 € (25–99) → 11,90 € (100+)
-  },
+  // Pas de bloc offers ici : les prix ne sont plus affichés sur cette page (ils vivent
+  // dans le configurateur boutique) → on évite un balisage prix non visible.
 };
 
 export default function PorteClesNFCPage() {
@@ -221,14 +213,7 @@ export default function PorteClesNFCPage() {
                   href={ORDER_URL}
                   className="px-8 py-4 bg-gradient-to-r from-[#ff2d55] to-[#7928ca] text-white font-semibold rounded-xl hover:opacity-90 transition-opacity flex items-center gap-2"
                 >
-                  <Icon icon="solar:upload-square-bold" width={20} /> Importer mon logo
-                </a>
-                <a
-                  href="#tarifs"
-                  className="px-6 py-4 text-zinc-300 hover:text-white transition-colors font-medium flex items-center gap-2"
-                >
-                  Voir les tarifs
-                  <Icon icon="solar:arrow-down-linear" width={20} />
+                  <Icon icon="solar:shop-2-bold" width={20} /> Accéder à la boutique
                 </a>
               </div>
 
@@ -503,35 +488,6 @@ export default function PorteClesNFCPage() {
             Ce n&apos;est pas un prospect.<br />Ce n&apos;est pas un client.<br />
             <span className="text-white">C&apos;est une personne qui repart avec un objet qu&apos;elle gardera sans doute plusieurs années.</span>
           </p>
-        </section>
-
-        {/* ===== TARIFS (teaser) ===== */}
-        <section id="tarifs" className="max-w-4xl mx-auto px-6 py-16 text-center">
-          <h2 className="text-3xl md:text-4xl font-bold text-white mb-4">Des tarifs dégressifs</h2>
-          <p className="mx-auto max-w-xl text-zinc-400 mb-8">
-            Plus vous en commandez, moins c&apos;est cher à l&apos;unité. Prix affichés HT pour les pros ·{' '}
-            <span className="text-green-400">livraison offerte</span>. Le prix exact selon votre quantité
-            s&apos;affiche en direct dans le configurateur.
-          </p>
-          <div className="flex flex-wrap justify-center gap-3 mb-9">
-            {['1 – 9', '10 – 49', '50 – 99', '100+'].map((range, i) => (
-              <div key={range} className="rounded-2xl border border-white/10 bg-white/[0.03] px-6 py-5 text-center">
-                <p className="text-xs text-zinc-500">{range} unités</p>
-                <p className="mt-1 text-lg font-bold text-white flex items-center justify-center gap-1">
-                  {Array.from({ length: 4 - i }).map((_, k) => (
-                    <Icon key={k} icon="solar:tag-price-bold" width={16} className="text-[#ff2d55]" />
-                  ))}
-                </p>
-                <p className="text-xs text-zinc-500">{i === 3 ? 'meilleur prix' : 'dégressif'}</p>
-              </div>
-            ))}
-          </div>
-          <a
-            href={ORDER_URL}
-            className="inline-flex items-center gap-2 rounded-xl bg-gradient-to-r from-[#ff2d55] to-[#7928ca] px-7 py-4 text-base font-semibold text-white hover:opacity-90 transition-opacity"
-          >
-            <Icon icon="solar:upload-square-bold" width={20} /> Voir mon prix et personnaliser
-          </a>
         </section>
 
         {/* ===== FAQ ===== */}
