@@ -215,6 +215,12 @@ export default function PorteClesNFCPage() {
                 >
                   <Icon icon="solar:shop-2-bold" width={20} /> Accéder à la boutique
                 </a>
+                <a
+                  href="/rendez-vous"
+                  className="px-6 py-4 text-zinc-300 hover:text-white transition-colors font-medium flex items-center gap-2"
+                >
+                  <Icon icon="solar:videocamera-record-bold" width={20} /> Le voir en vrai ? Démo en visio
+                </a>
               </div>
 
               <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
