@@ -35,6 +35,13 @@ export default function BookingPageClient({ site, social }: BookingPageClientPro
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [error, setError] = useState('');
   const [loadingSettings, setLoadingSettings] = useState(true);
+  // Mode « démo porte-clés NFC » (via ?motif=demo) : copie orientée démo produit.
+  const [isDemo, setIsDemo] = useState(false);
+
+  useEffect(() => {
+    const p = new URLSearchParams(window.location.search);
+    setIsDemo(p.get('motif') === 'demo' || p.get('demo') === '1');
+  }, []);
 
   useEffect(() => {
     getBookingSettings()
@@ -69,6 +76,7 @@ export default function BookingPageClient({ site, social }: BookingPageClientPro
         company: data.company || undefined,
         date: selectedDate,
         time: selectedTime,
+        subject: isDemo ? 'Démo porte-clés NFC' : undefined,
       });
 
       setBookingResult(result);
@@ -137,11 +145,16 @@ export default function BookingPageClient({ site, social }: BookingPageClientPro
           {/* Left - Info (2 cols) */}
           <div className="lg:col-span-2">
             <h1 className="text-4xl md:text-5xl font-bold text-white mb-6">
-              Prendre <span className="gradient-text">rendez-vous</span>
+              {isDemo ? (
+                <>Voir un porte-clé NFC <span className="gradient-text">en vrai</span></>
+              ) : (
+                <>Prendre <span className="gradient-text">rendez-vous</span></>
+              )}
             </h1>
             <p className="text-zinc-400 text-lg mb-10">
-              30 minutes en visio pour discuter de votre projet.
-              Choisissez un créneau qui vous convient.
+              {isDemo
+                ? 'Une démo en visio : on vous montre un porte-clé fini, le scan NFC en direct, et on répond à vos questions. Sans engagement — choisissez votre créneau.'
+                : '30 minutes en visio pour discuter de votre projet. Choisissez un créneau qui vous convient.'}
             </p>
 
             {/* Avantages */}
@@ -161,8 +174,8 @@ export default function BookingPageClient({ site, social }: BookingPageClientPro
                   <Icon icon="solar:clock-circle-linear" className="text-[#7928ca]" width={20} />
                 </div>
                 <div>
-                  <h3 className="text-white font-medium text-sm">30 minutes</h3>
-                  <p className="text-zinc-500 text-sm">Un échange efficace et ciblé sur vos besoins</p>
+                  <h3 className="text-white font-medium text-sm">{isDemo ? 'Démo en direct' : '30 minutes'}</h3>
+                  <p className="text-zinc-500 text-sm">{isDemo ? 'On vous montre un porte-clé fini et son scan NFC' : 'Un échange efficace et ciblé sur vos besoins'}</p>
                 </div>
               </div>
 

@@ -611,6 +611,7 @@ export interface BookingFormData {
   date: string;
   time: string;
   website?: string;
+  subject?: string; // motif (ex. « Démo porte-clés NFC ») → admin_notes côté CRM
 }
 
 export interface BookingResult {
