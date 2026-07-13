@@ -277,6 +277,19 @@ const nextConfig: NextConfig = {
         destination: "https://boutique.idkom.fr/boutique-pro",
         permanent: true,
       },
+      // Connexion unifiée (client + revendeur) : hébergée sur la boutique (idkom-crm).
+      // On garde une URL "vitrine" jolie qui renvoie là-bas ; le ?expired=1 est transmis.
+      // Non permanent (307) : on pourra l'héberger nativement sur www plus tard.
+      {
+        source: "/connexion",
+        destination: "https://boutique.idkom.fr/connexion",
+        permanent: false,
+      },
+      {
+        source: "/connexion/:path*",
+        destination: "https://boutique.idkom.fr/connexion",
+        permanent: false,
+      },
       // --- Redirects infrastructure ---
       {
         source: "/admin/:path*",
