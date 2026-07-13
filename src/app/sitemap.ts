@@ -93,12 +93,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       changeFrequency: "weekly",
       priority: 0.9,
     },
-    {
-      url: `${BASE_URL}/boutique`,
-      lastModified: new Date("2026-07-06"),
-      changeFrequency: "weekly",
-      priority: 0.8,
-    },
+    // /boutique retiré : redirigé en 301 vers boutique.idkom.fr (voir next.config.ts).
     {
       url: `${BASE_URL}/contact`,
       lastModified: new Date("2026-01-15"),

@@ -63,6 +63,19 @@ const nextConfig: NextConfig = {
   },
   async redirects() {
     return [
+      // Ancienne boutique interne → la boutique officielle (boutique.idkom.fr).
+      // On consolide tout le SEO là-bas ; les sous-pages (panier, checkout, catégories)
+      // n'ont pas d'équivalent 1:1 → tout renvoie vers le hub des univers.
+      {
+        source: "/boutique",
+        destination: "https://boutique.idkom.fr/boutique-univers",
+        permanent: true,
+      },
+      {
+        source: "/boutique/:path*",
+        destination: "https://boutique.idkom.fr/boutique-univers",
+        permanent: true,
+      },
       // --- Anciennes URLs legacy → nouvelles pages ---
       // Pages ?page=xxx (ancien site)
       {

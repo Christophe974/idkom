@@ -27,10 +27,16 @@ export default function Navbar({ menus }: NavbarProps) {
   // Le porte-clé NFC est un produit à part entière : on garantit son entrée dans le
   // menu même si le CMS (menus.php) ne la liste pas encore. Placée en tête.
   const productLink = { label: 'Porte-clés NFC', url: '/porte-cles-nfc' };
+  // La boutique est LA destination commerciale (boutique.idkom.fr) : entrée garantie,
+  // en tête du menu, sur toutes les pages (lien qui transmet l'autorité SEO du domaine).
+  const boutiqueLink = { label: 'Boutique', url: 'https://boutique.idkom.fr' };
   const cmsMenus = menus || defaultMenus;
-  const menuItems = cmsMenus.some((m) => m.url === productLink.url)
+  const withProduct = cmsMenus.some((m) => m.url === productLink.url)
     ? cmsMenus
     : [productLink, ...cmsMenus];
+  const menuItems = withProduct.some((m) => m.url === boutiqueLink.url)
+    ? withProduct
+    : [boutiqueLink, ...withProduct];
 
   return (
     <nav className="fixed top-0 w-full z-50 border-b border-white/5 bg-zinc-950/95 md:bg-zinc-950/80 md:backdrop-blur-xl">
@@ -49,16 +55,26 @@ export default function Navbar({ menus }: NavbarProps) {
 
         {/* Desktop Menu */}
         <div className="hidden md:flex items-center gap-8 text-sm font-medium text-zinc-400">
-          {menuItems.map((item) => (
-            <Link
-              prefetch={false}
-              key={item.url}
-              href={item.url}
-              className="hover:text-white transition-colors duration-200"
-            >
-              {item.label}
-            </Link>
-          ))}
+          {menuItems.map((item) =>
+            item.url.startsWith('http') ? (
+              <a
+                key={item.url}
+                href={item.url}
+                className="hover:text-white transition-colors duration-200"
+              >
+                {item.label}
+              </a>
+            ) : (
+              <Link
+                prefetch={false}
+                key={item.url}
+                href={item.url}
+                className="hover:text-white transition-colors duration-200"
+              >
+                {item.label}
+              </Link>
+            )
+          )}
         </div>
 
         {/* CTA + Mobile Toggle */}
@@ -87,17 +103,28 @@ export default function Navbar({ menus }: NavbarProps) {
       {isOpen && (
         <div className="md:hidden border-t border-white/5 bg-zinc-950/98 md:bg-zinc-950/95 md:backdrop-blur-xl">
           <div className="px-6 py-4 space-y-4">
-            {menuItems.map((item) => (
-              <Link
-                prefetch={false}
-                key={item.url}
-                href={item.url}
-                onClick={() => setIsOpen(false)}
-                className="block text-zinc-400 hover:text-white transition-colors py-2"
-              >
-                {item.label}
-              </Link>
-            ))}
+            {menuItems.map((item) =>
+              item.url.startsWith('http') ? (
+                <a
+                  key={item.url}
+                  href={item.url}
+                  onClick={() => setIsOpen(false)}
+                  className="block text-zinc-400 hover:text-white transition-colors py-2"
+                >
+                  {item.label}
+                </a>
+              ) : (
+                <Link
+                  prefetch={false}
+                  key={item.url}
+                  href={item.url}
+                  onClick={() => setIsOpen(false)}
+                  className="block text-zinc-400 hover:text-white transition-colors py-2"
+                >
+                  {item.label}
+                </Link>
+              )
+            )}
             <Link
               prefetch={false}
               href="/contact"
