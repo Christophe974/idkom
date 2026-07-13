@@ -73,7 +73,7 @@ function StepItem({ step, index, total }: { step: AnimationStep; index: number; 
                 <img
                   src={step.photos[0].url}
                   alt={step.photos[0].alt || step.title}
-                  className="w-full aspect-[4/3] object-cover rounded-2xl"
+                  className="w-full aspect-square object-cover rounded-2xl"
                 />
               </div>
             </div>
