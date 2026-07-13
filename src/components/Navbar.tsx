@@ -79,6 +79,13 @@ export default function Navbar({ menus }: NavbarProps) {
 
         {/* CTA + Mobile Toggle */}
         <div className="flex items-center gap-4">
+          {/* Accès à l'espace client/revendeur (connexion unifiée, hébergée sur la boutique) */}
+          <a
+            href="https://boutique.idkom.fr/connexion"
+            className="hidden md:block text-sm font-medium text-zinc-400 hover:text-white transition-colors duration-200"
+          >
+            Mon espace
+          </a>
           <Link
             prefetch={false}
             href="/contact"
@@ -125,6 +132,13 @@ export default function Navbar({ menus }: NavbarProps) {
                 </Link>
               )
             )}
+            <a
+              href="https://boutique.idkom.fr/connexion"
+              onClick={() => setIsOpen(false)}
+              className="block text-zinc-400 hover:text-white transition-colors py-2"
+            >
+              Mon espace
+            </a>
             <Link
               prefetch={false}
               href="/contact"
