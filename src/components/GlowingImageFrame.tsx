@@ -25,27 +25,24 @@ export default function GlowingImageFrame({ src, alt, className = '', fallbackIc
         <div className="absolute inset-[1px] rounded-2xl bg-zinc-950" />
       </div>
 
-      {/* Container principal avec l'image */}
-      <div className="relative rounded-2xl overflow-hidden z-10">
+      {/* Container principal avec l'image — ratio 16:9 conforme à l'admin (1920×1080) */}
+      <div className="relative aspect-video rounded-2xl overflow-hidden z-10">
         {src ? (
-          // width/height à 0 + sizes : next/image reste optimisé mais l'image
-          // s'affiche à son ratio réel (aucune coupe, aucune bande vide)
           <Image
             src={src}
             alt={alt || ''}
-            width={0}
-            height={0}
+            fill
             sizes="(max-width: 768px) 100vw, 60vw"
-            className="w-full h-auto block transition-transform duration-700 group-hover:scale-[1.02]"
+            className="object-cover transition-transform duration-700 group-hover:scale-[1.02]"
           />
         ) : (
-          <div className="relative aspect-video">
+          <>
             <div className="absolute inset-0 bg-gradient-to-br from-zinc-800 to-zinc-900"></div>
             <div className="absolute inset-0 bg-grid opacity-30"></div>
             <div className="absolute inset-0 flex items-center justify-center">
               {fallbackIcon}
             </div>
-          </div>
+          </>
         )}
       </div>
     </div>

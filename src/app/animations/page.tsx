@@ -53,8 +53,8 @@ export default async function AnimationsPage() {
               className="group relative bento-card rounded-2xl overflow-hidden bg-zinc-900 border border-zinc-800 hover:border-zinc-700"
               style={{ animationDelay: `${index * 0.1}s` }}
             >
-              {/* Image */}
-              <div className="aspect-[4/3] bg-gradient-to-br from-zinc-800 to-zinc-900 relative overflow-hidden">
+              {/* Image — ratio 16:9 conforme à l'admin (image à la une 1920×1080) */}
+              <div className="aspect-video bg-gradient-to-br from-zinc-800 to-zinc-900 relative overflow-hidden">
                 {anim.image?.url ? (
                   <img
                     src={anim.image.url}
