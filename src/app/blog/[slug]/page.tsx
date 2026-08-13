@@ -7,6 +7,7 @@ import FooterServer from '@/components/FooterServer';
 import AmbientBackground from '@/components/AmbientBackground';
 import GlowingImageFrame from '@/components/GlowingImageFrame';
 import MarkdownContent from '@/components/MarkdownContent';
+import BlogViewTracker from '@/components/BlogViewTracker';
 
 export const revalidate = 300;
 
@@ -39,7 +40,10 @@ export default async function ArticlePage({ params }: PageProps) {
 
   let article;
   try {
-    article = await getBlogArticleBySlug(slug);
+    // notrack : la page est en cache ISR (revalidate 300), donc un comptage
+    // serveur ici compterait les régénérations de cache, pas les visiteurs.
+    // Le comptage réel se fait côté navigateur via <BlogViewTracker />.
+    article = await getBlogArticleBySlug(slug, { notrack: true });
   } catch {
     notFound();
   }
@@ -48,6 +52,7 @@ export default async function ArticlePage({ params }: PageProps) {
 
   return (
     <>
+      <BlogViewTracker slug={article.slug} />
       <AmbientBackground />
       <NavbarServer />
 
