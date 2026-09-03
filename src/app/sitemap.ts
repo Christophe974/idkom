@@ -88,6 +88,12 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       priority: 0.9,
     },
     {
+      url: `${BASE_URL}/location-stand-montbeliard-belfort`,
+      lastModified: new Date("2026-09-04"),
+      changeFrequency: "weekly",
+      priority: 0.9,
+    },
+    {
       url: `${BASE_URL}/porte-cles-nfc`,
       lastModified: new Date("2026-07-06"),
       changeFrequency: "weekly",

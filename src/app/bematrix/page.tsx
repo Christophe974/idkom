@@ -138,6 +138,7 @@ export default async function BematrixPage() {
                   Découvrez <Link href="/savoir-faire" className="text-[#ff2d55] hover:underline">notre savoir-faire</Link>,
                   notre <Link href="/atelier" className="text-[#ff2d55] hover:underline">atelier de fabrication</Link> et
                   nos <Link href="/animations-evenementielles" className="text-[#ff2d55] hover:underline">animations événementielles</Link>.
+                  Dans le Nord Franche-Comté, voyez aussi notre <Link href="/location-stand-montbeliard-belfort" className="text-[#ff2d55] hover:underline">location de stand et de matériel à Montbéliard et Belfort</Link>.
                 </p>
                 <div className="flex flex-wrap gap-4">
                   <Link

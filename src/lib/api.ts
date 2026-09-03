@@ -434,8 +434,22 @@ export async function getBlogArticleBySlug(slug: string, options?: { notrack?: b
 }
 
 // Menus
+// Menus (header + footer) — servis depuis Supabase (cms_menus), plus depuis menus.php (OVH).
+// Même forme que l'API PHP ; le back-office /vitrine et les inserts SQL sont donc pris en compte.
 export async function getMenus(): Promise<MenuData> {
-  return fetchApi<MenuData>('menus.php');
+  const { data, error } = await supabase
+    .from('cms_menus')
+    .select('legacy_id,location,label,url,target,icon,sort_order')
+    .eq('is_active', true)
+    .order('sort_order')
+    .order('legacy_id');
+  if (error) throw error;
+  const rows = (data ?? []) as any[];
+  const at = (location: string): MenuItem[] =>
+    rows
+      .filter((r) => r.location === location)
+      .map((r) => ({ id: r.legacy_id ?? 0, label: r.label, url: r.url, target: r.target ?? '_self', icon: r.icon ?? undefined }));
+  return { header: at('header'), footer_services: at('footer_services'), footer_legal: at('footer_legal') };
 }
 
 // Navigation (dynamic navbar from CMS)

@@ -254,6 +254,29 @@ export default async function CityPage({ params }: PageProps) {
           </section>
         )}
 
+        {/* Location de stand et de matériel (villes du Nord Franche-Comté) */}
+        {['montbeliard', 'belfort'].includes(city.slug) && (
+          <section className="py-16 px-6">
+            <div className="max-w-5xl mx-auto rounded-3xl bg-gradient-to-br from-[#ff2d55]/10 via-[#7928ca]/10 to-transparent border border-white/10 p-8 md:p-12 text-center">
+              <h2 className="text-2xl md:text-3xl font-bold text-white mb-4">
+                Louer un stand ou du matériel à {city.city_name} ?
+              </h2>
+              <p className="text-zinc-400 max-w-2xl mx-auto mb-6">
+                Stands BeMatrix, écrans LED, éclairage, mobilier et animations partent de notre atelier de Brevilliers,
+                à un quart d&apos;heure de {city.city_name}. Livrés, montés, démontés.
+              </p>
+              <Link
+                prefetch={false}
+                href="/location-stand-montbeliard-belfort"
+                className="inline-flex items-center gap-2 px-6 py-3 rounded-full gradient-bg font-medium text-white hover:shadow-lg hover:shadow-[#7928ca]/25 transition-all"
+              >
+                Location de stand et de matériel à Montbéliard et Belfort
+                <Icon icon="solar:arrow-right-linear" width={18} />
+              </Link>
+            </div>
+          </section>
+        )}
+
         {/* Other Cities */}
         {city.other_cities.length > 0 && (
           <section className="py-20 px-6 bg-zinc-900/30">
