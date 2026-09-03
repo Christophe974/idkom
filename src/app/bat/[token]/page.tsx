@@ -21,7 +21,7 @@ export async function generateMetadata({ params, searchParams }: PageProps) {
       robots: 'noindex, nofollow',
     };
   } catch {
-    return { title: 'BAT introuvable | iDkom', robots: 'noindex, nofollow' };
+    return { title: 'BAT introuvable', robots: 'noindex, nofollow' };
   }
 }
 

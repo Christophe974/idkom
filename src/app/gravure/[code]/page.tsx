@@ -2,7 +2,7 @@ import { Metadata } from 'next';
 import GravureClient from './GravureClient';
 
 export const metadata: Metadata = {
-  title: 'Personnalisez votre planche | iDkom',
+  title: 'Personnalisez votre planche',
   description: 'Choisissez le texte à graver sur votre planche apéro personnalisée.',
   robots: { index: false, follow: false },
 };

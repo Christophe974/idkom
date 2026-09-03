@@ -20,7 +20,7 @@ interface PageProps {
 // Gain : un round-trip OVH économisé par chargement.
 export function generateMetadata() {
   return {
-    title: 'Proposition commerciale | iDkom',
+    title: 'Proposition commerciale',
     robots: 'noindex, nofollow',
   };
 }

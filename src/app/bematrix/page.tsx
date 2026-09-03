@@ -9,7 +9,7 @@ import Counter from '@/components/Counter';
 import { getHomepageData } from '@/lib/api';
 
 export const metadata: Metadata = {
-  title: 'Stand BeMatrix en France — Location & Installation | iDkom',
+  title: 'Stand BeMatrix en France — Location & Installation',
   description: 'Location et montage de stands BeMatrix clé en main. 4 000+ pièces en stock, LEDskin® 12 m², éclairage intégré. Conception 3D, livraison et installation sur site partout en France.',
   keywords: ['BeMatrix', 'be matrix', 'stand BeMatrix', 'bematrix stand', 'standiste BeMatrix', 'bematrix éclairage', 'bematrix LEDskin', 'stand bematrix', 'location stand modulaire', 'stand modulaire salon', 'bematrix catalogue', 'bematrix France', 'standiste France', 'location stand salon professionnel'],
   alternates: {

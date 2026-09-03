@@ -7,7 +7,7 @@ import FooterServer from '@/components/FooterServer';
 import AmbientBackground from '@/components/AmbientBackground';
 
 export const metadata: Metadata = {
-  title: 'Mentions légales | iDkom',
+  title: 'Mentions légales',
   description: 'Mentions légales du site iDkom - Informations juridiques, éditeur, hébergeur et politique de confidentialité.',
   alternates: { canonical: 'https://www.idkom.fr/mentions-legales' },
 };

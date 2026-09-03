@@ -2,6 +2,7 @@ import { notFound } from 'next/navigation';
 import Link from 'next/link';
 import { Icon } from '@iconify/react';
 import { getAnimationBySlug, getHomepageData } from '@/lib/api';
+import { pageTitle } from '@/lib/seo';
 import NavbarServer from '@/components/NavbarServer';
 import FooterServer from '@/components/FooterServer';
 import AmbientBackground from '@/components/AmbientBackground';
@@ -20,13 +21,13 @@ export async function generateMetadata({ params }: PageProps) {
   try {
     const anim = await getAnimationBySlug(slug);
     return {
-      title: anim.seo?.title || `${anim.title} | iDkom`,
+      title: pageTitle(anim.seo?.title || anim.title),
       description: anim.seo?.description || anim.excerpt,
       alternates: { canonical: `https://www.idkom.fr/animations/${slug}` },
     };
   } catch {
     return {
-      title: 'Animation introuvable | iDkom',
+      title: 'Animation introuvable',
       robots: { index: false, follow: false },
     };
   }

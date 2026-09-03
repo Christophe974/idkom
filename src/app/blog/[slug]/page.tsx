@@ -2,6 +2,7 @@ import { notFound } from 'next/navigation';
 import Link from 'next/link';
 import { Icon } from '@iconify/react';
 import { getBlogArticleBySlug, getHomepageData } from '@/lib/api';
+import { pageTitle } from '@/lib/seo';
 import NavbarServer from '@/components/NavbarServer';
 import FooterServer from '@/components/FooterServer';
 import AmbientBackground from '@/components/AmbientBackground';
@@ -23,13 +24,13 @@ export async function generateMetadata({ params }: PageProps) {
     return {
       // Titre simple : le template racine ajoute « | iDkom » (évite le double « | iDkom »).
       // Priorité au meta_title CMS s'il est renseigné.
-      title: article.meta_title || article.title,
+      title: pageTitle(article.meta_title || article.title),
       description: article.meta_description || article.excerpt,
       alternates: { canonical: `https://www.idkom.fr/blog/${slug}` },
     };
   } catch {
     return {
-      title: 'Article introuvable | iDkom',
+      title: 'Article introuvable',
       robots: { index: false, follow: false },
     };
   }

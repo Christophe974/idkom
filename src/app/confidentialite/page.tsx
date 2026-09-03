@@ -7,7 +7,7 @@ import FooterServer from '@/components/FooterServer';
 import AmbientBackground from '@/components/AmbientBackground';
 
 export const metadata: Metadata = {
-  title: 'Politique de confidentialité | iDkom',
+  title: 'Politique de confidentialité',
   description: 'Politique de confidentialité et protection des données personnelles du site iDkom.',
   alternates: { canonical: 'https://www.idkom.fr/confidentialite' },
 };

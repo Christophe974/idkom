@@ -2,6 +2,7 @@ import { notFound } from 'next/navigation';
 import Link from 'next/link';
 import { Icon } from '@iconify/react';
 import { getProjetBySlug, getHomepageData } from '@/lib/api';
+import { pageTitle } from '@/lib/seo';
 import NavbarServer from '@/components/NavbarServer';
 import FooterServer from '@/components/FooterServer';
 import AmbientBackground from '@/components/AmbientBackground';
@@ -21,13 +22,13 @@ export async function generateMetadata({ params }: PageProps) {
   try {
     const projet = await getProjetBySlug(slug);
     return {
-      title: `${projet.title} | iDkom`,
+      title: pageTitle(projet.meta_title || projet.title),
       description: projet.excerpt || projet.meta_description,
       alternates: { canonical: `https://www.idkom.fr/realisations/${slug}` },
     };
   } catch {
     return {
-      title: 'Projet introuvable | iDkom',
+      title: 'Projet introuvable',
       robots: { index: false, follow: false },
     };
   }

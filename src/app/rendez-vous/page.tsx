@@ -5,7 +5,7 @@ import BookingPageClient from './BookingPageClient';
 export const revalidate = 300;
 
 export const metadata: Metadata = {
-  title: "Prendre rendez-vous | iDkom - L'Atelier Phygital",
+  title: "Prendre rendez-vous",
   description: "Réservez un créneau de 30 minutes en visioconférence avec iDkom pour discuter de votre projet de stand, digital ou événementiel.",
   alternates: { canonical: "https://www.idkom.fr/rendez-vous" },
   // Sans openGraph propre, la page héritait de l'og:url de la home → au partage (Messenger/

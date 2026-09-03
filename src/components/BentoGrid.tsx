@@ -35,11 +35,11 @@ export default function BentoGrid({ data }: BentoGridProps) {
               Atelier créatif depuis 1996
             </div>
             <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold leading-[1.1] text-white mb-4">
-              Agence Événementielle<br />
-              <span className="gradient-text">&amp; Solutions Digitales</span>
+              Agence de communication<br />
+              <span className="gradient-text">événementielle à Montbéliard</span>
             </h1>
             <p className="text-zinc-400 text-lg max-w-md leading-relaxed">
-              Stands BeMatrix, animations innovantes et solutions digitales pour l&apos;événementiel.
+              Stands BeMatrix, animations et solutions digitales pour l&apos;événementiel.
               <strong className="text-zinc-300"> 30 ans de terrain, 600+ projets réalisés en Franche-Comté et partout en France.</strong>
             </p>
           </div>

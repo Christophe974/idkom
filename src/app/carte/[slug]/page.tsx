@@ -14,7 +14,7 @@ export async function generateMetadata({ params }: PageProps) {
   const { slug } = await params;
   const name = slug.replace(/-/g, ' ').replace(/\b\w/g, c => c.toUpperCase());
   return {
-    title: `${name} - Carte de visite | iDkom`,
+    title: `${name} - Carte de visite`,
     description: `Carte de visite digitale de ${name}`,
   };
 }

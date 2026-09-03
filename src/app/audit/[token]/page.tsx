@@ -23,12 +23,12 @@ export async function generateMetadata({ params }: PageProps) {
   try {
     const audit = await getAuditByToken(token);
     return {
-      title: `Audit ${audit.company_name || 'web'} | iDkom`,
+      title: `Audit ${audit.company_name || 'web'}`,
       description: `Score iDkom : ${audit.score_total}/100 — Audit de performance, SEO, sécurité et présence Google.`,
       robots: 'noindex, nofollow',
     };
   } catch {
-    return { title: 'Audit introuvable | iDkom' };
+    return { title: 'Audit introuvable' };
   }
 }
 

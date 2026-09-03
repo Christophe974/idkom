@@ -6,6 +6,7 @@ import NavbarServer from '@/components/NavbarServer';
 import FooterServer from '@/components/FooterServer';
 import AmbientBackground from '@/components/AmbientBackground';
 import { getHomepageData, getCityPageBySlug } from '@/lib/api';
+import { pageTitle } from '@/lib/seo';
 import type { CityPage as CityPageData, CityPageConcept } from '@/lib/api';
 
 export const revalidate = 3600;
@@ -32,7 +33,7 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
     // Fallback SEO : si le CMS ne renseigne pas title/description, on génère un défaut
     // propre (sinon le <title> ressort vide → « | iDkom »).
     const title =
-      city.seo?.title?.trim() ||
+      pageTitle(city.seo?.title) ||
       `Animations événementielles à ${city.city_name} (${city.department_code})`;
     const description =
       city.seo?.description?.trim() ||

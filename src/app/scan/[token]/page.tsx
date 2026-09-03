@@ -1,7 +1,7 @@
 import ScanPageClient from './ScanPageClient';
 
 export const metadata = {
-  title: 'Activez votre porte-clé | iDkom',
+  title: 'Activez votre porte-clé',
   description: 'Créez votre carte de visite digitale en quelques secondes',
 };
 
