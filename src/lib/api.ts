@@ -308,6 +308,8 @@ export async function getProjets(options?: {
     .from('cms_projets')
     .select(PROJET_BASE_FIELDS)
     .eq('status', 'published')
+    // Chronologie : date de l'événement d'abord (les plus récents en tête), sans date en fin
+    .order('project_date', { ascending: false, nullsFirst: false })
     .order('published_at', { ascending: false });
 
   if (options?.featured) q = q.eq('is_featured', true);
@@ -402,6 +404,8 @@ export async function getBlogArticles(options?: {
     .from('cms_blog')
     .select(BLOG_SELECT)
     .eq('status', 'published')
+    // Chronologie : date de l'événement d'abord (les plus récents en tête), sans date en fin
+    .order('project_date', { ascending: false, nullsFirst: false })
     .order('published_at', { ascending: false });
 
   if (options?.featured) q = q.eq('is_featured', true);

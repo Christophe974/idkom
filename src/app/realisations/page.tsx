@@ -1,3 +1,4 @@
+import { Fragment } from 'react';
 import Link from 'next/link';
 import { Icon } from '@iconify/react';
 import { getProjets, getHomepageData } from '@/lib/api';
@@ -18,7 +19,7 @@ export default async function RealisationsPage({ searchParams }: { searchParams:
   const activeCategory = params.category || null;
 
   const [projets, homeData] = await Promise.all([
-    getProjets({ per_page: 12, ...(activeCategory ? { category: activeCategory } : {}) }),
+    getProjets(activeCategory ? { category: activeCategory } : undefined),
     getHomepageData(),
   ]);
 
@@ -73,10 +74,21 @@ export default async function RealisationsPage({ searchParams }: { searchParams:
 
         {/* Projects Grid */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {projets.map((projet) => (
+          {projets.map((projet, i) => {
+            const year = projet.project_date ? new Date(projet.project_date).getFullYear() : null;
+            const prev = i > 0 ? projets[i - 1] : null;
+            const prevYear = prev?.project_date ? new Date(prev.project_date).getFullYear() : null;
+            const showYear = i === 0 || year !== prevYear;
+            return (
+            <Fragment key={projet.slug}>
+            {showYear && (
+              <div className="col-span-full flex items-center gap-4 pt-4 first:pt-0">
+                <span className="text-3xl md:text-4xl font-bold gradient-text">{year ?? 'Sans date'}</span>
+                <span className="h-px flex-1 bg-zinc-800" aria-hidden="true" />
+              </div>
+            )}
             <Link
               prefetch={false}
-              key={projet.id}
               href={`/realisations/${projet.slug}`}
               className="group bento-card rounded-2xl overflow-hidden bg-zinc-900 border border-zinc-800 hover:border-zinc-700"
             >
@@ -135,7 +147,9 @@ export default async function RealisationsPage({ searchParams }: { searchParams:
                 </div>
               </div>
             </Link>
-          ))}
+            </Fragment>
+            );
+          })}
         </div>
 
         {projets.length === 0 && (
