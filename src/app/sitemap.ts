@@ -131,7 +131,10 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   // depuis la migration et ne renvoie pas les nouveaux articles.
   const [projetSlugs, blogArticles, animationSlugs, cityPages] = await Promise.all([
     fetchSlugs("projets.php"),
-    getBlogArticles().catch(() => []),
+    getBlogArticles().catch((error) => {
+      console.error('sitemap: articles de blog indisponibles', error);
+      return [];
+    }),
     fetchSlugs("animations.php"),
     fetchCityPages(),
   ]);

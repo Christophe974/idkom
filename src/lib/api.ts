@@ -404,8 +404,7 @@ export async function getBlogArticles(options?: {
     .from('cms_blog')
     .select(BLOG_SELECT)
     .eq('status', 'published')
-    // Chronologie : date de l'événement d'abord (les plus récents en tête), sans date en fin
-    .order('project_date', { ascending: false, nullsFirst: false })
+    // NB : pas de project_date ici (colonne propre à cms_projets) — PostgREST renverrait un 400 et le blog serait vide.
     .order('published_at', { ascending: false });
 
   if (options?.featured) q = q.eq('is_featured', true);
