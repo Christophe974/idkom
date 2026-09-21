@@ -14,6 +14,7 @@ export default function robots(): MetadataRoute.Robots {
           "/carte/",
           "/demo/",
           "/gestionstock/",
+          "/noel-en-bande-organisee/pass/",
         ],
       },
     ],

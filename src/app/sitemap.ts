@@ -46,6 +46,12 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       priority: 1,
     },
     {
+      url: `${BASE_URL}/noel-en-bande-organisee`,
+      lastModified: new Date("2026-09-21"),
+      changeFrequency: "weekly",
+      priority: 0.9,
+    },
+    {
       url: `${BASE_URL}/atelier`,
       lastModified: new Date("2026-02-10"),
       changeFrequency: "monthly",

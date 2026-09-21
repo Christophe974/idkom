@@ -1,0 +1,212 @@
+/* ==================================================================
+   Page « Noël en bande organisée » (/noel-en-bande-organisee)
+   Palette : nuit (bleu nuit profond) · bordeaux · ambre · ivoire · cuivre
+   ================================================================== */
+
+/* ------------------------------------------------------------------
+   Palette « Noël en bande organisée »
+   nuit (bleu nuit profond) · bordeaux · ambre · ivoire · cuivre
+   ------------------------------------------------------------------ */
+@theme {
+  --color-nuit-950: #060b16;
+  --color-nuit-900: #0b1426;
+  --color-nuit-800: #12203a;
+  --color-nuit-700: #1b2d4f;
+  --color-nuit-600: #2a3f66;
+
+  --color-bordeaux-800: #3a0d14;
+  --color-bordeaux-700: #4a1119;
+  --color-bordeaux-600: #6b1f2a;
+  --color-bordeaux-500: #8a2a38;
+  --color-bordeaux-400: #a63a4a;
+
+  --color-ambre-600: #d98f22;
+  --color-ambre-500: #f2a93b;
+  --color-ambre-400: #f7bd63;
+  --color-ambre-300: #ffd08a;
+  --color-ambre-200: #ffe6be;
+
+  --color-ivoire-100: #f6eedf;
+  --color-ivoire-200: #e8dcc7;
+  --color-ivoire-400: #c9bba3;
+  --color-ivoire-600: #9c8f79;
+
+  --color-cuivre-700: #8a5424;
+  --color-cuivre-600: #a3652b;
+  --color-cuivre-500: #b87333;
+  --color-cuivre-400: #c98a4b;
+  --color-cuivre-300: #d8a06a;
+
+  --breakpoint-xs: 30rem;
+}
+
+@theme inline {
+  --font-poster: var(--font-bebas), "Impact", "Arial Narrow", sans-serif;
+  --font-fraunces: var(--font-fraunces-var), "Georgia", "Times New Roman", serif;
+  --font-manrope: var(--font-manrope-var), system-ui, -apple-system, "Segoe UI", sans-serif;
+}
+
+/* ------------------------------------------------------------------
+   Base
+   ------------------------------------------------------------------ */
+/* Base, limitée à la page (wrapper .noel) */
+.noel {
+  color-scheme: dark;
+  background-color: var(--color-nuit-900);
+  color: var(--color-ivoire-100);
+  font-family: var(--font-manrope-var), system-ui, -apple-system, "Segoe UI", sans-serif;
+  font-feature-settings: "ss01", "cv11";
+  -webkit-text-size-adjust: 100%;
+}
+.noel ::selection {
+  background-color: var(--color-ambre-500);
+  color: var(--color-nuit-950);
+}
+.noel :focus-visible {
+  outline: 2px solid var(--color-ambre-400);
+  outline-offset: 3px;
+}
+/* Ancres : on laisse la place au header fixe */
+.noel [id] {
+  scroll-margin-top: 4.5rem;
+}
+
+/* ------------------------------------------------------------------
+   Utilitaires maison
+   ------------------------------------------------------------------ */
+@utility kicker {
+  font-family: var(--font-bebas), "Impact", "Arial Narrow", sans-serif;
+  font-size: 0.95rem;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--color-cuivre-300);
+}
+
+@utility hairline {
+  border-color: color-mix(in srgb, var(--color-cuivre-500) 35%, transparent);
+}
+
+@utility hairline-strong {
+  border-color: color-mix(in srgb, var(--color-cuivre-500) 60%, transparent);
+}
+
+@utility numeral {
+  font-family: var(--font-bebas), "Impact", "Arial Narrow", sans-serif;
+  font-variant-numeric: tabular-nums;
+  color: var(--color-cuivre-400);
+  line-height: 0.9;
+}
+
+/* Grain cinéma, très léger, statique (aucun coût au scroll) */
+.grain::after {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: 60;
+  pointer-events: none;
+  opacity: 0.045;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='220' height='220'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  background-size: 220px 220px;
+}
+
+/* Révélation douce au scroll (voir components/ui/Reveal.tsx) */
+.reveal {
+  opacity: 0;
+  transform: translateY(18px);
+  transition:
+    opacity 0.7s cubic-bezier(0.22, 1, 0.36, 1),
+    transform 0.7s cubic-bezier(0.22, 1, 0.36, 1);
+}
+.reveal.is-visible {
+  opacity: 1;
+  transform: none;
+}
+@media (prefers-reduced-motion: reduce) {
+  .reveal {
+    opacity: 1;
+    transform: none;
+    transition: none;
+  }
+}
+
+/* FAQ : marqueur natif remplacé */
+details.faq > summary {
+  list-style: none;
+  cursor: pointer;
+}
+details.faq > summary::-webkit-details-marker {
+  display: none;
+}
+details.faq > summary .faq-icon::before {
+  content: "+";
+}
+details.faq[open] > summary .faq-icon::before {
+  content: "–";
+}
+
+/* Champs de formulaire : trait plutôt que boîte */
+.field {
+  width: 100%;
+  background: transparent;
+  border: 0;
+  border-bottom: 1px solid color-mix(in srgb, var(--color-ivoire-100) 28%, transparent);
+  padding: 0.65rem 0;
+  color: var(--color-ivoire-100);
+  font-size: 1rem;
+  transition: border-color 0.2s ease;
+}
+.field::placeholder {
+  color: var(--color-ivoire-600);
+}
+.field:focus {
+  outline: none;
+  border-bottom-color: var(--color-ambre-400);
+}
+.field[aria-invalid="true"] {
+  border-bottom-color: var(--color-bordeaux-400);
+}
+select.field {
+  appearance: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='14' height='9' viewBox='0 0 14 9'%3E%3Cpath d='M1 1l6 6 6-6' fill='none' stroke='%23d8a06a' stroke-width='1.5'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 0 center;
+  padding-right: 1.5rem;
+}
+select.field option {
+  background: var(--color-nuit-800);
+  color: var(--color-ivoire-100);
+}
+textarea.field {
+  resize: vertical;
+  min-height: 6rem;
+}
+
+/* Boutons radio / cases façon « pastille » */
+.choice input {
+  position: absolute;
+  opacity: 0;
+  width: 1px;
+  height: 1px;
+}
+.choice span {
+  display: inline-flex;
+  align-items: center;
+  padding: 0.45rem 0.9rem;
+  border: 1px solid color-mix(in srgb, var(--color-ivoire-100) 28%, transparent);
+  color: var(--color-ivoire-200);
+  font-size: 0.9rem;
+  cursor: pointer;
+  transition:
+    border-color 0.2s ease,
+    background-color 0.2s ease,
+    color 0.2s ease;
+}
+.choice input:checked + span {
+  border-color: var(--color-ambre-400);
+  background-color: color-mix(in srgb, var(--color-ambre-500) 14%, transparent);
+  color: var(--color-ambre-200);
+}
+.choice input:focus-visible + span {
+  outline: 2px solid var(--color-ambre-400);
+  outline-offset: 2px;
+}
