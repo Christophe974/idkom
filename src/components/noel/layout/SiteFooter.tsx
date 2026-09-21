@@ -14,35 +14,11 @@ export function SiteFooter() {
         <div className="md:col-span-5">
           <p className="kicker">Une opération imaginée par</p>
           <p className="mt-3 font-poster text-3xl uppercase leading-[0.95] text-ivoire-100 sm:text-4xl">
-            {o.name} <span className="text-cuivre-400">×</span> {p.name}
+            {p.name} <span className="text-cuivre-400">×</span> {o.name}
           </p>
           <p className="mt-4 max-w-sm text-sm leading-relaxed text-ivoire-400">
             Soirées de Noël pour entreprises et CSE de {site.cities.join(", ")} et des environs, en {site.region}.
           </p>
-        </div>
-
-        <div className="md:col-span-3">
-          <p className="font-fraunces text-lg text-ivoire-100">{o.name}</p>
-          <p className="mt-2 text-sm leading-relaxed text-ivoire-400">
-            Atelier événementiel et digital. Conception de l’opération, animations, Pass et jeux.
-          </p>
-          <ul className="mt-3 space-y-1 text-sm">
-            <li>
-              <Link href="/" className={link}>
-                www.idkom.fr
-              </Link>
-            </li>
-            <li>
-              <a href={`mailto:${o.email}`} className={link}>
-                {o.email}
-              </a>
-            </li>
-            <li>
-              <a href={`tel:${o.phone}`} className={link}>
-                {o.phoneDisplay}
-              </a>
-            </li>
-          </ul>
         </div>
 
         <div className="md:col-span-4">
@@ -82,12 +58,36 @@ export function SiteFooter() {
             ))}
           </ul>
         </div>
+        <div className="md:col-span-3">
+          <p className="font-fraunces text-lg text-ivoire-100">{o.name}</p>
+          <p className="mt-2 text-sm leading-relaxed text-ivoire-400">
+            Atelier événementiel et digital. Conception de l’opération, animations, Pass et jeux.
+          </p>
+          <ul className="mt-3 space-y-1 text-sm">
+            <li>
+              <Link href="/" className={link}>
+                www.idkom.fr
+              </Link>
+            </li>
+            <li>
+              <a href={`mailto:${o.email}`} className={link}>
+                {o.email}
+              </a>
+            </li>
+            <li>
+              <a href={`tel:${o.phone}`} className={link}>
+                {o.phoneDisplay}
+              </a>
+            </li>
+          </ul>
+        </div>
+
       </Container>
 
       <div className="border-t hairline">
         <Container className="flex flex-col gap-3 py-5 text-xs text-ivoire-600 sm:flex-row sm:items-center sm:justify-between">
           <p>
-            © {year} {o.name} · {p.name}
+            © {year} {p.name} · {o.name}
           </p>
           <nav aria-label="Liens secondaires" className="flex gap-5">
             <Link href="/mentions-legales" className="hover:text-ivoire-200">
