@@ -4,5 +4,6 @@ export const navLinks = [
   { href: "#arrivee", label: "L’arrivée" },
   { href: "#pass", label: "Le Pass" },
   { href: "#soiree", label: "La soirée" },
+  { href: "#a-la-carte", label: "À la carte" },
   { href: "#faq", label: "FAQ" },
 ] as const;

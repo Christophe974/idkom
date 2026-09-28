@@ -4,7 +4,7 @@ import { audiences } from "@/content/noel/audiences";
 
 export function PourQui() {
   return (
-    <section id="pour-qui" className="border-t hairline bg-nuit-950 py-24 sm:py-32">
+    <section id="pour-qui" className="border-t hairline py-24 sm:py-32">
       <Container className="lg:grid lg:grid-cols-12 lg:gap-16">
         <div className="lg:col-span-4">
           <SectionHeading

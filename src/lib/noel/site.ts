@@ -1,7 +1,7 @@
 /**
  * Informations de base de la page « Noël en bande organisée ».
  * Coordonnées du Domaine relevées sur https://les12ponts.com/fr/ (21 sept. 2026).
- * ⚠️ Aucune date ni aucun tarif tant qu’ils ne sont pas validés.
+ * ⚠️ Pas de tarif sur la page (décision du 28 sept. 2026 : on attire sans prix). Dates à venir.
  */
 export const site = {
   name: "Noël en bande organisée",

@@ -188,7 +188,7 @@ export function PropositionForm() {
         <Choices legend="Besoin d’un bus" name="bus" options={BUS_OPTIONS} error={errors.bus} />
       </div>
 
-      <Field label="Message" name="message" error={errors.message} hint="Date souhaitée, contraintes, envies : tout ce qui nous aide à préparer la proposition.">
+      <Field label="Message" name="message" error={errors.message} hint="Date souhaitée, repas, spectacle, contraintes : tout ce qui nous aide à préparer la proposition.">
         <textarea id="message" name="message" rows={4} className="field" aria-describedby={describe("message", true)} />
       </Field>
 

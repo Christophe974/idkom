@@ -15,15 +15,23 @@ export const faq: FaqItem[] = [
   },
   {
     q: "Les enfants peuvent-ils participer ?",
-    a: "Selon les soirées, oui. Certaines dates sont ouvertes aux familles, avec des missions pensées pour les enfants. Indiquez-le dans votre demande : nous vous orientons vers la formule adaptée.",
+    a: "Selon les soirées, oui. Certaines dates sont ouvertes aux familles, avec un chalet des enfants où le Père Noël reçoit, une photo souvenir, des friandises et des missions pensées pour eux. Indiquez-le dans votre demande : nous vous orientons vers la formule adaptée.",
   },
   {
     q: "Le transport est-il compris ?",
-    a: "Le bus est une option. Selon les soirées et le nombre de participants, un aller-retour peut être organisé depuis Belfort, Montbéliard, Vesoul ou d’autres villes. Il est étudié et chiffré dans votre proposition si vous en avez besoin.",
+    a: "Le bus est une option. Selon les soirées et le nombre de participants, un aller-retour peut être organisé depuis Belfort, Montbéliard, Vesoul ou d’autres villes. Il est étudié avec vous dans la proposition si vous en avez besoin.",
   },
   {
     q: "Comment fonctionne le Pass QR ?",
     a: "À l’arrivée, le groom remet à chaque participant un Pass à son nom, avec un QR code. Un scan avec le téléphone et il retrouve sa table, son équipe, le programme, ses missions, les votes du blind test et les photos de la soirée. Rien à installer.",
+  },
+  {
+    q: "Quels repas peut-on choisir ?",
+    a: "Quatre pistes pour commencer : la fondue, la boîte chaude, le buffet de Noël ou le repas de gala servi à table. Un grand chalet gourmand peut aussi s’installer dehors, avec fondue, huîtres et foie gras ou tartines grillées autour de tonneaux en bois.",
+  },
+  {
+    q: "Quelles animations peut-on ajouter ?",
+    a: "En plus des missions, des défis et du blind test : un casino d’hiver avec ses croupiers, de la magie de table en table, un spectacle de grandes illusions ou de music-hall, une kermesse de Noël, un concert, un DJ. Vous choisissez, on installe.",
   },
   {
     q: "Peut-on adapter le repas ou le programme ?",

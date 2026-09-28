@@ -54,8 +54,8 @@ export function Formules() {
         </div>
 
         <p className="mt-6 max-w-2xl text-sm text-ivoire-600">
-          Aucun tarif n’est affiché : chaque proposition est chiffrée sur mesure, selon la formule, le nombre de convives
-          et les options retenues.
+          Chaque proposition est construite sur mesure : la formule, le nombre de convives, le repas, le spectacle et les
+          options que vous retenez.
         </p>
       </Container>
     </section>

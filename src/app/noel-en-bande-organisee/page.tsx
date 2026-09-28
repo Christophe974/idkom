@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { SiteFooter } from "@/components/noel/layout/SiteFooter";
 import { SiteHeader } from "@/components/noel/layout/SiteHeader";
+import { ALaCarte } from "@/components/noel/sections/ALaCarte";
 import { Arrivee } from "@/components/noel/sections/Arrivee";
 import { Concept } from "@/components/noel/sections/Concept";
 import { Faq } from "@/components/noel/sections/Faq";
@@ -55,6 +56,7 @@ export default function NoelEnBandeOrganiseePage() {
         <Arrivee />
         <PassSection />
         <Soiree />
+        <ALaCarte />
         <PourQui />
         <Transport />
         <Proposition />

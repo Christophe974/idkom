@@ -10,7 +10,7 @@ const stops = [
 
 export function Transport() {
   return (
-    <section id="transport" className="border-t hairline py-24 sm:py-32">
+    <section id="transport" className="border-t hairline bg-nuit-950 py-24 sm:py-32">
       <Container className="grid gap-12 lg:grid-cols-12 lg:items-center lg:gap-16">
         <div className="lg:col-span-5">
           <SectionHeading
@@ -30,7 +30,7 @@ export function Transport() {
               <li key={s.label} className="relative pl-8 sm:flex-1 sm:pl-0 sm:pt-8">
                 <span
                   aria-hidden="true"
-                  className="absolute left-0 top-1 h-4 w-4 rounded-full border border-cuivre-400 bg-nuit-900 sm:top-0"
+                  className="absolute left-0 top-1 h-4 w-4 rounded-full border border-cuivre-400 bg-nuit-950 sm:top-0"
                 />
                 <p className="font-fraunces text-xl text-ivoire-100">{s.label}</p>
                 <p className="mt-1 text-xs uppercase tracking-[0.14em] text-ivoire-600">{s.note}</p>
@@ -46,8 +46,8 @@ export function Transport() {
             </li>
           </ol>
           <p className="mt-8 max-w-xl text-sm text-ivoire-600">
-            Option proposée selon les soirées et le nombre de participants. Aucune ligne, aucun horaire ni aucun tarif n’est
-            fixé à ce stade : tout est précisé dans la proposition.
+            Option proposée selon les soirées et le nombre de participants. Les points de départ et les horaires sont
+            précisés dans votre proposition.
           </p>
         </div>
       </Container>

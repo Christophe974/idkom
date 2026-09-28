@@ -14,7 +14,7 @@ export function SiteHeader() {
           <span className="mt-0.5 font-fraunces text-[0.8rem] italic text-cuivre-300">au Domaine les 12 Ponts</span>
         </a>
 
-        <nav aria-label="Navigation principale" className="hidden items-center gap-7 lg:flex">
+        <nav aria-label="Navigation principale" className="hidden items-center gap-6 xl:flex">
           {navLinks.map((l) => (
             <a key={l.href} href={l.href} className="text-sm text-ivoire-200 transition-colors hover:text-ambre-300">
               {l.label}

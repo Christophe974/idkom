@@ -4,7 +4,7 @@ import { faq } from "@/content/noel/faq";
 
 export function Faq() {
   return (
-    <section id="faq" className="border-t hairline py-24 sm:py-32">
+    <section id="faq" className="border-t hairline bg-nuit-950 py-24 sm:py-32">
       <Container className="lg:grid lg:grid-cols-12 lg:gap-16">
         <div className="lg:col-span-4">
           <SectionHeading

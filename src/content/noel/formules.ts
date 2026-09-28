@@ -15,7 +15,7 @@ export const formules: Formule[] = [
     text: "Vous réservez le Domaine les 12 Ponts en entier. Vos équipes, vos familles si vous le souhaitez, votre programme. Le parcours des chalets, le repas, les animations et la soirée dansante sont taillés pour vous.",
     points: [
       "Le lieu, la date et le programme rien qu’à vous",
-      "Repas, animations et blind test à votre nom",
+      "Repas, spectacle et animations choisis à la carte",
       "Avec ou sans enfants, selon votre choix",
     ],
     image: {
@@ -30,7 +30,7 @@ export const formules: Formule[] = [
     text: "Vous réservez une ou plusieurs tables lors d’une grande soirée interentreprises. Même décor, même repas, mêmes animations, même ambiance. Sans payer seuls la privatisation du lieu.",
     points: [
       "Dès 5 personnes, une table à votre nom",
-      "L’ambiance d’une grande soirée, sans son budget",
+      "Les chalets, le repas et le spectacle, comme les grandes équipes",
       "Votre équipe joue contre les autres tables",
     ],
     image: {
