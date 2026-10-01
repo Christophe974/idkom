@@ -1,0 +1,274 @@
+/* ==================================================================
+   Page « Mariage » (/mariage) : avant, jour J, après
+   Palette : papier · encre · terre (terracotta) · olive · minuit · champagne
+   Trois ambiances qui suivent le scroll : AVANT = lumière du jour (papier),
+   JOUR J = la nuit de la fête (minuit + champagne), APRÈS = matin calme (lin).
+   ================================================================== */
+
+@theme {
+  --color-papier-50: #fbf8f2;
+  --color-papier-100: #f4eee4;
+  --color-papier-200: #e9e1d3;
+  --color-papier-300: #d8cdb9;
+
+  --color-encre-950: #16140f;
+  --color-encre-900: #211e18;
+  --color-encre-700: #403a31;
+  --color-encre-500: #6c6558;
+  --color-encre-400: #8f8778;
+
+  --color-terre-700: #9c3a22;
+  --color-terre-600: #bb4729;
+  --color-terre-500: #d65a3b;
+  --color-terre-300: #eba088;
+  --color-terre-100: #f7e1d6;
+
+  --color-olive-900: #262e1e;
+  --color-olive-700: #3e4b31;
+  --color-olive-500: #6a7c54;
+  --color-olive-300: #a9b896;
+  --color-olive-100: #e3e9d8;
+
+  --color-minuit-950: #0c0f14;
+  --color-minuit-900: #12161d;
+  --color-minuit-800: #1b212b;
+  --color-minuit-700: #29313e;
+
+  --color-champagne-500: #e9b65a;
+  --color-champagne-300: #f4d495;
+  --color-champagne-100: #fbefd6;
+}
+
+/* Base, limitée à la page (wrapper .mariage).
+   Les variables next/font sont posées sur le wrapper : on les référence directement. */
+.mariage {
+  background-color: var(--color-papier-100);
+  color: var(--color-encre-900);
+  font-family: var(--font-mariage-sans), system-ui, -apple-system, "Segoe UI", sans-serif;
+  -webkit-text-size-adjust: 100%;
+}
+.mariage ::selection {
+  background-color: var(--color-terre-500);
+  color: var(--color-papier-50);
+}
+.mariage :focus-visible {
+  outline: 2px solid var(--color-terre-500);
+  outline-offset: 3px;
+}
+.mariage [id] {
+  scroll-margin-top: 4.5rem;
+}
+
+/* Titres éditoriaux : serif fine, italique pour l'émotion */
+.m-serif {
+  font-family: var(--font-mariage-serif), "Times New Roman", Georgia, serif;
+  font-weight: 400;
+  letter-spacing: -0.01em;
+}
+.m-mono {
+  font-family: var(--font-mariage-mono), ui-monospace, "SF Mono", Menlo, monospace;
+  font-variant-numeric: tabular-nums;
+}
+.m-kicker {
+  font-family: var(--font-mariage-mono), ui-monospace, "SF Mono", Menlo, monospace;
+  font-size: 0.72rem;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+}
+.m-display {
+  font-family: var(--font-mariage-serif), "Times New Roman", Georgia, serif;
+  font-weight: 400;
+  line-height: 0.98;
+  letter-spacing: -0.02em;
+  font-size: clamp(2.5rem, 8.5vw, 5.6rem);
+  text-wrap: balance;
+}
+.m-h2 {
+  font-family: var(--font-mariage-serif), "Times New Roman", Georgia, serif;
+  font-weight: 400;
+  line-height: 1.02;
+  letter-spacing: -0.015em;
+  font-size: clamp(2.1rem, 6.2vw, 4rem);
+  text-wrap: balance;
+}
+.m-h3 {
+  font-family: var(--font-mariage-serif), "Times New Roman", Georgia, serif;
+  font-weight: 400;
+  line-height: 1.08;
+  font-size: clamp(1.6rem, 4.2vw, 2.4rem);
+  text-wrap: balance;
+}
+.m-lead {
+  font-size: clamp(1.05rem, 2.3vw, 1.25rem);
+  line-height: 1.55;
+  text-wrap: pretty;
+}
+
+/* Papier : grain très léger, statique */
+.m-grain::after {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: 60;
+  pointer-events: none;
+  opacity: 0.035;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='220' height='220'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  background-size: 220px 220px;
+}
+
+/* Révélation au scroll (components/mariage/ui/Reveal.tsx) */
+.m-reveal {
+  opacity: 0;
+  transform: translateY(22px);
+  transition:
+    opacity 0.8s cubic-bezier(0.22, 1, 0.36, 1),
+    transform 0.8s cubic-bezier(0.22, 1, 0.36, 1);
+}
+.m-reveal.is-visible {
+  opacity: 1;
+  transform: none;
+}
+
+/* Le « tap » : ondes qui partent du porte-clés vers le téléphone */
+@keyframes m-ripple {
+  0% {
+    transform: scale(0.6);
+    opacity: 0.7;
+  }
+  100% {
+    transform: scale(2.4);
+    opacity: 0;
+  }
+}
+.m-ripple {
+  animation: m-ripple 2.4s cubic-bezier(0.22, 1, 0.36, 1) infinite;
+}
+.m-ripple-2 {
+  animation-delay: 0.8s;
+}
+.m-ripple-3 {
+  animation-delay: 1.6s;
+}
+
+@keyframes m-float {
+  0%,
+  100% {
+    transform: translateY(0) rotate(var(--m-rot, 0deg));
+  }
+  50% {
+    transform: translateY(-8px) rotate(var(--m-rot, 0deg));
+  }
+}
+.m-float {
+  animation: m-float 6s ease-in-out infinite;
+}
+
+@keyframes m-pop {
+  0% {
+    transform: translateY(10px) scale(0.96);
+    opacity: 0;
+  }
+  100% {
+    transform: none;
+    opacity: 1;
+  }
+}
+.m-pop {
+  animation: m-pop 0.5s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+@keyframes m-scan {
+  0% {
+    top: 8%;
+  }
+  50% {
+    top: 88%;
+  }
+  100% {
+    top: 8%;
+  }
+}
+.m-scan {
+  animation: m-scan 2.6s ease-in-out infinite;
+}
+
+@keyframes m-marquee {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(-50%);
+  }
+}
+.m-marquee {
+  animation: m-marquee 38s linear infinite;
+}
+
+/* Barres qui se remplissent quand la section devient visible */
+.m-bar {
+  transform-origin: left center;
+  transform: scaleX(0);
+  transition: transform 1.2s cubic-bezier(0.22, 1, 0.36, 1);
+}
+.is-visible .m-bar,
+.m-bar.is-on {
+  transform: scaleX(var(--m-fill, 1));
+}
+
+/* Défilement horizontal propre (Wrapped, cartes) */
+.m-snap {
+  scroll-snap-type: x mandatory;
+  scrollbar-width: none;
+  -webkit-overflow-scrolling: touch;
+}
+.m-snap::-webkit-scrollbar {
+  display: none;
+}
+.m-snap > * {
+  scroll-snap-align: center;
+}
+
+/* Champs du formulaire final : trait plutôt que boîte */
+.m-field {
+  width: 100%;
+  background: transparent;
+  border: 0;
+  border-bottom: 1px solid color-mix(in srgb, var(--color-papier-50) 35%, transparent);
+  padding: 0.7rem 0;
+  color: var(--color-papier-50);
+  font-size: 1rem;
+  transition: border-color 0.2s ease;
+}
+.m-field::placeholder {
+  color: color-mix(in srgb, var(--color-papier-50) 45%, transparent);
+}
+.m-field:focus {
+  outline: none;
+  border-bottom-color: var(--color-champagne-300);
+}
+.m-field[aria-invalid="true"] {
+  border-bottom-color: var(--color-terre-300);
+}
+textarea.m-field {
+  resize: vertical;
+  min-height: 5.5rem;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .m-reveal {
+    opacity: 1;
+    transform: none;
+    transition: none;
+  }
+  .m-ripple,
+  .m-float,
+  .m-scan,
+  .m-marquee,
+  .m-pop {
+    animation: none;
+  }
+  .m-bar {
+    transition: none;
+    transform: scaleX(var(--m-fill, 1));
+  }
+}

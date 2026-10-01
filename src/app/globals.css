@@ -1,5 +1,6 @@
 @import "tailwindcss";
 @import "./noel.css";
+@import "./mariage.css";
 
 @theme inline {
   --color-brand-pink: #ff2d55;
