@@ -394,18 +394,30 @@ body.pre #dock{transform:translateY(20px)}
     });
   }
 
+  const pending = new Map();
+  function loadOne(k) {
+    const key = k + (hd ? "h" : "m");
+    if (loaded.has(key)) return Promise.resolve();
+    if (pending.has(key)) return pending.get(key);
+    const pr = new Promise((res) => {
+      const pre = new Image();
+      pre.onload = () => { const img = pageEls[k].querySelector("img"); img.src = pre.src; img.classList.add("ok"); loaded.add(key); res(); };
+      pre.onerror = () => res();
+      pre.src = src(k, hd ? "hd" : "p");
+    });
+    pending.set(key, pr);
+    return pr;
+  }
   function loadAround(i) {
     hd = (portrait ? 1 : .5) * $("#stage").clientWidth * (window.devicePixelRatio || 1) > 1000;
-    for (let k = i - 3; k <= i + 5; k++) {
-      if (k < 0 || k >= N) continue;
-      const key = k + (hd ? "h" : "m");
-      if (loaded.has(key)) continue;
-      loaded.add(key);
-      const img = pageEls[k].querySelector("img");
-      const pre = new Image();
-      pre.onload = () => { img.src = pre.src; img.classList.add("ok"); };
-      pre.src = src(k, hd ? "hd" : "p");
-    }
+    for (let k = i - 3; k <= i + 5; k++) if (k >= 0 && k < N) loadOne(k);
+  }
+  // une fois le livre ouvert, on charge tout le reste en tâche de fond (3 à la fois)
+  function preloadAll() {
+    const order = [...Array(N).keys()].sort((a, b) => Math.abs(a - cur) - Math.abs(b - cur));
+    let n = 0;
+    const step = () => { if (n < order.length) loadOne(order[n++]).then(step); };
+    step(); step(); step();
   }
 
   function wantPortrait() { const s = $("#stage"); return s.clientWidth / s.clientHeight < 1.05; }
@@ -417,7 +429,7 @@ body.pre #dock{transform:translateY(20px)}
     $("#book").innerHTML = "";
     $("#book").appendChild(holder);
     makePages();
-    loaded.clear();
+    loaded.clear(); pending.clear();
     pf = new St.PageFlip(holder, {
       width: 595, height: 842, size: "stretch",
       minWidth: portrait ? 5000 : 1, maxWidth: 5000, minHeight: 1, maxHeight: 5000,
@@ -495,8 +507,9 @@ body.pre #dock{transform:translateY(20px)}
     if (!pf) return;
     i = Math.max(0, Math.min(N - 1, i));
     if (visible(cur).includes(i)) return;
-    const dist = Math.abs(i - cur);
-    if (dist > 0) { if (reduced) pf.turnToPage(i); else pf.flip(i); }
+    // on attend que la page visée soit chargée (1,2 s max) pour qu'elle arrive nette
+    const ready = Promise.all(visible(i).concat(i).map(loadOne));
+    Promise.race([ready, new Promise((r) => setTimeout(r, 1200))]).then(() => { if (reduced) pf.turnToPage(i); else pf.flip(i); });
   }
   const next = () => pf && pf.flipNext();
   const prev = () => pf && pf.flipPrev();
@@ -684,6 +697,7 @@ body.pre #dock{transform:translateY(20px)}
 
   Promise.all([ready, minIntro, document.fonts ? document.fonts.ready : 0]).then(() => {
     build(startAt);
+    setTimeout(preloadAll, 2500);
     $("#intro").classList.add("out");
     document.body.classList.remove("pre");
     const rise = $("#rise");
