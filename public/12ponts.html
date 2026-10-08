@@ -82,6 +82,30 @@ header{position:fixed;top:0;left:0;right:0;z-index:20;display:flex;align-items:c
 .hs:hover{background:rgba(255,247,232,.32);box-shadow:0 0 0 1.5px rgba(120,96,64,.45)}
 .hs.pulse{animation:hsPulse 2.4s ease-in-out 3}
 @keyframes hsPulse{0%,100%{background:transparent}50%{background:rgba(255,240,210,.45)}}
+.page{container-type:inline-size}
+.hs.devis::before{content:"i";position:absolute;right:calc(100% + 1.2cqw);top:50%;translate:0 -50%;width:4.4cqw;height:4.4cqw;border-radius:50%;
+  display:grid;place-items:center;background:#8a7a66;color:#fff;font:italic 600 2.9cqw/1 Georgia,serif;box-shadow:0 0 0 0 rgba(138,122,102,.6);animation:iPulse 2.6s ease-out infinite}
+.hs.devis:hover{background:rgba(138,122,102,.18)}
+@keyframes iPulse{0%{box-shadow:0 0 0 0 rgba(138,122,102,.55)}70%,100%{box-shadow:0 0 0 2.2cqw rgba(138,122,102,0)}}
+.vid{position:absolute;z-index:4;display:inline-flex;align-items:center;gap:2cqw;padding:1.3cqw 3.4cqw 1.3cqw 1.3cqw;border-radius:99px;text-decoration:none;
+  background:rgba(22,19,16,.72);backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px);color:#fff;font:600 3.1cqw/1 Manrope,sans-serif;white-space:nowrap;
+  box-shadow:0 1.5cqw 4cqw rgba(0,0,0,.35);transition:transform .3s var(--ease),background .3s}
+.vid::before{content:"";flex:none;width:7.6cqw;height:7.6cqw;border-radius:50%;background:#ff0033 url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M9 7l9 5-9 5z' fill='white'/%3E%3C/svg%3E") center/58% no-repeat;
+  animation:vPulse 2.4s ease-out infinite}
+.vid::after{content:attr(data-label)}
+.vid:hover{transform:scale(1.05);background:rgba(22,19,16,.88)}
+@keyframes vPulse{0%{box-shadow:0 0 0 0 rgba(255,0,51,.55)}70%,100%{box-shadow:0 0 0 2.6cqw rgba(255,0,51,0)}}
+#video{position:fixed;inset:0;z-index:55;display:grid;place-items:center;padding:16px;background:rgba(8,6,5,.88);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);
+  opacity:0;pointer-events:none;transition:opacity .35s}
+#video.on{opacity:1;pointer-events:auto}
+.vbox{width:min(1100px,100%,calc((100svh - 120px) * 16 / 9));transform:scale(.96);transition:transform .45s var(--ease)}
+#video.on .vbox{transform:none}
+.vhead{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:10px;font-family:"Cormorant Garamond",serif;font-size:24px;font-weight:600}
+.vframe{aspect-ratio:16/9;border-radius:14px;overflow:hidden;background:#000;box-shadow:0 30px 80px rgba(0,0,0,.6)}
+#video.vert .vbox{width:min(440px,100%,calc((100svh - 120px) * 9 / 16))}
+#video.vert .vframe{aspect-ratio:9/16}
+#video.vert .vhead{font-size:20px}
+.vframe iframe{width:100%;height:100%;border:0;display:block}
 
 /* flèches latérales */
 .nav{position:fixed;z-index:15;top:50%;translate:0 -50%;width:52px;height:52px;border-radius:50%;
@@ -239,7 +263,7 @@ body.pre #dock{transform:translateY(20px)}
     <div class="mono">12</div>
     <div><h1>Domaine les 12 Ponts</h1><p>Séminaires &amp; événements d'entreprise</p></div>
   </div>
-  <a class="cta" href="mailto:contact@les12ponts.com?subject=Demande%20de%20devis%20%E2%80%94%20%C3%A9v%C3%A9nement%20d'entreprise">
+  <a class="cta" href="https://les12ponts.com/fr/notre-domaine/contact.html" target="_blank" rel="noopener">
     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 6h16v12H4z"/><path d="m4 7 8 6 8-6"/></svg>
     <span><span class="lg">Faire une demande de </span><span class="sm">D</span><span class="lg">d</span>evis</span>
   </a>
@@ -295,6 +319,7 @@ body.pre #dock{transform:translateY(20px)}
 <button class="ib close" id="gridClose" style="display:none" aria-label="Fermer"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M6 6l12 12M18 6 6 18"/></svg></button>
 
 <div id="zoom"><div id="zc"></div></div>
+<div id="video" role="dialog" aria-label="Vidéo"><div class="vbox"><div class="vhead"><span id="vtitle"></span><button class="ib" id="vclose" aria-label="Fermer la vidéo"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M6 6l12 12M18 6 6 18"/></svg></button></div><div class="vframe" id="vframe"></div></div></div>
 <div class="zbar" id="zbar" style="display:none">
   <button class="ib" id="zPrev" aria-label="Précédent"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="m15 5-7 7 7 7"/></svg></button>
   <button class="ib" id="zOut" aria-label="Dézoomer"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M6 12h12"/></svg></button>
@@ -336,17 +361,31 @@ body.pre #dock{transform:translateY(20px)}
   const titleOf = (n) => { let t = n === 1 ? "Couverture" : ""; for (const [, items] of TOC) for (const [l, p] of items) if (p <= n) t = l; return t; };
 
   /* zones cliquables (coordonnées PDF en points) */
+  const CONTACT = "https://les12ponts.com/fr/notre-domaine/contact.html";
   const HOT = {
     2: [[74, 98, 4], [122, 146, 4], [146, 170, 6], [170, 194, 8], [194, 218, 9], [218, 242, 9], [242, 266, 9], [266, 290, 10], [290, 314, 12], [314, 338, 14],
         [362, 386, 16], [410, 434, 18], [458, 482, 18], [483, 507, 19], [507, 531, 20], [531, 555, 22], [555, 579, 23], [579, 603, 24], [603, 627, 25], [627, 651, 26],
-        [675, 699, 27], [723, 747, 27], [747, 771, 27], [771, 795, 28]].map(([y0, y1, p]) => ({ x0: 66, x1: 522, y0, y1, go: p })),
+        [675, 699, 27], [723, 747, 27], [747, 771, 27]].map(([y0, y1, p]) => ({ x0: 66, x1: 522, y0, y1, go: p }))
+        .concat([{ x0: 66, x1: 522, y0: 771, y1: 795, href: CONTACT, t: "Demande de devis", devis: true }]),
     27: [
       { x0: 50, x1: 322, y0: 88, y1: 164, href: "https://www.google.com/maps/search/?api=1&query=Domaine+les+12+Ponts+Pont-sur-l'Ognon", t: "Itinéraire" },
       { x0: 82, x1: 278, y0: 396, y1: 442, href: "tel:+33681686164", t: "Appeler" },
       { x0: 24, x1: 340, y0: 445, y1: 488, href: "mailto:contact@les12ponts.com", t: "Écrire" },
       { x0: 377, x1: 567, y0: 520, y1: 705, href: "https://les12ponts.com/fr/", t: "Site internet" },
-      { x0: 54, x1: 270, y0: 740, y1: 786, href: "mailto:contact@les12ponts.com?subject=Demande%20de%20devis", t: "Demande de devis" },
+      { x0: 54, x1: 270, y0: 740, y1: 786, href: CONTACT, t: "Demande de devis", devis: true },
     ],
+  };
+  // « Cette formule m'intéresse — demande de devis » en pied des pages formules
+  [17, 18, 20, 21, 22, 23, 24].forEach((i) => (HOT[i] = [{ x0: 183, x1: 591, y0: 810, y1: 834, href: CONTACT, t: "Demande de devis", devis: true }]));
+  HOT[25] = [{ x0: 317, x1: 584, y0: 790, y1: 815, href: CONTACT, t: "Demande de devis", devis: true }];
+
+  /* vidéos YouTube posées sur les pages (x, y en fraction de page) */
+  const VIDEOS = {
+    9: [{ id: "n-XDOzlKNgQ", vert: true, t: "Concert au bar lounge", x: .06, y: .47 }],
+    11: [{ id: "7HBwl7nREtI", t: "Préparation d'une soirée", x: .05, y: .30 }],
+    13: [{ id: "QmynoJylKsQ", vert: true, t: "Les chambres", x: .06, y: .33 }],
+    15: [{ id: "xjX4Pbn1hhw", t: "Olympiades inédites", x: .06, y: .40 }, { id: "cIgi5xs85H8", t: "Cohésion d'équipe", x: .06, y: .49 }],
+    16: [{ id: "yD8xe5B2hig", vert: true, t: "Championnat indoor", x: .06, y: .50 }],
   };
 
   /* ---------- son de page (synthétisé) ---------- */
@@ -384,10 +423,21 @@ body.pre #dock{transform:translateY(20px)}
       el.innerHTML = `<div class="pg" style="background-color:rgb(${r},${g},${b});background-image:url(${src(i, "t")})"></div><img alt="Page ${i + 1}" draggable="false"><div class="fold"></div><div class="gloss"></div>`;
       (HOT[i] || []).forEach((h) => {
         const a = document.createElement("a");
-        a.className = "hs" + (h.go ? " toc" : "");
+        a.className = "hs" + (h.go ? " toc" : "") + (h.devis ? " devis" : "");
         a.style.cssText = `left:${(h.x0 / W) * 100}%;top:${(h.y0 / H) * 100}%;width:${((h.x1 - h.x0) / W) * 100}%;height:${((h.y1 - h.y0) / H) * 100}%`;
         if (h.go) { a.href = "#p=" + h.go; a.setAttribute("aria-label", "Aller à la page " + h.go); a.addEventListener("click", (e) => { e.preventDefault(); go(h.go - 1); }); }
         else { a.href = h.href; a.setAttribute("aria-label", h.t); a.title = h.t; if (h.href.startsWith("http")) { a.target = "_blank"; a.rel = "noopener"; } }
+        el.appendChild(a);
+      });
+      (VIDEOS[i] || []).forEach((v) => {
+        // un seul élément <a> sans enfant : le moteur de pages laisse passer le clic
+        const a = document.createElement("a");
+        a.className = "vid";
+        a.href = "https://youtu.be/" + v.id;
+        a.dataset.label = v.t;
+        a.setAttribute("aria-label", "Voir la vidéo : " + v.t);
+        a.style.cssText = `left:${v.x * 100}%;top:${v.y * 100}%`;
+        a.addEventListener("click", (e) => { e.preventDefault(); openVideo(v); });
         el.appendChild(a);
       });
       pageEls.push(el);
@@ -565,6 +615,18 @@ body.pre #dock{transform:translateY(20px)}
   $("#q").addEventListener("input", (e) => search(e.target.value));
   $("#results").addEventListener("click", (e) => { const b = e.target.closest(".res"); if (b) { closeAll(); setTimeout(() => go(+b.dataset.i), 250); } });
 
+  /* ---------- lecteur vidéo ---------- */
+  let videoOn = false;
+  function openVideo(v) {
+    videoOn = true;
+    $("#vframe").innerHTML = `<iframe src="https://www.youtube.com/embed/${v.id}?autoplay=1&rel=0&playsinline=1&modestbranding=1" title="${esc(v.t)}" allow="autoplay; encrypted-media; picture-in-picture; fullscreen" allowfullscreen></iframe>`;
+    $("#vtitle").textContent = v.t;
+    $("#video").classList.toggle("vert", !!v.vert);
+    $("#video").classList.add("on");
+  }
+  function closeVideo() { videoOn = false; $("#video").classList.remove("on"); setTimeout(() => { if (!videoOn) $("#vframe").innerHTML = ""; }, 350); }
+  $("#video").addEventListener("click", (e) => { if (e.target.id === "video" || e.target.closest("#vclose")) closeVideo(); });
+
   /* ---------- zoom HD ---------- */
   let zoomOn = false, zs = 1, zx = 0, zy = 0, zfit = 1, zw = 0, zh = 0;
   function zoomShow() {
@@ -659,6 +721,7 @@ body.pre #dock{transform:translateY(20px)}
 
   document.addEventListener("keydown", (e) => {
     if (e.target.tagName === "INPUT") { if (e.key === "Escape") closeAll(); return; }
+    if (videoOn) { if (e.key === "Escape") closeVideo(); return; }
     if (e.key === "Escape") { zoomOn ? zoomClose() : closeAll(); return; }
     if (zoomOn) { if (e.key === "+" || e.key === "=") $("#zIn").click(); if (e.key === "-") $("#zOut").click(); if (e.key === "ArrowRight") $("#zNext").click(); if (e.key === "ArrowLeft") $("#zPrev").click(); return; }
     if (e.key === "ArrowRight" || e.key === "PageDown" || e.key === " ") { e.preventDefault(); next(); }
