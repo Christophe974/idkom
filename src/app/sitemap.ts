@@ -1,47 +1,19 @@
 import type { MetadataRoute } from "next";
-import { getBlogArticles } from "@/lib/api";
+import { getAnimations, getBlogArticles, getCityPages, getProjets } from "@/lib/api";
 
 const BASE_URL = "https://www.idkom.fr";
-const API_URL = process.env.NEXT_PUBLIC_API_URL || "https://api.idkom.fr";
-
-async function fetchCityPages(): Promise<{ slug: string; updated_at: string }[]> {
-  try {
-    const res = await fetch(`${API_URL}/city-pages.php`, {
-      next: { revalidate: 3600 },
-    });
-    if (!res.ok) return [];
-    const data = await res.json();
-    if (!data.success || !Array.isArray(data.data)) return [];
-    return data.data.map((item: { slug: string; updated_at: string }) => ({
-      slug: item.slug,
-      updated_at: item.updated_at,
-    }));
-  } catch {
-    return [];
-  }
-}
-
-async function fetchSlugs(endpoint: string): Promise<string[]> {
-  try {
-    const res = await fetch(`${API_URL}/${endpoint}`, {
-      next: { revalidate: 3600 },
-    });
-    if (!res.ok) return [];
-    const data = await res.json();
-    const items = data.data || data;
-    if (!Array.isArray(items)) return [];
-    return items.map((item: { slug: string }) => item.slug).filter(Boolean);
-  } catch {
-    return [];
-  }
-}
-
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   // Pages statiques — lastModified reflète la dernière mise à jour réelle du contenu
   const staticPages: MetadataRoute.Sitemap = [
     {
       url: BASE_URL,
-      lastModified: new Date("2026-09-04"),
+      lastModified: new Date("2026-10-10"),
+      changeFrequency: "weekly",
+      priority: 1,
+    },
+    {
+      url: `${BASE_URL}/seminaire-soiree-entreprise`,
+      lastModified: new Date("2026-10-10"),
       changeFrequency: "weekly",
       priority: 1,
     },
@@ -77,7 +49,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     },
     {
       url: `${BASE_URL}/animations`,
-      lastModified: new Date("2026-03-10"),
+      lastModified: new Date("2026-10-10"),
       changeFrequency: "weekly",
       priority: 0.8,
     },
@@ -138,18 +110,26 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     },
   ];
 
-  // Pages dynamiques
-  // Blog : lu depuis Supabase (source réelle) — l'endpoint PHP blog.php est obsolète
-  // depuis la migration et ne renvoie pas les nouveaux articles.
-  const [projetSlugs, blogArticles, animationSlugs, cityPages] = await Promise.all([
-    fetchSlugs("projets.php"),
+  // Pages dynamiques : tout est lu depuis Supabase (source réelle). Les anciens endpoints
+  // PHP (projets.php, animations.php, city-pages.php) ne voyaient pas les contenus créés
+  // depuis la migration : la Ruée vers l'Or, le blind test, l'AG au Kinépolis… manquaient.
+  const [projets, blogArticles, animations, cityPages] = await Promise.all([
+    getProjets().catch((error) => {
+      console.error('sitemap: réalisations indisponibles', error);
+      return [];
+    }),
     getBlogArticles().catch((error) => {
       console.error('sitemap: articles de blog indisponibles', error);
       return [];
     }),
-    fetchSlugs("animations.php"),
-    fetchCityPages(),
+    getAnimations().catch((error) => {
+      console.error('sitemap: animations indisponibles', error);
+      return [];
+    }),
+    getCityPages(),
   ]);
+  const projetSlugs = projets.map((p) => p.slug).filter(Boolean);
+  const animationSlugs = animations.map((a) => a.slug).filter(Boolean);
 
   const projetPages: MetadataRoute.Sitemap = projetSlugs.map((slug) => ({
     url: `${BASE_URL}/realisations/${slug}`,
@@ -176,7 +156,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const cityIndexPage: MetadataRoute.Sitemap = [
     {
       url: `${BASE_URL}/animations-evenementielles`,
-      lastModified: new Date("2026-03-28"),
+      lastModified: new Date("2026-10-10"),
       changeFrequency: "weekly" as const,
       priority: 0.8,
     },

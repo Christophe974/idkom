@@ -284,13 +284,13 @@ export default async function BematrixPage() {
               <div className="order-1 lg:order-2 animate-fade-in-up delay-200">
                 <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-[#7928ca]/10 border border-[#7928ca]/20 text-sm text-[#7928ca] mb-6">
                   <Icon icon="solar:star-shine-linear" width={18} />
-                  Innovation exclusive
+                  12 m² en stock
                 </div>
                 <h2 className="text-3xl md:text-4xl font-bold text-white mb-6">
                   Intégration <span className="gradient-text">LEDskin®</span>
                 </h2>
                 <p className="text-zinc-400 mb-8 leading-relaxed">
-                  IDKOM va plus loin dans l'innovation avec <strong className="text-white">12 m² de modules LEDskin®</strong>.
+                  Nous avons <strong className="text-white">12 m² de modules LEDskin®</strong> en stock.
                   Ces écrans LED haute résolution s'intègrent directement dans les cadres BeMatrix pour un rendu spectaculaire.
                 </p>
                 <ul className="space-y-4">

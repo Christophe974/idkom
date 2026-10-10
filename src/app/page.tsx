@@ -14,23 +14,23 @@ export const revalidate = 300; // Revalidate every 5 minutes
 const faqs = [
   {
     q: 'Où intervient iDkom ?',
-    a: 'Basés à Montbéliard, nous réalisons des stands et des animations événementielles en Franche-Comté, dans le Grand Est et partout en France.',
+    a: "Notre atelier est à Brevilliers, entre Belfort et Montbéliard. Nous animons des séminaires et des soirées d'entreprise à Montbéliard, Belfort, Besançon, Mulhouse, dans toute la Franche-Comté et l'Alsace, et partout en France quand l'événement l'exige.",
   },
   {
-    q: 'Quels types de stands proposez-vous ?',
-    a: 'Des stands modulaires BeMatrix sur-mesure, du petit stand au grand espace, réutilisables salon après salon et entièrement personnalisables.',
+    q: "Quelles animations proposez-vous pour un séminaire ou une soirée d'entreprise ?",
+    a: "Soirées à thème (western, casino, années 90), team building en équipes mélangées, blind test géant, quiz en direct sur grand écran, escape game écrit pour votre entreprise, bar à goodies où chacun repart avec un cadeau fabriqué sur place.",
   },
   {
-    q: 'Quels sont les délais pour un stand ou une animation ?',
-    a: 'Selon le projet, comptez généralement de 3 à 6 semaines. Pour un salon daté, contactez-nous au plus tôt afin de sécuriser la production et le montage.',
+    q: 'Animez-vous les assemblées générales ?',
+    a: "Oui : quiz en direct sur téléphone, collaborateurs filmés pour jouer les réponses, vote en salle, bar à goodies dans le hall. Nous l'avons fait pour plusieurs caisses du Crédit Mutuel, à Audincourt et au Kinépolis de Belfort.",
   },
   {
-    q: 'Proposez-vous des animations digitales ?',
-    a: 'Oui : photobooth IA, bar à goodies connecté, kermesse 2.0, bornes et expériences interactives entièrement brandées à vos couleurs.',
+    q: 'Quels sont les délais ?',
+    a: "Trois à six semaines pour une soirée ou un stand sur mesure, davantage pour les fêtes de fin d'année. Pour une date déjà fixée, parlez-nous-en au plus tôt.",
   },
   {
-    q: 'Comment obtenir un devis ?',
-    a: 'Décrivez-nous votre projet via notre formulaire de contact ou par téléphone : nous revenons vers vous rapidement avec une proposition adaptée.',
+    q: 'Faites-vous aussi les stands de salon ?',
+    a: 'Oui, des stands modulaires BeMatrix livrés et montés, du 9 m² au grand espace, à Montbéliard, Belfort et partout en France.',
   },
 ];
 
@@ -49,12 +49,54 @@ export default async function Home() {
         {/* Bento Grid Hero */}
         <BentoGrid data={data} />
 
+        {/* Section Séminaires & soirées d'entreprise */}
+        <section id="seminaires" className="mt-24">
+          <div className="relative overflow-hidden rounded-3xl border border-white/10 bg-gradient-to-br from-[#ff2d55]/10 via-[#7928ca]/10 to-transparent p-8 md:p-12">
+            <div className="grid gap-10 md:grid-cols-2 md:items-center">
+              <div>
+                <h2 className="text-3xl md:text-4xl font-bold text-white">Séminaires et soirées d&apos;entreprise</h2>
+                <p className="mt-4 text-zinc-400 leading-relaxed">
+                  Deux jours de formation, puis un saloon à la place de la salle de réunion : roulette, duels,
+                  blind test, et des enchères à minuit. Soirées à thème, team building, assemblées générales :
+                  on écrit le déroulé, on apporte les écrans, le son et les jeux, et on anime jusqu&apos;au bout.
+                </p>
+                <Link
+                  prefetch={false}
+                  href="/seminaire-soiree-entreprise"
+                  className="group mt-7 inline-flex items-center gap-2 rounded-full gradient-bg px-6 py-3 text-sm font-semibold text-white transition-transform hover:scale-[1.03]"
+                >
+                  Animer mon séminaire ou ma soirée
+                  <ArrowRightIcon className="group-hover:translate-x-1 transition-transform" size={16} />
+                </Link>
+              </div>
+              <div className="grid grid-cols-2 gap-3">
+                {[
+                  { icon: 'solar:moon-stars-linear', label: 'Soirée à thème', href: '/animations/la-ruee-vers-l-or' },
+                  { icon: 'solar:users-group-two-rounded-linear', label: 'Team building', href: '/animations/la-kermesse-2-0' },
+                  { icon: 'solar:music-notes-linear', label: 'Blind test géant', href: '/animations/le-blind-test' },
+                  { icon: 'solar:gift-linear', label: 'Bar à goodies', href: '/animations/le-bar-goodies' },
+                ].map((f) => (
+                  <Link
+                    key={f.href}
+                    prefetch={false}
+                    href={f.href}
+                    className="group rounded-2xl border border-white/10 bg-white/[0.03] p-5 transition-all hover:border-[#ff2d55]/40 hover:bg-white/[0.06]"
+                  >
+                    <Icon icon={f.icon} className="text-[#ff2d55]" width={26} />
+                    <p className="mt-3 font-semibold text-white group-hover:text-[#ff2d55] transition-colors">{f.label}</p>
+                  </Link>
+                ))}
+              </div>
+            </div>
+          </div>
+        </section>
+
         {/* Section Projets */}
         <section id="projets" className="mt-24">
           <div className="flex flex-col md:flex-row md:items-end justify-between mb-10 gap-4">
             <div>
               <h2 className="text-3xl md:text-4xl font-bold text-white">Nos réalisations événementielles</h2>
-              <p className="text-zinc-500 mt-2">Stands BeMatrix, solutions digitales et animations — des projets qui font la différence</p>
+              <p className="text-zinc-500 mt-2">Soirées, séminaires, assemblées générales et stands : ce qui s&apos;y est passé</p>
             </div>
             <Link
               prefetch={false}
@@ -128,8 +170,8 @@ export default async function Home() {
           <section className="mt-24">
             <div className="flex flex-col md:flex-row md:items-end justify-between mb-10 gap-4">
               <div>
-                <h2 className="text-3xl md:text-4xl font-bold text-white">Animations événementielles près de chez vous</h2>
-                <p className="text-zinc-500 mt-2">Bar goodies, photobooth IA, kermesse 2.0 — nos solutions digitales partout en France</p>
+                <h2 className="text-3xl md:text-4xl font-bold text-white">Animations d&apos;entreprise près de chez vous</h2>
+                <p className="text-zinc-500 mt-2">Soirées, team building, blind test, bar à goodies : de Montbéliard à Strasbourg</p>
               </div>
               <Link
                 prefetch={false}
@@ -162,7 +204,7 @@ export default async function Home() {
         <section id="faq" className="mt-24 max-w-3xl mx-auto">
           <div className="text-center mb-10">
             <h2 className="text-3xl md:text-4xl font-bold text-white">Questions fréquentes</h2>
-            <p className="text-zinc-500 mt-2">Stands, animations, délais, zone d&apos;intervention — l&apos;essentiel en quelques réponses</p>
+            <p className="text-zinc-500 mt-2">Animations, séminaires, délais, zone d&apos;intervention : l&apos;essentiel en quelques réponses</p>
           </div>
           <div className="space-y-3">
             {faqs.map((f, i) => (
@@ -211,11 +253,11 @@ export default async function Home() {
             '@type': 'ItemList',
             name: 'Services iDkom',
             itemListElement: [
-              { '@type': 'ListItem', position: 1, name: 'Stands BeMatrix', url: 'https://www.idkom.fr/bematrix' },
-              { '@type': 'ListItem', position: 2, name: 'Animations Événementielles', url: 'https://www.idkom.fr/animations' },
+              { '@type': 'ListItem', position: 1, name: "Séminaires et soirées d'entreprise", url: 'https://www.idkom.fr/seminaire-soiree-entreprise' },
+              { '@type': 'ListItem', position: 2, name: 'Animations événementielles', url: 'https://www.idkom.fr/animations' },
               { '@type': 'ListItem', position: 3, name: 'Réalisations', url: 'https://www.idkom.fr/realisations' },
-              { '@type': 'ListItem', position: 4, name: 'Savoir-faire', url: 'https://www.idkom.fr/savoir-faire' },
-              { '@type': 'ListItem', position: 5, name: 'Catalogue BeMatrix', url: 'https://www.idkom.fr/catalogue' },
+              { '@type': 'ListItem', position: 4, name: 'Animations par ville', url: 'https://www.idkom.fr/animations-evenementielles' },
+              { '@type': 'ListItem', position: 5, name: 'Stands BeMatrix', url: 'https://www.idkom.fr/bematrix' },
               { '@type': 'ListItem', position: 6, name: 'Contact', url: 'https://www.idkom.fr/contact' },
             ],
           }),

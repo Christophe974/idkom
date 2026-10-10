@@ -8,8 +8,8 @@ import AmbientBackground from '@/components/AmbientBackground';
 export const revalidate = 300;
 
 export const metadata = {
-  title: 'Animations événementielles — Expériences interactives',
-  description: 'Animations originales pour vos événements : Fabrique à Souvenirs, Photobooth, jeux interactifs. Marquez les esprits avec des expériences uniques et engageantes.',
+  title: "Animations pour séminaires, soirées d'entreprise et salons",
+  description: "Soirée western, kermesse en équipes, blind test géant, bar à goodies : les animations iDkom pour vos séminaires, soirées d'entreprise, assemblées générales et salons, en Franche-Comté et partout en France.",
   alternates: { canonical: 'https://www.idkom.fr/animations' },
 };
 
@@ -35,11 +35,12 @@ export default async function AnimationsPage() {
             Expériences uniques
           </div>
           <h1 className="text-4xl md:text-6xl font-bold text-white mb-6">
-            Nos <span className="gradient-text">animations</span>
+            Animations pour <span className="gradient-text">séminaires et soirées</span>
           </h1>
           <p className="text-zinc-400 text-lg max-w-2xl mx-auto">
-            Des expériences interactives et mémorables pour vos événements.
-            Chaque animation est pensée pour engager, surprendre et laisser une trace.
+            Pour un séminaire, une soirée d&apos;entreprise, une assemblée générale ou un salon : chacun joue sur son
+            téléphone, le classement tombe sur grand écran, et tout le monde repart avec une histoire à raconter.{' '}
+            <Link href="/seminaire-soiree-entreprise" className="text-[#ff2d55] hover:underline">Organiser un séminaire ou une soirée</Link>
           </p>
         </div>
 

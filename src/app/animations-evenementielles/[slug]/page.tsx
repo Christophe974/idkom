@@ -34,7 +34,7 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
     // propre (sinon le <title> ressort vide → « | iDkom »).
     const title =
       pageTitle(city.seo?.title) ||
-      `Animations événementielles à ${city.city_name} (${city.department_code})`;
+      `Animation d'entreprise à ${city.city_name} : séminaires, soirées, team building`;
     const description =
       city.seo?.description?.trim() ||
       `Agence événementielle à ${city.city_name} : bar à goodies, photobooth IA, stands BeMatrix, kermesse 2.0. iDkom anime vos salons et séminaires dans le ${city.department}.`;
@@ -123,7 +123,7 @@ export default async function CityPage({ params }: PageProps) {
                 Nos <span className="gradient-text">concepts</span> à {city.city_name}
               </h2>
               <p className="text-zinc-400 max-w-2xl mx-auto">
-                Des animations événementielles innovantes pour vos salons, séminaires et événements d'entreprise.
+                Pour vos séminaires, soirées d&apos;entreprise, assemblées générales et salons.
               </p>
             </div>
 
@@ -253,6 +253,27 @@ export default async function CityPage({ params }: PageProps) {
             </div>
           </section>
         )}
+
+        {/* Séminaires et soirées d'entreprise : la page pilier, depuis chaque ville */}
+        <section className="py-16 px-6">
+          <div className="max-w-5xl mx-auto rounded-3xl bg-gradient-to-br from-[#ff2d55]/10 via-[#7928ca]/10 to-transparent border border-white/10 p-8 md:p-12 text-center">
+            <h2 className="text-2xl md:text-3xl font-bold text-white mb-4">
+              Un séminaire ou une soirée d&apos;entreprise à {city.city_name} ?
+            </h2>
+            <p className="text-zinc-400 max-w-2xl mx-auto mb-6">
+              Soirée à thème, team building, blind test, quiz en direct pour une assemblée générale :
+              on écrit le déroulé, on apporte les écrans, le son et les jeux, et on anime jusqu&apos;au bout.
+            </p>
+            <Link
+              prefetch={false}
+              href="/seminaire-soiree-entreprise"
+              className="inline-flex items-center gap-2 px-6 py-3 rounded-full gradient-bg font-medium text-white hover:shadow-lg hover:shadow-[#7928ca]/25 transition-all"
+            >
+              Animation de séminaire et soirée d&apos;entreprise
+              <Icon icon="solar:arrow-right-linear" width={18} />
+            </Link>
+          </div>
+        </section>
 
         {/* Location de stand et de matériel (villes du Nord Franche-Comté) */}
         {['montbeliard', 'belfort'].includes(city.slug) && (

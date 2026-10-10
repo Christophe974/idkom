@@ -7,15 +7,15 @@ import AmbientBackground from '@/components/AmbientBackground';
 import { getHomepageData, getCityPages } from '@/lib/api';
 
 export const metadata: Metadata = {
-  title: 'Animations événementielles en France',
-  description: 'iDkom déploie ses animations événementielles partout en France : bar goodies, photobooth IA, kermesse 2.0, stands BeMatrix, quiz interactif. Découvrez nos implantations.',
+  title: "Animation d'entreprise par ville : séminaires, soirées, team building",
+  description: "Séminaires, soirées d'entreprise, team building et assemblées générales animés à Montbéliard, Belfort, Besançon, Mulhouse, Strasbourg et Lyon : soirée à thème, blind test, quiz en direct, bar à goodies.",
   alternates: {
     canonical: 'https://www.idkom.fr/animations-evenementielles',
     languages: { 'fr': 'https://www.idkom.fr/animations-evenementielles' },
   },
   openGraph: {
-    title: 'Animations événementielles en France | iDkom',
-    description: 'Découvrez nos animations événementielles innovantes dans votre ville. Bar goodies, photobooth, kermesse 2.0, stands BeMatrix.',
+    title: "Animation d'entreprise par ville : séminaires, soirées, team building | iDkom",
+    description: "Séminaires, soirées d'entreprise et team building animés près de chez vous : soirée à thème, blind test, quiz en direct, bar à goodies.",
     url: 'https://www.idkom.fr/animations-evenementielles',
     siteName: 'iDkom',
     locale: 'fr_FR',
@@ -59,9 +59,10 @@ export default async function AnimationsEvenementiellesPage() {
               <span className="text-zinc-400 text-3xl md:text-4xl">partout en France</span>
             </h1>
             <p className="text-lg text-zinc-400 max-w-3xl mx-auto mb-12 leading-relaxed">
-              Basés en Franche-Comté, nous déployons nos concepts événementiels innovants
-              dans toute la France. Bar goodies, photobooth IA, kermesse 2.0, stands BeMatrix
-              — découvrez nos animations dans votre ville.
+              Notre atelier est entre Belfort et Montbéliard. De là partent les soirées à thème,
+              les team buildings, les blind tests et les bars à goodies qui animent vos séminaires
+              et soirées d&apos;entreprise, dans votre ville.{' '}
+              <Link href="/seminaire-soiree-entreprise" className="text-[#ff2d55] hover:underline">Voir les formats de séminaire et de soirée</Link>
             </p>
           </div>
         </section>

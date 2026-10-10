@@ -17,16 +17,16 @@ export const viewport: Viewport = {
 
 export const metadata: Metadata = {
   title: {
-    default: "Agence de communication événementielle à Montbéliard | iDkom",
+    default: "Agence événementielle à Montbéliard : animations et séminaires | iDkom",
     template: "%s | iDkom",
   },
-  description: "Agence de communication événementielle à Montbéliard : stands BeMatrix, animations digitales, photobooth IA. 30 ans de projets en Franche-Comté et en France.",
-  keywords: ["agence événementielle", "solution digitale événementiel", "solutions digitales évènementielles", "stands BeMatrix", "événementiel", "salon professionnel", "agence communication Montbéliard", "bar goodies", "Besançon", "Franche-Comté", "iDkom"],
+  description: "Agence événementielle à Montbéliard : animations de séminaires, soirées d'entreprise, team building et assemblées générales, à Belfort, Besançon et Mulhouse. 30 ans de terrain, 600+ projets.",
+  keywords: ["agence événementielle Montbéliard", "agence communication Montbéliard", "animation séminaire entreprise", "soirée d'entreprise", "team building", "animation assemblée générale", "agence événementielle Besançon", "animation entreprise Belfort", "bar à goodies", "Franche-Comté", "iDkom"],
   authors: [{ name: "iDkom" }],
   metadataBase: new URL("https://www.idkom.fr"),
   openGraph: {
-    title: "iDkom | Agence de communication événementielle à Montbéliard",
-    description: "Agence de communication événementielle à Montbéliard : stands BeMatrix, animations digitales, photobooth IA. 30 ans de terrain, 600+ projets.",
+    title: "iDkom | Animations, séminaires et soirées d'entreprise à Montbéliard",
+    description: "Agence événementielle à Montbéliard : animations de séminaires, soirées d'entreprise, team building et assemblées générales, à Belfort, Besançon et Mulhouse. 30 ans de terrain, 600+ projets.",
     url: "https://www.idkom.fr",
     siteName: "iDkom",
     locale: "fr_FR",
@@ -34,8 +34,8 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: "summary_large_image",
-    title: "iDkom | Agence de communication événementielle à Montbéliard",
-    description: "Agence de communication événementielle à Montbéliard : stands BeMatrix, animations digitales, photobooth IA. 30 ans de terrain, 600+ projets.",
+    title: "iDkom | Animations, séminaires et soirées d'entreprise à Montbéliard",
+    description: "Agence événementielle à Montbéliard : animations de séminaires, soirées d'entreprise, team building et assemblées générales, à Belfort, Besançon et Mulhouse. 30 ans de terrain, 600+ projets.",
   },
   robots: {
     index: true,
@@ -58,7 +58,7 @@ const jsonLd = {
       url: "https://www.idkom.fr",
       logo: "https://www.idkom.fr/images/idkom-favicon.svg",
       description:
-        "Agence événementielle spécialisée en solutions digitales pour l'événementiel, stands BeMatrix, animations digitales et événementiel sur-mesure en Franche-Comté.",
+        "Agence événementielle à Montbéliard : animations de séminaires et de soirées d'entreprise, team building, assemblées générales, stands BeMatrix, en Franche-Comté et partout en France.",
       foundingDate: "1996",
       sameAs: [
         "https://www.instagram.com/idkom_atelier_phygital/",
@@ -69,7 +69,7 @@ const jsonLd = {
     {
       "@type": "LocalBusiness",
       "@id": "https://www.idkom.fr/#localbusiness",
-      name: "iDkom – Atelier Phygital (Stands & Événementiel)",
+      name: "iDkom – Agence événementielle (animations, séminaires, stands)",
       image: "https://www.idkom.fr/images/idkom-favicon.svg",
       url: "https://www.idkom.fr",
       telephone: "+33637754064",

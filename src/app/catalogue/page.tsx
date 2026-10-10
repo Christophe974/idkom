@@ -7,8 +7,8 @@ import CatalogueBematrix from '@/components/CatalogueBematrix';
 import { getHomepageData } from '@/lib/api';
 
 export const metadata: Metadata = {
-  title: 'Catalogue Be Matrix : stock en temps réel',
-  description: 'Consultez notre stock de pièces Be Matrix en temps réel. Cadres, jonctions, accessoires - tout notre inventaire disponible pour vos projets de stands.',
+  title: 'Catalogue beMatrix France : pièces en stock en temps réel',
+  description: 'Cadres, connecteurs, éclairage, LEDskin® : plus de 4 000 pièces beMatrix en stock en France, disponibilités en temps réel. Location ou stand livré et monté.',
   alternates: { canonical: 'https://www.idkom.fr/catalogue' },
 };
 

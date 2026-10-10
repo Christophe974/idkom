@@ -146,7 +146,7 @@ export default async function AtelierPage() {
               <div className="w-14 h-14 rounded-xl bg-[#7928ca]/10 border border-[#7928ca]/20 flex items-center justify-center mb-6 group-hover:bg-[#7928ca] transition-colors">
                 <Icon icon="solar:lightbulb-bolt-linear" className="text-[#7928ca] group-hover:text-white transition-colors" width={28} />
               </div>
-              <h3 className="text-xl font-semibold text-white mb-3">Innovation</h3>
+              <h3 className="text-xl font-semibold text-white mb-3">Curiosité</h3>
               <p className="text-zinc-500">
                 Toujours en veille, toujours curieux. Nous explorons les nouvelles technologies
                 pour créer des expériences qui surprennent.

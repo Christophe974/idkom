@@ -39,17 +39,17 @@ export default function BentoGrid({ data }: BentoGridProps) {
               <span className="gradient-text">événementielle à Montbéliard</span>
             </h1>
             <p className="text-zinc-400 text-lg max-w-md leading-relaxed">
-              Stands BeMatrix, animations et solutions digitales pour l&apos;événementiel.
+              Animations de séminaires, soirées d&apos;entreprise, team building et assemblées générales, de Montbéliard à Besançon.
               <strong className="text-zinc-300"> 30 ans de terrain, 600+ projets réalisés en Franche-Comté et partout en France.</strong>
             </p>
           </div>
           <div className="flex flex-wrap gap-3 mt-6">
             <Link
               prefetch={false}
-              href="/atelier"
+              href="/seminaire-soiree-entreprise"
               className="group px-6 py-2.5 rounded-full gradient-bg font-medium text-sm text-white hover:shadow-lg hover:shadow-[#7928ca]/25 transition-all duration-300 inline-flex items-center"
             >
-              Découvrir l&apos;atelier
+              Séminaires et soirées
               <ArrowRightIcon className="ml-2 group-hover:translate-x-1 transition-transform" size={16} />
             </Link>
             <Link
