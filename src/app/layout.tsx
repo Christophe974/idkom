@@ -63,7 +63,7 @@ const jsonLd = {
       sameAs: [
         "https://www.instagram.com/idkom_atelier_phygital/",
         "https://www.linkedin.com/company/idkom/",
-        "https://www.facebook.com/idkom.fr",
+        "https://www.facebook.com/idkom.agence",
       ],
     },
     {
