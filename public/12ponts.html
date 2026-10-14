@@ -275,7 +275,7 @@ body.pre #dock{transform:translateY(20px)}
     <img class="logo" src="/12ponts/logo-clair.png" alt="Domaine les 12 Ponts" width="529" height="374">
     <div class="sep"><h1>Brochure entreprises</h1><p>Séminaires &amp; événements d'entreprise</p></div>
   </div>
-  <a class="cta" href="https://les12ponts.com/fr/notre-domaine/contact.html" target="_blank" rel="noopener">
+  <a class="cta" id="ctaDevis" href="https://les12ponts.com/fr/notre-domaine/contact.html" target="_blank" rel="noopener">
     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 6h16v12H4z"/><path d="m4 7 8 6 8-6"/></svg>
     <span><span class="lg">Faire une demande de </span><span class="sm">D</span><span class="lg">d</span>evis</span>
   </a>
@@ -362,6 +362,33 @@ body.pre #dock{transform:translateY(20px)}
   const src = (i, kind) => `/12ponts/${kind}/${String(i + 1).padStart(2, "0")}.webp`;
   const reduced = matchMedia("(prefers-reduced-motion: reduce)").matches;
 
+  /* ---------- compteur de lecture (sans cookie, rien de personnel) ---------- */
+  // ?moi sur un appareil = ne plus jamais compter cet appareil (?moi=0 pour annuler)
+  let noTrack = navigator.webdriver === true;
+  try {
+    const q = new URLSearchParams(location.search);
+    if (q.has("moi")) localStorage.setItem("idkom-notrack", q.get("moi") === "0" ? "0" : "1");
+    if (localStorage.getItem("idkom-notrack") === "1") noTrack = true;
+  } catch (e) {}
+  const SID = ((crypto.randomUUID && crypto.randomUUID()) || String(Math.random()).slice(2) + Date.now()).replace(/-/g, "").slice(0, 32);
+  function track(ev, d, extra) {
+    if (noTrack) return;
+    const body = JSON.stringify(Object.assign({ book: "12ponts", s: SID, e: ev, d }, extra || {}));
+    try { if (navigator.sendBeacon && navigator.sendBeacon("/api/flipbook/track", new Blob([body], { type: "text/plain" }))) return; } catch (e) {}
+    fetch("/api/flipbook/track", { method: "POST", body, keepalive: true }).catch(() => {});
+  }
+  let lastPageTracked = "", pageTimer = 0, maxPage = 1, activeMs = 0, shownAt = Date.now();
+  function trackPage(v) {
+    maxPage = Math.max(maxPage, v[v.length - 1] + 1);
+    const label = v.map((i) => i + 1).join("-");
+    clearTimeout(pageTimer);
+    pageTimer = setTimeout(() => { if (label !== lastPageTracked) { lastPageTracked = label; track("page", label); } }, 900);
+  }
+  document.addEventListener("visibilitychange", () => {
+    if (document.visibilityState === "hidden") { activeMs += Date.now() - shownAt; track("leave", "jusqu'à la p. " + maxPage, { sec: activeMs / 1000 }); }
+    else shownAt = Date.now();
+  });
+
   /* ---------- sommaire ---------- */
   const TOC = [
     ["Introduction", [["Un lieu unique", 2]]],
@@ -440,7 +467,11 @@ body.pre #dock{transform:translateY(20px)}
         a.className = "hs" + (h.go ? " toc" : "") + (h.devis ? " devis" : "");
         a.style.cssText = `left:${(h.x0 / W) * 100}%;top:${(h.y0 / H) * 100}%;width:${((h.x1 - h.x0) / W) * 100}%;height:${((h.y1 - h.y0) / H) * 100}%`;
         if (h.go) { a.href = "#p=" + h.go; a.setAttribute("aria-label", "Aller à la page " + h.go); a.addEventListener("click", (e) => { e.preventDefault(); go(h.go - 1); }); }
-        else { a.href = h.href; a.setAttribute("aria-label", h.t); a.title = h.t; if (h.href.startsWith("http")) { a.target = "_blank"; a.rel = "noopener"; } }
+        else {
+          a.href = h.href; a.setAttribute("aria-label", h.t); a.title = h.t;
+          if (h.href.startsWith("http")) { a.target = "_blank"; a.rel = "noopener"; }
+          a.addEventListener("click", () => track("click", (h.devis ? "Demande de devis" : h.t) + " · p. " + (i + 1)));
+        }
         el.appendChild(a);
       });
       (VIDEOS[i] || []).forEach((v) => {
@@ -562,6 +593,7 @@ body.pre #dock{transform:translateY(20px)}
     document.querySelectorAll("#gridW button").forEach((b, k) => b.classList.toggle("cur", v.includes(k)));
     // lien profond
     history.replaceState(null, "", cur === 0 ? location.pathname : `#p=${v[0] + 1}`);
+    trackPage(v);
     // indice sur le sommaire
     if (v.includes(2) && !sync.pulsed) { sync.pulsed = true; document.querySelectorAll(".hs.toc").forEach((a, k) => { a.style.animationDelay = k * 40 + "ms"; a.classList.add("pulse"); }); }
     if (zoomOn) zoomShow();
@@ -611,7 +643,10 @@ body.pre #dock{transform:translateY(20px)}
   const norm = (s) => s.normalize("NFD").replace(/[̀-ͯ]/g, "").toLowerCase().replace(/[’']/g, "'");
   const esc = (s) => s.replace(/[&<>"]/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]));
   const NT = PAGES.map((p) => norm(p.txt));
+  let searchTimer = 0;
   function search(q) {
+    clearTimeout(searchTimer);
+    if (q.trim().length >= 3) searchTimer = setTimeout(() => track("click", "Recherche : " + q.trim().slice(0, 60)), 1500);
     const nq = norm(q.trim());
     if (nq.length < 2) { $("#results").innerHTML = `<div class="hint">Tapez un mot : la recherche parcourt les ${N} pages.</div>`; return; }
     const out = []; let total = 0;
@@ -632,6 +667,7 @@ body.pre #dock{transform:translateY(20px)}
   /* ---------- lecteur vidéo ---------- */
   let videoOn = false;
   function openVideo(v) {
+    track("video", v.t);
     videoOn = true;
     $("#vframe").innerHTML = `<iframe src="https://www.youtube.com/embed/${v.id}?autoplay=1&rel=0&playsinline=1&modestbranding=1" title="${esc(v.t)}" allow="autoplay; encrypted-media; picture-in-picture; fullscreen" allowfullscreen></iframe>`;
     $("#vtitle").textContent = v.t;
@@ -668,7 +704,7 @@ body.pre #dock{transform:translateY(20px)}
     const ns = Math.max(zfit, Math.min(zfit * 6, zs * f));
     zx = cx - ((cx - zx) / zs) * ns; zy = cy - ((cy - zy) / zs) * ns; zs = ns; applyZ(anim);
   }
-  function zoomOpen() { zoomOn = true; zoomShow(); $("#zoom").classList.add("on"); $("#zbar").style.display = ""; setTimeout(() => zoomAt(1.8, innerWidth / 2, 0, true), 120); }
+  function zoomOpen() { track("click", "Zoom"); zoomOn = true; zoomShow(); $("#zoom").classList.add("on"); $("#zbar").style.display = ""; setTimeout(() => zoomAt(1.8, innerWidth / 2, 0, true), 120); }
   function zoomClose() { zoomOn = false; $("#zoom").classList.remove("on"); $("#zbar").style.display = "none"; }
   const Z = $("#zoom"), ptrs = new Map(); let pinch = 0, moved = false, lastTap = 0;
   Z.addEventListener("wheel", (e) => { e.preventDefault(); zoomAt(Math.exp(-e.deltaY * .0022), e.clientX, e.clientY, false); }, { passive: false });
@@ -707,6 +743,7 @@ body.pre #dock{transform:translateY(20px)}
   $("#bZoom").onclick = zoomOpen;
   $("#bSound").onclick = () => { soundOn = !soundOn; try { localStorage.setItem("12p-sound", soundOn ? "1" : "0"); } catch (e) {} paintSound(); toast(soundOn ? "Son des pages activé" : "Son des pages coupé"); if (soundOn) flipSound(); };
   $("#bShare").onclick = async () => {
+    track("click", "Partager");
     const url = location.href, data = { title: document.title, text: "La brochure entreprises du Domaine les 12 Ponts", url };
     if (navigator.share && matchMedia("(pointer:coarse)").matches) { try { await navigator.share(data); } catch (e) {} return; }
     try { await navigator.clipboard.writeText(url); toast("Lien copié — il ouvre la brochure à cette page"); } catch (e) { prompt("Copiez le lien :", url); }
@@ -771,6 +808,11 @@ body.pre #dock{transform:translateY(20px)}
     setTimeout(res, 4000);
   });
   const minIntro = new Promise((r) => setTimeout(r, reduced ? 0 : 1500));
+
+  $("#ctaDevis").addEventListener("click", () => track("click", "Demande de devis · en-tête"));
+  let refHost = "";
+  try { refHost = document.referrer ? new URL(document.referrer).hostname : ""; } catch (e) {}
+  track("open", "p. " + (startAt + 1), { ref: refHost && refHost !== location.hostname ? refHost : "" });
 
   Promise.all([ready, minIntro, document.fonts ? document.fonts.ready : 0]).then(() => {
     build(startAt);
