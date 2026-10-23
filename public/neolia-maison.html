@@ -1,0 +1,585 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<title>Maison des Éco-Champions · esquisse v2</title>
+<style>
+  html, body { margin: 0; height: 100%; background: #eef0f2; font-family: -apple-system, Helvetica, Arial, sans-serif; overflow: hidden; }
+  #cartouche { position: absolute; left: 16px; bottom: 16px; background: rgba(255,255,255,.92); border-radius: 8px; padding: 10px 14px; font-size: 12px; color: #333; line-height: 1.45; box-shadow: 0 1px 4px rgba(0,0,0,.12); }
+  #cartouche b { color: #e5185d; }
+  #vues { position: absolute; right: 16px; top: 16px; display: flex; gap: 6px; flex-wrap: wrap; justify-content: flex-end; }
+  #vues button { border: 0; background: #fff; border-radius: 6px; padding: 7px 11px; font-size: 12px; cursor: pointer; box-shadow: 0 1px 3px rgba(0,0,0,.15); }
+  #vues button:hover { background: #e5185d; color: #fff; }
+</style>
+</head>
+<body>
+<div id="vues">
+  <button data-v="face">FACE</button>
+  <button data-v="34">3/4</button>
+  <button data-v="34g">3/4 GAUCHE</button>
+  <button data-v="dessus">DESSUS</button>
+  <button data-v="goutte">DÉFI 1</button>
+  <button data-v="gaspi">DÉFI 2</button>
+  <button data-v="thermo">DÉFI 3</button>
+  <button data-v="cuisine">DÉFIS 4-5</button>
+  <button data-v="enfant">HAUTEUR D'ENFANT</button>
+</div>
+<div id="cartouche">
+  <b>MAISON DES ÉCO-CHAMPIONS</b> · Néolia × FCSM · esquisse de principe v2<br>
+  Fond beMatrix : 5 cadres 992 × 2480 debout, un seul tissu 4960 × 2480<br>
+  Salle de bain 1 cadre · Salon-chambre 2 cadres · Cuisine 2 cadres<br>
+  Claustras bois 2480 × 500 (connecteur alu en haut) · retours bas 992 × 992 · spots sur bras<br>
+  Au dos : 3 semi-platines alu beMatrix 992 × 496<br>
+  Pupitres beMatrix 496 / 992 / 992 × 992 h, retours 496, poteaux ronds, plateau bois<br>
+  Marche bois 20 cm × 30 cm devant chaque pupitre (plateau à ≈ 0,83 m pour l'enfant)<br>
+  Sortie : un animateur remet la carte Éco-Champion (QR → 1 an de jeux)<br>
+  iDkom · 23/10/2026 (rév. retours bas + carte)
+</div>
+<script src="/neolia-maison/three.min.js"></script>
+<script src="/neolia-maison/OrbitControls.js"></script>
+<script src="/neolia-maison/logos.js"></script>
+<script src="/neolia-maison/vues.js"></script>
+<script>
+// Unités : mètres. Y = haut, Z = vers le public (0 = dos du fond). Le tissu est dessiné en mm.
+const P = 0.062;                       // profil beMatrix
+const W = 4.96, H = 2.48;              // fond : 5 cadres 992 × 2480 debout
+const X0 = -W / 2;                     // bord gauche du fond
+const RET = 0.992;                     // retours d'extrémité : 1 cadre 992 × 2480 debout de chaque côté
+const CLAU_D = 0.50, CLAU_E = 0.045;   // claustra : 500 de profondeur, tasseaux 45 mm
+const zF = P;                          // face avant du tissu
+
+// Pièces (en mm sur le tissu, depuis le bord gauche)
+const PIECES = [
+  { nom: 'SALLE DE BAIN',    a: 0,    b: 992,  hex: '#2f9bd6', mur: '#e3f2fb', bas: '#b9dcf0' },
+  { nom: 'SALON · CHAMBRE',  a: 992,  b: 2976, hex: '#e09a10', mur: '#fff4dc', bas: '#f3d9a4' },
+  { nom: 'CUISINE',          a: 2976, b: 4960, hex: '#3fae5a', mur: '#e8f5e8', bas: '#c3e3c6' },
+];
+const mmX = mm => X0 + mm / 1000;
+
+const C = { frame: 0xd9dadd, wood: 0xc49a6c, woodDark: 0x8a6440, floor: 0xbfc3c8, rose: 0xe5185d, navy: 0x1f3a6b, alu: 0x2b2d31 };
+
+const renderer = new THREE.WebGLRenderer({ antialias: true, preserveDrawingBuffer: true });
+renderer.setPixelRatio(Math.min(devicePixelRatio, 2));
+renderer.setSize(innerWidth, innerHeight);
+renderer.shadowMap.enabled = true;
+document.body.appendChild(renderer.domElement);
+
+const scene = new THREE.Scene();
+scene.background = new THREE.Color(0xeef0f2);
+const camera = new THREE.PerspectiveCamera(40, innerWidth / innerHeight, 0.05, 100);
+const controls = new THREE.OrbitControls(camera, renderer.domElement);
+
+scene.add(new THREE.HemisphereLight(0xffffff, 0x9aa0a6, 0.62));
+const sun = new THREE.DirectionalLight(0xffffff, 0.5);
+sun.position.set(-3, 7, 7); sun.castShadow = true;
+sun.shadow.mapSize.set(2048, 2048);
+Object.assign(sun.shadow.camera, { left: -5, right: 5, top: 5, bottom: -5 });
+scene.add(sun);
+
+const mat = c => new THREE.MeshStandardMaterial({ color: c, roughness: 0.8 });
+function box(w, h, d, color, x, y, z, parent = scene) {
+  const m = new THREE.Mesh(new THREE.BoxGeometry(w, h, d), mat(color));
+  m.position.set(x, y, z); m.castShadow = m.receiveShadow = true;
+  parent.add(m); return m;
+}
+function label(text, x, y, z, size = 0.18, color = '#1f3a6b', bg = null) {
+  const cv = document.createElement('canvas'); const ctx = cv.getContext('2d');
+  const fs = 64; ctx.font = `bold ${fs}px Helvetica, Arial`;
+  cv.width = ctx.measureText(text).width + 40; cv.height = fs + 30;
+  const c2 = cv.getContext('2d');
+  if (bg) { c2.fillStyle = bg; c2.fillRect(0, 0, cv.width, cv.height); }
+  c2.font = `bold ${fs}px Helvetica, Arial`; c2.fillStyle = color; c2.textBaseline = 'middle';
+  c2.fillText(text, 20, cv.height / 2);
+  const tex = new THREE.CanvasTexture(cv); tex.anisotropy = 8;
+  const m = new THREE.Mesh(new THREE.PlaneGeometry(size * cv.width / cv.height, size),
+    new THREE.MeshBasicMaterial({ map: tex, transparent: true }));
+  m.position.set(x, y, z); scene.add(m); return m;
+}
+
+// ---------- Le tissu : illustration de principe (même découpage que le gabarit) ----------
+const IMG = {};                                    // logos chargés (data URI, sinon le canvas file:// serait refusé par WebGL)
+const logosCharges = Promise.all(Object.entries({ ...LOGOS, ...VUES_IMG }).map(([k, src]) => new Promise(ok => { const i = new Image(); i.onload = () => { IMG[k] = i; ok(); }; i.onerror = ok; i.src = src; })));
+function dessinTissu(cv = document.createElement('canvas')) {
+  const S = 0.5;                                   // px par mm → 2480 × 1240 px
+  cv.width = 4960 * S; cv.height = 2480 * S;
+  const g = cv.getContext('2d');
+  g.scale(S, S);
+  const Y = mm => 2480 - mm;                       // repère tissu : origine en bas à gauche
+  const rect = (x, y, w, h, c) => { g.fillStyle = c; g.fillRect(x, Y(y + h), w, h); };
+  const txt = (t, x, y, size, c, align = 'center', poids = 'bold') => {
+    g.font = `${poids} ${size}px Helvetica, Arial`; g.fillStyle = c; g.textAlign = align; g.textBaseline = 'middle'; g.fillText(t, x, Y(y));
+  };
+  const fenetre = (cx, y0, w, h, vue) => {
+    const x = cx - w / 2;
+    g.save(); g.beginPath(); g.rect(x, Y(y0 + h), w, h); g.clip(); vue(x, y0, w, h); g.restore();
+    g.strokeStyle = '#a77a4c'; g.lineWidth = 40; g.strokeRect(x, Y(y0 + h), w, h);
+    g.lineWidth = 22; g.beginPath(); g.moveTo(cx, Y(y0)); g.lineTo(cx, Y(y0 + h)); g.moveTo(x, Y(y0 + h * 0.58)); g.lineTo(x + w, Y(y0 + h * 0.58)); g.stroke();
+    rect(x - 60, y0 - 60, w + 120, 60, '#8a6440');      // appui de fenêtre
+  };
+
+  // murs : bas (0 → 900, masqué en partie par les desks) + haut
+  PIECES.forEach(p => { rect(p.a, 0, p.b - p.a, 2480, p.mur); rect(p.a, 0, p.b - p.a, 900, p.bas); rect(p.a, 880, p.b - p.a, 30, '#ffffff'); });
+  const murs = !!IMG.murs;                                                     // murs Magnific des 3 pièces (sinon aplats de principe)
+  if (murs) g.drawImage(IMG.murs, 0, Y(2180), 4960, 2180);
+
+  // salle de bain : carrelage + fenêtre vue Stade Bonal
+  if (!murs) {
+  g.strokeStyle = 'rgba(47,155,214,.22)'; g.lineWidth = 6;
+  for (let x = 0; x <= 992; x += 150) { g.beginPath(); g.moveTo(x, Y(0)); g.lineTo(x, Y(2100)); g.stroke(); }
+  for (let y = 0; y <= 2100; y += 150) { g.beginPath(); g.moveTo(0, Y(y)); g.lineTo(992, Y(y)); g.stroke(); }
+  }
+  if (IMG.bonal) g.drawImage(IMG.bonal, 181, Y(2016), 630, 801);                    // vue Magnific : fenêtre salle de bain → Stade Bonal
+  else fenetre(496, 1280, 620, 700, (x, y, w, h) => {
+    rect(x, y, w, h, '#9fd3f2');
+    rect(x, y, w, h * 0.30, '#3f9b47');                                       // pelouse
+    g.strokeStyle = '#ffffff'; g.lineWidth = 6; g.beginPath(); g.moveTo(x + w / 2, Y(y)); g.lineTo(x + w / 2, Y(y + h * 0.30)); g.stroke();
+    rect(x, y + h * 0.30, w, h * 0.12, '#f4c400');                            // tribune jaune
+    rect(x, y + h * 0.42, w, h * 0.10, '#1f4aa0');                            // tribune bleue
+    rect(x, y + h * 0.52, w, h * 0.05, '#cfd4da');                            // toit de tribune
+    rect(x + w * 0.15, y + h * 0.57, 14, h * 0.25, '#7d848c');               // pylônes d'éclairage
+    rect(x + w * 0.80, y + h * 0.57, 14, h * 0.25, '#7d848c');
+    rect(x + w * 0.15 - 40, y + h * 0.82, 94, 40, '#ffffff');
+    rect(x + w * 0.80 - 40, y + h * 0.82, 94, 40, '#ffffff');
+    txt('STADE BONAL', x + w / 2, y + h * 0.47, 46, '#ffffff');
+  });
+
+  // salon · chambre : rayures douces + cadre maillot FCSM + interrupteur
+  if (!murs) { g.fillStyle = 'rgba(224,154,16,.09)'; for (let x = 992; x < 2976; x += 160) g.fillRect(x, Y(2100), 80, 1190); }
+  const mx = 1984, my0 = 1290, mw = 700, mh = 740;
+  if (IMG.maillot) { g.drawImage(IMG.maillot, 1624, Y(2022), 720, 732); } else {
+  rect(mx - mw / 2 - 45, my0 - 45, mw + 90, mh + 90, '#5b3d22');
+  rect(mx - mw / 2, my0, mw, mh, '#f7f7f2');
+  g.save(); g.translate(mx, Y(my0 + mh / 2 - 10)); g.scale(0.86, 0.86); g.fillStyle = '#f4c400';
+  g.beginPath();                                                               // maillot jaune, manches + col bleus
+  g.moveTo(-150, -300); g.lineTo(-60, -320); g.lineTo(60, -320); g.lineTo(150, -300); g.lineTo(290, -170); g.lineTo(220, -80);
+  g.lineTo(165, -140); g.lineTo(165, 310); g.lineTo(-165, 310); g.lineTo(-165, -140); g.lineTo(-220, -80); g.lineTo(-290, -170); g.closePath(); g.fill();
+  g.fillStyle = '#1f4aa0';
+  g.beginPath(); g.moveTo(150, -300); g.lineTo(290, -170); g.lineTo(220, -80); g.lineTo(165, -140); g.closePath(); g.fill();
+  g.beginPath(); g.moveTo(-150, -300); g.lineTo(-290, -170); g.lineTo(-220, -80); g.lineTo(-165, -140); g.closePath(); g.fill();
+  g.beginPath(); g.arc(0, -318, 62, 0, Math.PI); g.fill();
+  g.font = 'bold 230px Helvetica, Arial'; g.textAlign = 'center'; g.textBaseline = 'middle'; g.fillText('19', 0, 60);
+  if (IMG.fcsm) g.drawImage(IMG.fcsm, 50, -235, 80, 106);                     // écusson sur la poitrine
+  g.restore();
+  txt('MAILLOT FCSM · à valider club', mx, my0 + 60, 30, '#8a6440', 'center', 'normal');
+  }
+  if (!murs) {
+  rect(1180, 1330, 90, 130, '#ffffff'); rect(1210, 1375, 30, 40, '#c9ccd1');   // interrupteur
+  rect(2560, 1500, 300, 22, '#8a6440');                                        // étagère + lampe
+  rect(2600, 1522, 50, 160, '#3fae5a'); rect(2680, 1522, 40, 120, '#e5185d'); rect(2740, 1522, 60, 190, '#2f9bd6');
+  rect(1180, 1640, 18, 260, '#9aa0a6'); g.fillStyle = '#ffd36b'; g.beginPath(); g.moveTo(1110, Y(1640)); g.lineTo(1270, Y(1640)); g.lineTo(1230, Y(1540)); g.lineTo(1150, Y(1540)); g.closePath(); g.fill();
+  }
+
+  // cuisine : crédence carrelée + fenêtre vue château de Montbéliard + étagère à bocaux
+  if (!murs) {
+  rect(2976, 910, 1984, 330, '#d5ecd7');
+  g.strokeStyle = 'rgba(63,174,90,.25)'; g.lineWidth = 6;
+  for (let x = 2976; x <= 4960; x += 110) { g.beginPath(); g.moveTo(x, Y(910)); g.lineTo(x, Y(1240)); g.stroke(); }
+  for (let y = 910; y <= 1240; y += 110) { g.beginPath(); g.moveTo(2976, Y(y)); g.lineTo(4960, Y(y)); g.stroke(); }
+  }
+  if (IMG.chateau) g.drawImage(IMG.chateau, 4100, Y(2020), 728, 770);               // vue Magnific : fenêtre cuisine → château de Montbéliard
+  else fenetre(4160, 1300, 760, 700, (x, y, w, h) => {
+    const sky = g.createLinearGradient(0, Y(y + h), 0, Y(y)); sky.addColorStop(0, '#8fc8ee'); sky.addColorStop(1, '#f7e3c0');
+    g.fillStyle = sky; g.fillRect(x, Y(y + h), w, h);
+    g.fillStyle = '#6aa65a'; g.beginPath(); g.moveTo(x, Y(y)); g.lineTo(x, Y(y + h * 0.25)); g.quadraticCurveTo(x + w * 0.5, Y(y + h * 0.48), x + w, Y(y + h * 0.22)); g.lineTo(x + w, Y(y)); g.closePath(); g.fill();
+    const cx = x + w * 0.52, base = y + h * 0.38;
+    rect(cx - 210, base, 420, 150, '#e7c98f');                                 // corps de logis
+    rect(cx - 210, base + 150, 420, 50, '#7a4a35');
+    for (const tx of [cx - 250, cx + 190]) {                                   // tours à dôme
+      rect(tx, base, 70, 260, '#e2c084');
+      g.fillStyle = '#4b3a32'; g.beginPath(); g.ellipse(tx + 35, Y(base + 285), 45, 40, 0, 0, Math.PI * 2); g.fill();
+      rect(tx + 30, base + 315, 10, 50, '#4b3a32');
+    }
+    for (let i = 0; i < 6; i++) rect(cx - 170 + i * 62, base + 70, 26, 40, '#9a7a52');
+    txt('CHÂTEAU DE MONTBÉLIARD', x + w / 2, y + 40, 32, '#ffffff');
+  });
+  if (!murs) {
+  rect(3160, 1560, 420, 24, '#8a6440');
+  [['#e5185d', 3190], ['#f4c400', 3290], ['#2f9bd6', 3390], ['#3fae5a', 3490]].forEach(([c, x]) => { rect(x, 1584, 70, 110, c); rect(x + 5, 1694, 60, 18, '#ffffff'); });
+  }
+
+  // titres des défis, sur le fond juste au-dessus des pupitres (1075 → 1185)
+  [[496, 1, "L'EAU, ÇA COMPTE", 0], [1654, 2, 'CHASSE AU GASPI', 1], [2314, 3, 'LE BON 19 °C', 1], [3638, 4, 'LE TRI', 2], [4298, 5, 'LE BON CHOIX', 2]].forEach(([cx, n, t, pi]) => {
+    const w = 580; g.fillStyle = PIECES[pi].hex; g.beginPath(); g.roundRect ? g.roundRect(cx - w / 2, Y(1185), w, 110, 22) : g.rect(cx - w / 2, Y(1185), w, 110); g.fill();
+    txt(`DÉFI ${n} · ${t}`, cx, 1130, 44, '#ffffff');
+  });
+
+  // bandeau haut : plafond en coupe + enseigne + noms de pièces
+  rect(0, 2180, 4960, 300, '#1f3a6b');
+  // titre dans le seul salon (entre les 2 claustras) · accroche dans la cuisine
+  txt('LA MAISON DES ÉCO-CHAMPIONS', 1984, 2300, 92, '#ffffff');
+  txt('À la maison aussi, chaque geste compte !', 1984, 2212, 48, '#ffd36b', 'center', 'normal');
+  txt('JOUE AVEC NOUS AUX ÉCO-GESTES !', 3850, 2300, 74, '#ffffff');
+  txt('Relève les défis et gagne ta carte Éco-Champion', 3850, 2212, 44, '#ffd36b', 'center', 'normal');
+  // logos dans le bandeau, sous la zone de sécurité de 100 mm (2180 → 2380)
+  g.fillStyle = '#ffffff'; g.beginPath(); g.roundRect ? g.roundRect(130, Y(2375), 560, 205, 26) : g.rect(130, Y(2375), 560, 205); g.fill();
+  if (IMG.neolia) g.drawImage(IMG.neolia, 410 - 220, Y(2370), 440, 200);
+  if (IMG.fcsm) g.drawImage(IMG.fcsm, 4680, Y(2378), 155, 206);
+  PIECES.forEach(p => {
+    const cx = (p.a + p.b) / 2, w = p.nom.length * 42 + 80;
+    g.fillStyle = p.hex; g.beginPath(); g.roundRect ? g.roundRect(cx - w / 2, Y(2140), w, 110, 55) : g.rect(cx - w / 2, Y(2140), w, 110); g.fill();
+    txt(p.nom, cx, 2085, 64, '#ffffff');
+  });
+  return cv;
+}
+
+// Sol
+const floor = new THREE.Mesh(new THREE.PlaneGeometry(14, 10), mat(C.floor));
+floor.rotation.x = -Math.PI / 2; floor.position.set(0, 0, 1.5); floor.receiveShadow = true; scene.add(floor);
+
+// Fond : 5 cadres debout (profils visibles sur la tranche) + un seul tissu
+const cvTissu = dessinTissu(); const tex = new THREE.CanvasTexture(cvTissu); tex.anisotropy = 8;
+box(W, H, P, C.frame, 0, H / 2, P / 2);
+const tissu = new THREE.Mesh(new THREE.PlaneGeometry(W, H), new THREE.MeshStandardMaterial({ map: tex, roughness: 0.9 }));
+tissu.position.set(0, H / 2, P + 0.002); tissu.receiveShadow = true; scene.add(tissu);
+for (let i = 0; i <= 5; i++) box(0.012, H, 0.012, 0x9aa0a6, X0 + i * 0.992, H / 2, -0.006);   // jonctions vues de dos
+
+// Retours d'extrémité bas : 1 cadre 992 × 992 de chaque côté (ne bouchent pas la vue)
+const RH = 0.992;
+for (const s of [-1, 1]) {
+  box(P, RH, RET, C.frame, s * (W / 2 + P / 2), RH / 2, RET / 2);
+  box(0.004, RH - 0.02, RET - 0.02, s < 0 ? 0xe5185d : 0x1f3a6b, s * (W / 2 + P + 0.002), RH / 2, RET / 2);
+}
+// 3 semi-platines alu beMatrix au dos (992 de large × 496 de profondeur), sous les cadres 1, 3 et 5
+for (const xm of [496, 2480, 4464]) {
+  box(0.992, 0.008, 0.496, 0xb8bcc2, mmX(xm), 0.004, -0.248);
+  label('SEMI-PLATINE ALU 992 × 496', mmX(xm), 0.0105, -0.25, 0.045, '#2b2d31').rotation.x = -Math.PI / 2;
+}
+// face extérieure gauche : enseigne · face extérieure droite : remise de la carte Éco-Champion
+const cvEns = document.createElement('canvas'); cvEns.width = cvEns.height = 512;
+const texEns = new THREE.CanvasTexture(cvEns);
+const enseigne = new THREE.Mesh(new THREE.PlaneGeometry(0.90, 0.90), new THREE.MeshStandardMaterial({ map: texEns, roughness: 0.9 }));
+enseigne.rotation.y = -Math.PI / 2; enseigne.position.set(-(W / 2 + P + 0.006), RH / 2, RET / 2); scene.add(enseigne);
+function dessinEnseigne() {                         // face extérieure du retour gauche : Néolia + FCSM
+  const g = cvEns.getContext('2d'); g.fillStyle = '#ffffff'; g.fillRect(0, 0, 512, 512);
+  if (IMG.neolia) g.drawImage(IMG.neolia, 56, 40, 400, 182);
+  g.fillStyle = '#1f3a6b'; g.fillRect(56, 250, 400, 4);
+  if (IMG.fcsm) g.drawImage(IMG.fcsm, 196, 280, 120, 160);
+  texEns.needsUpdate = true;
+}
+dessinEnseigne();
+// faces intérieures des 2 retours (côté pièces) : mêmes logos, plutôt que le gris du cadre
+for (const sx of [-1, 1]) {
+  const v = new THREE.Mesh(new THREE.PlaneGeometry(RET - P - 0.03, RH - 0.03), new THREE.MeshStandardMaterial({ map: texEns, roughness: 0.9 }));
+  v.rotation.y = -sx * Math.PI / 2; v.position.set(sx * (W / 2 - 0.003), RH / 2, P + (RET - P) / 2); scene.add(v);
+}
+const carteTxt = label('TA CARTE ÉCO-CHAMPION !', 0, 0, 0, 0.065, '#1f3a6b', '#ffd36b');
+carteTxt.rotation.y = Math.PI / 2; carteTxt.position.set(W / 2 + P + 0.01, 0.80, RET / 2);
+const carte = box(0.012, 0.32, 0.23, 0xffd36b, W / 2 + P + 0.012, 0.45, RET / 2);          // carte géante (format 63 × 88 agrandi)
+box(0.014, 0.12, 0.12, 0xffffff, W / 2 + P + 0.014, 0.40, RET / 2);                        // QR code
+box(0.015, 0.08, 0.08, 0x1f3a6b, W / 2 + P + 0.015, 0.40, RET / 2);
+
+// Claustras bois en tasseaux, aux jonctions 992 et 2976 (pied + fixation haute sur le cadre)
+function claustra(xc) {
+  const n = 6, pas = (CLAU_D - CLAU_E) / (n - 1);
+  for (let i = 0; i < n; i++) box(CLAU_E, H - 0.02, 0.03, C.wood, xc, H / 2, zF + CLAU_E / 2 + 0.01 + i * pas);
+  box(CLAU_E + 0.01, 0.045, CLAU_D, C.woodDark, xc, H - 0.0225, zF + CLAU_D / 2);   // lisse haute
+  box(CLAU_E, 0.025, CLAU_D, C.woodDark, xc, 0.0125, zF + CLAU_D / 2);              // lisse basse, largeur des tasseaux
+  box(0.06, 0.05, 0.08, C.alu, xc, H - 0.03, zF + 0.035);                          // connecteur alu beMatrix sur le cadre
+}
+claustra(mmX(992));
+claustra(mmX(2976));
+
+// Spots sur bras au-dessus des cadres (1 par cadre)
+for (let i = 0; i < 5; i++) {
+  const x = X0 + 0.496 + i * 0.992;
+  box(0.025, 0.025, 0.42, C.alu, x, H + 0.03, zF + 0.19);
+  const tete = new THREE.Mesh(new THREE.CylinderGeometry(0.035, 0.05, 0.12, 20), mat(C.alu));
+  tete.position.set(x, H - 0.02, zF + 0.40); tete.rotation.x = -0.55; scene.add(tete);
+  const sp = new THREE.SpotLight(0xfff1d6, 0.55, 4, 0.75, 0.6);
+  sp.position.set(x, H - 0.05, zF + 0.42); sp.target.position.set(x, 1.2, zF); scene.add(sp, sp.target);
+}
+
+// Pupitres de jeu beMatrix : façade + 2 retours 496 de profondeur, 992 de haut, poteaux ronds aux angles avant,
+// visuel tissu par défi sur la façade (sans titre : les titres sont sur le tissu du fond), plateau bois costaud.
+const PUPITRES = [
+  { piece: 0, x: 496,  w: 0.496, icones: ['💧'], jeu: 'goutte' },
+  { piece: 1, x: 1984, w: 0.992, icones: ['💡', '🌡️'], jeu: 'gaspi' },
+  { piece: 2, x: 3968, w: 0.992, icones: ['♻️', '🛍️'], jeu: 'cuisine' },
+];
+const PU_H = 0.992, PU_D = 0.496, PU_PL = 0.04;
+const MA_H = 0.20, MA_D = 0.30;                                                  // marche bois devant chaque pupitre
+function facade(w, hex, icones) {
+  const cv = document.createElement('canvas'); cv.width = Math.round(512 * w / 0.496); cv.height = 1024;
+  const g = cv.getContext('2d');
+  g.fillStyle = hex; g.fillRect(0, 0, cv.width, cv.height);
+  g.fillStyle = 'rgba(255,255,255,.18)'; g.fillRect(0, cv.height * 0.72, cv.width, cv.height * 0.28);
+  const n = icones.length, part = cv.width / n;
+  g.font = '260px "Apple Color Emoji", "Segoe UI Emoji", sans-serif'; g.textAlign = 'center'; g.textBaseline = 'middle';
+  icones.forEach((ic, i) => {
+    g.fillStyle = 'rgba(255,255,255,.92)'; g.beginPath(); g.arc(part * (i + 0.5), 420, 200, 0, Math.PI * 2); g.fill();
+    g.fillText(ic, part * (i + 0.5), 430);
+  });
+  if (n > 1) { g.fillStyle = 'rgba(255,255,255,.6)'; g.fillRect(cv.width / 2 - 4, 120, 8, 620); }
+  const t = new THREE.CanvasTexture(cv); t.anisotropy = 8; return t;
+}
+// Défi 1 « le chemin de la goutte » : plateau Dibond 680 × 618 à fente de 7 mm (tracé = JEUX/defi1-eau/trace.json)
+const TRACE_GOUTTE = {"bon": [[90, 90], [300, 90], [300, 230], [120, 230], [120, 360], [560, 360], [560, 490]], "f1": [[300, 90], [440, 90]], "f2": [[120, 360], [120, 500]], "f3": [[450, 360], [450, 210]]};
+const cvBandeauGoutte = document.createElement('canvas'); cvBandeauGoutte.width = 1360; cvBandeauGoutte.height = 1236;   // 2 px/mm
+const texBandeauGoutte = new THREE.CanvasTexture(cvBandeauGoutte); texBandeauGoutte.anisotropy = 8;
+const ETAPES_GOUTTE = [[90, 90, "DÉPART", "Aide la goutte|à ne pas être gaspillée !", null], [440, 90, "OUPS !", "L'eau coule|pendant les dents", false], [300, 230, "BRAVO", "Je ferme le robinet|pendant que je frotte", true], [120, 500, "OUPS !", "Un bain plein|à ras bord", false], [330, 360, "BRAVO", "Une douche|rapide", true], [450, 210, "OUPS !", "La chasse fuit|et je ne dis rien", false], [560, 490, "GAGNÉ !", "J'ai prévenu un adulte :|la goutte est sauvée !", true]], VIGNETTES_GOUTTE = [["robinet-ouvert", 600, 40], ["robinet-ferme", 340, 262], ["bain-deborde", 260, 470], ["douche-rapide", 350, 395], ["chasse-fuit", 600, 186], ["goutte-bravo", 590, 398]];
+function dessinBandeauGoutte() {                                                 // impression complète du plateau du défi 1 (2 px/mm)
+  const g = cvBandeauGoutte.getContext('2d'), Lp = 680, Pp = 618;
+  g.setTransform(2, 0, 0, 2, 0, 0);
+  g.fillStyle = '#d4ebf8'; g.fillRect(0, 0, Lp, Pp);
+  g.textBaseline = 'middle';
+  ETAPES_GOUTTE.forEach(([x, y, titre, texte, bon]) => {
+    const c = bon === null ? '#2f9bd6' : bon ? '#3fae5a' : '#e5185d', d = x < 500 ? 34 : -34;
+    g.strokeStyle = c; g.lineWidth = 3; g.beginPath(); g.arc(x, y, 26, 0, Math.PI * 2); g.stroke();
+    g.textAlign = x < 500 ? 'left' : 'right'; g.fillStyle = c; g.font = 'bold 16px Helvetica, Arial'; g.fillText(titre, x + d, y - 6);
+    g.fillStyle = '#1f3a6b'; g.font = '12px Helvetica, Arial'; texte.split('|').forEach((l, i) => g.fillText(l, x + d, y + 12 + i * 14));
+  });
+  VIGNETTES_GOUTTE.forEach(([nom, x, y]) => { const im = IMG['ill_' + nom]; if (!im) return;
+    g.save(); g.beginPath(); g.roundRect ? g.roundRect(x, y, 70, 70, 12) : g.rect(x, y, 70, 70); g.clip(); g.drawImage(im, x, y, 70, 70); g.restore(); });
+  g.fillStyle = '#b8dcf2'; g.fillRect(0, Pp - 70, Lp, 70);
+  g.fillStyle = '#ffffff'; g.beginPath(); g.roundRect ? g.roundRect(18, Pp - 63, 124, 56, 10) : g.rect(18, Pp - 63, 124, 56); g.fill();
+  if (IMG.neolia) g.drawImage(IMG.neolia, 24, Pp - 60, 112, 51);
+  if (IMG.fcsm) g.drawImage(IMG.fcsm, Lp - 58, Pp - 63, 42, 56);
+  g.textAlign = 'center'; g.font = 'bold 20px Helvetica, Arial'; g.fillStyle = '#1f3a6b'; g.fillText('DÉFI 1 · LE CHEMIN DE LA GOUTTE', Lp / 2 + 20, Pp - 35);
+  texBandeauGoutte.needsUpdate = true;
+}
+dessinBandeauGoutte();
+// Défi 2 « la chasse au gaspi » : 5 tirettes captives (fentes 7 mm, ALLUMÉ → ÉTEINT), tracé = JEUX/defi2-gaspi/trace.json
+const THERMO = { cx: 882, cy: 380, r: 200, a16: 160, a24: 20 };              // défi 3 : fente en arc 16 → 24 °C (JEUX/defi2-gaspi/trace.json)
+const thermoPt = (t, dr = 0) => { const a = (THERMO.a16 + (t - 16) * (THERMO.a24 - THERMO.a16) / 8) * Math.PI / 180; return [THERMO.cx + (THERMO.r + dr) * Math.cos(a), THERMO.cy - (THERMO.r + dr) * Math.sin(a)]; };
+const thermoCouleur = t => { const m = (c0, c1, f) => `rgb(${c0.map((a, i) => Math.round(a + (c1[i] - a) * f)).join(',')})`;
+  return t <= 19 ? m([47, 155, 214], [63, 174, 90], (t - 16) / 3) : t <= 21 ? m([63, 174, 90], [224, 154, 16], (t - 19) / 2) : m([224, 154, 16], [229, 24, 93], (t - 21) / 3); };
+const GASPI = { xs: [90, 195, 300, 405, 510], yOn: 280, yOff: 450 };
+const cvPlateauSalon = document.createElement('canvas'); cvPlateauSalon.width = 2352; cvPlateauSalon.height = 1236;   // impression du Dibond, 2 px/mm
+const texPlateauSalon = new THREE.CanvasTexture(cvPlateauSalon); texPlateauSalon.anisotropy = 8;
+function dessinBandeauSalon() {
+  const g = cvPlateauSalon.getContext('2d'), k = 2, Lp = 1176, Pp = 618;
+  g.setTransform(k, 0, 0, k, 0, 0);
+  g.fillStyle = '#fbe7b5'; g.fillRect(0, 0, Lp, Pp);
+  g.fillStyle = '#f6efe0'; g.fillRect(Lp / 2, 0, Lp / 2, Pp - 70);
+  g.strokeStyle = '#e09a10'; g.lineWidth = 2; g.setLineDash([10, 8]); g.beginPath(); g.moveTo(Lp / 2, 20); g.lineTo(Lp / 2, Pp - 80); g.stroke(); g.setLineDash([]);
+  g.textAlign = 'center'; g.textBaseline = 'middle'; g.fillStyle = '#1f3a6b';
+  g.font = 'bold 19px Helvetica, Arial'; g.fillText('Éteins tout ce qui gaspille…', Lp / 4, 36);
+  g.font = '14px Helvetica, Arial'; g.fillText('mais attention : un appareil doit rester allumé !', Lp / 4, 58);
+  const noms = [['LA LAMPE', '💡'], ['LA TÉLÉ', '📺'], ['LE CHARGEUR', '🔌'], ['LA CONSOLE', '🎮'], ['LE FRIGO', '🧊']];
+  GASPI.xs.forEach((x, i) => {
+    g.fillStyle = '#ffffff'; g.strokeStyle = '#e09a10'; g.lineWidth = 2;
+    g.beginPath(); g.roundRect ? g.roundRect(x - 42, 80, 84, 110, 12) : g.rect(x - 42, 80, 84, 110); g.fill(); g.stroke();
+    const im = IMG['ill_' + ['lampe', 'tele', 'chargeur', 'console', 'frigo'][i]];
+    if (im) g.drawImage(im, x - 38, 92, 76, 76); else { g.font = '52px "Apple Color Emoji", "Segoe UI Emoji", sans-serif'; g.fillText(noms[i][1], x, 136); }
+    g.fillStyle = '#1f3a6b'; g.font = 'bold 13px Helvetica, Arial'; g.fillText(noms[i][0], x, 210);
+    g.lineWidth = 5; g.lineCap = 'round';
+    g.strokeStyle = '#e5185d'; g.beginPath(); g.moveTo(x + 30, GASPI.yOn - 15); g.lineTo(x + 30, (GASPI.yOn + GASPI.yOff) / 2); g.stroke();
+    g.strokeStyle = '#3fae5a'; g.beginPath(); g.moveTo(x + 30, (GASPI.yOn + GASPI.yOff) / 2); g.lineTo(x + 30, GASPI.yOff + 15); g.stroke();
+  });
+  g.save(); g.font = 'bold 14px Helvetica, Arial';
+  g.translate(32, GASPI.yOn + 20); g.rotate(-Math.PI / 2); g.fillStyle = '#e5185d'; g.fillText('ALLUMÉ', 0, 0); g.restore();
+  g.save(); g.font = 'bold 14px Helvetica, Arial';
+  g.translate(32, GASPI.yOff - 20); g.rotate(-Math.PI / 2); g.fillStyle = '#3fae5a'; g.fillText('ÉTEINT', 0, 0); g.restore();
+  // défi 3 : thermostat (bande de couleur, graduations, légendes)
+  g.fillStyle = '#1f3a6b'; g.font = 'bold 19px Helvetica, Arial'; g.fillText('Règle le thermostat du salon', Lp * 3 / 4, 36);
+  g.font = '14px Helvetica, Arial'; g.fillText('bien au chaud… sans gaspiller !', Lp * 3 / 4, 58);
+  g.lineWidth = 18; g.lineCap = 'butt';
+  for (let i = 0; i < 80; i++) { const t = 16 + i / 10, [x0, y0] = thermoPt(t, 34), [x1, y1] = thermoPt(t + 0.12, 34);
+    g.strokeStyle = thermoCouleur(t); g.beginPath(); g.moveTo(x0, y0); g.lineTo(x1, y1); g.stroke(); }
+  for (let t = 16; t <= 24; t++) { const [xa, ya] = thermoPt(t, 16), [xb, yb] = thermoPt(t, 46), [xt, yt] = thermoPt(t, 66);
+    g.strokeStyle = '#1f3a6b'; g.lineWidth = t === 19 ? 4 : 2; g.beginPath(); g.moveTo(xa, ya); g.lineTo(xb, yb); g.stroke();
+    g.fillStyle = thermoCouleur(t); g.font = `bold ${t === 19 ? 22 : 16}px Helvetica, Arial`; g.fillText(t + '°', xt, yt); }
+  { const [xl, yl] = thermoPt(16, -40), [xr, yr] = thermoPt(24, -40);
+    g.font = 'bold 14px Helvetica, Arial'; g.fillStyle = '#2f9bd6'; g.fillText('brrr, trop froid', xl, yl + 36);
+    g.fillStyle = '#e5185d'; g.fillText('trop chaud : on gaspille', xr, yr + 36);
+    g.fillStyle = '#1f3a6b'; g.font = '14px Helvetica, Arial'; g.fillText("1 °C de moins, c'est environ 7 % d'énergie en moins sur le chauffage", THERMO.cx, THERMO.cy + 68); }
+  // bandeau côté enfant : Néolia | titres | FCSM
+  g.fillStyle = '#f3d9a4'; g.fillRect(0, Pp - 70, Lp, 70);
+  g.fillStyle = '#ffffff'; g.beginPath(); g.roundRect ? g.roundRect(18, Pp - 63, 124, 56, 10) : g.rect(18, Pp - 63, 124, 56); g.fill();
+  if (IMG.neolia) g.drawImage(IMG.neolia, 24, Pp - 60, 112, 51);
+  if (IMG.fcsm) g.drawImage(IMG.fcsm, Lp - 58, Pp - 63, 42, 56);
+  g.fillStyle = '#1f3a6b'; g.font = 'bold 20px Helvetica, Arial';
+  g.fillText('DÉFI 2 · CHASSE AU GASPI', (150 + Lp / 2) / 2, Pp - 35); g.fillText('DÉFI 3 · LE BON 19 °C', (Lp / 2 + Lp - 66) / 2, Pp - 35);
+  texPlateauSalon.needsUpdate = true;
+}
+dessinBandeauSalon();
+// Défis 4 « le tri » et 5 « le bon choix » : plateau cuisine, tracé = JEUX/defi4-5-cuisine/trace.json
+const CUISINE = {"trace": {"d1": [[110, 125], [110, 225]], "d1h": [[55, 225], [165, 225]], "d1b1": [[55, 225], [55, 430]], "d1b2": [[110, 225], [110, 430]], "d1b3": [[165, 225], [165, 430]], "d2": [[294, 125], [294, 225]], "d2h": [[239, 225], [349, 225]], "d2b1": [[239, 225], [239, 430]], "d2b2": [[294, 225], [294, 430]], "d2b3": [[349, 225], [349, 430]], "d3": [[478, 125], [478, 225]], "d3h": [[423, 225], [533, 225]], "d3b1": [[423, 225], [423, 430]], "d3b2": [[478, 225], [478, 430]], "d3b3": [[533, 225], [533, 430]], "c1": [[722, 150], [1042, 150]], "c2": [[722, 285], [1042, 285]], "c3": [[722, 420], [1042, 420]]}, "dechets": [[110, "LA BOUTEILLE", "en plastique", 0], [294, "LE POT", "en verre", 1], [478, "LES ÉPLUCHURES", "de légumes", 2]], "duels": [[150, "bouteille jetable", "gourde", "D"], [285, "sac en tissu", "sac plastique", "G"], [420, "casserole sans couvercle", "casserole avec couvercle", "D"]], "bacs": [["EMBALLAGES", "#f4c400"], ["VERRE", "#3fae5a"], ["COMPOST", "#8a5a2b"]], "y0": 125, "ys": 225, "yb": 430, "dx": 55, "x1": 722, "x2": 1042};
+const cvPlateauCuisine = document.createElement('canvas'); cvPlateauCuisine.width = 2352; cvPlateauCuisine.height = 1236;   // 2 px/mm
+const texPlateauCuisine = new THREE.CanvasTexture(cvPlateauCuisine); texPlateauCuisine.anisotropy = 8;
+function dessinPlateauCuisine() {
+  const g = cvPlateauCuisine.getContext('2d'), Lp = 1176, Pp = 618, C4 = CUISINE;
+  g.setTransform(2, 0, 0, 2, 0, 0);
+  g.fillStyle = '#cdebd1'; g.fillRect(0, 0, Lp, Pp); g.fillStyle = '#e4f4e6'; g.fillRect(Lp / 2, 0, Lp / 2, Pp - 70);
+  g.strokeStyle = '#3fae5a'; g.lineWidth = 2; g.setLineDash([10, 8]); g.beginPath(); g.moveTo(Lp / 2, 20); g.lineTo(Lp / 2, Pp - 80); g.stroke(); g.setLineDash([]);
+  g.textAlign = 'center'; g.textBaseline = 'middle'; g.fillStyle = '#1f3a6b';
+  g.font = 'bold 19px Helvetica, Arial'; g.fillText('Aide chaque déchet à trouver sa poubelle !', Lp / 4, 36); g.fillText('Fais le bon choix !', Lp * 3 / 4, 36);
+  g.font = '14px Helvetica, Arial'; g.fillText("fais-le glisser jusqu'au bon bac", Lp / 4, 56); g.fillText('pousse la flèche vers le geste malin', Lp * 3 / 4, 56);
+  C4.dechets.forEach(([x, nom, det]) => {
+    g.fillStyle = '#1f3a6b'; g.font = 'bold 13px Helvetica, Arial'; g.fillText(nom, x, 84); g.font = '11px Helvetica, Arial'; g.fillText(det, x, 98);
+    [-C4.dx, 0, C4.dx].forEach((dx, j) => { g.fillStyle = C4.bacs[j][1];
+      g.beginPath(); g.moveTo(x + dx - 22, C4.yb + 12); g.lineTo(x + dx + 22, C4.yb + 12); g.lineTo(x + dx + 17, C4.yb + 58); g.lineTo(x + dx - 17, C4.yb + 58); g.closePath(); g.fill();
+      g.fillRect(x + dx - 25, C4.yb + 6, 50, 8); });
+  });
+  const emo = [['🥤', '🍶'], ['👜', '🛍️'], ['🍲', '🥘']];
+  C4.duels.forEach(([y, gauche, droite], i) => {
+    [[650, gauche, emo[i][0]], [1114, droite, emo[i][1]]].forEach(([x, txt, e]) => {
+      g.fillStyle = '#ffffff'; g.strokeStyle = '#3fae5a'; g.lineWidth = 2;
+      g.beginPath(); g.roundRect ? g.roundRect(x - 40, y - 40, 80, 80, 12) : g.rect(x - 40, y - 40, 80, 80); g.fill(); g.stroke();
+      const im = IMG['ill_' + { 'bouteille jetable': 'bouteille-jetable', gourde: 'gourde', 'sac en tissu': 'sac-tissu', 'sac plastique': 'sac-plastique', 'casserole sans couvercle': 'casserole-sans', 'casserole avec couvercle': 'casserole-avec' }[txt]];
+      if (im) g.drawImage(im, x - 36, y - 36, 72, 72); else { g.font = '44px "Apple Color Emoji", "Segoe UI Emoji", sans-serif'; g.fillText(e, x, y + 2); }
+      g.fillStyle = '#1f3a6b'; g.font = 'bold 11px Helvetica, Arial'; g.fillText(txt, x, y + 54);
+    });
+  });
+  g.fillStyle = '#c3e3c6'; g.fillRect(0, Pp - 70, Lp, 70);
+  g.fillStyle = '#ffffff'; g.beginPath(); g.roundRect ? g.roundRect(18, Pp - 63, 124, 56, 10) : g.rect(18, Pp - 63, 124, 56); g.fill();
+  if (IMG.neolia) g.drawImage(IMG.neolia, 24, Pp - 60, 112, 51);
+  if (IMG.fcsm) g.drawImage(IMG.fcsm, Lp - 58, Pp - 63, 42, 56);
+  g.fillStyle = '#1f3a6b'; g.font = 'bold 20px Helvetica, Arial';
+  g.fillText('DÉFI 4 · LE TRI', (150 + Lp / 2) / 2, Pp - 35); g.fillText('DÉFI 5 · LE BON CHOIX', (Lp / 2 + Lp - 66) / 2, Pp - 35);
+  texPlateauCuisine.needsUpdate = true;
+}
+dessinPlateauCuisine();
+function pupitre(cxMM, w, hex, icones, jeu) {
+  const col = new THREE.Color(hex).getHex(), cx = mmX(cxMM);
+  const zb = zF + 0.06, zf = zb + PU_D + P / 2;                                        // dos (côté mur) / façade
+  // façade tissu
+  box(w, PU_H, P, C.frame, cx, PU_H / 2, zf);
+  const f = new THREE.Mesh(new THREE.PlaneGeometry(w, PU_H - 0.01), new THREE.MeshStandardMaterial({ map: facade(w, hex, icones), roughness: 0.9 }));
+  f.position.set(cx, PU_H / 2, zf + P / 2 + 0.002); scene.add(f);
+  // poteaux ronds aux angles avant + retours 496
+  for (const sx of [-1, 1]) {
+    const px = cx + sx * (w / 2 + P / 2);
+    const post = new THREE.Mesh(new THREE.CylinderGeometry(P / 2, P / 2, PU_H, 24), mat(C.frame));
+    post.position.set(px, PU_H / 2, zf); post.castShadow = true; scene.add(post);
+    box(P, PU_H, PU_D, col, px, PU_H / 2, zb + PU_D / 2 - P / 2);
+  }
+  // plateau bois costaud, débordant de 3 cm
+  const pw = w + 2 * P + 0.06, pd = PU_D + P + 0.06;
+  box(pw, PU_PL, pd, C.wood, cx, PU_H + PU_PL / 2, zb + pd / 2 - 0.03);
+  const n = icones.length;
+  if (jeu === 'goutte') {
+    const yTop = PU_H + PU_PL, x0 = cx - pw / 2, z0 = zb - 0.03;              // repère plateau : x → droite, y → vers l'enfant
+    box(pw - 0.004, 0.005, pd - 0.004, 0xb8dcf2, cx, yTop + 0.0025, z0 + pd / 2);  // Dibond 5 mm
+    const impr = new THREE.Mesh(new THREE.PlaneGeometry(pw - 0.004, pd - 0.004), new THREE.MeshStandardMaterial({ map: texBandeauGoutte, roughness: 0.9 }));
+    impr.rotation.x = -Math.PI / 2; impr.position.set(cx, yTop + 0.0051, z0 + pd / 2); scene.add(impr);   // impression (plan JEUX/defi1-eau)
+    Object.values(TRACE_GOUTTE).forEach(pts => pts.slice(1).forEach((q, i) => {
+      const a = pts[i], dx = (q[0] - a[0]) / 1000, dz = (q[1] - a[1]) / 1000;
+      const len = Math.hypot(dx, dz) + 0.007;
+      const seg = box(Math.abs(dx) > 0 ? len : 0.007, 0.002, Math.abs(dz) > 0 ? len : 0.007, 0x2b2d31, x0 + (a[0] + q[0]) / 2000, yTop + 0.0055, z0 + (a[1] + q[1]) / 2000);
+      seg.castShadow = false;
+    }));
+    const goutte = new THREE.Mesh(new THREE.SphereGeometry(0.03, 24, 16), mat(0x2f9bd6));         // curseur captif en forme de goutte
+    goutte.scale.set(1, 0.8, 1); goutte.position.set(x0 + 0.300, yTop + 0.03, z0 + 0.150); goutte.castShadow = true; scene.add(goutte);
+    const pointe = new THREE.Mesh(new THREE.ConeGeometry(0.018, 0.035, 20), mat(0x2f9bd6)); pointe.position.set(x0 + 0.300, yTop + 0.065, z0 + 0.150); scene.add(pointe);
+  } else if (jeu === 'gaspi') {
+    const yTop = PU_H + PU_PL, x0 = cx - pw / 2, z0 = zb - 0.03;
+    box(pw - 0.004, 0.005, pd - 0.004, 0xf3d9a4, cx, yTop + 0.0025, z0 + pd / 2);            // Dibond 5 mm
+    const impr = new THREE.Mesh(new THREE.PlaneGeometry(pw - 0.004, pd - 0.004), new THREE.MeshStandardMaterial({ map: texPlateauSalon, roughness: 0.9 }));
+    impr.rotation.x = -Math.PI / 2; impr.position.set(cx, yTop + 0.0051, z0 + pd / 2); scene.add(impr);   // impression (plan JEUX/defi2-gaspi)
+    GASPI.xs.forEach((x, i) => {
+      box(0.007, 0.002, (GASPI.yOff - GASPI.yOn + 7) / 1000, 0x2b2d31, x0 + x / 1000, yTop + 0.0055, z0 + (GASPI.yOn + GASPI.yOff) / 2000);
+      const y = i < 2 ? GASPI.yOff : GASPI.yOn;                                                     // lampe et télé déjà éteintes
+      const tir = box(0.05, 0.022, 0.036, 0xe09a10, x0 + x / 1000, yTop + 0.016, z0 + y / 1000); tir.castShadow = true;
+    });
+    // défi 3 : fente en arc + bouton de thermostat captif (posé sur 22 °C, pas encore réglé)
+    const arcGeo = new THREE.TorusGeometry(THERMO.r / 1000, 0.0035, 6, 64, (THERMO.a16 - THERMO.a24) * Math.PI / 180);
+    arcGeo.rotateZ(THERMO.a24 * Math.PI / 180); arcGeo.rotateX(-Math.PI / 2);
+    const fenteArc = new THREE.Mesh(arcGeo, mat(0x2b2d31)); fenteArc.scale.y = 0.3;
+    fenteArc.position.set(x0 + THERMO.cx / 1000, yTop + 0.0055, z0 + THERMO.cy / 1000); scene.add(fenteArc);
+    const [kx, ky] = thermoPt(22);
+    const bouton = new THREE.Mesh(new THREE.CylinderGeometry(0.03, 0.03, 0.025, 32), mat(0xe09a10));
+    bouton.position.set(x0 + kx / 1000, yTop + 0.018, z0 + ky / 1000); bouton.castShadow = true; scene.add(bouton);
+    const repere = box(0.006, 0.004, 0.022, 0xffffff, x0 + kx / 1000, yTop + 0.032, z0 + ky / 1000 - 0.008);
+  } else if (jeu === 'cuisine') {
+    const yTop = PU_H + PU_PL, x0 = cx - pw / 2, z0 = zb - 0.03, C4 = CUISINE;
+    box(pw - 0.004, 0.005, pd - 0.004, 0xc3e3c6, cx, yTop + 0.0025, z0 + pd / 2);            // Dibond 5 mm
+    const impr = new THREE.Mesh(new THREE.PlaneGeometry(pw - 0.004, pd - 0.004), new THREE.MeshStandardMaterial({ map: texPlateauCuisine, roughness: 0.9 }));
+    impr.rotation.x = -Math.PI / 2; impr.position.set(cx, yTop + 0.0051, z0 + pd / 2); scene.add(impr);
+    Object.values(C4.trace).forEach(([a, q]) => {                                               // fentes 7 mm
+      const dx = (q[0] - a[0]) / 1000, dz = (q[1] - a[1]) / 1000, len = Math.hypot(dx, dz) + 0.007;
+      box(dx ? len : 0.007, 0.002, dz ? len : 0.007, 0x2b2d31, x0 + (a[0] + q[0]) / 2000, yTop + 0.0055, z0 + (a[1] + q[1]) / 2000).castShadow = false;
+    });
+    // déchets captifs : bouteille (au départ), bocal (sur une branche), épluchure (arrivée dans un bac)
+    const [xb, xp, xe] = C4.dechets.map(d => x0 + d[0] / 1000);
+    const bout = new THREE.Mesh(new THREE.CylinderGeometry(0.014, 0.018, 0.06, 20), mat(0x7cc6f0)); bout.position.set(xb, yTop + 0.035, z0 + C4.y0 / 1000); scene.add(bout);
+    const bocal = new THREE.Mesh(new THREE.CylinderGeometry(0.02, 0.02, 0.04, 20), mat(0xb9e3c4)); bocal.position.set(xp, yTop + 0.025, z0 + (C4.ys + 90) / 1000); scene.add(bocal);
+    const trognon = new THREE.Mesh(new THREE.SphereGeometry(0.02, 16, 12), mat(0xc9752f)); trognon.position.set(xe + C4.dx / 1000, yTop + 0.022, z0 + (C4.yb - 10) / 1000); scene.add(trognon);
+    // flèches captives des 3 duels
+    C4.duels.forEach(([y], i) => {
+      const xm = x0 + ((C4.x1 + C4.x2) / 2 + [-60, 90, 20][i]) / 1000, zm = z0 + y / 1000;
+      box(0.036, 0.016, 0.03, 0x3fae5a, xm - 0.01, yTop + 0.013, zm);
+      const pointe = new THREE.Mesh(new THREE.ConeGeometry(0.017, 0.022, 3), mat(0x3fae5a)); pointe.rotation.z = -Math.PI / 2; pointe.rotation.x = Math.PI / 2;
+      pointe.position.set(xm + 0.019, yTop + 0.013, zm); scene.add(pointe);
+    });
+  } else                                                                          // éléments de jeu (provisoires), un groupe par défi
+  icones.forEach((_, i) => {
+    const gx = cx - pw / 2 + pw * (i + 0.5) / n;
+    const knob = new THREE.Mesh(new THREE.CylinderGeometry(0.05, 0.05, 0.04, 28), mat(C.rose)); knob.position.set(gx - 0.1, PU_H + PU_PL + 0.02, zb + 0.32); knob.castShadow = true; scene.add(knob);
+    for (let k = 0; k < 3; k++) { const b = new THREE.Mesh(new THREE.CylinderGeometry(0.025, 0.025, 0.025, 20), mat([0x2f9bd6, 0xe09a10, 0x3fae5a][k])); b.position.set(gx + 0.02 + k * 0.08, PU_H + PU_PL + 0.012, zb + 0.32); scene.add(b); }
+  });
+  if (n > 1) box(0.012, 0.004, pd - 0.04, C.woodDark, cx, PU_H + PU_PL + 0.002, zb + pd / 2 - 0.03);    // rainure de séparation des 2 défis
+  // marche bois 20 cm devant la façade (plateau ≈ 1,03 m → ≈ 0,83 m pour un enfant sur la marche)
+  const mw = w + 2 * P, mz = zf + P / 2 + MA_D / 2;
+  box(mw, MA_H - 0.02, MA_D, C.wood, cx, (MA_H - 0.02) / 2, mz);
+  box(mw, 0.02, MA_D, 0x3a3d42, cx, MA_H - 0.01, mz);                                  // dessus antidérapant
+  box(mw, 0.021, 0.04, 0xffd36b, cx, MA_H - 0.01, mz + MA_D / 2 - 0.02);                // nez de marche contrasté
+}
+PUPITRES.forEach(p => pupitre(p.x, p.w, PIECES[p.piece].hex, p.icones, p.jeu));
+
+// Repères d'échelle : enfant 1,10 m, adulte 1,75 m
+const COTES = [];                                                                // masquées en mode présentation (?presentation)
+function silhouette(h, x, z, y0 = 0) {
+  const g = new THREE.Group(), r = h * 0.065;
+  const body = new THREE.Mesh(new THREE.CylinderGeometry(r, r, h - 2 * r, 16), mat(0x9aa3ad));
+  body.position.y = (h - 2 * r) / 2; g.add(body);
+  const head = new THREE.Mesh(new THREE.SphereGeometry(r * 0.9, 20, 20), mat(0x9aa3ad));
+  head.position.y = h - r * 0.9; g.add(head);
+  g.position.set(x, y0, z); g.traverse(o => o.castShadow = true); scene.add(g); COTES.push(g);   // repère d'échelle, masqué en présentation
+}
+silhouette(1.10, mmX(1700), zF + 0.06 + PU_D + P + 0.15, MA_H);   // enfant sur la marche
+silhouette(1.10, mmX(1200), 1.25);                                  // enfant au sol
+silhouette(1.75, mmX(3900), 1.75);
+
+// Cotes
+function cote(a, b, txt, off) {
+  const l = new THREE.Line(new THREE.BufferGeometry().setFromPoints([a, b]), new THREE.LineBasicMaterial({ color: 0xe5185d })); scene.add(l);
+  const mid = a.clone().add(b).multiplyScalar(0.5).add(off);
+  const t = label(txt, mid.x, mid.y, mid.z, 0.09, '#e5185d', '#ffffff');
+  COTES.push(l, t); return t;
+}
+const V = (x, y, z) => new THREE.Vector3(x, y, z);
+const cw = cote(V(-W / 2 - P, 0.02, RET + 0.35), V(W / 2 + P, 0.02, RET + 0.35), '≈ 5,08 m hors tout (fond 4,96 m)', V(0, 0.12, 0));
+const ch = cote(V(-W / 2 - P - 0.3, 0, 0.05), V(-W / 2 - P - 0.3, H, 0.05), '2,48 m (+ spots ≈ 2,55)', V(-0.55, 0, 0));
+const cd = cote(V(-W / 2 - P - 0.3, 0.02, 0), V(-W / 2 - P - 0.3, 0.02, RET), '0,99 m', V(-0.25, 0.06, 0));
+const cr = cote(V(-W / 2 - P - 0.08, 0, RET + 0.1), V(-W / 2 - P - 0.08, RH, RET + 0.1), 'retour 0,99 m', V(-0.3, 0, 0));
+const pieceCotes = PIECES.map(p => cote(V(mmX(p.a) + 0.02, H + 0.22, zF), V(mmX(p.b) - 0.02, H + 0.22, zF), `${p.b - p.a} mm`, V(0, 0.09, 0)));
+
+// Mode présentation client : pas de cotes, cartouche allégé
+// Version client (www.idkom.fr) : sans cotes ni silhouettes, boutons de vues gardés ; ?cotes pour la version atelier
+if (!new URLSearchParams(location.search).has('cotes')) {
+  COTES.forEach(o => o.visible = false);
+  document.getElementById('cartouche').innerHTML = '<b>LA MAISON DES ÉCO-CHAMPIONS</b> · Néolia × FCSM<br>Tribune famille · Stade Bonal · proposition iDkom<br><span style="color:#777">Faites tourner la maison avec la souris ou le doigt · boutons en haut pour les vues</span>';
+}
+
+// Vues
+const VUES = {
+  face:   [[0, 1.4, 7.6], [0, 1.3, 0.5]],
+  '34':   [[4.9, 2.7, 5.6], [0, 1.1, 0.5]],
+  '34g':  [[-4.9, 2.4, 5.2], [0, 1.1, 0.5]],
+  dessus: [[0, 8.0, 1.6], [0, 0, 0.7]],
+  dos:    [[-3.2, 2.6, -4.6], [0, 0.8, 0]],
+  goutte: [[-1.98, 1.85, 1.25], [-1.98, 1.03, 0.36]],
+  gaspi:  [[-0.5, 2.15, 1.55], [-0.5, 1.03, 0.4]],
+  thermo: [[-0.2, 1.9, 1.25], [-0.2, 1.03, 0.36]],
+  cuisine: [[1.49, 2.15, 1.55], [1.49, 1.03, 0.4]],
+  enfant: [[-0.4, 1.05, 2.6], [0.1, 1.2, 0.2]],
+};
+function vue(k) {
+  const [p, t] = VUES[k]; camera.position.set(...p); controls.target.set(...t); controls.update();
+  [cw, ch, cd, cr, ...pieceCotes].forEach(l => l.lookAt(camera.position));
+  renderer.render(scene, camera);
+}
+document.querySelectorAll('#vues button').forEach(b => b.onclick = () => vue(b.dataset.v));
+vue(new URLSearchParams(location.search).get('vue') || '34');
+window.vue = vue;
+
+addEventListener('resize', () => { camera.aspect = innerWidth / innerHeight; camera.updateProjectionMatrix(); renderer.setSize(innerWidth, innerHeight); renderer.render(scene, camera); });
+controls.addEventListener('change', () => renderer.render(scene, camera));
+logosCharges.then(() => { dessinTissu(cvTissu); tex.needsUpdate = true; dessinEnseigne(); dessinBandeauGoutte(); dessinBandeauSalon(); dessinPlateauCuisine(); renderer.render(scene, camera); });
+if (!new URLSearchParams(location.search).has("statique")) (function loop() { requestAnimationFrame(loop); renderer.render(scene, camera); })();
+</script>
+</body>
+</html>
