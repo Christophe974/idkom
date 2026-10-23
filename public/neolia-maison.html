@@ -72,11 +72,18 @@ const camera = new THREE.PerspectiveCamera(40, innerWidth / innerHeight, 0.05, 1
 const controls = new THREE.OrbitControls(camera, renderer.domElement);
 
 scene.add(new THREE.HemisphereLight(0xffffff, 0x9aa0a6, 0.62));
-const sun = new THREE.DirectionalLight(0xffffff, 0.5);
+const sun = new THREE.DirectionalLight(0xffffff, 0.38);
 sun.position.set(-3, 7, 7); sun.castShadow = true;
 sun.shadow.mapSize.set(2048, 2048);
 Object.assign(sun.shadow.camera, { left: -5, right: 5, top: 5, bottom: -5 });
 scene.add(sun);
+// Lumière chaude venant de l'avant gauche, en biais : elle passe ENTRE les tasseaux des claustras et dessine des rais
+// de lumière / bandes d'ombre sur le mur et au sol (le soleil de face aligne les ombres des tasseaux en un seul bloc)
+const rasant = new THREE.DirectionalLight(0xffd9a6, 0.55);
+rasant.position.set(-4.2, 3.2, 3.6); rasant.target.position.set(-0.4, 1.0, 0); rasant.castShadow = true;
+rasant.shadow.mapSize.set(4096, 4096); rasant.shadow.bias = -0.0004;
+Object.assign(rasant.shadow.camera, { left: -4, right: 4, top: 3, bottom: -3, near: 0.5, far: 16 });
+scene.add(rasant, rasant.target);
 
 const mat = c => new THREE.MeshStandardMaterial({ color: c, roughness: 0.8 });
 function box(w, h, d, color, x, y, z, parent = scene) {
