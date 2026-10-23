@@ -307,19 +307,38 @@ const PUPITRES = [
 ];
 const PU_H = 0.992, PU_D = 0.496, PU_PL = 0.04;
 const MA_H = 0.20, MA_D = 0.30;                                                  // marche bois devant chaque pupitre
-function facade(w, hex, icones) {
-  const cv = document.createElement('canvas'); cv.width = Math.round(512 * w / 0.496); cv.height = 1024;
+// Façade tissu de chaque pupitre : la mascotte du défi (celle des cartes Éco-Champion), sinon un picto de repli
+const MASCOTTE_FACADE = { '💧': 'fac_chrono', '💡': 'fac_tap', '🌡️': 'fac_simon', '♻️': 'fac_quiz', '🛍️': 'fac_chifoumi' };
+const NOM_MASCOTTE = { '💧': 'GOUTTE MALINE', '💡': 'AMPOULE FUTÉE', '🌡️': 'THERMO ZEN', '♻️': 'RÉCUP’ GARDIEN', '🛍️': 'GOURDE MAGIQUE' };
+const FACADES = [];
+function dessinFacade({ cv, tex, hex, icones }) {
   const g = cv.getContext('2d');
   g.fillStyle = hex; g.fillRect(0, 0, cv.width, cv.height);
-  g.fillStyle = 'rgba(255,255,255,.18)'; g.fillRect(0, cv.height * 0.72, cv.width, cv.height * 0.28);
-  const n = icones.length, part = cv.width / n;
+  g.fillStyle = 'rgba(255,255,255,.18)'; g.fillRect(0, cv.height * 0.76, cv.width, cv.height * 0.24);
+  const n = icones.length, part = cv.width / n, s = Math.min(part - 50, 460);
   g.font = '260px "Apple Color Emoji", "Segoe UI Emoji", sans-serif'; g.textAlign = 'center'; g.textBaseline = 'middle';
   icones.forEach((ic, i) => {
-    g.fillStyle = 'rgba(255,255,255,.92)'; g.beginPath(); g.arc(part * (i + 0.5), 420, 200, 0, Math.PI * 2); g.fill();
-    g.fillText(ic, part * (i + 0.5), 430);
+    const cx = part * (i + 0.5), im = IMG[MASCOTTE_FACADE[ic]];
+    if (im) {
+      g.save(); g.beginPath(); g.roundRect ? g.roundRect(cx - s / 2, 370 - s / 2, s, s, 36) : g.rect(cx - s / 2, 370 - s / 2, s, s);
+      g.clip(); g.drawImage(im, cx - s / 2, 370 - s / 2, s, s); g.restore();
+      g.strokeStyle = 'rgba(255,255,255,.9)'; g.lineWidth = 10;
+      g.beginPath(); g.roundRect ? g.roundRect(cx - s / 2, 370 - s / 2, s, s, 36) : g.rect(cx - s / 2, 370 - s / 2, s, s); g.stroke();
+      g.fillStyle = '#ffffff'; g.font = 'bold 44px Helvetica, Arial'; g.fillText(NOM_MASCOTTE[ic], cx, 680);
+      g.font = '260px "Apple Color Emoji", "Segoe UI Emoji", sans-serif';
+    } else {
+      g.fillStyle = 'rgba(255,255,255,.92)'; g.beginPath(); g.arc(cx, 420, 200, 0, Math.PI * 2); g.fill();
+      g.fillText(ic, cx, 430);
+    }
   });
-  if (n > 1) { g.fillStyle = 'rgba(255,255,255,.6)'; g.fillRect(cv.width / 2 - 4, 120, 8, 620); }
-  const t = new THREE.CanvasTexture(cv); t.anisotropy = 8; return t;
+  if (n > 1) { g.fillStyle = 'rgba(255,255,255,.6)'; g.fillRect(cv.width / 2 - 4, 100, 8, 620); }
+  tex.needsUpdate = true;
+}
+function facade(w, hex, icones) {
+  const cv = document.createElement('canvas'); cv.width = Math.round(512 * w / 0.496); cv.height = 1024;
+  const tex = new THREE.CanvasTexture(cv); tex.anisotropy = 8;
+  const f = { cv, tex, hex, icones }; FACADES.push(f); dessinFacade(f);
+  return tex;
 }
 // Défi 1 « le chemin de la goutte » : plateau Dibond 680 × 618 à fente de 7 mm (tracé = JEUX/defi1-eau/trace.json)
 const TRACE_GOUTTE = {"bon": [[90, 90], [300, 90], [300, 230], [120, 230], [120, 360], [560, 360], [560, 490]], "f1": [[300, 90], [440, 90]], "f2": [[120, 360], [120, 500]], "f3": [[450, 360], [450, 210]]};
@@ -586,7 +605,7 @@ window.vue = vue;
 
 addEventListener('resize', () => { camera.aspect = innerWidth / innerHeight; camera.updateProjectionMatrix(); renderer.setSize(innerWidth, innerHeight); renderer.render(scene, camera); });
 controls.addEventListener('change', () => renderer.render(scene, camera));
-logosCharges.then(() => { dessinTissu(cvTissu); tex.needsUpdate = true; dessinEnseigne(); dessinBandeauGoutte(); dessinBandeauSalon(); dessinPlateauCuisine(); renderer.render(scene, camera); });
+logosCharges.then(() => { dessinTissu(cvTissu); tex.needsUpdate = true; dessinEnseigne(); dessinBandeauGoutte(); dessinBandeauSalon(); dessinPlateauCuisine(); FACADES.forEach(dessinFacade); renderer.render(scene, camera); });
 if (!new URLSearchParams(location.search).has("statique")) (function loop() { requestAnimationFrame(loop); renderer.render(scene, camera); })();
 </script>
 </body>
