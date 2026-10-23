@@ -246,7 +246,7 @@ for (let i = 0; i <= 5; i++) box(0.012, H, 0.012, 0x9aa0a6, X0 + i * 0.992, H / 
 const RH = 0.992;
 for (const s of [-1, 1]) {
   box(P, RH, RET, C.frame, s * (W / 2 + P / 2), RH / 2, RET / 2);
-  box(0.004, RH - 0.02, RET - 0.02, s < 0 ? 0xe5185d : 0x1f3a6b, s * (W / 2 + P + 0.002), RH / 2, RET / 2);
+  box(0.004, RH - 0.02, RET - 0.02, 0x1f3a6b, s * (W / 2 + P + 0.002), RH / 2, RET / 2);
 }
 // 3 semi-platines alu beMatrix au dos (992 de large × 496 de profondeur), sous les cadres 1, 3 et 5
 for (const xm of [496, 2480, 4464]) {
@@ -275,6 +275,10 @@ for (const sx of [-1, 1]) {
 const texEquipe = new THREE.Texture();
 const equipe = new THREE.Mesh(new THREE.PlaneGeometry(RET - 0.03, RH - 0.03), new THREE.MeshStandardMaterial({ color: 0x1f3a6b, roughness: 0.9 }));
 equipe.rotation.y = Math.PI / 2; equipe.position.set(W / 2 + P + 0.006, RH / 2, RET / 2); scene.add(equipe);
+// même visuel (équipe + logos Néolia × FCSM dans le ciel) sur la face extérieure du retour gauche ; les faces intérieures gardent les logos seuls
+const equipeG = equipe.clone(); equipeG.material = equipe.material;
+equipeG.rotation.y = -Math.PI / 2; equipeG.position.set(-(W / 2 + P + 0.006), RH / 2, RET / 2); scene.add(equipeG);
+enseigne.visible = false;
 function poseEquipe() { if (!IMG.equipe) return; texEquipe.image = IMG.equipe; texEquipe.needsUpdate = true; equipe.material.map = texEquipe; equipe.material.color.set(0xffffff);
   equipe.material.emissive.set(0xffffff); equipe.material.emissiveMap = texEquipe; equipe.material.emissiveIntensity = 0.3; equipe.material.needsUpdate = true; }   // éclairé comme un visuel rétro-éclairé
 
