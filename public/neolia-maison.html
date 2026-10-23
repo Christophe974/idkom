@@ -271,11 +271,12 @@ for (const sx of [-1, 1]) {
   const v = new THREE.Mesh(new THREE.PlaneGeometry(RET - P - 0.03, RH - 0.03), new THREE.MeshStandardMaterial({ map: texEns, roughness: 0.9 }));
   v.rotation.y = -sx * Math.PI / 2; v.position.set(sx * (W / 2 - 0.003), RH / 2, P + (RET - P) / 2); scene.add(v);
 }
-const carteTxt = label('TA CARTE ÉCO-CHAMPION !', 0, 0, 0, 0.065, '#1f3a6b', '#ffd36b');
-carteTxt.rotation.y = Math.PI / 2; carteTxt.position.set(W / 2 + P + 0.01, 0.80, RET / 2);
-const carte = box(0.012, 0.32, 0.23, 0xffd36b, W / 2 + P + 0.012, 0.45, RET / 2);          // carte géante (format 63 × 88 agrandi)
-box(0.014, 0.12, 0.12, 0xffffff, W / 2 + P + 0.014, 0.40, RET / 2);                        // QR code
-box(0.015, 0.08, 0.08, 0x1f3a6b, W / 2 + P + 0.015, 0.40, RET / 2);
+// face extérieure du retour droit (point de remise des cartes) : l'équipe des 5 mascottes dans le stade
+const texEquipe = new THREE.Texture();
+const equipe = new THREE.Mesh(new THREE.PlaneGeometry(RET - 0.03, RH - 0.03), new THREE.MeshStandardMaterial({ color: 0x1f3a6b, roughness: 0.9 }));
+equipe.rotation.y = Math.PI / 2; equipe.position.set(W / 2 + P + 0.006, RH / 2, RET / 2); scene.add(equipe);
+function poseEquipe() { if (!IMG.equipe) return; texEquipe.image = IMG.equipe; texEquipe.needsUpdate = true; equipe.material.map = texEquipe; equipe.material.color.set(0xffffff);
+  equipe.material.emissive.set(0xffffff); equipe.material.emissiveMap = texEquipe; equipe.material.emissiveIntensity = 0.3; equipe.material.needsUpdate = true; }   // éclairé comme un visuel rétro-éclairé
 
 // Claustras bois en tasseaux, aux jonctions 992 et 2976 (pied + fixation haute sur le cadre)
 function claustra(xc) {
@@ -591,6 +592,7 @@ const VUES = {
   gaspi:  [[-0.5, 2.15, 1.55], [-0.5, 1.03, 0.4]],
   thermo: [[-0.2, 1.9, 1.25], [-0.2, 1.03, 0.36]],
   cuisine: [[1.49, 2.15, 1.55], [1.49, 1.03, 0.4]],
+  equipe: [[4.6, 0.9, 1.6], [2.55, 0.55, 0.5]],
   enfant: [[-0.4, 1.05, 2.6], [0.1, 1.2, 0.2]],
 };
 function vue(k) {
@@ -605,7 +607,7 @@ window.vue = vue;
 
 addEventListener('resize', () => { camera.aspect = innerWidth / innerHeight; camera.updateProjectionMatrix(); renderer.setSize(innerWidth, innerHeight); renderer.render(scene, camera); });
 controls.addEventListener('change', () => renderer.render(scene, camera));
-logosCharges.then(() => { dessinTissu(cvTissu); tex.needsUpdate = true; dessinEnseigne(); dessinBandeauGoutte(); dessinBandeauSalon(); dessinPlateauCuisine(); FACADES.forEach(dessinFacade); renderer.render(scene, camera); });
+logosCharges.then(() => { dessinTissu(cvTissu); tex.needsUpdate = true; dessinEnseigne(); dessinBandeauGoutte(); dessinBandeauSalon(); dessinPlateauCuisine(); FACADES.forEach(dessinFacade); poseEquipe(); renderer.render(scene, camera); });
 if (!new URLSearchParams(location.search).has("statique")) (function loop() { requestAnimationFrame(loop); renderer.render(scene, camera); })();
 </script>
 </body>
