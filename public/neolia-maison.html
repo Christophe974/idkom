@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="robots" content="noindex, nofollow">
-<title>Maison des Éco-Champions · esquisse v2</title>
+<title>La Maison des Éco-Champions · Néolia × FCSM</title>
 <style>
   html, body { margin: 0; height: 100%; background: #eef0f2; font-family: -apple-system, Helvetica, Arial, sans-serif; overflow: hidden; }
   #cartouche { position: absolute; left: 16px; bottom: 16px; background: rgba(255,255,255,.92); border-radius: 8px; padding: 10px 14px; font-size: 12px; color: #333; line-height: 1.45; box-shadow: 0 1px 4px rgba(0,0,0,.12); }
@@ -568,7 +568,8 @@ const VUES = {
   enfant: [[-0.4, 1.05, 2.6], [0.1, 1.2, 0.2]],
 };
 function vue(k) {
-  const [p, t] = VUES[k]; camera.position.set(...p); controls.target.set(...t); controls.update();
+  const [p, t] = VUES[k], r = camera.aspect < 1.25 ? Math.pow(1.25 / camera.aspect, 0.9) : 1;   // écran étroit (téléphone) : on recule
+  camera.position.set(...p.map((v, i) => t[i] + (v - t[i]) * r)); controls.target.set(...t); controls.update();
   [cw, ch, cd, cr, ...pieceCotes].forEach(l => l.lookAt(camera.position));
   renderer.render(scene, camera);
 }
