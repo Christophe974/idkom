@@ -63,6 +63,13 @@ const nextConfig: NextConfig = {
   },
   async redirects() {
     return [
+      // QR imprimé au dos des cartes Éco-Champion (Néolia × FCSM) : adresse stable sur le
+      // site, destination modifiable sans réimprimer. Temporaire (307) exprès.
+      {
+        source: "/eco-champions",
+        destination: "https://crm.idkom.fr/cadeau/eco-champions",
+        permanent: false,
+      },
       // Ancienne boutique interne → la boutique officielle (boutique.idkom.fr).
       // On consolide tout le SEO là-bas ; les sous-pages (panier, checkout, catégories)
       // n'ont pas d'équivalent 1:1 → tout renvoie vers le hub des univers.
