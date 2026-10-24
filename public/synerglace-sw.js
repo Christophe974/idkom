@@ -1,10 +1,11 @@
 // Démo Synerglace : garde la page et ses fiches pour un usage sans réseau.
-const CACHE = "synerglace-v1";
+const CACHE = "synerglace-v2";
 const FICHIERS = [
   "/synerglace",
   "/synerglace/fiches.js",
   "/synerglace/schemas.js",
   "/synerglace/logo.png",
+  "/synerglace/manrope.woff2",
   "/synerglace/icon-192.png",
   "/synerglace/manifest.webmanifest",
 ];
