@@ -251,6 +251,24 @@
   .toast .ic { width: 36px; height: 36px; border-radius: 50%; display: grid; place-items: center; background: #1d6fd8; color: #fff; }
   .toast b { display: block; font-size: 14px; font-weight: 800; } .toast small { display: block; color: #50668c; font-size: 12px; font-weight: 600; }
 
+  .signal { display: flex; align-items: center; gap: 14px; width: 100%; margin-top: 10px; padding: 14px 16px; border-radius: 20px; background: var(--verre); border: 1px dashed rgba(143,216,255,.4); }
+  .signal .ic { flex: none; width: 44px; height: 44px; border-radius: 14px; display: grid; place-items: center; background: rgba(143,216,255,.14); color: var(--ice); }
+  .signal b { display: block; font-size: 15px; font-weight: 800; } .signal small { display: block; color: var(--mut); font-size: 12px; font-weight: 600; margin-top: 1px; }
+  .signal .chev { margin-left: auto; color: var(--dim); width: 18px; height: 18px; }
+  .zone-photo { position: relative; display: grid; place-items: center; gap: 6px; height: 170px; border-radius: 18px; border: 1.5px dashed var(--bord2); background: var(--verre); color: var(--mut); font-size: 14px; font-weight: 700; overflow: hidden; cursor: pointer; text-align: center; }
+  .zone-photo svg.i { width: 34px; height: 34px; color: var(--ice); }
+  .zone-photo img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+  .zone-photo input { display: none; }
+  .themes-sig { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin: 12px 0; }
+  .themes-sig button { display: flex; align-items: center; gap: 8px; height: 46px; padding: 0 12px; border-radius: 14px; background: var(--verre); border: 1px solid var(--bord); font-size: 13.5px; font-weight: 700; color: var(--mut); }
+  .themes-sig button svg.i { width: 18px; height: 18px; color: var(--c); }
+  .themes-sig button.on { color: var(--txt); border-color: var(--c); background: color-mix(in srgb, var(--c) 16%, transparent); }
+  .feuille textarea { width: 100%; min-height: 64px; resize: none; border-radius: 14px; border: 1px solid var(--bord); background: var(--verre); color: var(--txt); font: inherit; font-size: 15px; padding: 12px 14px; outline: none; margin-bottom: 12px; }
+  .feuille textarea:focus { border-color: var(--ice); }
+  .feuille { max-height: 92vh; overflow-y: auto; }
+  .gros.envoi { justify-content: center; background: linear-gradient(135deg, #1d6fd8, #0a3576); color: #fff; border: 1px solid rgba(143,216,255,.4); }
+  .gros.envoi[disabled] { opacity: .5; }
+  footer .liens { display: flex; gap: 8px; justify-content: center; flex-wrap: wrap; }
   footer { margin-top: 34px; text-align: center; color: var(--dim); font-size: 12px; font-weight: 600; line-height: 1.7; }
   footer button { color: var(--ice); font-size: 12.5px; font-weight: 800; display: inline-flex; align-items: center; gap: 6px; margin-top: 6px; height: 34px; padding: 0 14px; border-radius: 999px; background: var(--verre); border: 1px solid var(--bord); }
   footer button svg.i { width: 15px; height: 15px; }
@@ -304,11 +322,14 @@
   <symbol id="i-raz" viewBox="0 0 24 24"><path d="M3 12a9 9 0 1 0 3-6.7L3 8"/><path d="M3 3v5h5"/></symbol>
   <symbol id="i-install" viewBox="0 0 24 24"><rect x="6" y="2" width="12" height="20" rx="3"/><path d="M12 8v6M9 11l3 3 3-3"/></symbol>
   <symbol id="i-badge" viewBox="0 0 24 24"><path d="M6 8.3a6 6 0 0 1 0 7.4M9.5 6a10 10 0 0 1 0 12M13 3.7a14 14 0 0 1 0 16.6"/></symbol>
+  <symbol id="i-photo" viewBox="0 0 24 24"><path d="M3 8a2 2 0 0 1 2-2h2.5l1.5-2h6l1.5 2H19a2 2 0 0 1 2 2v10a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><circle cx="12" cy="13" r="3.6"/></symbol>
+  <symbol id="i-stats" viewBox="0 0 24 24"><path d="M4 20V10M10 20V4M16 20v-7M22 20H2"/></symbol>
   <symbol id="i-patin" viewBox="0 0 24 24"><path d="M5 3h6v8l7 2a2 2 0 0 1 2 2v2H5z"/><path d="M3 21h18M8 17v4M16 17v4"/></symbol>
 </svg>
 
 <script src="/synerglace/fiches.js"></script>
 <script src="/synerglace/schemas.js"></script>
+<script src="/synerglace/journal.js"></script>
 <script>
 (function () {
   const $ = s => document.querySelector(s);
@@ -415,6 +436,7 @@
           <a class="press" href="tel:${CONTACTS.mairie.tel}"><span class="ic" style="background:rgba(143,216,255,.14);color:var(--ice)">${ico("mairie")}</span><span><b>Mairie</b><small>Services tech.</small></span></a>
           <button class="press rge" id="btnSecours"><span class="ic" style="background:var(--rouge);color:#fff">${ico("croix")}</span><span><b>Secours</b><small>112 · 18 · 15</small></span></button>
         </div>
+        <button class="signal press" data-signal><span class="ic">${ico("photo")}</span><span><b>Signaler un problème</b><small>Une photo, c'est envoyé à Synerglace · même un détail</small></span>${ico("droite").replace('class="i"', 'class="i chev"')}</button>
       </div>
 
       <div>
@@ -455,6 +477,8 @@
       themes.classList.toggle("cache", !!v);
       if (!v) { res.innerHTML = ""; return; }
       const r = chercher(v);
+      clearTimeout(tVide);
+      if (!r.length && v.length > 3) tVide = setTimeout(() => Journal.ajouter({ type: "recherche", site: siteId, q: v }), 1500);
       res.innerHTML = r.length ? r.map(ligneFiche).join("")
         : `<div class="vide">Rien trouvé pour « ${esc(v)} ». Essayez un autre mot, ou appelez l'astreinte.</div>${boutonAppel("astreinte")}`;
     }
@@ -487,6 +511,7 @@
   function fiche(id) {
     const f = FICHES.find(x => x.id === id);
     if (!f) return go("");
+    Journal.ajouter({ type: "fiche", site: siteId, fiche: f.id, cat: f.cat });
     const c = CATS[f.cat], sch = f.schema && SCHEMAS[f.schema], R = 12, CIRC = 2 * Math.PI * R;
     vue.innerHTML = `
       ${retour()}
@@ -523,6 +548,7 @@
         <p>Toujours en panne ? Appelez si <b>${esc(f.appelSi)}</b>.</p>
         <div class="btns">${f.appel.map(k => boutonAppel(k)).join("")}</div>
       </div>
+      <button class="signal press" data-signal="${f.id}"><span class="ic">${ico("photo")}</span><span><b>Signaler avec une photo</b><small>Synerglace garde une trace pour la saison prochaine</small></span>${ico("droite").replace('class="i"', 'class="i chev"')}</button>
       <div class="actions">
         <button class="press" id="raz">${ico("raz")}Recommencer</button>
         <button class="press" id="partager">${ico("partage")}Envoyer la fiche</button>
@@ -542,7 +568,7 @@
     };
     $("#etapes").onclick = e => { const li = e.target.closest("li"); if (li) { li.classList.toggle("fait"); prog(); } };
     $("#raz").onclick = () => { lis.forEach(l => l.classList.remove("fait")); prog(); window.scrollTo({ top: 0, behavior: "smooth" }); };
-    $("#oui").onclick = () => { toast("Bien joué !", "Problème réglé · " + SITES[siteId].nom, "ok"); go(""); };
+    $("#oui").onclick = () => { Journal.ajouter({ type: "regle", site: siteId, fiche: f.id, cat: f.cat }); toast("Bien joué !", "Problème réglé · " + SITES[siteId].nom, "ok"); go(""); };
     $("#partager").onclick = async () => {
       const url = location.origin + location.pathname + "?site=" + siteId + "#/fiche/" + f.id;
       const txt = `${f.titre} · ${SITES[siteId].nom}`;
@@ -556,7 +582,8 @@
 
   const retour = () => `<button class="retour press" data-retour>${ico("gauche")}Retour</button>`;
   const pied = () => `<footer>Démonstration iDkom pour Synerglace · contenu indicatif<br>
-      <button data-install class="press">${ico("install")}Ajouter à l'écran d'accueil</button></footer>`;
+      <span class="liens"><button data-install class="press">${ico("install")}Ajouter à l'écran d'accueil</button>
+      <a href="/synerglace/stats" class="press" style="color:var(--ice);font-size:12.5px;font-weight:800;display:inline-flex;align-items:center;gap:6px;margin-top:6px;height:34px;padding:0 14px;border-radius:999px;background:var(--verre);border:1px solid var(--bord)">${ico("stats", "width:15px;height:15px")}Espace Synerglace</a></span></footer>`;
 
   // Barre d'appel flottante : visible sur une fiche tant que le bloc d'appel n'est pas à l'écran
   let flotActif = false;
@@ -590,6 +617,30 @@
         ${boutonAppel("astreinte", "cl")}
       </div>`);
   }
+  function signaler(ficheId) {
+    const f = FICHES.find(x => x.id === ficheId);
+    let cat = f ? f.cat : null, photo = null;
+    ouvrirFeuille(`<h3>Signaler un problème</h3><p>${esc(SITES[siteId].nom)} · la date et l'heure sont ajoutées automatiquement.</p>
+      <label class="zone-photo" id="zonePhoto">${ico("photo")}<span>Prendre une photo</span>
+        <input type="file" accept="image/*" capture="environment" id="inPhoto"></label>
+      <div class="themes-sig" id="themesSig">${Object.entries(CATS).map(([k, c]) => `<button class="${k === cat ? "on" : ""}" style="--c:${c.coul}" data-c="${k}">${ico(k)}${c.nom}</button>`).join("")}</div>
+      <textarea id="noteSig" placeholder="Un mot (facultatif) : où, quoi…">${f ? esc(f.titre) + " · " : ""}</textarea>
+      <button class="gros envoi press" id="envoiSig">${ico("partage")}Envoyer à Synerglace</button>`);
+    $("#themesSig").onclick = e => { const b = e.target.closest("[data-c]"); if (!b) return; cat = b.dataset.c; [...$("#themesSig").children].forEach(x => x.classList.toggle("on", x === b)); };
+    $("#inPhoto").onchange = async e => {
+      const fi = e.target.files[0]; if (!fi) return;
+      try { photo = await Journal.reduirePhoto(fi); } catch (er) { return; }
+      const z = $("#zonePhoto"); z.querySelector("img")?.remove();
+      const img = new Image(); img.src = photo; z.appendChild(img);
+    };
+    $("#envoiSig").onclick = async () => {
+      const b = $("#envoiSig"); b.disabled = true;
+      await Journal.ajouter({ type: "signal", site: siteId, fiche: f && f.id, cat, note: $("#noteSig").value.trim(), photo });
+      fermerFeuille();
+      const d = new Date();
+      toast("Envoyé à Synerglace", `${SITES[siteId].nom} · ${d.toLocaleDateString("fr-FR", { weekday: "short", day: "numeric", month: "short" })} ${d.toLocaleTimeString("fr-FR", { hour: "2-digit", minute: "2-digit" })}`, "partage");
+    };
+  }
   function choixSite() {
     ouvrirFeuille(`<h3>Quelle patinoire ?</h3><p>Chaque badge ouvre directement sa patinoire.</p>
       <div class="btns">${Object.entries(SITES).map(([k, s]) => `
@@ -621,7 +672,7 @@
   }
 
   // ---------- Navigation ----------
-  let memoQ = "";
+  let memoQ = "", tVide;
   function go(h) { location.hash = h ? "#/" + h : ""; }
   vue.addEventListener("click", e => {
     const fi = e.target.closest("[data-fiche]"), ca = e.target.closest("[data-cat]"), vi = e.target.closest("[data-video]");
@@ -630,7 +681,17 @@
     else if (vi) video(vi.dataset.video, vi.dataset.titre);
     else if (e.target.closest("[data-retour]")) { history.length > 1 && location.hash ? history.back() : go(""); }
     else if (e.target.closest("[data-install]")) installer();
+    else if (e.target.closest("[data-signal]")) signaler(e.target.closest("[data-signal]").dataset.signal);
   });
+  // Tout appel lancé depuis l'appli est noté (vue, feuilles, barre flottante)
+  document.addEventListener("click", e => {
+    const a = e.target.closest('a[href^="tel:"]');
+    if (!a) return;
+    const tel = a.getAttribute("href").slice(4), cle = Object.keys(CONTACTS).find(k => CONTACTS[k].tel === tel);
+    const fi = (location.hash.match(/^#\/fiche\/([\w-]+)/) || [])[1], f = FICHES.find(x => x.id === fi);
+    Journal.ajouter({ type: "appel", site: siteId, contact: cle || tel, fiche: fi, cat: f && f.cat });
+  }, true);
+  Journal.meteo();
   function rendre() {
     const [, type, id] = (location.hash.match(/^#\/(\w+)\/([\w-]+)/) || []);
     if (type === "fiche") fiche(id);

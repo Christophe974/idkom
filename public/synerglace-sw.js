@@ -1,9 +1,10 @@
 // Démo Synerglace : garde la page et ses fiches pour un usage sans réseau.
-const CACHE = "synerglace-v2";
+const CACHE = "synerglace-v3";
 const FICHIERS = [
   "/synerglace",
   "/synerglace/fiches.js",
   "/synerglace/schemas.js",
+  "/synerglace/journal.js",
   "/synerglace/logo.png",
   "/synerglace/manrope.woff2",
   "/synerglace/icon-192.png",
@@ -24,7 +25,7 @@ self.addEventListener("activate", e => {
 self.addEventListener("fetch", e => {
   const url = new URL(e.request.url);
   if (e.request.method !== "GET" || url.origin !== location.origin || !url.pathname.startsWith("/synerglace")) return;
-  const cle = e.request.mode === "navigate" ? "/synerglace" : url.pathname;
+  const cle = url.pathname;
   e.respondWith(
     fetch(e.request)
       .then(r => { if (r.ok) { const copie = r.clone(); caches.open(CACHE).then(c => c.put(cle, copie)); } return r; })

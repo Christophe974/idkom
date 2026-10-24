@@ -44,7 +44,7 @@ const nextConfig: NextConfig = {
               "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com",
               "font-src 'self' https://fonts.gstatic.com",
               "img-src 'self' data: blob: https://api.idkom.fr https://ovh.idkom.fr https://idkom.fr https://olmcbqiojczhupspzedo.supabase.co https://*.googleusercontent.com https://lh3.googleusercontent.com",
-              "connect-src 'self' https://api.idkom.fr https://olmcbqiojczhupspzedo.supabase.co https://api.iconify.design https://api.simplesvg.com https://api.unisvg.com https://www.google-analytics.com https://www.googletagmanager.com",
+              "connect-src 'self' https://api.open-meteo.com https://api.idkom.fr https://olmcbqiojczhupspzedo.supabase.co https://api.iconify.design https://api.simplesvg.com https://api.unisvg.com https://www.google-analytics.com https://www.googletagmanager.com",
               "frame-src 'self' https://www.youtube.com https://player.vimeo.com",
               "frame-ancestors 'self'",
             ].join("; "),
@@ -56,6 +56,7 @@ const nextConfig: NextConfig = {
   async rewrites() {
     return [
       { source: "/synerglace", destination: "/synerglace.html" },
+      { source: "/synerglace/stats", destination: "/synerglace-stats.html" },
       {
         source: "/demo/:path*",
         destination: "https://ovh.idkom.fr/demo/:path*",

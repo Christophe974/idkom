@@ -1,0 +1,484 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="robots" content="noindex, nofollow">
+<meta name="theme-color" content="#041225">
+<title>Synerglace · Tableau de bord saison</title>
+<link rel="icon" href="/synerglace/icon-192.png">
+<link rel="preload" href="/synerglace/manrope.woff2" as="font" type="font/woff2" crossorigin>
+<style>
+  @font-face { font-family: "Manrope"; font-style: normal; font-weight: 400 800; font-display: swap; src: url(/synerglace/manrope.woff2) format("woff2"); }
+  :root {
+    --bg: #041225; --surf: #0b1d36; --surf2: #0f2645; --txt: #f2f7ff; --mut: #93a8c6; --dim: #5d7598; --bord: rgba(255,255,255,.09); --grille: rgba(255,255,255,.07);
+    --ice: #8fd8ff;
+    /* Thèmes (validés sur fond sombre) */
+    --froid: #2e9be0; --elec: #b58a12; --son: #9468d8; --chalet: #d9683a;
+    /* Statuts */
+    --ok: #2fae6e; --appel: #c97a12; --rouge: #ff4d61;
+  }
+  * { box-sizing: border-box; }
+  html { background: var(--bg); }
+  body { margin: 0; color: var(--txt); background: radial-gradient(70% 420px at 10% 0, rgba(79,179,255,.16), transparent 70%), radial-gradient(50% 360px at 95% 0, rgba(150,120,255,.12), transparent 70%), var(--bg); background-repeat: no-repeat; font: 500 14px/1.45 "Manrope", -apple-system, "Segoe UI", Roboto, sans-serif; -webkit-font-smoothing: antialiased; min-height: 100vh; }
+  button { font: inherit; color: inherit; border: 0; background: none; cursor: pointer; padding: 0; }
+  .wrap { max-width: 1240px; margin: 0 auto; padding: 0 20px 40px; }
+  svg.i { width: 18px; height: 18px; fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; flex: none; }
+
+  header { display: flex; align-items: center; gap: 18px; padding: 20px 0 18px; flex-wrap: wrap; }
+  header img { height: 40px; }
+  header .t { flex: 1; min-width: 240px; }
+  header h1 { margin: 0; font-size: 22px; font-weight: 800; letter-spacing: -.01em; }
+  header p { margin: 2px 0 0; color: var(--mut); font-size: 13px; }
+  .tag { display: inline-flex; align-items: center; gap: 6px; height: 28px; padding: 0 12px; border-radius: 999px; font-size: 12px; font-weight: 800; background: rgba(255,181,71,.14); color: #ffc46b; border: 1px solid rgba(255,181,71,.3); }
+  .retour { display: inline-flex; align-items: center; gap: 6px; height: 34px; padding: 0 14px; border-radius: 999px; background: rgba(255,255,255,.06); border: 1px solid var(--bord); color: var(--ice); font-weight: 700; font-size: 13px; text-decoration: none; }
+
+  /* Filtres : une ligne au-dessus de tout */
+  .filtres { position: relative; z-index: 10; display: flex; gap: 10px; flex-wrap: wrap; align-items: center; padding: 12px 0; margin-bottom: 6px; background: rgba(4,18,37,.85); -webkit-backdrop-filter: blur(14px); backdrop-filter: blur(14px); }
+  .seg { display: inline-flex; padding: 3px; border-radius: 12px; background: var(--surf); border: 1px solid var(--bord); overflow-x: auto; max-width: 100%; scrollbar-width: none; }
+  .seg button { height: 32px; padding: 0 12px; border-radius: 9px; font-size: 13px; font-weight: 700; color: var(--mut); white-space: nowrap; }
+  .seg button.on { background: var(--surf2); color: var(--txt); box-shadow: inset 0 0 0 1px rgba(143,216,255,.35); }
+  .seg .lab { display: grid; place-items: center; padding: 0 8px 0 10px; color: var(--dim); font-size: 11px; font-weight: 800; letter-spacing: .1em; text-transform: uppercase; }
+
+  @media (min-width: 901px) { .filtres { position: sticky; top: 0; } }
+  .grille { display: grid; grid-template-columns: repeat(12, 1fr); gap: 14px; }
+  .c12 { grid-column: span 12; } .c8 { grid-column: span 8; } .c7 { grid-column: span 7; } .c6 { grid-column: span 6; } .c5 { grid-column: span 5; } .c4 { grid-column: span 4; }
+  @media (max-width: 900px) { .c8, .c7, .c6, .c5, .c4 { grid-column: span 12; } }
+  .carte { background: var(--surf); border: 1px solid var(--bord); border-radius: 18px; padding: 18px; min-width: 0; }
+  .carte h2 { margin: 0; font-size: 15px; font-weight: 800; }
+  .carte .sous { margin: 3px 0 14px; color: var(--mut); font-size: 12.5px; }
+  .lecture { margin-top: 12px; padding: 10px 12px; border-radius: 12px; background: rgba(143,216,255,.07); border-left: 3px solid var(--ice); font-size: 13px; color: #d6e6fa; }
+  .lecture b { color: #fff; }
+  h3.bloc { font-size: 12px; font-weight: 800; letter-spacing: .14em; text-transform: uppercase; color: var(--mut); margin: 26px 0 12px; display: flex; align-items: center; gap: 10px; }
+
+  /* KPI */
+  .kpis { display: grid; grid-template-columns: repeat(5, 1fr); gap: 14px; }
+  @media (max-width: 1000px) { .kpis { grid-template-columns: repeat(2, 1fr); } }
+  .kpi { background: var(--surf); border: 1px solid var(--bord); border-radius: 18px; padding: 16px 18px; }
+  .kpi small { display: block; color: var(--mut); font-size: 12px; font-weight: 700; }
+  .kpi b { display: block; font-size: 30px; font-weight: 800; letter-spacing: -.02em; margin-top: 4px; font-variant-numeric: tabular-nums; }
+  .kpi span { display: block; color: var(--dim); font-size: 11.5px; font-weight: 600; margin-top: 2px; }
+  .kpi.fort { background: linear-gradient(135deg, rgba(47,174,110,.2), rgba(47,174,110,.04)); border-color: rgba(47,174,110,.4); }
+
+  /* Direct */
+  .direct { display: flex; gap: 12px; overflow-x: auto; padding-bottom: 4px; }
+  .live { flex: none; width: 280px; display: flex; gap: 12px; padding: 12px; border-radius: 16px; background: var(--surf); border: 1px solid var(--bord); animation: arrive .5s cubic-bezier(.2,.8,.2,1) both; }
+  .live.nouveau { border-color: rgba(143,216,255,.6); box-shadow: 0 0 0 3px rgba(143,216,255,.12); }
+  @keyframes arrive { from { opacity: 0; transform: translateY(-8px) scale(.98); } }
+  .live .ph { flex: none; width: 64px; height: 64px; border-radius: 12px; overflow: hidden; background: var(--surf2); display: grid; place-items: center; color: var(--mut); }
+  .live .ph img { width: 100%; height: 100%; object-fit: cover; }
+  .live b { display: block; font-size: 13.5px; font-weight: 800; line-height: 1.25; }
+  .live small { display: block; color: var(--mut); font-size: 12px; }
+  .meteo { display: inline-flex; align-items: center; gap: 5px; margin-top: 5px; height: 22px; padding: 0 8px; border-radius: 999px; background: rgba(143,216,255,.1); color: var(--ice); font-size: 11.5px; font-weight: 800; }
+  .point { width: 8px; height: 8px; border-radius: 50%; background: var(--rouge); box-shadow: 0 0 0 3px rgba(255,77,97,.25); animation: clign 1.4s infinite; }
+  @keyframes clign { 50% { opacity: .3; } }
+  .vide-live { color: var(--mut); font-size: 13px; padding: 14px 16px; border: 1px dashed var(--bord); border-radius: 16px; width: 100%; }
+
+  /* Graphiques */
+  .graph svg { display: block; width: 100%; height: auto; overflow: visible; }
+  .graph text { fill: var(--mut); font: 600 11px "Manrope", sans-serif; }
+  .graph .ax { stroke: var(--grille); }
+  .graph [data-tip] { cursor: default; transition: opacity .15s; }
+  .graph [data-tip]:hover { opacity: .8; }
+  .legende { display: flex; gap: 14px; flex-wrap: wrap; margin-bottom: 10px; font-size: 12px; font-weight: 700; color: var(--mut); }
+  .legende span { display: inline-flex; align-items: center; gap: 6px; }
+  .legende i { width: 10px; height: 10px; border-radius: 3px; }
+  .legende i.ligne { height: 2px; border-radius: 1px; width: 14px; }
+  #tip { position: fixed; z-index: 50; pointer-events: none; background: #fff; color: #0a2148; border-radius: 10px; padding: 8px 11px; font-size: 12px; font-weight: 600; box-shadow: 0 10px 30px rgba(0,0,0,.4); opacity: 0; transform: translateY(4px); transition: opacity .12s, transform .12s; max-width: 240px; }
+  #tip.on { opacity: 1; transform: none; }
+  #tip .l1 { font-weight: 800; font-size: 13px; }
+  #tip .l { color: #50668c; }
+
+  /* Recommandations */
+  .recos { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; }
+  @media (max-width: 900px) { .recos { grid-template-columns: 1fr; } }
+  .reco { background: var(--surf); border: 1px solid var(--bord); border-radius: 18px; padding: 16px; border-top: 3px solid var(--c); }
+  .reco .k { font-size: 11px; font-weight: 800; letter-spacing: .1em; text-transform: uppercase; color: var(--c); }
+  .reco b { display: block; font-size: 15px; font-weight: 800; margin: 6px 0 4px; }
+  .reco p { margin: 0; color: var(--mut); font-size: 13px; }
+
+  /* Galerie */
+  .galerie { display: grid; grid-template-columns: repeat(auto-fill, minmax(190px, 1fr)); gap: 12px; }
+  .ph-carte { border-radius: 16px; overflow: hidden; background: var(--surf); border: 1px solid var(--bord); }
+  .ph-carte .img { aspect-ratio: 4/3; display: grid; place-items: center; position: relative; background: radial-gradient(circle at 30% 25%, color-mix(in srgb, var(--c) 45%, transparent), transparent 65%), linear-gradient(135deg, #12335f, #0a1d3a); }
+  .ph-carte .img img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+  .ph-carte .img svg { width: 40px; height: 40px; color: rgba(255,255,255,.55); }
+  .ph-carte .img .meteo { position: absolute; left: 8px; bottom: 8px; margin: 0; background: rgba(4,18,37,.75); -webkit-backdrop-filter: blur(6px); backdrop-filter: blur(6px); }
+  .ph-carte .txt { padding: 10px 12px 12px; }
+  .ph-carte b { display: block; font-size: 13px; font-weight: 800; line-height: 1.3; }
+  .ph-carte small { display: block; color: var(--mut); font-size: 11.5px; margin-top: 3px; }
+
+  table { width: 100%; border-collapse: collapse; font-size: 13px; }
+  th { text-align: left; color: var(--dim); font-size: 11px; font-weight: 800; letter-spacing: .08em; text-transform: uppercase; padding: 0 8px 8px; border-bottom: 1px solid var(--bord); }
+  td { padding: 9px 8px; border-bottom: 1px solid var(--grille); font-variant-numeric: tabular-nums; }
+  td .pt { display: inline-block; width: 8px; height: 8px; border-radius: 2px; margin-right: 8px; }
+  .num { text-align: right; }
+  .barre-mini { display: inline-block; height: 6px; border-radius: 3px; background: var(--ok); vertical-align: middle; margin-right: 6px; }
+  .rv { display: flex; align-items: center; justify-content: space-between; padding: 9px 0; border-bottom: 1px solid var(--grille); }
+  .rv b { font-weight: 700; } .rv span { color: var(--mut); font-weight: 700; font-variant-numeric: tabular-nums; }
+  footer { margin-top: 30px; color: var(--dim); font-size: 12px; text-align: center; }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <img src="/synerglace/logo.png" alt="Synerglace">
+    <div class="t"><h1>Tableau de bord · Saison 2025-2026</h1><p>Patinoires de Belfort · 28 nov. 2025 → 4 janv. 2026 · météo captée à chaque intervention</p></div>
+    <span class="tag">Démo · données simulées</span>
+    <a class="retour" href="/synerglace">← Appli terrain</a>
+  </header>
+
+  <div class="filtres" id="filtres"></div>
+
+  <h3 class="bloc"><span class="point"></span>En direct des badges</h3>
+  <div class="direct" id="direct"></div>
+
+  <h3 class="bloc">La saison en chiffres</h3>
+  <div class="kpis" id="kpis"></div>
+
+  <h3 class="bloc">Quand et pourquoi</h3>
+  <div class="grille">
+    <div class="carte c12">
+      <h2>Interventions par jour</h2><p class="sous">Fiches réflexes utilisées sur le terrain, par thème</p>
+      <div class="legende" id="legJours"></div>
+      <div class="graph" id="gJours"></div>
+      <h2 style="margin-top:18px;font-size:13px">Température maximale à Belfort</h2>
+      <div class="graph" id="gTemp"></div>
+      <div class="lecture" id="lecJours"></div>
+    </div>
+    <div class="carte c7">
+      <h2>Glace molle et température</h2><p class="sous">Nombre moyen d'interventions « glace molle » par jour, selon la température maximale</p>
+      <div class="graph" id="gGlace"></div>
+      <div class="lecture" id="lecGlace"></div>
+    </div>
+    <div class="carte c5">
+      <h2>Heures et jours</h2><p class="sous">Interventions selon le jour et l'heure</p>
+      <div class="graph" id="gHeat"></div>
+    </div>
+  </div>
+
+  <h3 class="bloc">Où et avec quel résultat</h3>
+  <div class="grille">
+    <div class="carte c6">
+      <h2>Par patinoire</h2><p class="sous">Interventions de la saison, par thème</p>
+      <div class="legende" id="legSites"></div>
+      <div class="graph" id="gSites"></div>
+    </div>
+    <div class="carte c6">
+      <h2>Réglé sur place ou appel</h2><p class="sous">Part des interventions réglées par l'agent seul, grâce à la fiche</p>
+      <div class="legende"><span><i style="background:var(--ok)"></i>Réglé sans appel</span><span><i style="background:var(--appel)"></i>Appel nécessaire</span></div>
+      <div class="graph" id="gRegle"></div>
+    </div>
+  </div>
+
+  <h3 class="bloc">À préparer pour la saison prochaine</h3>
+  <div class="recos" id="recos"></div>
+
+  <h3 class="bloc">Signalements photo</h3>
+  <div class="galerie" id="galerie"></div>
+
+  <h3 class="bloc">Détail</h3>
+  <div class="grille">
+    <div class="carte c8"><h2>Fiches les plus utilisées</h2><p class="sous">Avec la météo moyenne au moment des interventions</p><div id="tabFiches"></div></div>
+    <div class="carte c4"><h2>Recherches sans résultat</h2><p class="sous">Ce que les agents ont cherché sans trouver de fiche : les fiches à créer</p><div id="vides"></div></div>
+  </div>
+
+  <footer>Démonstration iDkom pour Synerglace · données de saison simulées · la colonne « En direct » affiche les signalements faits sur cet appareil</footer>
+</div>
+<div id="tip"></div>
+
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <symbol id="i-froid" viewBox="0 0 24 24"><path d="M12 2v20M3.3 7l17.4 10M3.3 17 20.7 7M9 4l3 2 3-2M9 20l3-2 3 2"/></symbol>
+  <symbol id="i-elec" viewBox="0 0 24 24"><path d="M13 2 4.5 13.5H11L10 22l8.5-11.5H12z"/></symbol>
+  <symbol id="i-son" viewBox="0 0 24 24"><path d="M11 5 6 9H3v6h3l5 4z"/><path d="M15.5 8.5a5 5 0 0 1 0 7M18.5 5.5a9 9 0 0 1 0 13"/></symbol>
+  <symbol id="i-chalet" viewBox="0 0 24 24"><path d="M2 11 12 3l10 8"/><path d="M5 9.5V21h14V9.5"/><path d="M10 21v-6h4v6"/></symbol>
+  <symbol id="i-photo" viewBox="0 0 24 24"><path d="M3 8a2 2 0 0 1 2-2h2.5l1.5-2h6l1.5 2H19a2 2 0 0 1 2 2v10a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><circle cx="12" cy="13" r="3.6"/></symbol>
+  <symbol id="i-tel" viewBox="0 0 24 24"><path d="M22 16.9v3a2 2 0 0 1-2.2 2 19.8 19.8 0 0 1-8.6-3.1 19.5 19.5 0 0 1-6-6A19.8 19.8 0 0 1 2.1 4.2 2 2 0 0 1 4.1 2h3a2 2 0 0 1 2 1.7c.1.9.4 1.8.7 2.7a2 2 0 0 1-.5 2.1L8 9.8a16 16 0 0 0 6 6l1.3-1.3a2 2 0 0 1 2.1-.4c.9.3 1.8.6 2.7.7a2 2 0 0 1 1.7 2z"/></symbol>
+  <symbol id="i-ok" viewBox="0 0 24 24"><path d="m5 12.5 4.5 4.5L19 7.5"/></symbol>
+  <symbol id="i-loupe" viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></symbol>
+</svg>
+
+<script src="/synerglace/fiches.js"></script>
+<script src="/synerglace/saison.js"></script>
+<script src="/synerglace/journal.js"></script>
+<script>
+(function () {
+  const $ = s => document.querySelector(s);
+  const esc = s => String(s ?? "").replace(/[&<>"]/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]));
+  const ico = id => `<svg class="i"><use href="#i-${id}"/></svg>`;
+  const COUL = { froid: "var(--froid)", elec: "var(--elec)", son: "var(--son)", chalet: "var(--chalet)" };
+  const ORDRE = ["froid", "elec", "son", "chalet"];
+  const JOUR = 864e5, S = SAISON;
+  const fiche = id => FICHES.find(f => f.id === id);
+  const fmtJ = t => new Date(t).toLocaleDateString("fr-FR", { day: "numeric", month: "short" });
+  const fmtJH = t => new Date(t).toLocaleDateString("fr-FR", { weekday: "short", day: "numeric", month: "short" }) + " · " + new Date(t).toLocaleTimeString("fr-FR", { hour: "2-digit", minute: "2-digit" });
+  const nf = n => n.toLocaleString("fr-FR");
+  const deg = n => (Math.round(n * 10) / 10).toLocaleString("fr-FR") + " °C";
+  const COUT_DEPLACEMENT = 150, PART_DEPLACEMENT = .35;
+
+  // ---------- Filtres ----------
+  const F = { site: "tous", cat: "tous", periode: "saison" };
+  const PERIODES = { saison: "Toute la saison", avant: "Avant les vacances", vacances: "Vacances de Noël" };
+  function filtres() {
+    const seg = (cle, lab, opts) => `<div class="seg" data-f="${cle}"><span class="lab">${lab}</span>${opts.map(([v, t]) => `<button data-v="${v}" class="${F[cle] === v ? "on" : ""}">${esc(t)}</button>`).join("")}</div>`;
+    $("#filtres").innerHTML =
+      seg("periode", "Période", Object.entries(PERIODES)) +
+      seg("site", "Patinoire", [["tous", "Toutes"], ...Object.entries(SITES).map(([k, s]) => [k, s.nom])]) +
+      seg("cat", "Thème", [["tous", "Tous"], ...ORDRE.map(k => [k, CATS[k].nom])]);
+  }
+  $("#filtres").onclick = e => {
+    const b = e.target.closest("[data-v]"); if (!b) return;
+    F[b.closest("[data-f]").dataset.f] = b.dataset.v; filtres(); tout();
+  };
+  const dansPeriode = t => F.periode === "saison" || (F.periode === "avant" ? t < S.vacances : t >= S.vacances);
+  const joursPeriode = () => S.meteo.filter(m => dansPeriode(m.d + 12 * 36e5));
+  const donnees = () => S.interventions.filter(x => dansPeriode(x.t) && (F.site === "tous" || x.site === F.site) && (F.cat === "tous" || x.cat === F.cat));
+
+  // ---------- Infobulle ----------
+  const tip = $("#tip");
+  document.addEventListener("pointermove", e => {
+    const el = e.target.closest("[data-tip]");
+    if (!el) { tip.classList.remove("on"); return; }
+    tip.textContent = "";
+    el.dataset.tip.split("\n").forEach((l, i) => { const d = document.createElement("div"); d.className = i ? "l" : "l1"; d.textContent = l; tip.appendChild(d); });
+    const w = tip.offsetWidth, h = tip.offsetHeight;
+    tip.style.left = Math.min(innerWidth - w - 8, Math.max(8, e.clientX - w / 2)) + "px";
+    tip.style.top = (e.clientY - h - 14 < 8 ? e.clientY + 18 : e.clientY - h - 14) + "px";
+    tip.classList.add("on");
+  });
+
+  const legende = (id, cats) => { $(id).innerHTML = cats.map(k => `<span><i style="background:${COUL[k]}"></i>${CATS[k].nom}</span>`).join(""); };
+  // Rectangle à extrémité arrondie (haut ou droite)
+  const bout = (x, y, w, h, r, sens) => {
+    r = Math.min(r, sens === "haut" ? w / 2 : h / 2, sens === "haut" ? h : w);
+    if (h <= 0 || w <= 0) return "";
+    return sens === "haut"
+      ? `M${x},${y + h}V${y + r}Q${x},${y} ${x + r},${y}H${x + w - r}Q${x + w},${y} ${x + w},${y + r}V${y + h}Z`
+      : `M${x},${y}H${x + w - r}Q${x + w},${y} ${x + w},${y + r}V${y + h - r}Q${x + w},${y + h} ${x + w - r},${y + h}H${x}Z`;
+  };
+  const largeur = el => Math.max(300, el.clientWidth);
+  const ticks = (max, n = 4) => { const pas = Math.max(1, Math.ceil(max / n)); const t = []; for (let v = 0; v <= max + pas - 1 && t.length <= n + 1; v += pas) t.push(v); return t; };
+
+  // ---------- Direct (signalements de cet appareil) ----------
+  let vus = new Set();
+  function direct() {
+    const l = Journal.lire().filter(e => e.type === "signal" || e.type === "appel" || e.type === "regle").slice(0, 12);
+    if (!l.length) { $("#direct").innerHTML = `<div class="vide-live">Scannez un badge, puis « Signaler un problème » sur le téléphone : le signalement apparaît ici avec la photo, l'heure et la météo du moment.</div>`; return; }
+    const premier = !vus.size;
+    $("#direct").innerHTML = l.map(e => {
+      const f = fiche(e.fiche), c = e.cat || (f && f.cat);
+      const titre = e.type === "signal" ? (e.note || (f ? f.titre : "Signalement")) : e.type === "appel" ? `Appel ${CONTACTS[e.contact] ? CONTACTS[e.contact].label : e.contact}` : `Réglé sur place · ${f ? f.titre : ""}`;
+      const ph = e.photo ? `<img src="${e.photo}" alt="">` : ico(e.type === "appel" ? "tel" : e.type === "regle" ? "ok" : c || "photo");
+      const nouveau = !premier && !vus.has(e.id);
+      return `<div class="live ${nouveau ? "nouveau" : ""}"><div class="ph" style="color:${COUL[c] || "var(--mut)"}">${ph}</div><div>
+        <b>${esc(titre)}</b><small>${esc(SITES[e.site] ? SITES[e.site].nom : "")} · ${fmtJH(e.t)}</small>
+        ${e.meteo ? `<span class="meteo">${deg(e.meteo.temp)} · ${esc(e.meteo.ciel)} · ${e.meteo.hum} %</span>` : `<span class="meteo">météo en cours…</span>`}</div></div>`;
+    }).join("");
+    l.forEach(e => vus.add(e.id));
+  }
+
+  // ---------- KPI ----------
+  function kpis(D) {
+    const regle = D.filter(x => x.regle).length, appels = D.length - regle;
+    const eco = Math.round(regle * PART_DEPLACEMENT) * COUT_DEPLACEMENT;
+    const k = (t, v, s, cls) => `<div class="kpi ${cls || ""}"><small>${t}</small><b>${v}</b><span>${s}</span></div>`;
+    $("#kpis").innerHTML =
+      k("Interventions", nf(D.length), "fiches utilisées sur le terrain") +
+      k("Réglées sans appel", D.length ? Math.round(100 * regle / D.length) + " %" : "–", `${nf(regle)} problèmes réglés par l'agent`, "fort") +
+      k("Appels passés", nf(appels), "astreinte, électricien, mairie") +
+      k("Économie estimée", nf(eco) + " €", `${Math.round(regle * PART_DEPLACEMENT)} déplacements évités × ${COUT_DEPLACEMENT} €`) +
+      k("Signalements photo", nf(D.filter(x => x.signal).length), "gardés pour la saison prochaine");
+  }
+
+  // ---------- Par jour (barres empilées) + température ----------
+  function parJour(D) {
+    const el = $("#gJours"), W = largeur(el), H = 210, m = { g: 30, d: 8, h: 8, b: 22 };
+    const J = joursPeriode(), n = J.length, bw = (W - m.g - m.d) / n;
+    const cats = ORDRE.filter(k => F.cat === "tous" || k === F.cat);
+    legende("#legJours", cats);
+    const pile = J.map(j => { const o = { j }; cats.forEach(k => o[k] = 0); D.forEach(x => { if (x.t >= j.d && x.t < j.d + JOUR && o[x.cat] !== undefined) o[x.cat]++; }); o.tot = cats.reduce((a, k) => a + o[k], 0); return o; });
+    const max = Math.max(4, ...pile.map(p => p.tot)), T = ticks(max), ymax = T[T.length - 1];
+    const y = v => m.h + (H - m.h - m.b) * (1 - v / ymax);
+    let s = T.map(v => `<line class="ax" x1="${m.g}" x2="${W - m.d}" y1="${y(v)}" y2="${y(v)}"/><text x="${m.g - 6}" y="${y(v) + 4}" text-anchor="end">${v}</text>`).join("");
+    pile.forEach((p, i) => {
+      const x = m.g + i * bw + 1, w = Math.max(2, bw - 2);
+      let base = 0;
+      const vis = cats.filter(k => p[k]);
+      vis.forEach((k, idx) => {
+        const y0 = y(base), y1 = y(base + p[k]), h = y0 - y1 - (idx ? 2 : 0);
+        s += idx === vis.length - 1 ? `<path d="${bout(x, y1, w, h, 4, "haut")}" fill="${COUL[k]}"/>` : `<rect x="${x}" y="${y1}" width="${w}" height="${Math.max(0, h)}" fill="${COUL[k]}"/>`;
+        base += p[k];
+      });
+      const d = new Date(p.j.d);
+      if (d.getDay() === 1 || i === 0) s += `<text x="${x + w / 2}" y="${H - 6}" text-anchor="middle">${fmtJ(p.j.d)}</text>`;
+      s += `<rect x="${m.g + i * bw}" y="${m.h}" width="${bw}" height="${H - m.h - m.b}" fill="transparent" data-tip="${esc([`${p.tot} intervention${p.tot > 1 ? "s" : ""}`, d.toLocaleDateString("fr-FR", { weekday: "long", day: "numeric", month: "long" }), ...cats.filter(k => p[k]).map(k => `${CATS[k].nom} : ${p[k]}`), `${deg(p.j.tmax)} max · ${p.j.ciel}`].join("\n"))}"/>`;
+    });
+    if (F.periode !== "avant") { const iv = J.findIndex(j => j.d >= S.vacances); if (iv >= 0) s += `<line x1="${m.g + iv * bw}" x2="${m.g + iv * bw}" y1="${m.h}" y2="${H - m.b}" stroke="rgba(255,255,255,.25)" stroke-dasharray="3 3"/><text x="${m.g + iv * bw + 5}" y="${m.h + 10}" style="fill:var(--txt)">Vacances</text>`; }
+    el.innerHTML = `<svg viewBox="0 0 ${W} ${H}" role="img" aria-label="Interventions par jour">${s}</svg>`;
+
+    // Température : même axe X, graphique à part (pas de double axe)
+    const et = $("#gTemp"), H2 = 90, tm = J.map(j => j.tmax), lo = Math.min(0, Math.floor(Math.min(...tm) / 5) * 5), hi = Math.ceil(Math.max(...tm) / 5) * 5;
+    const y2 = v => 8 + (H2 - 26) * (1 - (v - lo) / (hi - lo));
+    let t = [lo, (lo + hi) / 2, hi].map(v => `<line class="ax" x1="${m.g}" x2="${W - m.d}" y1="${y2(v)}" y2="${y2(v)}"/><text x="${m.g - 6}" y="${y2(v) + 4}" text-anchor="end">${v}°</text>`).join("");
+    t += `<line x1="${m.g}" x2="${W - m.d}" y1="${y2(10)}" y2="${y2(10)}" stroke="rgba(255,181,71,.45)" stroke-dasharray="4 4"/><text x="${W - m.d}" y="${y2(10) - 5}" text-anchor="end" style="fill:#ffc46b">seuil 10 °C</text>`;
+    const pts = J.map((j, i) => [m.g + i * bw + bw / 2, y2(j.tmax)]);
+    t += `<path d="M${pts.map(p => p.join(",")).join("L")}" fill="none" stroke="var(--ice)" stroke-width="2" stroke-linejoin="round"/>`;
+    J.forEach((j, i) => { t += `<rect x="${m.g + i * bw}" y="0" width="${bw}" height="${H2 - 14}" fill="transparent" data-tip="${esc(`${deg(j.tmax)} max\n${new Date(j.d).toLocaleDateString("fr-FR", { weekday: "long", day: "numeric", month: "long" })}\n${j.ciel} · humidité ${j.hum} %`)}"/>`; });
+    et.innerHTML = `<svg viewBox="0 0 ${W} ${H2}" role="img" aria-label="Température maximale">${t}</svg>`;
+
+    const pic = pile.reduce((a, b) => b.tot > a.tot ? b : a, pile[0]);
+    const chauds = J.filter(j => j.tmax >= 10).length;
+    $("#lecJours").innerHTML = pic ? `Jour le plus chargé : <b>${new Date(pic.j.d).toLocaleDateString("fr-FR", { weekday: "long", day: "numeric", month: "long" })}</b> (${pic.tot} interventions, ${deg(pic.j.tmax)}, ${pic.j.ciel.toLowerCase()}).${chauds ? ` Le redoux (${chauds} jour${chauds > 1 ? "s" : ""} au-dessus de 10 °C) concentre l'essentiel des problèmes de glace.` : ""}` : "";
+  }
+
+  // ---------- Glace molle selon la température ----------
+  function glace(D) {
+    const el = $("#gGlace"), W = largeur(el), H = 200, m = { g: 34, d: 10, h: 18, b: 34 };
+    const BINS = [["< 3 °C", -99, 3], ["3 à 6 °C", 3, 6], ["6 à 10 °C", 6, 10], ["≥ 10 °C", 10, 99]];
+    const J = joursPeriode();
+    const gm = S.interventions.filter(x => x.fiche === "glace-molle" && dansPeriode(x.t) && (F.site === "tous" || x.site === F.site));
+    const b = BINS.map(([lab, a, z]) => {
+      const js = J.filter(j => j.tmax >= a && j.tmax < z);
+      const n = gm.filter(x => js.some(j => x.t >= j.d && x.t < j.d + JOUR)).length;
+      return { lab, jours: js.length, n, moy: js.length ? n / js.length : 0 };
+    });
+    const max = Math.max(1, ...b.map(x => x.moy)), ymax = Math.ceil(max), y = v => m.h + (H - m.h - m.b) * (1 - v / ymax);
+    const bw = (W - m.g - m.d) / b.length, w = Math.min(70, bw * .55);
+    let s = [0, ymax / 2, ymax].map(v => `<line class="ax" x1="${m.g}" x2="${W - m.d}" y1="${y(v)}" y2="${y(v)}"/><text x="${m.g - 6}" y="${y(v) + 4}" text-anchor="end">${Math.round(v * 10) / 10}</text>`).join("");
+    b.forEach((x, i) => {
+      const cx = m.g + i * bw + bw / 2, h = y(0) - y(x.moy);
+      s += `<path d="${bout(cx - w / 2, y(x.moy), w, h, 4, "haut")}" fill="var(--froid)" data-tip="${esc(`${(Math.round(x.moy * 10) / 10).toLocaleString("fr-FR")} par jour\n${x.lab} · ${x.jours} jour${x.jours > 1 ? "s" : ""} · ${x.n} intervention${x.n > 1 ? "s" : ""}`)}"/>`;
+      s += `<text x="${cx}" y="${y(x.moy) - 6}" text-anchor="middle" style="fill:var(--txt);font-weight:800">${x.jours ? (Math.round(x.moy * 10) / 10).toLocaleString("fr-FR") : "–"}</text>`;
+      s += `<text x="${cx}" y="${H - 16}" text-anchor="middle">${x.lab}</text><text x="${cx}" y="${H - 3}" text-anchor="middle" style="fill:var(--dim);font-size:10px">${x.jours} j</text>`;
+    });
+    el.innerHTML = `<svg viewBox="0 0 ${W} ${H}" role="img" aria-label="Glace molle selon la température">${s}</svg>`;
+    const froid = (b[0].n + b[1].n) / Math.max(1, b[0].jours + b[1].jours), chaud = b[3].moy;
+    $("#lecGlace").innerHTML = b[3].jours ? `Au-dessus de <b>10 °C</b> : <b>${(Math.round(chaud * 10) / 10).toLocaleString("fr-FR")} interventions par jour</b>, contre ${(Math.round(froid * 10) / 10).toLocaleString("fr-FR")} sous 6 °C. Dès que la météo annonce un redoux, prévoir bâches, ombrage et une astreinte renforcée.` : "Pas de jour au-dessus de 10 °C sur cette période.";
+  }
+
+  // ---------- Carte de chaleur jour × heure ----------
+  function heat(D) {
+    const el = $("#gHeat"), W = largeur(el), JS = ["lun.", "mar.", "mer.", "jeu.", "ven.", "sam.", "dim."], HS = [9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20];
+    const m = { g: 36, h: 4, b: 20 }, cw = (W - m.g) / HS.length, ch = Math.min(26, cw), H = m.h + ch * 7 + m.b;
+    const g = JS.map(() => HS.map(() => 0));
+    D.forEach(x => { const d = new Date(x.t), r = (d.getDay() + 6) % 7, c = HS.indexOf(d.getHours()); if (c >= 0) g[r][c]++; });
+    const max = Math.max(1, ...g.flat());
+    // Rampe séquentielle bleue (sombre → clair)
+    const A = [18, 48, 90], B = [143, 216, 255], col = v => v ? `rgb(${A.map((a, i) => Math.round(a + (B[i] - a) * Math.pow(v / max, .8))).join(",")})` : "rgba(255,255,255,.035)";
+    let s = "";
+    g.forEach((row, r) => {
+      s += `<text x="${m.g - 6}" y="${m.h + r * ch + ch / 2 + 4}" text-anchor="end">${JS[r]}</text>`;
+      row.forEach((v, c) => { s += `<rect x="${m.g + c * cw + 1}" y="${m.h + r * ch + 1}" width="${cw - 2}" height="${ch - 2}" rx="3" fill="${col(v)}" data-tip="${esc(`${v} intervention${v > 1 ? "s" : ""}\n${JS[r]} entre ${HS[c]} h et ${HS[c] + 1} h`)}"/>`; });
+    });
+    HS.forEach((h, c) => { if (c % 2 === 0) s += `<text x="${m.g + c * cw + cw / 2}" y="${H - 5}" text-anchor="middle">${h} h</text>`; });
+    el.innerHTML = `<svg viewBox="0 0 ${W} ${H}" role="img" aria-label="Interventions selon le jour et l'heure">${s}</svg>
+      <div class="legende" style="margin:10px 0 0;align-items:center">moins <span style="display:inline-block;width:90px;height:8px;border-radius:4px;background:linear-gradient(90deg,rgb(18,48,90),rgb(143,216,255))"></span> plus</div>`;
+  }
+
+  // ---------- Barres horizontales ----------
+  function hbarres(el, lignes, cats, couleurs, total, tipLigne) {
+    const W = largeur(el), lab = Math.min(150, W * .32), bh = 26, gap = 14, H = lignes.length * (bh + gap);
+    const x = v => lab + (W - lab - 40) * v / total;
+    let s = "";
+    lignes.forEach((l, i) => {
+      const y0 = i * (bh + gap);
+      s += `<text x="0" y="${y0 + bh / 2 + 4}" style="fill:var(--txt);font-weight:700">${esc(l.nom)}</text>`;
+      let base = 0;
+      const vis = cats.filter(k => l[k]);
+      vis.forEach((k, idx) => {
+        const x0 = x(base) + (idx ? 2 : 0), w = x(base + l[k]) - x0;
+        s += idx === vis.length - 1 ? `<path d="${bout(x0, y0, w, bh, 4, "droite")}" fill="${couleurs[k]}" data-tip="${esc(tipLigne(l, k))}"/>` : `<rect x="${x0}" y="${y0}" width="${Math.max(0, w)}" height="${bh}" fill="${couleurs[k]}" data-tip="${esc(tipLigne(l, k))}"/>`;
+        base += l[k];
+      });
+      s += `<text x="${x(base) + 8}" y="${y0 + bh / 2 + 4}" style="fill:var(--txt);font-weight:800">${l.etiquette ?? base}</text>`;
+    });
+    el.innerHTML = `<svg viewBox="0 0 ${W} ${H}">${s}</svg>`;
+  }
+  function sites(D) {
+    const cats = ORDRE.filter(k => F.cat === "tous" || k === F.cat);
+    legende("#legSites", cats);
+    const L = Object.entries(SITES).filter(([k]) => F.site === "tous" || k === F.site).map(([k, s]) => { const o = { nom: s.nom }; cats.forEach(c => o[c] = D.filter(x => x.site === k && x.cat === c).length); return o; });
+    const max = Math.max(1, ...L.map(l => cats.reduce((a, c) => a + l[c], 0)));
+    hbarres($("#gSites"), L, cats, COUL, max, (l, k) => `${l[k]} intervention${l[k] > 1 ? "s" : ""}\n${l.nom} · ${CATS[k].nom}`);
+  }
+  function regle(D) {
+    const L = ORDRE.filter(k => F.cat === "tous" || k === F.cat).map(k => {
+      const d = D.filter(x => x.cat === k), ok = d.filter(x => x.regle).length;
+      return { nom: CATS[k].nom, ok, ap: d.length - ok, etiquette: d.length ? Math.round(100 * ok / d.length) + " %" : "–" };
+    }).filter(l => l.ok + l.ap);
+    const el = $("#gRegle");
+    if (!L.length) { el.innerHTML = `<p class="sous">Aucune intervention sur ce filtre.</p>`; return; }
+    // Barres à 100 % : chaque ligne ramenée à sa part
+    const N = L.map(l => { const t = l.ok + l.ap; return { ...l, okp: 100 * l.ok / t, app: 100 * l.ap / t, t }; });
+    hbarres(el, N.map(l => ({ nom: l.nom, okp: l.okp, app: l.app, etiquette: l.etiquette, l })), ["okp", "app"], { okp: "var(--ok)", app: "var(--appel)" }, 100,
+      (r, k) => k === "okp" ? `${r.l.ok} réglées sans appel\n${r.nom} · ${r.etiquette}` : `${r.l.ap} avec appel\n${r.nom}`);
+  }
+
+  // ---------- Recommandations ----------
+  function recos() {
+    const I = S.interventions;
+    const fu = I.filter(x => x.fiche === "fuite-glycol");
+    const gmC = I.filter(x => x.fiche === "glace-molle" && x.site === "corbis").length, gmV = I.filter(x => x.fiche === "glace-molle" && x.site === "marche-vosges").length;
+    const tpeC = I.filter(x => x.fiche === "tpe" && x.site === "corbis").length;
+    const son = I.filter(x => (x.fiche === "plus-de-son" || x.fiche === "xlr-speakon") && x.site === "marche-vosges").length;
+    const micro = I.filter(x => x.fiche === "micro-hf").length, mFroid = I.filter(x => x.fiche === "micro-hf" && x.meteo.temp < 3).length;
+    const pg = I.filter(x => x.fiche === "porte-givre"), pgH = pg.filter(x => new Date(x.t).getHours() < 11).length;
+    const R = [
+      ["froid", "Place d'Armes", "Remplacer le flexible du collecteur nord", `${fu.length} fuites de glycol au même endroit (${fu.map(x => fmtJ(x.t)).join(", ")}). Pièce à changer avant le montage.`],
+      ["froid", "Place Corbis", "Prévoir bâches et ombrage", `Site exposé plein sud : ${gmC} interventions « glace molle », contre ${gmV} au Marché des Vosges. Toutes ou presque au-dessus de 10 °C.`],
+      ["chalet", "Place Corbis", "Ajouter une borne Wi-Fi au chalet", `${tpeC} pannes de TPE, surtout « pas de réseau 4G ». Une borne Wi-Fi règle le problème.`],
+      ["son", "Marché des Vosges", "Réviser la sono avant la saison", `${son} pannes de son ou de câbles : matériel le plus sollicité des 3 sites.`],
+      ["son", "Tous les sites", "Stock de piles + chargeur au chaud", `${micro} pannes de micros HF, dont ${mFroid} par moins de 3 °C : le froid vide les piles.`],
+      ["chalet", "Tous les sites", "Silicone sur les joints chaque soir", `${pg.length} portes ou serrures gelées, ${pgH} à l'ouverture du matin.`],
+    ];
+    $("#recos").innerHTML = R.map(([c, ou, t, p]) => `<div class="reco" style="--c:${COUL[c]}"><div class="k">${esc(ou)}</div><b>${esc(t)}</b><p>${esc(p)}</p></div>`).join("");
+  }
+
+  // ---------- Galerie ----------
+  function galerie(D) {
+    const live = Journal.lire().filter(e => e.type === "signal").map(e => ({ ...e, live: true }));
+    const sim = D.filter(x => x.signal).slice().reverse();
+    const L = [...live, ...sim].slice(0, 16);
+    $("#galerie").innerHTML = L.map(x => {
+      const f = fiche(x.fiche), c = x.cat || (f && f.cat) || "froid";
+      return `<div class="ph-carte" style="--c:${COUL[c]}"><div class="img">${x.photo ? `<img src="${x.photo}" alt="">` : ico(c)}
+          ${x.meteo ? `<span class="meteo">${deg(x.meteo.temp)} · ${esc(x.meteo.ciel)}</span>` : ""}</div>
+        <div class="txt"><b>${esc(x.note || (f ? f.titre : "Signalement"))}</b><small>${x.live ? "● En direct · " : ""}${esc(SITES[x.site] ? SITES[x.site].nom : "")} · ${fmtJH(x.t)}</small></div></div>`;
+    }).join("") || `<p class="sous">Aucun signalement sur ce filtre.</p>`;
+  }
+
+  // ---------- Tableaux ----------
+  function tableaux(D) {
+    const par = {};
+    D.forEach(x => { (par[x.fiche] = par[x.fiche] || []).push(x); });
+    const L = Object.entries(par).map(([id, a]) => {
+      const f = fiche(id), ok = a.filter(x => x.regle).length, tm = a.reduce((s, x) => s + x.meteo.temp, 0) / a.length;
+      const st = {}; a.forEach(x => st[x.site] = (st[x.site] || 0) + 1);
+      const top = Object.entries(st).sort((p, q) => q[1] - p[1])[0][0];
+      return { f, n: a.length, ok: Math.round(100 * ok / a.length), tm, top };
+    }).sort((a, b) => b.n - a.n).slice(0, 8);
+    $("#tabFiches").innerHTML = `<table><thead><tr><th>Fiche</th><th class="num">Interv.</th><th>Réglé seul</th><th class="num">Temp. moy.</th><th>Surtout à</th></tr></thead><tbody>
+      ${L.map(l => `<tr><td><span class="pt" style="background:${COUL[l.f.cat]}"></span>${esc(l.f.titre)}</td><td class="num">${l.n}</td>
+        <td><span class="barre-mini" style="width:${Math.round(l.ok * .5)}px"></span>${l.ok} %</td><td class="num">${(Math.round(l.tm * 10) / 10).toLocaleString("fr-FR")} °C</td><td>${esc(SITES[l.top].nom)}</td></tr>`).join("")}
+      </tbody></table>`;
+    const live = Journal.lire().filter(e => e.type === "recherche").map(e => [e.q, 1]);
+    $("#vides").innerHTML = [...live, ...S.recherchesVides].map(([q, n]) => `<div class="rv"><b>« ${esc(q)} »</b><span>${n}×</span></div>`).join("");
+  }
+
+  function tout() {
+    const D = donnees();
+    kpis(D); parJour(D); glace(D); heat(D); sites(D); regle(D); galerie(D); tableaux(D);
+  }
+
+  filtres(); recos(); direct(); tout();
+  let rt; addEventListener("resize", () => { clearTimeout(rt); rt = setTimeout(tout, 150); });
+  // Rafraîchit le direct quand un signalement arrive (même appareil, autre onglet)
+  let dernier = JSON.stringify(Journal.lire().map(e => e.id + (e.meteo ? 1 : 0)));
+  setInterval(() => {
+    const now = JSON.stringify(Journal.lire().map(e => e.id + (e.meteo ? 1 : 0)));
+    if (now !== dernier) { dernier = now; direct(); galerie(donnees()); tableaux(donnees()); }
+  }, 2000);
+})();
+</script>
+</body>
+</html>
