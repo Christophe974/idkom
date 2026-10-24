@@ -1,0 +1,14 @@
+{
+  "name": "Synerglace · Assistance patinoire",
+  "short_name": "Synerglace",
+  "start_url": "/synerglace",
+  "scope": "/synerglace",
+  "display": "standalone",
+  "background_color": "#041225",
+  "theme_color": "#041225",
+  "lang": "fr",
+  "icons": [
+    { "src": "/synerglace/icon-192.png", "sizes": "192x192", "type": "image/png" },
+    { "src": "/synerglace/icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any maskable" }
+  ]
+}

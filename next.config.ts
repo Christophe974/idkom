@@ -55,6 +55,7 @@ const nextConfig: NextConfig = {
   },
   async rewrites() {
     return [
+      { source: "/synerglace", destination: "/synerglace.html" },
       {
         source: "/demo/:path*",
         destination: "https://ovh.idkom.fr/demo/:path*",
