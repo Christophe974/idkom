@@ -1,10 +1,10 @@
 // Démo Synerglace · contenu indicatif, à valider par Synerglace avant tout usage réel.
 
-// Numéros de la démo : les appels sonnent sur les téléphones de l'équipe iDkom.
+// Numéros de la démo : astreinte → Sébastien, électricien et mairie → Christophe.
 window.CONTACTS = {
-  astreinte: { label: "Astreinte Synerglace", qui: "24 h / 24", tel: "+33681686164" },
-  elec:      { label: "Électricien",          qui: "Dépannage du site", tel: "+33681686164" },
-  mairie:    { label: "Mairie",               qui: "Services techniques", tel: "+33681686164" },
+  astreinte: { label: "Astreinte Synerglace", qui: "24 h / 24", tel: "+33749807133" },
+  elec:      { label: "Électricien",          qui: "Dépannage du site", tel: "+33637754064" },
+  mairie:    { label: "Mairie",               qui: "Services techniques", tel: "+33637754064" },
   enedis:    { label: "Enedis dépannage",     qui: "Territoire de Belfort", tel: "+33972675090" },
 };
 
