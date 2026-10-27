@@ -1,9 +1,9 @@
 <!doctype html>
 <html lang="fr">
 <head>
-<meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="robots" content="noindex, nofollow">
+<meta charset="utf-8">
 <title>Stand KYK · JEC World 2027</title>
 <meta name="claude:viewport-fit-sides" content="cover">
 <style>
@@ -56,10 +56,11 @@
   <label for="rot"><input type="checkbox" id="rot" checked> Rotation</label>
   <label for="nuit"><input type="checkbox" id="nuit"> Hall sombre</label>
   <label for="lbl"><input type="checkbox" id="lbl" checked> Numéros</label>
+  <label for="cotes"><input type="checkbox" id="cotes" checked> Cotes</label>
 </div>
 
-<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/controls/OrbitControls.js"></script>
+<script src="/stand-kyk/three.min.js"></script>
+<script src="/stand-kyk/OrbitControls.js"></script>
 <script>
 // ---- Cotes en mètres, d'après le plan NOI PL_KYK20261002v1A (origine : angle arrière gauche ; x vers la droite, z vers l'allée)
 const W = 8, D = 3.5, FL = 0.04, H4 = 3.968, H25 = 2.48, T = 0.062;
@@ -252,6 +253,37 @@ function num(n, x, y, z) {
 }
 [[1, 1.2, .3, 3.0], [2, 4, .25, 3.85], [3, 2.0, 2.6, 1.9], [4, 1.6, 2.9, .45], [5, 4.4, 2.0, .5], [6, 5.6, 2.2, .25], [7, 6.25, 1.25, .3],
  [8, 7.75, 1.9, 2.6], [9, 6.3, 3.3, 3.35], [10, 2.9, 1.35, 3.1], [11, 6.1, 1.5, 1.6]].forEach(a => num(...a));
+
+// ---- Cotes (mm) : ligne, petits traits aux bouts, étiquette toujours lisible
+const dims = new THREE.Group(); scene.add(dims);
+const dimMat = new THREE.LineBasicMaterial({ color: 0xff2d55, depthTest: false, transparent: true });
+function dimLabel(txt, p) {
+  const t = canvasTex(256, 80, (g, w, h) => {
+    g.fillStyle = 'rgba(20,20,24,.86)'; const r = 18; g.beginPath(); g.moveTo(r, 4); g.arcTo(w - 4, 4, w - 4, h - 4, r); g.arcTo(w - 4, h - 4, 4, h - 4, r); g.arcTo(4, h - 4, 4, 4, r); g.arcTo(4, 4, w - 4, 4, r); g.fill();
+    g.fillStyle = '#fff'; g.font = '700 40px Arial, sans-serif'; g.textAlign = 'center'; g.textBaseline = 'middle'; g.fillText(txt, w / 2, h / 2 + 2);
+  });
+  const s = new THREE.Sprite(new THREE.SpriteMaterial({ map: t, depthTest: false })); s.scale.set(0.62, 0.194, 1); s.position.copy(p); s.renderOrder = 10; dims.add(s);
+}
+function dim(a, b, txt, tick = [0, 0.12, 0]) {
+  const A = new THREE.Vector3(...a), B = new THREE.Vector3(...b), K = new THREE.Vector3(...tick);
+  const pts = [A, B, A.clone().sub(K), A.clone().add(K), B.clone().sub(K), B.clone().add(K)];
+  const l = new THREE.LineSegments(new THREE.BufferGeometry().setFromPoints(pts), dimMat); l.renderOrder = 10; dims.add(l);
+  dimLabel(txt, A.clone().add(B).multiplyScalar(0.5).add(new THREE.Vector3(0, 0.13, 0)));
+}
+const zf = D + 0.45;
+dim([0, 0.02, zf], [W, 0.02, zf], '8 000', [0, 0, 0.12]);
+dim([0, 0.02, D + 0.2], [4.305, 0.02, D + 0.2], '4 305', [0, 0, 0.1]);
+dim([4.305, 0.02, D + 0.2], [W, 0.02, D + 0.2], '3 695', [0, 0, 0.1]);
+dim([W + 0.4, 0.02, 0], [W + 0.4, 0.02, D], '3 500', [0.12, 0, 0]);
+dim([-0.45, 0.02, 0], [-0.45, 0.02, 1.0], '1 000', [0.12, 0, 0]);
+dim([-0.45, 0.02, 1.0], [-0.45, 0.02, D], '2 500 ouvert', [0.12, 0, 0]);
+dim([DIAG[0][0] - 0.12, FL + H4 + 0.25, DIAG[0][1] + 0.4], [DIAG[1][0] - 0.12, FL + H4 + 0.25, DIAG[1][1] + 0.4], '≈ 4 500', [0, 0.1, 0]);
+dim([DIAG[1][0] + 0.25, 0, DIAG[1][1] + 0.08], [DIAG[1][0] + 0.25, FL + H4, DIAG[1][1] + 0.08], 'H 4 008', [0.1, 0, 0]);
+dim([W + 0.25, 0, D], [W + 0.25, FL + H25, D], 'H 2 520', [0.1, 0, 0]);
+dim([W + 0.25, FL + H25, D + 0.02], [W + 0.25, FL + H25 + 0.5, D + 0.02], '+ 500', [0.1, 0, 0]);
+dim([COUNTER.x - 0.75, 0, COUNTER.z + 0.1], [COUNTER.x - 0.75, FL + 1.0, COUNTER.z + 0.1], 'H 1 040', [0.1, 0, 0]);
+dim([4.305, 0.03, 0.08], [4.305, 0.03, 2.3], '2 300', [0.1, 0, 0]);
+document.getElementById('cotes').addEventListener('change', e => dims.visible = e.target.checked);
 
 // ---- Vues
 const V = {
