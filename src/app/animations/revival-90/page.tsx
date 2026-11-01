@@ -18,6 +18,9 @@ import { getHomepageData, getProjetBySlug, type Projet } from '@/lib/api';
 const PAGE_URL = 'https://www.idkom.fr/animations/revival-90';
 const ASSETS = 'https://olmcbqiojczhupspzedo.supabase.co/storage/v1/object/public/vitrine-assets/animations';
 const HERO_IMAGE = `${ASSETS}/revival-90-affiche.webp`;
+// Version « sans-date » du teaser (ni date ni lieu), 720p, faststart.
+const TEASER_VIDEO = `${ASSETS}/revival-90-teaser.mp4`;
+const TEASER_POSTER = `${ASSETS}/revival-90-teaser-poster.webp`;
 
 export const metadata: Metadata = {
   title: 'Soirée années 90 pour séminaire et entreprise : Revival 90',
@@ -256,6 +259,32 @@ export default async function Revival90Page() {
           </div>
         </section>
 
+        {/* Teaser */}
+        <section className="pb-20 px-6">
+          <div className="max-w-4xl mx-auto">
+            <div className="text-center mb-8">
+              <h2 className="text-3xl md:text-4xl font-bold text-white mb-4">
+                Le teaser <span className="gradient-text">de la veille</span>
+              </h2>
+              <p className="text-zinc-400 max-w-2xl mx-auto">
+                Trente secondes envoyées avec l&apos;inscription. Vos invités arrivent en sachant déjà qu&apos;ils vont jouer.
+              </p>
+            </div>
+            <div className="relative aspect-video rounded-3xl overflow-hidden border border-white/10 bg-black">
+              <video
+                className="absolute inset-0 w-full h-full"
+                controls
+                playsInline
+                preload="none"
+                poster={TEASER_POSTER}
+                aria-label="Teaser Revival 90 : un carton de souvenirs des années 90 qu'on n'aurait peut-être pas dû ouvrir"
+              >
+                <source src={TEASER_VIDEO} type="video/mp4" />
+              </video>
+            </div>
+          </div>
+        </section>
+
         {/* Pourquoi les années 90 */}
         <section className="py-20 px-6 border-y border-white/5 bg-zinc-900/30">
           <div className="max-w-7xl mx-auto">
@@ -487,6 +516,25 @@ export default async function Revival90Page() {
               name: faq.question,
               acceptedAnswer: { '@type': 'Answer', text: faq.answer },
             })),
+          }),
+        }}
+      />
+
+      {/* Teaser */}
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify({
+            '@context': 'https://schema.org',
+            '@type': 'VideoObject',
+            name: 'Revival 90 · le teaser de la soirée années 90',
+            description:
+              'Un carton de souvenirs, une cassette, une télé qui grésille : trente secondes envoyées aux invités la veille de la soirée Revival 90.',
+            thumbnailUrl: [TEASER_POSTER, HERO_IMAGE],
+            uploadDate: '2026-11-01',
+            duration: 'PT30S',
+            contentUrl: TEASER_VIDEO,
+            publisher: { '@id': 'https://www.idkom.fr/#localbusiness' },
           }),
         }}
       />
