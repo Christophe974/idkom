@@ -150,6 +150,7 @@ const themes = [
     icon: 'solar:cassette-linear',
     title: 'Revival 90',
     description: 'Les tubes, les jeux et les objets cultes des années 90, le temps d’une soirée.',
+    href: '/animations/revival-90',
   },
   {
     icon: 'solar:chat-square-like-linear',
