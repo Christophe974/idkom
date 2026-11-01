@@ -49,7 +49,7 @@ export default async function AnimationsPage() {
           {animations.map((anim, index) => (
             <Link
               prefetch={false}
-              key={anim.id}
+              key={anim.slug}
               href={`/animations/${anim.slug}`}
               className="group relative bento-card rounded-2xl overflow-hidden bg-zinc-900 border border-zinc-800 hover:border-zinc-700"
               style={{ animationDelay: `${index * 0.1}s` }}

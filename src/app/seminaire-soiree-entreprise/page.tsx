@@ -341,6 +341,26 @@ export default async function SeminaireSoireeEntreprisePage() {
                 </div>
               ))}
             </div>
+
+            <Link
+              prefetch={false}
+              href="/animations/pulse"
+              className="group mt-10 flex flex-col md:flex-row md:items-center gap-4 p-6 md:p-8 rounded-3xl bg-gradient-to-r from-[#ff2d55]/10 via-[#7928ca]/10 to-transparent border border-white/10 hover:border-[#ff2d55]/40 transition-colors"
+            >
+              <div className="w-14 h-14 rounded-2xl gradient-bg flex items-center justify-center flex-shrink-0">
+                <Icon icon="solar:gamepad-linear" className="text-white" width={28} />
+              </div>
+              <div className="flex-1">
+                <p className="text-xl font-semibold text-white">Le fil rouge de ces soirées : PULSE</p>
+                <p className="text-zinc-400 text-sm mt-1">
+                  Un seul jeu sur le téléphone de chacun, du badge d&apos;arrivée aux enchères, avec le classement en direct sur grand écran.
+                </p>
+              </div>
+              <span className="inline-flex items-center gap-2 text-sm text-zinc-300 group-hover:text-[#ff2d55] transition-colors">
+                Découvrir PULSE
+                <Icon icon="solar:arrow-right-linear" className="group-hover:translate-x-1 transition-transform" width={16} />
+              </span>
+            </Link>
           </div>
         </section>
 

@@ -70,6 +70,15 @@ export default async function Home() {
                 </Link>
               </div>
               <div className="grid grid-cols-2 gap-3">
+                <Link
+                  prefetch={false}
+                  href="/animations/pulse"
+                  className="group col-span-2 rounded-2xl border border-[#ff2d55]/30 bg-[#ff2d55]/[0.06] p-5 transition-all hover:border-[#ff2d55]/60 hover:bg-[#ff2d55]/10"
+                >
+                  <Icon icon="solar:gamepad-linear" className="text-[#ff2d55]" width={26} />
+                  <p className="mt-3 font-semibold text-white group-hover:text-[#ff2d55] transition-colors">PULSE, le jeu de toute la soirée</p>
+                  <p className="mt-1 text-sm text-zinc-400">Chacun joue sur son téléphone, jusqu&apos;aux enchères. Partout en France.</p>
+                </Link>
                 {[
                   { icon: 'solar:moon-stars-linear', label: 'Soirée à thème', href: '/animations/la-ruee-vers-l-or' },
                   { icon: 'solar:users-group-two-rounded-linear', label: 'Team building', href: '/animations/la-kermesse-2-0' },
