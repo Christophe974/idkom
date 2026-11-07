@@ -35,6 +35,28 @@
   .views button.on { background: var(--on); color: var(--onInk); border-color: var(--on); }
   .views button:focus-visible, .views label:focus-within { outline: 2px solid var(--acc); outline-offset: 2px; }
   @media (max-width: 720px) { .legend { display: none; } .views button, .views label { padding: 7px 10px; font-size: 12px; } }
+  /* Variante écran LED : sélecteur de mur + téléphone du commercial (télécommande de l'écran) */
+  .mode { display: flex; gap: 0; border: 1px solid var(--line); border-radius: 999px; overflow: hidden; background: var(--card); backdrop-filter: blur(10px); pointer-events: auto; align-self: flex-start; }
+  .mode button { font: inherit; font-size: 13px; border: 0; background: transparent; color: var(--ink); padding: 8px 13px; cursor: pointer; }
+  .mode button.on { background: var(--acc); color: #fff; }
+  .mode button:focus-visible { outline: 2px solid var(--acc); outline-offset: -2px; }
+  .phone { position: fixed; right: max(16px, env(safe-area-inset-right, 0px)); top: 50%; transform: translateY(-50%); width: 232px; padding: 14px 12px 16px; border-radius: 34px; background: #111114; border: 3px solid #2c2c31; box-shadow: 0 18px 50px rgba(0,0,0,.35); color: #f2f2f5; }
+  .phone::before { content: ""; display: block; width: 70px; height: 6px; margin: 0 auto 12px; border-radius: 6px; background: #2c2c31; }
+  .phone h3 { margin: 0; font-size: 13px; font-weight: 700; }
+  .phone p { margin: 2px 0 10px; font-size: 11px; color: #a2a2ab; }
+  .phone .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+  .phone .grid button { border: 2px solid transparent; border-radius: 12px; padding: 0; background: #1d1d22; color: #f2f2f5; cursor: pointer; overflow: hidden; text-align: left; font: inherit; }
+  .phone .grid button canvas { display: block; width: 100%; aspect-ratio: 9 / 5; }
+  .phone .grid button span { display: block; padding: 4px 6px 6px; font-size: 10.5px; line-height: 1.2; }
+  .phone .grid button.on { border-color: var(--acc); }
+  .phone .grid button:focus-visible { outline: 2px solid var(--acc); outline-offset: 2px; }
+  .phone .see { margin-top: 10px; width: 100%; font: inherit; font-size: 12px; padding: 8px; border-radius: 999px; border: 1px solid #3a3a40; background: transparent; color: #f2f2f5; cursor: pointer; }
+  .phone .sent { min-height: 16px; margin-top: 6px; font-size: 11px; color: #34c759; text-align: center; }
+  @media (max-width: 720px) {
+    .phone { top: auto; bottom: calc(168px + env(safe-area-inset-bottom, 0px)); transform: none; left: max(16px, env(safe-area-inset-left, 0px)); width: auto; border-radius: 20px; padding: 10px; }
+    .phone::before, .phone p, .phone .see { display: none; }
+    .phone .grid { grid-template-columns: repeat(5, minmax(84px, 1fr)); overflow-x: auto; }
+  }
 </style>
 </head>
 <body>
@@ -46,12 +68,23 @@
     <li>Plancher 40 mm + moquette</li><li>Bord biseauté PMR (allée)</li><li>Mur lumineux d'un seul tenant</li><li>Réserve</li>
     <li>Porte à code</li><li>Panneaux acoustiques</li><li>3 panneaux imprimés</li><li>Mur droit imprimé</li>
     <li>Enseigne-poutre courbe</li><li>Comptoir d'accueil</li><li>Tables hautes + tabourets</li></ol></div>
+  <div class="mode" role="group" aria-label="Version du mur principal">
+    <button type="button" id="m-tissu" data-m="tissu">Caisson tissu lumineux</button>
+    <button type="button" id="m-led" data-m="led" class="on">Écran LED</button>
+  </div>
+</div>
+<div class="phone" id="phone" aria-label="Téléphone du commercial">
+  <h3>Le téléphone du commercial</h3>
+  <p>Touchez une image : elle passe aussitôt sur l'écran géant du stand.</p>
+  <div class="grid" id="contents"></div>
+  <button type="button" class="see" id="see">Voir l'écran</button>
+  <div class="sent" id="sent" aria-live="polite"></div>
 </div>
 <div class="views" id="views">
   <button type="button" id="v-p1" data-v="p1" class="on">Avant gauche</button>
   <button type="button" id="v-allee" data-v="allee">Depuis l'allée</button>
   <button type="button" id="v-salon" data-v="salon">Coin salon</button>
-  <button type="button" id="v-mur" data-v="mur">Mur lumineux</button>
+  <button type="button" id="v-mur" data-v="mur">Mur principal</button>
   <button type="button" id="v-dessus" data-v="dessus">Dessus</button>
   <label for="rot"><input type="checkbox" id="rot" checked> Rotation</label>
   <label for="nuit"><input type="checkbox" id="nuit"> Hall sombre</label>
@@ -203,6 +236,86 @@ wall([W, 0], [W, D], H25, T, mat({ map: sideTex, roughness: .7 }), black);
 const litMat = new THREE.MeshBasicMaterial({ map: litTex, color: 0xd8d8de });
 const litWall = wall(DIAG[0], DIAG[1], H4, 0.14, litMat, black);
 const litLight = new THREE.PointLight(0xdfe6ff, 0.6, 7, 2); litLight.position.set(2.3, 2.2, 2.6); scene.add(litLight);
+
+// 3 bis · variante ÉCRAN LED beMatrix : 9 × 5 dalles LEDskin de 496 mm (4,46 × 2,48 m) sur une base beMatrix de 1 488
+const LED = { cols: 9, rows: 5, tile: 0.496, base: 1.488 };
+const ledW = LED.cols * LED.tile, ledH = LED.rows * LED.tile;
+const ledGroup = new THREE.Group(); scene.add(ledGroup);
+{
+  const [p, q] = DIAG, dx = q[0] - p[0], dz = q[1] - p[1];
+  const baseTex = canvasTex(1792, 600, (g, w, h) => { carbon(g, w, h, 10, 1.0); kykLogo(g, 60, 150, 150); g.fillStyle = '#c9c9d0'; g.font = '400 54px Arial'; g.fillText('Carbonization & Graphitization Furnace', 560, 330); });
+  const base = wall(p, q, LED.base, T, mat({ map: baseTex, roughness: .7 }), black); scene.remove(base); ledGroup.add(base);
+  const back = wall(p, q, H4 - LED.base, 0.07, black, black, FL + LED.base); scene.remove(back); ledGroup.add(back);   // dos noir de l'écran
+  back.visible = true;
+}
+const scr = document.createElement('canvas'); scr.width = 1440; scr.height = 800;
+const scrCtx = scr.getContext('2d');
+const scrTex = new THREE.CanvasTexture(scr); scrTex.encoding = THREE.sRGBEncoding; scrTex.anisotropy = maxAniso;
+const screenMesh = new THREE.Mesh(new THREE.PlaneGeometry(ledW, ledH), new THREE.MeshBasicMaterial({ map: scrTex, toneMapped: false }));
+{
+  const [p, q] = DIAG, dx = q[0] - p[0], dz = q[1] - p[1], L = Math.hypot(dx, dz);
+  const nx = -dz / L, nz = dx / L;                                  // normale côté allée
+  screenMesh.position.set((p[0] + q[0]) / 2 + nx * 0.04, FL + LED.base + ledH / 2, (p[1] + q[1]) / 2 + nz * 0.04);
+  screenMesh.rotation.y = -Math.atan2(dz, dx);
+  ledGroup.add(screenMesh);
+}
+const ledLight = new THREE.PointLight(0xffffff, 0.9, 8, 2); ledLight.position.set(2.0, 2.6, 2.9); ledGroup.add(ledLight);
+
+// Contenus que le commercial envoie depuis son téléphone (images fixes ou « vidéos » animées)
+function fit(g, w, h) { g.save(); g.scale(w / 1440, h / 800); }
+const CONTENTS = [
+  { name: 'Accueil', draw(g, w, h) { fit(g, w, h); carbon(g, 1440, 800, 12, 1.4); kykLogo(g, 90, 110, 200);
+      g.fillStyle = '#fff'; g.font = '700 92px Arial'; g.fillText('Welcome to our booth', 90, 560); g.fillStyle = '#ff9f45'; g.font = '600 52px Arial'; g.fillText('JEC World 2027 · Paris Nord Villepinte', 90, 650); g.restore(); } },
+  { name: 'Four OxynonCAB', draw(g, w, h) { fit(g, w, h); const gr = g.createLinearGradient(0, 0, 0, 800); gr.addColorStop(0, '#20242b'); gr.addColorStop(1, '#0c0d10'); g.fillStyle = gr; g.fillRect(0, 0, 1440, 800);
+      machine(g, 120, 210, 760, 360, 0); g.fillStyle = '#fff'; g.font = '700 66px Arial'; g.fillText('OxynonCAB', 920, 260); g.fillStyle = '#c9c9d0'; g.font = '400 36px Arial';
+      ['Roller hearth', 'aluminium brazing furnace', '', 'Continuous · Nitrogen atmosphere', 'Up to 650 °C'].forEach((s, i) => g.fillText(s, 920, 330 + i * 52)); g.restore(); } },
+  { name: 'Vidéo usine', video: true, draw(g, w, h, t = 0) { fit(g, w, h);
+      const k = (Math.sin(t * 1.3) + 1) / 2, gr = g.createRadialGradient(720, 520, 40, 720, 520, 900);
+      gr.addColorStop(0, `rgb(255,${150 + 60 * k | 0},40)`); gr.addColorStop(.35, '#a8360f'); gr.addColorStop(1, '#120604'); g.fillStyle = gr; g.fillRect(0, 0, 1440, 800);
+      g.fillStyle = 'rgba(0,0,0,.55)'; g.fillRect(0, 610, 1440, 190); g.fillRect(300, 420, 840, 120);
+      for (let i = 0; i < 70; i++) { const s = (i * 97.3 + t * 160) % 800; g.fillStyle = `rgba(255,${200 + (i % 50)},120,${.4 + (i % 5) / 10})`; g.fillRect((i * 211) % 1440, 800 - s, 3, 3); }
+      g.fillStyle = '#fff'; g.font = '700 70px Arial'; g.fillText('Inside our factory', 80, 700); g.font = '400 34px Arial'; g.fillStyle = '#ffd9b8'; g.fillText('▶ vidéo · Graphitization line, 2 800 °C', 80, 760); g.restore(); } },
+  { name: 'Fibre carbone', video: true, draw(g, w, h, t = 0) { fit(g, w, h); carbon(g, 1440, 800, 16, 1.3);
+      const x = ((t * 260) % 2200) - 500, sw = g.createLinearGradient(x, 0, x + 500, 0); sw.addColorStop(0, 'rgba(255,255,255,0)'); sw.addColorStop(.5, 'rgba(255,255,255,.35)'); sw.addColorStop(1, 'rgba(255,255,255,0)');
+      g.fillStyle = sw; g.fillRect(0, 0, 1440, 800); g.fillStyle = '#fff'; g.font = '700 96px Arial'; g.fillText('Carbonization &', 90, 330); g.fillText('Graphitization Furnace', 90, 450);
+      g.fillStyle = '#c9c9d0'; g.font = '400 50px Arial'; g.fillText('Designed for Next-Generation Materials', 90, 540); g.restore(); } },
+  { name: 'Démo 14 h', draw(g, w, h) { fit(g, w, h); g.fillStyle = '#ff2d55'; g.fillRect(0, 0, 1440, 800); g.fillStyle = '#fff'; g.font = '900 230px Arial'; g.fillText('14:00', 90, 360);
+      g.font = '700 74px Arial'; g.fillText('Live presentation', 90, 500); g.font = '400 46px Arial'; g.fillText('Meet our engineers at the booth', 90, 580); kykLogo(g, 1080, 590, 110, '#fff'); g.restore(); } },
+];
+let cur = 0, prev = -1, fadeAt = 0;
+function paintScreen(now) {
+  const t = now / 1000, k = Math.min(1, (now - fadeAt) / 450);
+  scrCtx.globalAlpha = 1;
+  if (prev >= 0 && k < 1) { CONTENTS[prev].draw(scrCtx, 1440, 800, t); scrCtx.globalAlpha = k; }
+  CONTENTS[cur].draw(scrCtx, 1440, 800, t); scrCtx.globalAlpha = 1;
+  scrCtx.strokeStyle = 'rgba(0,0,0,.45)'; scrCtx.lineWidth = 2; scrCtx.beginPath();   // joints des dalles
+  for (let i = 1; i < LED.cols; i++) { const x = i * 1440 / LED.cols; scrCtx.moveTo(x, 0); scrCtx.lineTo(x, 800); }
+  for (let j = 1; j < LED.rows; j++) { const y = j * 800 / LED.rows; scrCtx.moveTo(0, y); scrCtx.lineTo(1440, y); }
+  scrCtx.stroke(); scrTex.needsUpdate = true;
+}
+const grid = document.getElementById('contents'), sent = document.getElementById('sent');
+CONTENTS.forEach((c, i) => {
+  const b = document.createElement('button'); b.type = 'button'; b.id = 'c-' + i; b.setAttribute('aria-label', 'Afficher « ' + c.name + ' » sur l’écran');
+  const cv = document.createElement('canvas'); cv.width = 216; cv.height = 120; c.draw(cv.getContext('2d'), 216, 120, 1.2);
+  const s = document.createElement('span'); s.textContent = (c.video ? '▶ ' : '') + c.name; b.append(cv, s);
+  b.addEventListener('click', () => send(i)); grid.append(b);
+});
+let sentTimer;
+function send(i) {
+  if (i !== cur) { prev = cur; cur = i; fadeAt = performance.now(); }
+  grid.querySelectorAll('button').forEach((b, k) => b.classList.toggle('on', k === cur));
+  sent.textContent = '✓ « ' + CONTENTS[i].name + ' » affiché sur l’écran'; clearTimeout(sentTimer); sentTimer = setTimeout(() => sent.textContent = '', 2200);
+}
+addEventListener('keydown', (e) => { const n = Number(e.key); if (mode === 'led' && n >= 1 && n <= CONTENTS.length) send(n - 1); });
+let mode = 'led';
+function setMode(m) {
+  mode = m; ledGroup.visible = m === 'led'; litWall.visible = m === 'tissu';
+  document.getElementById('phone').hidden = m !== 'led';
+  document.querySelectorAll('.mode button').forEach(b => b.classList.toggle('on', b.dataset.m === m));
+  document.querySelector('.legend li:nth-child(3)').textContent = m === 'led' ? 'Écran LED 9 × 5 dalles' : 'Mur lumineux d’un seul tenant';
+}
+document.querySelectorAll('.mode button').forEach(b => b.addEventListener('click', () => setMode(b.dataset.m)));
+send(0); setMode('led');
 // 9 · enseigne-poutre courbe (500 mm, sous-face à 2,52 m), posée sur la tête du mur droit et le bout du mur lumineux
 {
   const y0 = FL + H25, h = 0.5, th0 = Math.PI / 2 - ARC.a0 - ARC.span;
@@ -296,7 +409,7 @@ const V = {
   p1:     { p: [-3.6, 4.2, 10.2], t: [3.9, 1.4, 1.6] },
   allee:  { p: [4.0, 1.75, 11.0], t: [4.0, 1.5, 1.5] },
   salon:  { p: [5.0, 1.65, 6.4],  t: [6.2, 1.2, 0.6] },
-  mur:    { p: [0.4, 1.75, 6.8],  t: [2.15, 1.9, 1.65] },
+  mur:    { p: [0.2, 2.0, 8.6],   t: [2.6, 2.2, 1.65] },
   dessus: { p: [4.0, 13.5, 4.6],  t: [4.0, 0, 1.75] },
 };
 let tween = null;
@@ -320,6 +433,7 @@ function ambiance() {
   hall.material.color.set(night ? 0x3a3b3f : 0x8f9095); litLight.intensity = night ? 1.2 : 0.6;
 }
 document.getElementById('nuit').addEventListener('change', ambiance); ambiance();
+document.getElementById('see').addEventListener('click', () => { go('mur'); rot.checked = false; controls.autoRotate = false; });
 camera.position.set(...V.p1.p); controls.target.set(...V.p1.t);
 
 function resize() { const w = innerWidth, h = innerHeight; renderer.setSize(w, h, false); camera.aspect = w / h; camera.updateProjectionMatrix(); }
@@ -330,6 +444,7 @@ addEventListener('resize', resize); resize();
     camera.position.lerpVectors(tween.p0, tween.p1, e); controls.target.lerpVectors(tween.t0, tween.t1, e);
     if (k === 1) tween = null;
   }
+  if (mode === 'led') paintScreen(now);
   controls.update(); renderer.render(scene, camera); requestAnimationFrame(loop);
 })(performance.now());
 </script>
