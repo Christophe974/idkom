@@ -57,8 +57,9 @@ export const metadata: Metadata = {
 
 export const revalidate = 3600;
 
-// Autres soirées jouées avec PULSE, en attendant une réalisation Revival 90.
+// La soirée Revival 90 d'Orange (3 nov. 2026), puis d'autres soirées jouées avec PULSE.
 const PROJECT_SLUGS = [
+  'revival-90-seminaire-orange-domaine-les-12-ponts',
   'la-ruee-vers-l-or-soiree-western-swapn-domaine-des-12-ponts',
   'blind-test-geant-grand-place-grenoble-oz-marketing',
 ];
@@ -400,16 +401,16 @@ export default async function Revival90Page() {
           </div>
         </section>
 
-        {/* Autres soirées */}
+        {/* La soirée Orange et les autres */}
         {projets.length > 0 && (
           <section className="py-24 px-6 bg-zinc-900/30">
             <div className="max-w-7xl mx-auto">
               <div className="flex flex-col md:flex-row md:items-end justify-between mb-12 gap-4">
                 <div>
                   <h2 className="text-3xl md:text-4xl font-bold text-white">
-                    D&apos;autres soirées <span className="gradient-text">jouées avec PULSE</span>
+                    Revival 90 chez Orange, <span className="gradient-text">et d&apos;autres soirées PULSE</span>
                   </h2>
-                  <p className="text-zinc-500 mt-2">Le même jeu, un autre décor : ce qui s&apos;y est passé.</p>
+                  <p className="text-zinc-500 mt-2">La soirée telle qu&apos;elle s&apos;est jouée, puis le même jeu dans un autre décor.</p>
                 </div>
                 <Link
                   prefetch={false}
@@ -420,7 +421,7 @@ export default async function Revival90Page() {
                   <Icon icon="solar:arrow-right-linear" className="group-hover:translate-x-1 transition-transform" width={16} />
                 </Link>
               </div>
-              <div className="grid md:grid-cols-2 gap-6 max-w-3xl">
+              <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
                 {projets.map((projet, index) => (
                   <ProjetCard key={projet.slug} projet={projet} index={index} />
                 ))}

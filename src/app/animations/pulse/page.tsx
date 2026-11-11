@@ -58,6 +58,7 @@ export const metadata: Metadata = {
 export const revalidate = 3600;
 
 const PROJECT_SLUGS = [
+  'revival-90-seminaire-orange-domaine-les-12-ponts',
   'la-ruee-vers-l-or-soiree-western-swapn-domaine-des-12-ponts',
   'blind-test-geant-grand-place-grenoble-oz-marketing',
   'ag-credit-mutuel-audincourt-quiz-antifraude-live',
@@ -505,7 +506,7 @@ export default async function PulsePage() {
                   <Icon icon="solar:arrow-right-linear" className="group-hover:translate-x-1 transition-transform" width={16} />
                 </Link>
               </div>
-              <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
+              <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
                 {projets.map((projet, index) => (
                   <ProjetCard key={projet.slug} projet={projet} index={index} />
                 ))}

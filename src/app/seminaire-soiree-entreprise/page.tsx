@@ -60,6 +60,7 @@ export const revalidate = 3600;
 
 // On montre la soirée du client, pas une liste de logos.
 const EVENT_PROJECT_SLUGS = [
+  'revival-90-seminaire-orange-domaine-les-12-ponts',
   'la-ruee-vers-l-or-soiree-western-swapn-domaine-des-12-ponts',
   'ag-credit-mutuel-belfort-centre-kinepolis-saynetes-quiz-bar-a-goodies',
   'operation-code-wurtemberg-escape-game-montbeliard',
@@ -456,7 +457,7 @@ export default async function SeminaireSoireeEntreprisePage() {
                   <Icon icon="solar:arrow-right-linear" className="group-hover:translate-x-1 transition-transform" width={16} />
                 </Link>
               </div>
-              <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
+              <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
                 {projets.map((projet, index) => (
                   <ProjetCard key={projet.slug} projet={projet} index={index} />
                 ))}
