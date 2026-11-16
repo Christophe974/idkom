@@ -14,17 +14,22 @@ import { getHomepageData, getProjetBySlug, type Projet } from '@/lib/api';
 // « animation entreprise besançon », « team building belfort », « animation d'entreprise
 // mulhouse », « agence evenementiel besancon », « soirée d'entreprise montbéliard »…
 // Les pages villes et l'accueil pointent ici.
+// 16 nov. 2026 : retitrée au national (cap du 1er nov.), les villes du coin restent dans
+// la description, la FAQ et le texte pour garder les recherches locales.
 
 const PAGE_URL = 'https://www.idkom.fr/seminaire-soiree-entreprise';
 const HERO_IMAGE =
   'https://olmcbqiojczhupspzedo.supabase.co/storage/v1/object/public/vitrine-assets/projets/ruee-vers-l-or-swapn-roulette-croupier.webp';
 
 export const metadata: Metadata = {
-  title: "Animation de séminaire et soirée d'entreprise en Franche-Comté",
+  title: "Animation de séminaire et soirée d'entreprise, partout en France",
   description:
-    "Soirées à thème, team building, quiz en direct, blind test, assemblées générales : iDkom anime vos séminaires et soirées d'entreprise à Montbéliard, Belfort, Besançon et Mulhouse. Matériel, écrans et animateurs fournis.",
+    "Soirées à thème, team building, quiz en direct, blind test, assemblées générales : iDkom anime vos séminaires et soirées d'entreprise partout en France, et chez nous à Montbéliard, Belfort, Besançon et Mulhouse. Écrans, son, jeux et animateurs fournis.",
   keywords: [
     'animation séminaire entreprise',
+    "animation soirée d'entreprise",
+    'animation séminaire france',
+    'séminaire team building',
     "soirée d'entreprise montbéliard",
     "soirée d'entreprise belfort",
     'animation entreprise besançon',
@@ -40,9 +45,9 @@ export const metadata: Metadata = {
     languages: { fr: PAGE_URL },
   },
   openGraph: {
-    title: "Animation de séminaire et soirée d'entreprise en Franche-Comté | iDkom",
+    title: "Animation de séminaire et soirée d'entreprise, partout en France | iDkom",
     description:
-      "Soirées à thème, team building, quiz en direct, assemblées générales : vos équipes jouent ensemble, on s'occupe du reste. Montbéliard, Belfort, Besançon, Mulhouse.",
+      "Soirées à thème, team building, quiz en direct, assemblées générales : vos équipes jouent ensemble, on s'occupe du reste. On vient chez vous, partout en France.",
     url: PAGE_URL,
     siteName: 'iDkom',
     locale: 'fr_FR',
@@ -51,8 +56,8 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: 'summary_large_image',
-    title: "Animation de séminaire et soirée d'entreprise en Franche-Comté | iDkom",
-    description: 'Soirées à thème, team building, quiz en direct, assemblées générales. Montbéliard, Belfort, Besançon, Mulhouse.',
+    title: "Animation de séminaire et soirée d'entreprise, partout en France | iDkom",
+    description: 'Soirées à thème, team building, quiz en direct, assemblées générales. On vient chez vous, partout en France.',
   },
 };
 
@@ -169,9 +174,9 @@ const faqs = [
       "De 20 à plusieurs centaines. Le blind test de Grand'Place à Grenoble a réuni 151 joueurs, l'assemblée générale du Crédit Mutuel d'Audincourt 113 joueurs connectés, la soirée western de SWAPN 53 participants. Chacun joue sur son propre téléphone : rien à installer.",
   },
   {
-    question: "Intervenez-vous à Besançon, Belfort, Mulhouse ?",
+    question: 'Intervenez-vous partout en France ?',
     answer:
-      "Oui. Notre atelier est à Brevilliers, entre Belfort et Montbéliard : nous sommes à 15 minutes de Belfort et Montbéliard, 45 minutes de Mulhouse, une heure de Besançon. Nous allons aussi partout en France quand l'événement l'exige.",
+      "Oui. Notre atelier est à Brevilliers, entre Belfort et Montbéliard : 15 minutes de Belfort et Montbéliard, 45 minutes de Mulhouse, une heure de Besançon. Pour le reste de la France, on arrive avec les jeux, les écrans et les animateurs : nous avons déjà animé à Grenoble et à Caen.",
   },
   {
     question: "Faut-il prévoir le matériel, l'écran, le son ?",
@@ -213,7 +218,7 @@ export default async function SeminaireSoireeEntreprisePage() {
               <div className="animate-fade-in-up">
                 <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-[#ff2d55]/10 border border-[#ff2d55]/20 text-sm text-[#ff2d55] mb-6">
                   <Icon icon="solar:confetti-linear" width={18} />
-                  Montbéliard · Belfort · Besançon · Mulhouse
+                  Partout en France · depuis Montbéliard
                 </div>
                 <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold text-white leading-tight mb-6">
                   Animation de séminaire
@@ -516,7 +521,7 @@ export default async function SeminaireSoireeEntreprisePage() {
         <section className="py-24 px-6 border-t border-white/5">
           <div className="max-w-4xl mx-auto text-center">
             <h2 className="text-3xl md:text-4xl font-bold text-white mb-6">
-              Un séminaire à <span className="gradient-text">Besançon</span>, une soirée à <span className="gradient-text">Belfort</span> ?
+              Un séminaire à <span className="gradient-text">Besançon</span>, une soirée à <span className="gradient-text">Lyon</span> ?
             </h2>
             <p className="text-zinc-400 mb-8 max-w-2xl mx-auto">
               Dites-nous combien vous serez, où et quand. On revient avec un déroulé et un prix.
@@ -583,11 +588,12 @@ export default async function SeminaireSoireeEntreprisePage() {
             '@type': 'Service',
             name: "Animation de séminaire et de soirée d'entreprise",
             description:
-              "Soirées à thème, team building, blind test, quiz en direct, escape game et assemblées générales animées, avec écrans, son, jeux et animateurs, à Montbéliard, Belfort, Besançon, Mulhouse et en France.",
+              "Soirées à thème, team building, blind test, quiz en direct, escape game et assemblées générales animées, avec écrans, son, jeux et animateurs, partout en France depuis notre atelier entre Montbéliard et Belfort.",
             serviceType: "Animation d'événements d'entreprise",
             url: PAGE_URL,
             provider: { '@id': 'https://www.idkom.fr/#localbusiness' },
             areaServed: [
+              { '@type': 'Country', name: 'France' },
               { '@type': 'City', name: 'Montbéliard' },
               { '@type': 'City', name: 'Belfort' },
               { '@type': 'City', name: 'Besançon' },
