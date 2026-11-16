@@ -13,7 +13,13 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     },
     {
       url: `${BASE_URL}/seminaire-soiree-entreprise`,
-      lastModified: new Date("2026-10-10"),
+      lastModified: new Date("2026-11-16"),
+      changeFrequency: "weekly",
+      priority: 1,
+    },
+    {
+      url: `${BASE_URL}/team-building`,
+      lastModified: new Date("2026-11-16"),
       changeFrequency: "weekly",
       priority: 1,
     },

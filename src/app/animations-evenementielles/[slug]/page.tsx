@@ -264,14 +264,24 @@ export default async function CityPage({ params }: PageProps) {
               Soirée à thème, team building, blind test, quiz en direct pour une assemblée générale :
               on écrit le déroulé, on apporte les écrans, le son et les jeux, et on anime jusqu&apos;au bout.
             </p>
-            <Link
-              prefetch={false}
-              href="/seminaire-soiree-entreprise"
-              className="inline-flex items-center gap-2 px-6 py-3 rounded-full gradient-bg font-medium text-white hover:shadow-lg hover:shadow-[#7928ca]/25 transition-all"
-            >
-              Animation de séminaire et soirée d&apos;entreprise
-              <Icon icon="solar:arrow-right-linear" width={18} />
-            </Link>
+            <div className="flex flex-wrap justify-center gap-3">
+              <Link
+                prefetch={false}
+                href="/seminaire-soiree-entreprise"
+                className="inline-flex items-center gap-2 px-6 py-3 rounded-full gradient-bg font-medium text-white hover:shadow-lg hover:shadow-[#7928ca]/25 transition-all"
+              >
+                Animation de séminaire et soirée d&apos;entreprise
+                <Icon icon="solar:arrow-right-linear" width={18} />
+              </Link>
+              <Link
+                prefetch={false}
+                href="/team-building"
+                className="inline-flex items-center gap-2 px-6 py-3 rounded-full bg-white/5 border border-white/10 font-medium text-white hover:bg-white/10 transition-all"
+              >
+                Team building à {city.city_name}
+                <Icon icon="solar:arrow-right-linear" width={18} />
+              </Link>
+            </div>
           </div>
         </section>
 

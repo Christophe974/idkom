@@ -47,7 +47,7 @@ export const metadata: Metadata = {
     siteName: 'iDkom',
     locale: 'fr_FR',
     type: 'website',
-    images: [{ url: HERO_IMAGE, width: 1200, height: 630, alt: "Table de roulette pendant la soirée western d'un séminaire au Domaine des 12 Ponts" }],
+    images: [{ url: HERO_IMAGE, width: 1200, height: 630, alt: "Table de roulette pendant la soirée western d'un séminaire au Domaine les 12 Ponts" }],
   },
   twitter: {
     card: 'summary_large_image',
@@ -76,7 +76,7 @@ const formats = [
     icon: 'solar:moon-stars-linear',
     title: 'La soirée à thème',
     description:
-      "Western, casino, années 90 : un décor, des tables de jeu, une monnaie sur le téléphone de chacun et une vente aux enchères pour finir. 53 cowboys l'ont vécue au Domaine des 12 Ponts.",
+      "Western, casino, années 90 : un décor, des tables de jeu, une monnaie sur le téléphone de chacun et une vente aux enchères pour finir. 53 cowboys l'ont vécue au Domaine les 12 Ponts.",
     href: '/animations/la-ruee-vers-l-or',
     linkLabel: "La Ruée vers l'Or",
     color: '#f59e0b',
@@ -86,8 +86,8 @@ const formats = [
     title: 'Le team building',
     description:
       'Des équipes mélangées, des défis courts, un classement qui bouge sur grand écran. Les services qui ne se parlent jamais finissent par se tutoyer.',
-    href: '/animations/la-kermesse-2-0',
-    linkLabel: 'La Kermesse 2.0',
+    href: '/team-building',
+    linkLabel: 'Le team building',
     color: '#22c55e',
   },
   {
@@ -147,7 +147,7 @@ const steps = [
 ];
 
 const venues = [
-  { name: 'Domaine des 12 Ponts', city: 'Pont-sur-l’Ognon (70)', detail: 'Séminaires de deux jours, soirées au vert' },
+  { name: 'Domaine les 12 Ponts', city: 'Pont-sur-l’Ognon (70)', detail: 'Séminaires de deux jours, soirées au vert' },
   { name: "L'Axone", city: 'Montbéliard', detail: 'Grandes soirées et anniversaires d’entreprise' },
   { name: 'Kinépolis', city: 'Belfort', detail: 'Assemblées générales sur grand écran' },
   { name: 'Atria', city: 'Belfort', detail: 'Conventions et congrès' },
@@ -255,7 +255,7 @@ export default async function SeminaireSoireeEntreprisePage() {
                 <div className="aspect-[4/3] rounded-3xl bg-gradient-to-br from-zinc-800/50 to-zinc-900/50 border border-white/10 overflow-hidden relative">
                   <Image
                     src={HERO_IMAGE}
-                    alt="Table de roulette pendant la soirée western « La Ruée vers l'Or », séminaire SWAPN au Domaine des 12 Ponts"
+                    alt="Table de roulette pendant la soirée western « La Ruée vers l'Or », séminaire SWAPN au Domaine les 12 Ponts"
                     fill
                     className="object-cover"
                     priority
@@ -471,7 +471,7 @@ export default async function SeminaireSoireeEntreprisePage() {
           <div className="max-w-5xl mx-auto rounded-3xl bg-gradient-to-br from-[#ff2d55]/10 via-[#7928ca]/10 to-transparent border border-white/10 p-8 md:p-12 text-center">
             <h2 className="text-2xl md:text-3xl font-bold text-white mb-4">Une soirée de fin d&apos;année à prévoir ?</h2>
             <p className="text-zinc-400 max-w-2xl mx-auto mb-6">
-              Au Domaine des 12 Ponts, une soirée de Noël clé en main pour vos équipes : le repas, les jeux et l&apos;ambiance, tout est prévu.
+              Au Domaine les 12 Ponts, une soirée de Noël clé en main pour vos équipes : le repas, les jeux et l&apos;ambiance, tout est prévu.
             </p>
             <Link
               prefetch={false}

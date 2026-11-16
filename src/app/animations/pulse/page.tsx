@@ -123,7 +123,7 @@ const screens = [
   },
   {
     src: `${ASSETS}/ruee-vers-l-or-swapn-equipes-terrasse.webp`,
-    alt: "Les quatre équipes de cowboys réunies sur la terrasse du Domaine des 12 Ponts",
+    alt: "Les quatre équipes de cowboys réunies sur la terrasse du Domaine les 12 Ponts",
     caption: 'Quatre équipes, une seule partie',
   },
 ];
@@ -470,7 +470,7 @@ export default async function PulsePage() {
                   d&apos;OZ Marketing Solutions qui tenaient le micro, sans technicien derrière.
                 </p>
                 <p className="text-zinc-500 leading-relaxed">
-                  Au Domaine des 12 Ponts, nos soirées font partie de ce que le Domaine propose aux entreprises
+                  Au Domaine les 12 Ponts, nos soirées font partie de ce que le Domaine propose aux entreprises
                   qui y viennent en séminaire.
                 </p>
               </div>

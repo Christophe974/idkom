@@ -143,7 +143,7 @@ const venues = [
   { name: 'Atria', city: 'Belfort', detail: 'Centre de congrès, salles modulables' },
   { name: 'Le Phare', city: 'Belfort', detail: 'Salle de spectacles et grands événements' },
   { name: 'Micropolis', city: 'Besançon', detail: 'Parc des expositions, Salon des Collectivités' },
-  { name: 'Domaine des 12 Ponts', city: 'Haute-Saône', detail: 'Séminaires et soirées au vert' },
+  { name: 'Domaine les 12 Ponts', city: 'Haute-Saône', detail: 'Séminaires et soirées au vert' },
 ];
 
 const zones = ['Montbéliard', 'Belfort', 'Héricourt', 'Audincourt', 'Sochaux', 'Delle', 'Lure', 'Vesoul', 'Besançon', 'Mulhouse'];
