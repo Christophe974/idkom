@@ -81,7 +81,7 @@ export default async function Home() {
                 </Link>
                 {[
                   { icon: 'solar:moon-stars-linear', label: 'Soirée à thème', href: '/animations/la-ruee-vers-l-or' },
-                  { icon: 'solar:users-group-two-rounded-linear', label: 'Team building', href: '/animations/la-kermesse-2-0' },
+                  { icon: 'solar:users-group-two-rounded-linear', label: 'Team building', href: '/team-building' },
                   { icon: 'solar:music-notes-linear', label: 'Blind test géant', href: '/animations/le-blind-test' },
                   { icon: 'solar:gift-linear', label: 'Bar à goodies', href: '/animations/le-bar-goodies' },
                 ].map((f) => (

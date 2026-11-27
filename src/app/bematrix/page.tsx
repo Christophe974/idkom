@@ -259,6 +259,18 @@ export default async function BematrixPage() {
                 </div>
               ))}
             </div>
+
+            <p className="mt-10 text-center text-sm text-zinc-400">
+              Pour aller plus loin :{' '}
+              <Link prefetch={false} href="/blog/eclairage-stand-bematrix" className="text-white underline decoration-[#ff2d55]/60 underline-offset-4 hover:text-[#ff2d55] transition-colors">
+                l&apos;éclairage d&apos;un stand BeMatrix (LEDskin®, rétroéclairage, lightbox)
+              </Link>
+              {' '}et{' '}
+              <Link prefetch={false} href="/blog/catalogue-bematrix-cadres-accessoires" className="text-white underline decoration-[#ff2d55]/60 underline-offset-4 hover:text-[#ff2d55] transition-colors">
+                les cadres et accessoires du catalogue BeMatrix
+              </Link>
+              .
+            </p>
           </div>
         </section>
 

@@ -7,7 +7,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const staticPages: MetadataRoute.Sitemap = [
     {
       url: BASE_URL,
-      lastModified: new Date("2026-10-10"),
+      lastModified: new Date("2026-11-27"),
       changeFrequency: "weekly",
       priority: 1,
     },

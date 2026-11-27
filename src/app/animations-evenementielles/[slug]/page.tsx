@@ -16,12 +16,12 @@ interface PageProps {
 }
 
 const defaultConcepts: CityPageConcept[] = [
-  { name: 'Bar Goodies', description: 'Un comptoir premium où vos invités choisissent et personnalisent leurs goodies en direct', icon: 'solar:gift-linear', link: '/animations/le-bar-goodies' },
-  { name: 'Photobooth IA', description: 'Cabine photo nouvelle génération avec retouche IA et partage instantané', icon: 'solar:camera-linear', link: '/animations' },
-  { name: 'Kermesse 2.0', description: 'La kermesse revisitée avec des activités digitales et interactives', icon: 'solar:gamepad-linear', link: '/animations/la-kermesse-2-0' },
-  { name: 'Stands BeMatrix', description: 'Stands modulaires premium en cadres aluminium avec intégration LEDskin', icon: 'solar:widget-linear', link: '/bematrix' },
-  { name: 'Roue des Avis', description: 'Roue digitale interactive pour collecter les avis clients', icon: 'solar:star-shine-linear', link: '/animations' },
-  { name: 'Quiz Interactif', description: 'Quiz personnalisé sur grand écran pour animer votre audience', icon: 'solar:question-circle-linear', link: '/animations' },
+  { name: 'PULSE', description: 'Le jeu de votre soirée sur le téléphone de chacun : équipes, duels, blind test, enchères et classement en direct sur grand écran.', icon: 'solar:gamepad-linear', link: '/animations/pulse' },
+  { name: 'Team building', description: "Des équipes tirées au sort, des jeux d'un quart d'heure entre deux séances de travail, un classement qui bouge sur l'écran.", icon: 'solar:users-group-two-rounded-linear', link: '/team-building' },
+  { name: 'Soirée à thème', description: 'Western, casino, années 90 : un décor, des tables de jeu, une monnaie sur le téléphone de chacun et une vente aux enchères pour finir.', icon: 'solar:moon-stars-linear', link: '/animations/la-ruee-vers-l-or' },
+  { name: 'Blind test géant', description: 'Chacun joue sur son téléphone, puis un finaliste par équipe monte face à la salle.', icon: 'solar:music-notes-linear', link: '/animations/le-blind-test' },
+  { name: 'Quiz en direct sur grand écran', description: "La salle répond en trente secondes, les réponses tombent à l'écran.", icon: 'solar:question-circle-linear', link: '/seminaire-soiree-entreprise' },
+  { name: 'Bar à goodies', description: 'Chaque invité repart avec un souvenir fabriqué sous ses yeux, à son nom.', icon: 'solar:gift-linear', link: '/animations/le-bar-goodies' },
 ];
 
 const conceptColors = ['#ff2d55', '#7928ca', '#00d4ff', '#22c55e', '#f59e0b', '#ec4899'];
@@ -37,7 +37,7 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
       `Animation d'entreprise à ${city.city_name} : séminaires, soirées, team building`;
     const description =
       city.seo?.description?.trim() ||
-      `Agence événementielle à ${city.city_name} : bar à goodies, photobooth IA, stands BeMatrix, kermesse 2.0. iDkom anime vos salons et séminaires dans le ${city.department}.`;
+      `Séminaire, soirée d'entreprise, team building à ${city.city_name} : soirées à thème, blind test, quiz en direct. On arrive avec les écrans, le son, les jeux et les animateurs.`;
     return {
       title,
       description,
