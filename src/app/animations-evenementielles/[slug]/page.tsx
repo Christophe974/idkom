@@ -166,7 +166,7 @@ export default async function CityPage({ params }: PageProps) {
                   Lieux <span className="gradient-text">événementiels</span> à {city.city_name}
                 </h2>
                 <p className="text-zinc-400 max-w-2xl mx-auto">
-                  Nous connaissons les principaux espaces événementiels de la région et leurs contraintes techniques.
+                  On s&apos;installe là où vous recevez : une grande salle, un domaine au vert ou vos propres locaux.
                 </p>
               </div>
 
