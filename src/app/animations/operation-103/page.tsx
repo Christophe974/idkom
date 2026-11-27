@@ -19,6 +19,9 @@ import { getHomepageData, getProjetBySlug, type Projet } from '@/lib/api';
 const PAGE_URL = 'https://www.idkom.fr/animations/operation-103';
 const ASSETS = 'https://olmcbqiojczhupspzedo.supabase.co/storage/v1/object/public/vitrine-assets/animations';
 const HERO_IMAGE = `${ASSETS}/operation-103-belfort-103-jours.webp`;
+// Version « réseaux » du teaser (ni client ni date), 720p, faststart.
+const TEASER_VIDEO = `${ASSETS}/operation-103-teaser.mp4`;
+const TEASER_POSTER = `${ASSETS}/operation-103-vous-avez-un-message.webp`;
 
 export const metadata: Metadata = {
   title: "Escape game d'entreprise à Belfort : Opération 103",
@@ -60,24 +63,6 @@ const PROJECT_SLUGS = [
   'operation-code-wurtemberg-escape-game-montbeliard',
   'ag-credit-mutuel-belfort-centre-kinepolis-saynetes-quiz-bar-a-goodies',
   'revival-90-seminaire-orange-domaine-les-12-ponts',
-];
-
-const message = [
-  {
-    src: `${ASSETS}/operation-103-vous-avez-un-message.webp`,
-    alt: 'Écran du teaser Opération 103 : « Vous avez un message. Expéditeur : inconnu. Objet : votre coffre. »',
-    caption: 'Expéditeur : inconnu.',
-  },
-  {
-    src: `${ASSETS}/operation-103-coffre-virus.webp`,
-    alt: "Écran du teaser Opération 103 : « J'ai craqué les codes de votre coffre. Et j'y ai laissé un virus. »",
-    caption: 'Le coffre est infecté.',
-  },
-  {
-    src: `${ASSETS}/operation-103-code-cache-dans-belfort.webp`,
-    alt: "Écran du teaser Opération 103 : « Le code qui l'annule existe. Je l'ai caché dehors, en morceaux, dans Belfort. »",
-    caption: 'Le code est dehors, en morceaux.',
-  },
 ];
 
 const steps = [
@@ -287,15 +272,20 @@ export default async function Operation103Page() {
                 Il a le sens de l&apos;humour, un faible pour l&apos;histoire locale, et il déteste gagner trop facilement.
               </p>
             </div>
-            <div className="grid md:grid-cols-3 gap-6">
-              {message.map((item) => (
-                <figure key={item.src} className="rounded-3xl bg-zinc-900/50 border border-white/10 overflow-hidden">
-                  <div className="relative aspect-video">
-                    <Image src={item.src} alt={item.alt} fill className="object-cover" sizes="(max-width: 768px) 100vw, 33vw" />
-                  </div>
-                  <figcaption className="p-4 text-sm text-zinc-400">{item.caption}</figcaption>
-                </figure>
-              ))}
+            <div className="max-w-4xl mx-auto">
+              <div className="relative aspect-video rounded-3xl overflow-hidden border border-white/10 bg-black">
+                <video
+                  className="absolute inset-0 w-full h-full"
+                  controls
+                  playsInline
+                  preload="none"
+                  poster={TEASER_POSTER}
+                  aria-label="Teaser Opération 103 : le message du pirate, 34 secondes"
+                >
+                  <source src={TEASER_VIDEO} type="video/mp4" />
+                </video>
+              </div>
+              <p className="mt-4 text-center text-sm text-zinc-500">34 secondes · mettez le son</p>
             </div>
           </div>
         </section>
@@ -521,6 +511,25 @@ export default async function Operation103Page() {
               name: faq.question,
               acceptedAnswer: { '@type': 'Answer', text: faq.answer },
             })),
+          }),
+        }}
+      />
+
+      {/* Teaser */}
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify({
+            '@context': 'https://schema.org',
+            '@type': 'VideoObject',
+            name: "Opération 103 · le teaser de l'escape game d'entreprise à Belfort",
+            description:
+              "Un pirate a craqué les codes du coffre et y a laissé un virus. Le code qui l'annule est caché en morceaux dans Belfort : 75 minutes pour le retrouver.",
+            thumbnailUrl: [TEASER_POSTER, HERO_IMAGE],
+            uploadDate: '2026-11-27',
+            duration: 'PT34S',
+            contentUrl: TEASER_VIDEO,
+            publisher: { '@id': 'https://www.idkom.fr/#localbusiness' },
           }),
         }}
       />
