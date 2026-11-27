@@ -123,7 +123,7 @@ const belfort = [
   {
     icon: 'solar:calendar-linear',
     title: '103 jours',
-    text: "Du 3 novembre 1870 au 18 février 1871, Belfort assiégée ne se rend pas. C'est le nom de code de la partie.",
+    text: "Tout un hiver, de novembre à février, Belfort assiégée ne se rend pas. C'est le nom de code de la partie.",
   },
   {
     icon: 'solar:crown-linear',
