@@ -80,8 +80,8 @@ const formats = [
     title: "L'escape game écrit pour vous",
     description:
       "Une énigme qui parle de votre entreprise, jouée dans vos murs ou dans les rues de la ville. À Montbéliard, 25 nouveaux agents ont 70 minutes pour sauver la ville, et finissent la journée en équipe.",
-    href: '/realisations/operation-code-wurtemberg-escape-game-montbeliard',
-    linkLabel: 'Opération Code Wurtemberg',
+    href: '/animations/operation-103',
+    linkLabel: 'Opération 103, à Belfort',
     color: '#7928ca',
   },
   {

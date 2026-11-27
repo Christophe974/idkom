@@ -127,8 +127,8 @@ const formats = [
     title: "L'escape game sur mesure",
     description:
       "Une énigme écrite pour votre entreprise, jouée dans vos murs ou dans la ville. 70 minutes pour que les nouveaux arrivants connaissent déjà tout le monde.",
-    href: '/realisations/operation-code-wurtemberg-escape-game-montbeliard',
-    linkLabel: 'Opération Code Wurtemberg',
+    href: '/animations/operation-103',
+    linkLabel: 'Opération 103, à Belfort',
     color: '#7928ca',
   },
 ];
