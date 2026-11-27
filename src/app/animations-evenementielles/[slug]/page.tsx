@@ -1,6 +1,7 @@
 import { Metadata } from 'next';
 import { notFound } from 'next/navigation';
 import Link from 'next/link';
+import Image from 'next/image';
 import { Icon } from '@iconify/react';
 import NavbarServer from '@/components/NavbarServer';
 import FooterServer from '@/components/FooterServer';
@@ -23,6 +24,39 @@ const defaultConcepts: CityPageConcept[] = [
   { name: 'Quiz en direct sur grand écran', description: "La salle répond en trente secondes, les réponses tombent à l'écran.", icon: 'solar:question-circle-linear', link: '/seminaire-soiree-entreprise' },
   { name: 'Bar à goodies', description: 'Chaque invité repart avec un souvenir fabriqué sous ses yeux, à son nom.', icon: 'solar:gift-linear', link: '/animations/le-bar-goodies' },
 ];
+
+const CITY_ASSETS = 'https://olmcbqiojczhupspzedo.supabase.co/storage/v1/object/public/vitrine-assets/villes';
+
+// Photos et récit d'une soirée réelle, pour les villes où l'on a de quoi montrer.
+interface CityShowcase {
+  kicker: string;
+  title: string;
+  paragraphs: string[];
+  points: { icon: string; label: string; text: string }[];
+  photos: { src: string; alt: string; width: number; height: number }[];
+  caption: string;
+}
+
+const cityShowcases: Record<string, CityShowcase> = {
+  mulhouse: {
+    kicker: 'Cité du Train · Mulhouse',
+    title: 'Le jeu, la lumière et le son ne font qu’un',
+    paragraphs: [
+      'Le long des locomotives, une rangée de tubes de lumière. Quand la question tombe, ils se remplissent comme une jauge. À cinq secondes de la fin, ils s’affolent. Puis le noir, et toute la salle retient son souffle.',
+      'À la révélation, tout part ensemble : le morceau dans les enceintes, la réponse sur le grand écran, la lumière qui explose le long des quais. Au podium, la salle passe à l’or. Personne n’appuie sur trois boutons : chez nous, le blind test, l’écran, le son et la lumière sont reliés.',
+    ],
+    points: [
+      { icon: 'solar:smartphone-linear', label: 'Sur les téléphones', text: 'Chacun répond depuis sa table, le classement bouge en direct sur le grand écran.' },
+      { icon: 'solar:lightbulb-bolt-linear', label: 'Dans la lumière', text: 'Les tubes comptent les secondes, s’éteignent, puis fêtent la bonne réponse.' },
+      { icon: 'solar:music-notes-linear', label: 'Dans les enceintes', text: 'L’extrait part avec la question, le morceau revient en grand à la révélation.' },
+    ],
+    photos: [
+      { src: `${CITY_ASSETS}/mulhouse-cite-du-train-tables-tubes-lumiere.webp`, alt: 'Tables dressées pour une soirée d’entreprise à la Cité du Train de Mulhouse, tubes de lumière roses le long des voitures anciennes', width: 960, height: 1280 },
+      { src: `${CITY_ASSETS}/mulhouse-cite-du-train-locomotive-tubes-lumiere.webp`, alt: 'Tubes de lumière iDkom alignés le long d’une locomotive à vapeur à la Cité du Train de Mulhouse', width: 721, height: 1280 },
+    ],
+    caption: 'Cité du Train, Mulhouse : nos tubes de lumière le long des quais, avant l’arrivée des invités. Soirée organisée par DAUDEY Organisation.',
+  },
+};
 
 const conceptColors = ['#ff2d55', '#7928ca', '#00d4ff', '#22c55e', '#f59e0b', '#ec4899'];
 
@@ -73,6 +107,7 @@ export default async function CityPage({ params }: PageProps) {
   const concepts = city.concepts && city.concepts.length > 0 ? city.concepts : defaultConcepts;
   const faq = city.faq || [];
   const venues = city.venues || [];
+  const showcase = cityShowcases[city.slug];
 
   return (
     <>
@@ -114,6 +149,61 @@ export default async function CityPage({ params }: PageProps) {
             </div>
           </div>
         </section>
+
+        {/* Une soirée réelle : photos + le jeu, la lumière et le son reliés */}
+        {showcase && (
+          <section className="pb-20 px-6">
+            <div className="max-w-7xl mx-auto grid gap-12 lg:grid-cols-2 lg:items-center">
+              <div>
+                <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white/5 border border-white/10 text-sm text-zinc-300 mb-6">
+                  <Icon icon="solar:camera-linear" width={18} className="text-[#ff2d55]" />
+                  {showcase.kicker}
+                </div>
+                <h2 className="text-3xl md:text-4xl font-bold text-white leading-tight mb-6">
+                  {showcase.title}
+                </h2>
+                {showcase.paragraphs.map((paragraph) => (
+                  <p key={paragraph.slice(0, 24)} className="text-zinc-400 leading-relaxed mb-4">
+                    {paragraph}
+                  </p>
+                ))}
+                <ul className="mt-8 space-y-4">
+                  {showcase.points.map((point) => (
+                    <li key={point.label} className="flex items-start gap-4">
+                      <span className="flex-shrink-0 w-11 h-11 rounded-xl bg-[#ff2d55]/10 border border-[#ff2d55]/20 flex items-center justify-center">
+                        <Icon icon={point.icon} className="text-[#ff2d55]" width={22} />
+                      </span>
+                      <span>
+                        <span className="block font-semibold text-white">{point.label}</span>
+                        <span className="block text-sm text-zinc-500 leading-relaxed">{point.text}</span>
+                      </span>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+
+              <figure>
+                <div className="grid grid-cols-2 gap-4">
+                  {showcase.photos.map((photo, index) => (
+                    <div
+                      key={photo.src}
+                      className={`relative aspect-[3/4] rounded-3xl overflow-hidden border border-white/10 bg-zinc-900 ${index % 2 === 1 ? 'mt-10' : ''}`}
+                    >
+                      <Image
+                        src={photo.src}
+                        alt={photo.alt}
+                        fill
+                        className="object-cover"
+                        sizes="(max-width: 1024px) 50vw, 25vw"
+                      />
+                    </div>
+                  ))}
+                </div>
+                <figcaption className="mt-5 text-sm text-zinc-500">{showcase.caption}</figcaption>
+              </figure>
+            </div>
+          </section>
+        )}
 
         {/* Concepts */}
         <section className="py-20 px-6 bg-zinc-900/30">
